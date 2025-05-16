@@ -7,7 +7,9 @@ import {
   type Appointment, type InsertAppointment, 
   type Testimonial, type InsertTestimonial,
   type CarouselImage,
-  type FeatureCard
+  type FeatureCard,
+  type Subscription,
+  type InsertSubscription,
 } from "@shared/schema";
 
 // Storage interface for all CRUD operations
@@ -80,6 +82,13 @@ export interface IStorage {
   updateFeatureCard(id: string, cardData: Partial<FeatureCard>): Promise<boolean>;
   deleteFeatureCard(id: string): Promise<boolean>;
   reorderFeatureCard(id: string, direction: 'up' | 'down'): Promise<boolean>;
+
+  // Subscriptions
+  getSubscriptions(): Promise<Subscription[]>;
+  getSubscription(id: string): Promise<Subscription | null>;
+  createSubscription(subscription: InsertSubscription): Promise<Subscription>;
+  updateSubscription(id: string, subscription: Partial<InsertSubscription>): Promise<Subscription | null>;
+  deleteSubscription(id: string): Promise<boolean>;
 }
 
 export class MemStorage implements IStorage {
@@ -93,6 +102,7 @@ export class MemStorage implements IStorage {
   private testimonials: Map<string | number, Testimonial>;
   private carouselImages: Map<string, CarouselImage>;
   private featureCards: Map<string, FeatureCard>;
+  private subscriptions: Map<string, Subscription>;
 
   // ID counters
   private userIdCounter: number;
@@ -104,6 +114,7 @@ export class MemStorage implements IStorage {
   private testimonialIdCounter: number;
   private carouselImageIdCounter: number;
   private featureCardIdCounter: number;
+  private subscriptionIdCounter: number;
 
   constructor() {
     // Initialize maps
@@ -116,6 +127,7 @@ export class MemStorage implements IStorage {
     this.testimonials = new Map();
     this.carouselImages = new Map();
     this.featureCards = new Map();
+    this.subscriptions = new Map();
 
     // Initialize ID counters
     this.userIdCounter = 1;
@@ -127,6 +139,7 @@ export class MemStorage implements IStorage {
     this.testimonialIdCounter = 1;
     this.carouselImageIdCounter = 1;
     this.featureCardIdCounter = 1;
+    this.subscriptionIdCounter = 1;
 
     // Add an admin user by default
     this.createUser({
@@ -673,6 +686,35 @@ export class MemStorage implements IStorage {
     cards.forEach(card => this.featureCards.set(card.id, card));
 
     return true;
+  }
+
+    // Subscription methods
+  async getSubscriptions(): Promise<Subscription[]> {
+    return Array.from(this.subscriptions.values());
+  }
+
+  async getSubscription(id: string): Promise<Subscription | null> {
+    return this.subscriptions.get(id) || null;
+  }
+
+  async createSubscription(subscription: InsertSubscription): Promise<Subscription> {
+    const id = String(this.subscriptionIdCounter++);
+    const newSubscription: Subscription = { id, ...subscription };
+    this.subscriptions.set(id, newSubscription);
+    return newSubscription;
+  }
+
+  async updateSubscription(id: string, subscriptionData: Partial<InsertSubscription>): Promise<Subscription | null> {
+    const subscription = this.subscriptions.get(id);
+    if (!subscription) return null;
+
+    const updatedSubscription = { ...subscription, ...subscriptionData };
+    this.subscriptions.set(id, updatedSubscription);
+    return updatedSubscription;
+  }
+
+  async deleteSubscription(id: string): Promise<boolean> {
+    return this.subscriptions.delete(id);
   }
 }
 

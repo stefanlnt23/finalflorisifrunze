@@ -1,4 +1,3 @@
-
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import {
@@ -26,6 +25,7 @@ export default function MainNavigation() {
     { path: "/", label: "Acasă" },
     { path: "/services", label: "Servicii" },
     { path: "/portfolio", label: "Portofoliu" },
+    { path: "/subscriptions", label: "Abonamente" },
     { path: "/blog", label: "Blog" },
     { path: "/contact", label: "Contact" },
     { path: "/admin", label: "Admin", className: "text-gray-500 hover:text-gray-700" },

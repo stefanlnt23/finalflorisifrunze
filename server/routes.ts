@@ -1111,6 +1111,110 @@ export async function registerRoutes(app: Express): Promise<Server> {
     },
   );
 
+  // Public endpoint to get subscriptions
+  app.get("/api/subscriptions", async (req, res) => {
+    try {
+      const subscriptions = await storage.getSubscriptions();
+      res.json({ subscriptions });
+    } catch (error) {
+      console.error("Error fetching subscriptions:", error);
+      res.status(500).json({ message: "Failed to fetch subscriptions" });
+    }
+  });
+
+  // Admin Subscription Management
+  app.get("/api/admin/subscriptions", requireAdmin, async (req, res) => {
+    try {
+      const subscriptions = await storage.getSubscriptions();
+      res.json({ subscriptions });
+    } catch (error) {
+      console.error("Error fetching subscriptions for admin:", error);
+      res.status(500).json({ message: "Failed to fetch subscriptions" });
+    }
+  });
+
+  app.get("/api/admin/subscriptions/:id", requireAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const subscription = await storage.getSubscription(id);
+
+      if (!subscription) {
+        return res.status(404).json({ message: "Subscription not found" });
+      }
+
+      res.json({ subscription });
+    } catch (error) {
+      console.error(`Error fetching subscription ${req.params.id}:`, error);
+      res.status(500).json({ message: "Failed to fetch subscription" });
+    }
+  });
+
+  app.post("/api/admin/subscriptions", requireAdmin, async (req, res) => {
+    try {
+      const { name, description, color, features, price, isPopular, displayOrder } = req.body;
+
+      if (!name || !features || !price) {
+        return res.status(400).json({ message: "Name, features and price are required" });
+      }
+
+      const newSubscription = await storage.createSubscription({
+        name,
+        description,
+        color,
+        features,
+        price,
+        isPopular: isPopular || false,
+        displayOrder: displayOrder || 0
+      });
+
+      res.status(201).json({ success: true, subscription: newSubscription });
+    } catch (error) {
+      console.error("Error creating subscription:", error);
+      res.status(500).json({ message: "Failed to create subscription" });
+    }
+  });
+
+  app.put("/api/admin/subscriptions/:id", requireAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { name, description, color, features, price, isPopular, displayOrder } = req.body;
+
+      if (!name || !features || !price) {
+        return res.status(400).json({ message: "Name, features and price are required" });
+      }
+
+      const updatedSubscription = await storage.updateSubscription(id, {
+        name,
+        description,
+        color,
+        features,
+        price,
+        isPopular,
+        displayOrder
+      });
+
+      if (!updatedSubscription) {
+        return res.status(404).json({ message: "Subscription not found" });
+      }
+
+      res.json({ success: true, subscription: updatedSubscription });
+    } catch (error) {
+      console.error(`Error updating subscription ${req.params.id}:`, error);
+      res.status(500).json({ message: "Failed to update subscription" });
+    }
+  });
+
+  app.delete("/api/admin/subscriptions/:id", requireAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      await storage.deleteSubscription(id);
+      res.json({ success: true });
+    } catch (error) {
+      console.error(`Error deleting subscription ${req.params.id}:`, error);
+      res.status(500).json({ message: "Failed to delete subscription" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

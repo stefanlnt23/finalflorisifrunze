@@ -251,6 +251,42 @@ export interface CarouselImage {
 // Feature Cards
 export interface FeatureCard {
   id: string;
+
+// Subscriptions
+export interface Subscription {
+  id: string | number;
+  name: string;
+  description: string;
+  color: string;
+  features: Array<{
+    name: string;
+    value: string;
+  }>;
+  price: string;
+  isPopular: boolean;
+  displayOrder: number;
+}
+
+// Base schema for subscriptions
+const subscriptionBaseSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  description: z.string().optional().nullable(),
+  color: z.string().default("#FFFFFF"),
+  features: z.array(
+    z.object({
+      name: z.string().min(1, "Feature name is required"),
+      value: z.string().min(1, "Feature value is required")
+    })
+  ),
+  price: z.string().min(1, "Price is required"),
+  isPopular: z.boolean().default(false),
+  displayOrder: z.number().default(0)
+});
+
+// Export the schema for use in validation
+export const insertSubscriptionSchema = subscriptionBaseSchema;
+export type InsertSubscription = z.infer<typeof insertSubscriptionSchema>;
+
   title: string;
   description: string;
   icon: string;

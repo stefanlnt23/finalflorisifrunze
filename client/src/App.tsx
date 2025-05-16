@@ -16,6 +16,7 @@ import BlogDetail from "@/pages/BlogDetail";
 import Portfolio from "@/pages/Portfolio";
 import PortfolioDetail from "@/pages/PortfolioDetail";
 import Appointment from "@/pages/Appointment";
+import Subscriptions from "./pages/Subscriptions";
 
 // Admin Page imports
 import AdminLogin from "@/pages/admin/Login";
@@ -51,6 +52,7 @@ function Router() {
       <Route path="/appointment" component={Appointment} />
       <Route path="/portfolio" component={Portfolio} />
       <Route path="/portfolio/:id" component={PortfolioDetail} />
+      <Route path="/subscriptions" component={Subscriptions} />
 
       {/* Admin Routes */}
       <Route path="/admin" component={AdminLogin} />
@@ -116,6 +118,9 @@ function Router() {
           <AdminFeatureCards />
         </React.Suspense>
       </Route>
+      <Route path="/admin/subscriptions" component={() => import('./pages/admin/Subscriptions').then(mod => <mod.default />)} />
+      <Route path="/admin/subscriptions/new" component={() => import('./pages/admin/SubscriptionsForm').then(mod => <mod.default />)} />
+      <Route path="/admin/subscriptions/:id" component={() => import('./pages/admin/SubscriptionsForm').then(mod => <mod.default />)} />
 
       {/* Admin Blog Posts */}
       <Route path="/admin/blog/new">

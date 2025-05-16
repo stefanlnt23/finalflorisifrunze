@@ -13,6 +13,7 @@ export default function AdminNavigation() {
     { label: "Inquiries", path: "/admin/inquiries", icon: "fas fa-envelope" },
     { label: "Blog Posts", path: "/admin/blog", icon: "fas fa-blog" },
     { label: "Testimonials", path: "/admin/testimonials", icon: "fas fa-star" },
+    { label: "Abonamente", path: "/admin/subscriptions", icon: "fas fa-tags" },
     { label: "Front Page", path: "/admin/frontpage", icon: "fas fa-home" },
     { label: "Feature Cards", path: "/admin/feature-cards", icon: "fas fa-columns" },
   ];

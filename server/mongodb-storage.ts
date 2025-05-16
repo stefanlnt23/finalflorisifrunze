@@ -28,6 +28,28 @@ export interface FeatureCard {
   order: number;
 }
 
+// Subscription Schema
+export interface Subscription {
+  id: string;
+  name: string;
+  description: string | null;
+  color: string;
+  features: string[];
+  price: string;
+  isPopular: boolean;
+  displayOrder: number;
+}
+
+export interface InsertSubscription {
+  name: string;
+  description?: string | null;
+  color?: string;
+  features?: string[];
+  price: string;
+  isPopular?: boolean;
+  displayOrder?: number;
+}
+
 export class MongoDBStorage implements IStorage {
   private db: any;
 
@@ -886,19 +908,19 @@ export class MongoDBStorage implements IStorage {
               return [];
             }
           }
-    
+
           // Check if collection exists and create it if not
           const collections = await this.db.listCollections({name: 'featureCards'}).toArray();
           if (collections.length === 0) {
             await this.db.createCollection('featureCards');
             log('Created featureCards collection', 'mongodb');
           }
-    
+
           const cards = await this.db.collection('featureCards')
             .find({})
             .sort({ order: 1 })
             .toArray();
-    
+
           return cards.map(card => ({
             id: card._id.toString(),
             imageUrl: card.imageUrl,
@@ -911,7 +933,7 @@ export class MongoDBStorage implements IStorage {
           throw error;
         }
       }
-    
+
       async addFeatureCard(card: { imageUrl: string; title: string; description: string }): Promise<any> {
         try {
           if (!this.db) {
@@ -922,43 +944,42 @@ export class MongoDBStorage implements IStorage {
               throw new Error('Database connection not initialized');
             }
           }
-    
+
           // Check if collection exists and create it if not
           const collections = await this.db.listCollections({name: 'featureCards'}).toArray();
           if (collections.length === 0) {
             await this.db.createCollection('featureCards');
             log('Created featureCards collection', 'mongodb');
           }
-    
+
           // Get highest order to place new card at the end
           const highestOrderCard = await this.db.collection('featureCards')
             .find({})
             .sort({ order: -1 })
             .limit(1)
             .toArray();
-    
+
           const nextOrder = highestOrderCard.length > 0 ? highestOrderCard[0].order + 1 : 0;
-    
+
           const result = await this.db.collection('featureCards').insertOne({
             imageUrl: card.imageUrl,
             title: card.title,
             description: card.description,
             order: nextOrder,
           });
-    
+
           return {
             id: result.insertedId.toString(),
             imageUrl: card.imageUrl,
             title: card.title,
             description: card.description,
             order: nextOrder,
-          };
-        } catch (error) {
+          };        } catch (error) {
           console.error("Error adding feature card:", error);
           throw error;
         }
       }
-    
+
       async deleteFeatureCard(id: string): Promise<void> {
         try {
           if (!this.db) {
@@ -969,21 +990,21 @@ export class MongoDBStorage implements IStorage {
               throw new Error('Database connection not initialized');
             }
           }
-    
+
           // Find the card to get its order
           const card = await this.db.collection('featureCards').findOne({ 
             _id: new ObjectId(id) 
           });
-    
+
           if (!card) {
             throw new Error('Feature card not found');
           }
-    
+
           // Delete the card
           await this.db.collection('featureCards').deleteOne({ 
             _id: new ObjectId(id) 
           });
-    
+
           // Update order of remaining cards
           await this.db.collection('featureCards').updateMany(
             { order: { $gt: card.order } },
@@ -994,7 +1015,7 @@ export class MongoDBStorage implements IStorage {
           throw error;
         }
       }
-    
+
       async reorderFeatureCard(id: string, direction: 'up' | 'down'): Promise<void> {
         try {
           if (!this.db) {
@@ -1005,34 +1026,34 @@ export class MongoDBStorage implements IStorage {
               throw new Error('Database connection not initialized');
             }
           }
-    
+
           // Find the card
           const card = await this.db.collection('featureCards').findOne({ 
             _id: new ObjectId(id) 
           });
-    
+
           if (!card) {
             throw new Error('Feature card not found');
           }
-    
+
           // Find adjacent card
           const adjacentOrder = direction === 'up' ? card.order - 1 : card.order + 1;
-    
+
           const adjacentCard = await this.db.collection('featureCards').findOne({ 
             order: adjacentOrder 
           });
-    
+
           if (!adjacentCard) {
             // No adjacent card, can't reorder
             return;
           }
-    
+
           // Swap orders
           await this.db.collection('featureCards').updateOne(
             { _id: card._id },
             { $set: { order: adjacentOrder } }
           );
-    
+
           await this.db.collection('featureCards').updateOne(
             { _id: adjacentCard._id },
             { $set: { order: card.order } }
@@ -1042,6 +1063,203 @@ export class MongoDBStorage implements IStorage {
           throw error;
         }
       }
+
+  // Subscriptions
+  async getSubscriptions(): Promise<Subscription[]> {
+    try {
+      if (!this.db) {
+        log('Database connection not initialized yet, initializing now...', 'mongodb');
+        await this.initDb();
+        if (!this.db) {
+          log('Could not initialize database connection', 'mongodb');
+          return [];
+        }
+      }
+      const collections = await this.db.listCollections({ name: 'subscriptions' }).toArray();
+      if (collections.length === 0) {
+        await this.db.createCollection('subscriptions');
+        log('Created subscriptions collection', 'mongodb');
+      }
+      const subscriptions = await this.db.collection("subscriptions").find().sort({ displayOrder: 1 }).toArray();
+      return subscriptions.map(sub => ({
+        id: sub._id.toString(),
+        name: sub.name,
+        description: sub.description || null,
+        color: sub.color || "#FFFFFF",
+        features: sub.features || [],
+        price: sub.price,
+        isPopular: sub.isPopular || false,
+        displayOrder: sub.displayOrder || 0
+      }));
+    } catch (error) {
+      console.error("Error fetching subscriptions:", error);
+      return [];
+    }
+  }
+
+  async getSubscription(id: string): Promise<Subscription | null> {
+    try {
+      if (!this.db) {
+        log('Database connection not initialized yet, initializing now...', 'mongodb');
+        await this.initDb();
+        if (!this.db) {
+          log('Could not initialize database connection', 'mongodb');
+          return null;
+        }
+      }
+      const collections = await this.db.listCollections({ name: 'subscriptions' }).toArray();
+      if (collections.length === 0) {
+        await this.db.createCollection('subscriptions');
+        log('Created subscriptions collection', 'mongodb');
+      }
+      const subscription = await this.db.collection("subscriptions").findOne({ _id: new ObjectId(id) });
+
+      if (!subscription) return null;
+
+      return {
+        id: subscription._id.toString(),
+        name: subscription.name,
+        description: subscription.description || null,
+        color: subscription.color || "#FFFFFF",
+        features: subscription.features || [],
+        price: subscription.price,
+        isPopular: subscription.isPopular || false,
+        displayOrder: subscription.displayOrder || 0
+      };
+    } catch (error) {
+      console.error(`Error fetching subscription with ID ${id}:`, error);
+      return null;
+    }
+  }
+
+  async createSubscription(subscription: InsertSubscription): Promise<Subscription> {
+    try {
+      if (!this.db) {
+        log('Database connection not initialized yet, initializing now...', 'mongodb');
+        await this.initDb();
+        if (!this.db) {
+          log('Could not initialize database connection', 'mongodb');
+          throw new Error('Database connection not initialized');
+        }
+      }
+      const collections = await this.db.listCollections({ name: 'subscriptions' }).toArray();
+      if (collections.length === 0) {
+        await this.db.createCollection('subscriptions');
+        log('Created subscriptions collection', 'mongodb');
+      }
+
+      // Get the next display order if not provided
+      let { displayOrder } = subscription;
+      if (displayOrder === undefined || displayOrder === null) {
+        const lastSubscription = await this.db.collection("subscriptions").findOne({}, { sort: { displayOrder: -1 } });
+        displayOrder = lastSubscription ? lastSubscription.displayOrder + 1 : 0;
+      }
+
+      const result = await this.db.collection("subscriptions").insertOne({
+        ...subscription,
+        displayOrder,
+        createdAt: new Date()
+      });
+
+      return {
+        id: result.insertedId.toString(),
+        name: subscription.name,
+        description: subscription.description || null,
+        color: subscription.color || "#FFFFFF",
+        features: subscription.features || [],
+        price: subscription.price,
+        isPopular: subscription.isPopular || false,
+        displayOrder: displayOrder
+      };
+    } catch (error) {
+      console.error("Error creating subscription:", error);
+      throw new Error("Failed to create subscription");
+    }
+  }
+
+  async updateSubscription(id: string, subscription: Partial<InsertSubscription>): Promise<Subscription | null> {
+    try {
+      if (!this.db) {
+        log('Database connection not initialized yet, initializing now...', 'mongodb');
+        await this.initDb();
+        if (!this.db) {
+          log('Could not initialize database connection', 'mongodb');
+          return null;
+        }
+      }
+      const collections = await this.db.listCollections({ name: 'subscriptions' }).toArray();
+      if (collections.length === 0) {
+        await this.db.createCollection('subscriptions');
+        log('Created subscriptions collection', 'mongodb');
+      }
+      const updatedAt = new Date();
+
+      await this.db.collection("subscriptions").updateOne(
+        { _id: new ObjectId(id) },
+        { $set: { ...subscription, updatedAt } }
+      );
+
+      const updatedSubscription = await this.db.collection("subscriptions").findOne({ _id: new ObjectId(id) });
+
+      if (!updatedSubscription) return null;
+
+      return {
+        id: updatedSubscription._id.toString(),
+        name: updatedSubscription.name,
+        description: updatedSubscription.description || null,
+        color: updatedSubscription.color || "#FFFFFF",
+        features: updatedSubscription.features || [],
+        price: updatedSubscription.price,
+        isPopular: updatedSubscription.isPopular || false,
+        displayOrder: updatedSubscription.displayOrder || 0
+      };
+    } catch (error) {
+      console.error(`Error updating subscription with ID ${id}:`, error);
+      return null;
+    }
+  }
+
+  async deleteSubscription(id: string): Promise<boolean> {
+    try {
+      if (!this.db) {
+        log('Database connection not initialized yet, initializing now...', 'mongodb');
+        await this.initDb();
+        if (!this.db) {
+          log('Could not initialize database connection', 'mongodb');
+          return false;
+        }
+      }
+      const collections = await this.db.listCollections({ name: 'subscriptions' }).toArray();
+      if (collections.length === 0) {
+        await this.db.createCollection('subscriptions');
+        log('Created subscriptions collection', 'mongodb');
+      }
+      const result = await this.db.collection("subscriptions").deleteOne({ _id: new ObjectId(id) });
+      return result.deletedCount === 1;
+    } catch (error) {
+      console.error(`Error deleting subscription with ID ${id}:`, error);
+      return false;
+    }
+  }
+
+  private async getCollection(collectionName: string): Promise<Collection> {
+    if (!this.db) {
+      log('Database connection not initialized yet, initializing now...', 'mongodb');
+      await this.initDb();
+      if (!this.db) {
+        log('Could not initialize database connection', 'mongodb');
+        throw new Error('Database connection not initialized');
+      }
+    }
+
+    const collections = await this.db.listCollections({ name: collectionName }).toArray();
+    if (collections.length === 0) {
+      await this.db.createCollection(collectionName);
+      log(`Created ${collectionName} collection`, 'mongodb');
+    }
+
+    return this.db.collection(collectionName);
+  }
 
   // Initialize demo data 
   async seedDemoData(): Promise<void> {
