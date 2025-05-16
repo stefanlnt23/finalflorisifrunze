@@ -36,7 +36,7 @@ export default function ServiceDetail() {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="text-3xl font-bold text-red-700 mb-4">Invalid Service ID</h1>
             <p className="text-lg text-red-600 mb-6">The service ID provided is not valid.</p>
-            <Link href="/services">
+            <Link href="/services" state={{ from: 'serviceDetail' }}>
               <Button className="bg-green-600 hover:bg-green-700">View All Services</Button>
             </Link>
           </div>
@@ -72,7 +72,7 @@ export default function ServiceDetail() {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="text-3xl font-bold text-red-700 mb-4">Service Not Found</h1>
             <p className="text-lg text-red-600 mb-6">The service you're looking for could not be found or may have been removed.</p>
-            <Link href="/services">
+            <Link href="/services" state={{ from: 'serviceDetail' }}>
               <Button className="bg-green-600 hover:bg-green-700">View All Services</Button>
             </Link>
           </div>
@@ -179,7 +179,7 @@ export default function ServiceDetail() {
               ))}
             </div>
             <div className="text-center mt-8">
-              <Link href="/portfolio">
+              <Link href="/services" state={{ from: 'serviceDetail' }}>
                 <Button variant="outline" className="border-green-600 text-green-600 hover:bg-green-50">
                   View All Portfolio Projects
                 </Button>

@@ -151,7 +151,7 @@ export default function Services() {
                 </div>
               ) : (
                 services.map((service, index) => (
-                  <Card key={service.id} className="group overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-500 bg-white rounded-xl animate-fadeInUp" style={{ animationDelay: `${index * 150}ms` }}>
+                  <Card key={service.id} className={`group overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-500 bg-white rounded-xl ${history.state?.from === 'serviceDetail' ? '' : 'animate-fadeInUp'}`} style={{ animationDelay: history.state?.from === 'serviceDetail' ? '0ms' : `${index * 150}ms` }}>
                     {service.imageUrl ? (
                       <div className="relative w-full h-64 overflow-hidden">
                         <img 
