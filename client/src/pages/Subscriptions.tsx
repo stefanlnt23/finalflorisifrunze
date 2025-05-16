@@ -42,9 +42,21 @@ export default function Subscriptions() {
   
   console.log("Rendered subscriptions:", subscriptions);
 
+  // For entry animations
+  const [isLoaded, setIsLoaded] = React.useState(false);
+  
+  React.useEffect(() => {
+    // Trigger animation after component mounts
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, []);
+  
   return (
     <MainLayout>
-      <div className="container mx-auto px-4 py-12">
+      <div className={`container mx-auto px-4 py-12 transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
         <div className="max-w-6xl mx-auto">
           <h1 className="text-3xl md:text-4xl font-bold text-center mb-12">
             Variante de abonament de întreținere:
@@ -63,13 +75,29 @@ export default function Subscriptions() {
               <p>No subscription plans available at the moment.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 subscription-grid">
               {subscriptions.map((subscription) => (
-                <Card key={subscription.id} className="bg-white rounded-lg border border-gray-200 overflow-hidden flex flex-col h-full">
+                <Card 
+                  key={subscription.id} 
+                  className="bg-white rounded-lg border border-gray-200 overflow-hidden flex flex-col h-full transform transition-all duration-300 hover:shadow-xl hover:-translate-y-2"
+                  style={{ 
+                    boxShadow: `0 4px 20px -5px ${subscription.color}40` 
+                  }}
+                >
                   {/* Card Header with name and image */}
-                  <CardHeader className="p-0 flex flex-col">
+                  <CardHeader className="p-0 flex flex-col relative">
+                    {subscription.isPopular && (
+                      <div 
+                        className="absolute top-4 right-0 z-10 bg-yellow-500 text-white text-xs uppercase font-bold py-1 px-3 rounded-l-full shadow-md animate-pulse"
+                        style={{ backgroundColor: subscription.color }}
+                      >
+                        Popular
+                      </div>
+                    )}
                     <div className="p-6 text-center">
-                      <h2 className="text-2xl font-bold mb-2">{subscription.name}</h2>
+                      <h2 className="text-2xl font-bold mb-2 transition-colors duration-300" style={{ color: subscription.color }}>
+                        {subscription.name}
+                      </h2>
                     </div>
                     
                     {subscription.imageUrl ? (
@@ -77,7 +105,7 @@ export default function Subscriptions() {
                         <img 
                           src={subscription.imageUrl} 
                           alt={subscription.name}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
                         />
                       </div>
                     ) : (
@@ -100,11 +128,18 @@ export default function Subscriptions() {
                       {subscription.features.map((feature, index) => (
                         <div 
                           key={index} 
-                          className="py-2 border-b border-gray-100 last:border-0"
+                          className="py-2 border-b border-gray-100 last:border-0 transition-colors hover:bg-gray-50"
                         >
-                          <div className="flex justify-between items-center text-sm">
-                            <span className="text-gray-700">{feature.name}:</span>
-                            <span className="text-gray-900 font-medium">{feature.value}</span>
+                          <div className="flex justify-between items-center text-sm group">
+                            <span className="text-gray-700 group-hover:font-medium transition-all">
+                              {feature.name}:
+                            </span>
+                            <span 
+                              className="text-gray-900 font-medium group-hover:text-green-600 transition-all"
+                              style={{ color: subscription.color }}
+                            >
+                              {feature.value}
+                            </span>
                           </div>
                         </div>
                       ))}
@@ -115,13 +150,18 @@ export default function Subscriptions() {
                   <CardFooter className="p-6 pt-2 mt-auto">
                     <Link href="/contact" className="w-full">
                       <Button 
-                        className="w-full py-3 font-medium text-center"
+                        className="w-full py-3 font-medium text-center relative overflow-hidden transition-all group hover:shadow-lg"
                         style={{ 
                           backgroundColor: subscription.color,
                           color: '#FFFFFF'
                         }}
                       >
-                        Discută Cu Noi!
+                        <span className="relative z-10 group-hover:scale-110 inline-block transition-transform duration-300">
+                          Discută Cu Noi!
+                        </span>
+                        <span 
+                          className="absolute inset-0 w-full h-full scale-0 rounded-md transition-transform duration-300 group-hover:scale-100 opacity-30 bg-white"
+                        ></span>
                       </Button>
                     </Link>
                   </CardFooter>
