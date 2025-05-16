@@ -94,6 +94,31 @@ export function ServicesCarousel() {
     desktop: 3
   };
 
+  // Initialize touch event variables
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+  
+  // Handle touch events for mobile swiping
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+  
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+  
+  const handleTouchEnd = () => {
+    if (touchStart - touchEnd > 75) {
+      // Swipe left
+      nextSlide();
+    }
+    
+    if (touchEnd - touchStart > 75) {
+      // Swipe right
+      prevSlide();
+    }
+  };
+  
   // Display the correct number of slides based on viewport
   const getVisibleCards = () => {
     // Use a flexible slice approach to show the right number of cards
@@ -121,7 +146,12 @@ export function ServicesCarousel() {
       ref={sliderRef}
     >
       {/* Main slider content */}
-      <div className="overflow-hidden">
+      <div 
+        className="overflow-hidden"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
         <div 
           className="flex transition-transform duration-500 ease-in-out"
           style={{ transform: `translateX(-${currentIndex * (100 / visibleSlides.desktop)}%)` }}

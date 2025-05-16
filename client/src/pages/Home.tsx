@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
@@ -94,7 +93,7 @@ export default function Home() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
-    
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -197,7 +196,12 @@ export default function Home() {
 
           {/* Services Carousel */}
           <div className="px-4 md:px-8 lg:px-12 animate-slideUp animation-delay-300">
-            <ServicesCarousel />
+            <div className="overflow-visible">
+              <p className="text-sm text-gray-500 text-center mb-2 md:hidden">
+                ← Swipe pentru a vedea mai multe servicii →
+              </p>
+              <ServicesCarousel />
+            </div>
           </div>
 
           <div className="text-center mt-12 animate-bounce animation-delay-500">
