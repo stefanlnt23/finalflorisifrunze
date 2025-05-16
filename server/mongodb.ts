@@ -182,6 +182,22 @@ const testimonialSchema = new mongoose.Schema({
   updatedAt: { type: Date, default: Date.now }
 });
 
+// Subscription schema
+const subscriptionSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  description: { type: String },
+  color: { type: String, default: '#FFFFFF' },
+  price: { type: String, required: true },
+  features: [{
+    name: { type: String, required: true },
+    value: { type: String, required: true }
+  }],
+  isPopular: { type: Boolean, default: false },
+  displayOrder: { type: Number, default: 0 },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
+});
+
 // Create models
 export const User = mongoose.model('User', userSchema);
 export const Service = mongoose.model('Service', serviceSchema);
@@ -190,6 +206,7 @@ export const BlogPost = mongoose.model('BlogPost', blogPostSchema);
 export const Inquiry = mongoose.model('Inquiry', inquirySchema);
 export const Appointment = mongoose.model('Appointment', appointmentSchema);
 export const Testimonial = mongoose.model('Testimonial', testimonialSchema);
+export const Subscription = mongoose.model('Subscription', subscriptionSchema);
 
 // Helper functions to convert between MongoDB documents and our schema types
 export function mapUserToSchema(user: any): any {
@@ -297,5 +314,18 @@ export function mapTestimonialToSchema(testimonial: any): any {
     rating: testimonial.rating,
     imageUrl: testimonial.imageUrl,
     displayOrder: testimonial.displayOrder
+  };
+}
+
+export function mapSubscriptionToSchema(subscription: any): any {
+  return {
+    id: subscription._id.toString(),
+    name: subscription.name,
+    description: subscription.description || '',
+    color: subscription.color || '#FFFFFF',
+    price: subscription.price,
+    features: subscription.features || [],
+    isPopular: subscription.isPopular || false,
+    displayOrder: subscription.displayOrder || 0
   };
 }
