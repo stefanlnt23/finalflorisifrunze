@@ -1,0 +1,48 @@
+chunk-RPCDYKBN.js?v=30179f54:21551 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+chunk-RPCDYKBN.js?v=30179f54:9934 Uncaught Error: Objects are not valid as a React child (found: [object Promise]). If you meant to render a collection of children, use an array instead.
+    at throwOnInvalidObjectType (chunk-RPCDYKBN.js?v=30179f54:9934:17)
+    at reconcileChildFibers2 (chunk-RPCDYKBN.js?v=30179f54:10564:15)
+    at reconcileChildren (chunk-RPCDYKBN.js?v=30179f54:14290:37)
+    at mountIndeterminateComponent (chunk-RPCDYKBN.js?v=30179f54:14986:13)
+    at beginWork (chunk-RPCDYKBN.js?v=30179f54:15914:22)
+    at HTMLUnknownElement.callCallback2 (chunk-RPCDYKBN.js?v=30179f54:3674:22)
+    at Object.invokeGuardedCallbackDev (chunk-RPCDYKBN.js?v=30179f54:3699:24)
+    at invokeGuardedCallback (chunk-RPCDYKBN.js?v=30179f54:3733:39)
+    at beginWork$1 (chunk-RPCDYKBN.js?v=30179f54:19765:15)
+    at performUnitOfWork (chunk-RPCDYKBN.js?v=30179f54:19198:20)
+chunk-RPCDYKBN.js?v=30179f54:9934 Uncaught Error: Objects are not valid as a React child (found: [object Promise]). If you meant to render a collection of children, use an array instead.
+    at throwOnInvalidObjectType (chunk-RPCDYKBN.js?v=30179f54:9934:17)
+    at reconcileChildFibers2 (chunk-RPCDYKBN.js?v=30179f54:10564:15)
+    at reconcileChildren (chunk-RPCDYKBN.js?v=30179f54:14290:37)
+    at mountIndeterminateComponent (chunk-RPCDYKBN.js?v=30179f54:14986:13)
+    at beginWork (chunk-RPCDYKBN.js?v=30179f54:15914:22)
+    at HTMLUnknownElement.callCallback2 (chunk-RPCDYKBN.js?v=30179f54:3674:22)
+    at Object.invokeGuardedCallbackDev (chunk-RPCDYKBN.js?v=30179f54:3699:24)
+    at invokeGuardedCallback (chunk-RPCDYKBN.js?v=30179f54:3733:39)
+    at beginWork$1 (chunk-RPCDYKBN.js?v=30179f54:19765:15)
+    at performUnitOfWork (chunk-RPCDYKBN.js?v=30179f54:19198:20)
+chunk-RPCDYKBN.js?v=30179f54:14032 The above error occurred in the <component> component:
+
+    at component
+    at Route (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=30179f54:338:16)
+    at Switch (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=30179f54:394:17)
+    at Router
+    at Provider (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-M3NVYRND.js?v=30179f54:48:15)
+    at TooltipProvider (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=30179f54:59:5)
+    at QueryClientProvider (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=30179f54:2875:3)
+    at App
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+logCapturedError @ chunk-RPCDYKBN.js?v=30179f54:14032
+chunk-RPCDYKBN.js?v=30179f54:9129 Uncaught Error: Objects are not valid as a React child (found: [object Promise]). If you meant to render a collection of children, use an array instead.
+    at throwOnInvalidObjectType (chunk-RPCDYKBN.js?v=30179f54:9934:17)
+    at reconcileChildFibers2 (chunk-RPCDYKBN.js?v=30179f54:10564:15)
+    at reconcileChildren (chunk-RPCDYKBN.js?v=30179f54:14290:37)
+    at mountIndeterminateComponent (chunk-RPCDYKBN.js?v=30179f54:14986:13)
+    at beginWork (chunk-RPCDYKBN.js?v=30179f54:15914:22)
+    at beginWork$1 (chunk-RPCDYKBN.js?v=30179f54:19753:22)
+    at performUnitOfWork (chunk-RPCDYKBN.js?v=30179f54:19198:20)
+    at workLoopSync (chunk-RPCDYKBN.js?v=30179f54:19137:13)
+    at renderRootSync (chunk-RPCDYKBN.js?v=30179f54:19116:15)
+    at recoverFromConcurrentError (chunk-RPCDYKBN.js?v=30179f54:18736:28)

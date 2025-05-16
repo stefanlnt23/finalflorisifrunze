@@ -251,6 +251,12 @@ export interface CarouselImage {
 // Feature Cards
 export interface FeatureCard {
   id: string;
+  title: string;
+  description: string;
+  icon: string;
+  imageUrl: string;
+  order: number;
+}
 
 // Subscriptions
 export interface Subscription {
@@ -286,13 +292,6 @@ const subscriptionBaseSchema = z.object({
 // Export the schema for use in validation
 export const insertSubscriptionSchema = subscriptionBaseSchema;
 export type InsertSubscription = z.infer<typeof insertSubscriptionSchema>;
-
-  title: string;
-  description: string;
-  icon: string;
-  imageUrl: string;
-  order: number;
-}
 
 // Export types
 export type InsertUser = z.infer<typeof insertUserSchema>;
