@@ -1,442 +1,386 @@
-import { useEffect, useState } from "react";
-import { useParams, useLocation } from "wouter";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useForm, useFieldArray } from "react-hook-form";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import AdminLayout from "@/components/layouts/AdminLayout";
+import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Switch } from "@/components/ui/switch";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useToast } from "@/hooks/use-toast";
-import { apiRequest, queryClient } from "@/lib/queryClient";
-import { insertSubscriptionSchema } from "@shared/schema";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useParams, useLocation } from "wouter";
 
-// Extended schema for client-side validation
-const formSchema = insertSubscriptionSchema;
-
-// Define form values type
-// Define form schema for subscriptions
+// Define form schema
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
   description: z.string().optional(),
   color: z.string().default("#FFFFFF"),
-  features: z.array(
-    z.object({
-      name: z.string().min(1, "Feature name is required"),
-      value: z.string().min(1, "Feature value is required")
-    })
-  ),
-  price: z.string().min(1, "Price is required"),
+  monthlyPrice: z.coerce.number().min(0, "Price must be a positive number"),
+  annualPrice: z.coerce.number().min(0, "Price must be a positive number"),
+  features: z.array(z.string()),
+  isFeatured: z.boolean().default(false),
   isPopular: z.boolean().default(false),
-  displayOrder: z.number().default(0)
 });
 
+// Define form values type
 type FormValues = z.infer<typeof formSchema>;
 
 export default function SubscriptionsForm() {
-  const { id } = useParams();
-  const [location, setLocation] = useLocation();
   const { toast } = useToast();
-  const isEditing = Boolean(id);
+  const [_, setLocation] = useLocation();
+  const params = useParams();
+  const isEditing = Boolean(params.id);
+  const queryClient = useQueryClient();
+  const [newFeature, setNewFeature] = useState("");
 
-  // Create form
+  // Form setup
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       description: "",
       color: "#FFFFFF",
-      features: [{ name: "", value: "" }],
-      price: "",
+      monthlyPrice: 0,
+      annualPrice: 0,
+      features: [],
+      isFeatured: false,
       isPopular: false,
-      displayOrder: 0
     },
   });
-
-  // Setup field array for features
-  const { fields, append, remove } = useFieldArray({
-    control: form.control,
-    name: "features"
-  });
-
-  // Create/Edit mutation
-  const saveMutation = useMutation({
-    mutationFn: async (data: FormValues) => {
-      if (isEditing) {
-        return await apiRequest('PUT', `/api/admin/subscriptions/${id}`, data);
-      } else {
-        return await apiRequest('POST', '/api/admin/subscriptions', data);
-      }
-    },
-    onSuccess: () => {
-      toast({
-        title: isEditing ? "Subscription Updated" : "Subscription Created",
-        description: isEditing 
-          ? "The subscription has been successfully updated"
-          : "The subscription has been successfully created",
-      });
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/subscriptions'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/subscriptions'] });
-      setLocation("/admin/subscriptions");
-    },
-    onError: (error: any) => {
-      toast({
-        title: "Error",
-        description: error.message || `Failed to ${isEditing ? 'update' : 'create'} the subscription`,
-        variant: "destructive",
-      });
-    },
-  });
-
-  // Form submission handler
-  const onSubmit = (data: FormValues) => {
-    saveMutation.mutate(data);
-  };
 
   // Fetch subscription data if editing
-  const { isLoading: isLoadingSubscription } = useQuery({
-    queryKey: ['/api/admin/subscriptions', id],
-    queryFn: async () => {
-      if (!id) return null;
-      const response = await apiRequest('GET', `/api/admin/subscriptions/${id}`);
-      return response.subscription;
-    },
+  const { data: subscriptionData, isLoading } = useQuery({
+    queryKey: [`/api/subscriptions/${params.id}`],
     enabled: isEditing,
-    onSuccess: (data) => {
-      if (data) {
-        // Set form values
-        form.reset({
-          name: data.name,
-          description: data.description || "",
-          color: data.color || "#FFFFFF",
-          features: data.features.length > 0 ? data.features : [{ name: "", value: "" }],
-          price: data.price,
-          isPopular: data.isPopular || false,
-          displayOrder: data.displayOrder || 0
-        });
-      }
-    },
-    onError: (error: any) => {
-      toast({
-        title: "Error",
-        description: "Failed to load subscription data",
-        variant: "destructive",
-      });
-      // Redirect back to list page on error
-      setLocation("/admin/subscriptions");
-    },
-    refetchOnWindowFocus: false,
   });
 
-  // Create mutation
-  const createMutation = useMutation({
-    mutationFn: async (values: FormValues) => {
-      const response = await apiRequest("POST", "/api/admin/subscriptions", values);
-      const data = await response;
-      if (!data.success) {
-        throw new Error(data.message || "Failed to create subscription");
-      }
-      return data;
-    },
-    onSuccess: () => {
-      toast({
-        title: "Subscription Created",
-        description: "The subscription has been successfully created",
+  // Set form values when editing an existing subscription
+  useEffect(() => {
+    if (subscriptionData && !isLoading) {
+      form.reset({
+        name: subscriptionData.subscription.name,
+        description: subscriptionData.subscription.description || "",
+        color: subscriptionData.subscription.color || "#FFFFFF",
+        monthlyPrice: subscriptionData.subscription.monthlyPrice || 0,
+        annualPrice: subscriptionData.subscription.annualPrice || 0,
+        features: subscriptionData.subscription.features || [],
+        isFeatured: subscriptionData.subscription.isFeatured || false,
+        isPopular: subscriptionData.subscription.isPopular || false,
       });
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/subscriptions'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/subscriptions'] });
-      setLocation("/admin/subscriptions");
-    },
-    onError: (error: any) => {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to create the subscription",
-        variant: "destructive",
-      });
-    },
-  });
-
-  // Update mutation
-  const updateMutation = useMutation({
-    mutationFn: async (values: FormValues) => {
-      const response = await apiRequest("PUT", `/api/admin/subscriptions/${id}`, values);
-      const data = await response;
-      if (!data.success) {
-        throw new Error(data.message || "Failed to update subscription");
-      }
-      return data;
-    },
-    onSuccess: () => {
-      toast({
-        title: "Subscription Updated",
-        description: "The subscription has been successfully updated",
-      });
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/subscriptions'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/subscriptions', id] });
-      queryClient.invalidateQueries({ queryKey: ['/api/subscriptions'] });
-      setLocation("/admin/subscriptions");
-    },
-    onError: async (error: any) => {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to update the subscription",
-        variant: "destructive",
-      });
-    },
-  });
-
-  const isSubmitting = createMutation.isPending || updateMutation.isPending;
+    }
+  }, [subscriptionData, isLoading, form]);
 
   // Handle form submission
-  const onSubmit = (values: FormValues) => {
-    // Filter out empty features
-    const cleanedValues = {
-      ...values,
-      features: values.features.filter(f => f.name.trim() && f.value.trim())
-    };
+  const createMutation = useMutation({
+    mutationFn: async (data: FormValues) => {
+      const response = await fetch("/api/subscriptions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
-    if (cleanedValues.features.length === 0) {
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to create subscription");
+      }
+
+      return response.json();
+    },
+    onSuccess: () => {
       toast({
-        title: "Validation Error",
-        description: "At least one feature is required",
+        title: "Success",
+        description: "Subscription plan created successfully",
+      });
+      queryClient.invalidateQueries({ queryKey: ["/api/subscriptions"] });
+      setLocation("/admin/subscriptions");
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Error",
+        description: error.message,
         variant: "destructive",
       });
-      return;
-    }
+    },
+  });
 
+  const updateMutation = useMutation({
+    mutationFn: async (data: FormValues) => {
+      const response = await fetch(`/api/subscriptions/${params.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to update subscription");
+      }
+
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Success",
+        description: "Subscription plan updated successfully",
+      });
+      queryClient.invalidateQueries({ queryKey: ["/api/subscriptions"] });
+      queryClient.invalidateQueries({ queryKey: [`/api/subscriptions/${params.id}`] });
+      setLocation("/admin/subscriptions");
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
+  const onSubmit = (data: FormValues) => {
     if (isEditing) {
-      updateMutation.mutate(cleanedValues);
+      updateMutation.mutate(data);
     } else {
-      createMutation.mutate(cleanedValues);
+      createMutation.mutate(data);
     }
   };
 
-return (
-    <AdminLayout
-      title={isEditing ? "Edit Subscription" : "Add New Subscription"}
-      description={isEditing ? "Update subscription details" : "Create a new subscription plan"}
-      action={
-        <Button 
-          variant="outline" 
-          onClick={() => setLocation("/admin/subscriptions")}
-        >
-          <i className="fas fa-arrow-left mr-2"></i> Back to Subscriptions
-        </Button>
-      }
-    >
-      <Card>
-        <CardContent className="pt-6">
-          {isEditing && isLoadingSubscription ? (
-            <div className="flex items-center justify-center p-6">
-              <i className="fas fa-spinner fa-spin text-2xl text-gray-400 mr-3"></i>
-              <p>Loading subscription data...</p>
+  const addFeature = () => {
+    if (newFeature.trim()) {
+      const currentFeatures = form.getValues("features") || [];
+      form.setValue("features", [...currentFeatures, newFeature.trim()]);
+      setNewFeature("");
+    }
+  };
+
+  const removeFeature = (index: number) => {
+    const currentFeatures = form.getValues("features") || [];
+    form.setValue(
+      "features",
+      currentFeatures.filter((_, i) => i !== index)
+    );
+  };
+
+  return (
+    <Card className="w-full">
+      <CardHeader>
+        <CardTitle>
+          {isEditing ? "Edit Subscription Plan" : "Create Subscription Plan"}
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter plan name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="color"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Color</FormLabel>
+                    <FormControl>
+                      <div className="flex items-center gap-2">
+                        <Input
+                          type="color"
+                          className="w-12 h-10 p-1"
+                          {...field}
+                        />
+                        <Input
+                          type="text"
+                          placeholder="#FFFFFF"
+                          className="flex-1"
+                          {...field}
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-          ) : (
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <FormField
-                      control={form.control}
-                      name="name"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Subscription Name</FormLabel>
-                          <FormControl>
-                            <Input placeholder="e.g., Basic, Pro, Luxury" {...field} />
-                          </FormControl>
-                          <FormDescription>
-                            The name of the subscription plan
-                          </FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      )}
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FormField
+                control={form.control}
+                name="monthlyPrice"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Monthly Price</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        placeholder="0.00"
+                        min="0"
+                        step="0.01"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="annualPrice"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Annual Price</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        placeholder="0.00"
+                        min="0"
+                        step="0.01"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Enter plan description"
+                      {...field}
                     />
-                  </div>
-                  <div>
-                    <FormField
-                      control={form.control}
-                      name="price"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Price</FormLabel>
-                          <FormControl>
-                            <Input placeholder="e.g., €99/month, RON 249/year" {...field} />
-                          </FormControl>
-                          <FormDescription>
-                            Price with currency and frequency
-                          </FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-                <FormField
-                  control={form.control}
-                  name="description"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Description (Optional)</FormLabel>
-                      <FormControl>
-                        <Textarea 
-                          placeholder="Brief description of this subscription plan" 
-                          {...field} 
-                          rows={3}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+            <div className="space-y-4">
+              <FormLabel>Features</FormLabel>
+              <div className="flex items-center gap-2">
+                <Input
+                  value={newFeature}
+                  onChange={(e) => setNewFeature(e.target.value)}
+                  placeholder="Add a feature"
+                  className="flex-1"
                 />
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={addFeature}
+                >
+                  Add
+                </Button>
+              </div>
 
-                <FormField
-                  control={form.control}
-                  name="color"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Color</FormLabel>
-                      <div className="flex items-center space-x-2">
-                        <div 
-                          className="w-10 h-10 border rounded-md" 
-                          style={{ backgroundColor: field.value }}
-                        ></div>
-                        <FormControl>
-                          <Input type="color" {...field} />
-                        </FormControl>
-                      </div>
-                      <FormDescription>
-                        Choose a color for this subscription plan
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="isPopular"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                      <div className="space-y-0.5">
-                        <FormLabel className="text-base">Popular Plan</FormLabel>
-                        <FormDescription>
-                          Mark this as your most popular subscription plan
-                        </FormDescription>
-                      </div>
-                      <FormControl>
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-lg font-medium">Features</h3>
+              <ul className="space-y-2 mt-4">
+                {form.watch("features")?.map((feature, index) => (
+                  <li
+                    key={index}
+                    className="flex items-center justify-between p-3 bg-secondary/50 rounded-md"
+                  >
+                    <span>{feature}</span>
                     <Button
                       type="button"
-                      variant="outline"
+                      variant="ghost"
                       size="sm"
-                      onClick={() => append({ name: "", value: "" })}
+                      onClick={() => removeFeature(index)}
                     >
-                      <i className="fas fa-plus mr-2"></i> Add Feature
+                      <i className="fas fa-times"></i>
                     </Button>
-                  </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-                  <div className="space-y-4 border rounded-md p-4">
-                    {fields.map((field, index) => (
-                      <div key={field.id} className="flex items-start space-x-2">
-                        <div className="grid grid-cols-2 gap-2 flex-grow">
-                          <FormField
-                            control={form.control}
-                            name={`features.${index}.name`}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormControl>
-                                  <Input placeholder="Feature name" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={form.control}
-                            name={`features.${index}.value`}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormControl>
-                                  <Input placeholder="Feature value" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          className="mt-2"
-                          onClick={() => fields.length > 1 && remove(index)}
-                        >
-                          <i className="fas fa-times"></i>
-                        </Button>
-                      </div>
-                    ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FormField
+                control={form.control}
+                name="isFeatured"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                    <div className="space-y-0.5">
+                      <FormLabel className="text-base">
+                        Featured Plan
+                      </FormLabel>
+                      <FormMessage />
+                    </div>
+                    <FormControl>
+                      <input
+                        type="checkbox"
+                        checked={field.value}
+                        onChange={field.onChange}
+                        className="w-6 h-6"
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="isPopular"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                    <div className="space-y-0.5">
+                      <FormLabel className="text-base">
+                        Mark as Popular
+                      </FormLabel>
+                      <FormMessage />
+                    </div>
+                    <FormControl>
+                      <input
+                        type="checkbox"
+                        checked={field.value}
+                        onChange={field.onChange}
+                        className="w-6 h-6"
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
 
-                    {fields.length === 0 && (
-                      <div className="text-center py-4 text-gray-500">
-                        No features added yet. Click "Add Feature" to start.
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <div className="flex justify-end space-x-4 pt-4">
-                  <Button 
-                    type="button" 
-                    variant="outline"
-                    onClick={() => setLocation("/admin/subscriptions")}
-                  >
-                    Cancel
-                  </Button>
-                  <Button 
-                    type="submit"
-                    className="bg-green-600 hover:bg-green-700"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <i className="fas fa-spinner fa-spin mr-2"></i>
-                        {isEditing ? "Updating..." : "Creating..."}
-                      </>
-                    ) : (
-                      isEditing ? "Update Subscription" : "Create Subscription"
-                    )}
-                  </Button>
-                </div>
-              </form>
-            </Form>
-          )}
-        </CardContent>
-      </Card>
-    </AdminLayout>
+            <div className="flex items-center justify-end gap-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setLocation("/admin/subscriptions")}
+              >
+                Cancel
+              </Button>
+              <Button type="submit">
+                {isEditing ? "Update Plan" : "Create Plan"}
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
   );
 }
