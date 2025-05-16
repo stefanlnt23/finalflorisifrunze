@@ -382,24 +382,19 @@ export class MongoDBStorage implements IStorage {
     }
   }
 
-  async createBlogPost(insertBlogPost: InsertBlogPost): Promise<any> {
+  async createBlogPost(postData: InsertBlogPost): Promise<any> {
     try {
-      log(`Creating blog post with data: ${JSON.stringify(insertBlogPost)}`, 'mongodb');
+      log(`Creating new blog post: ${JSON.stringify(postData)}`, 'mongodb');
 
-      // Log the schema of the BlogPost model
-      log(`BlogPost schema: ${JSON.stringify(BlogPost.schema.paths)}`, 'mongodb');
-
-      const now = new Date();
-      const postData = {
-        ...insertBlogPost,
-        imageUrl: insertBlogPost.imageUrl || null,
-        createdAt: insertBlogPost.createdAt || now,
-        updatedAt: insertBlogPost.updatedAt || now
+      // Prepare data for MongoDB, ensuring sections and tags are included
+      const preparedData = {
+        ...postData,
+        imageUrl: postData.imageUrl || null,
+        sections: postData.sections || [],
+        tags: postData.tags || []
       };
 
-      log(`Processed blog post data for MongoDB: ${JSON.stringify(postData)}`, 'mongodb');
-
-      const newPost = new BlogPost(postData);
+      const newPost = new BlogPost(preparedData);
       log(`New blog post instance created: ${JSON.stringify(newPost)}`, 'mongodb');
 
       const savedPost = await newPost.save();
@@ -415,11 +410,23 @@ export class MongoDBStorage implements IStorage {
     try {
       log(`Updating blog post with ID: ${id}, data: ${JSON.stringify(blogPostData)}`, 'mongodb');
       const now = new Date();
+
+      // Prepare update data, ensuring sections and tags are included if provided
       const updateData = {
         ...blogPostData,
         imageUrl: blogPostData.imageUrl || null,
         updatedAt: now
       };
+
+      // Make sure we don't overwrite sections or tags if they're not provided
+      if (!updateData.sections && !updateData.tags) {
+        const existingPost = await BlogPost.findById(id);
+        if (existingPost) {
+          if (!updateData.sections) updateData.sections = existingPost.sections || [];
+          if (!updateData.tags) updateData.tags = existingPost.tags || [];
+        }
+      }
+
       const updatedPost = await BlogPost.findByIdAndUpdate(
         id,
         updateData,

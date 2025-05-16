@@ -170,16 +170,29 @@ const portfolioItemBaseSchema = z.object({
 // Export the schema for use in validation
 export const insertPortfolioItemSchema = portfolioItemBaseSchema;
 
+// Section schema for blog content
+const sectionSchema = z.object({
+  type: z.enum(["text", "image", "quote", "heading", "list"]),
+  content: z.string().optional(),
+  imageUrl: z.string().optional(),
+  caption: z.string().optional(),
+  level: z.number().optional(),
+  items: z.array(z.string()).optional(),
+  alignment: z.enum(["left", "center", "right"]).optional().default("left")
+});
+
 // Base schema for blog posts
 const blogPostBaseSchema = z.object({
   title: z.string().min(1, "Title is required"),
-  content: z.string().min(1, "Content is required"),
+  content: z.string().optional(), // Make content optional since we have sections
   excerpt: z.string().min(1, "Excerpt is required"),
   imageUrl: z.string().nullable().optional(),
   authorId: z.union([z.string(), z.number()]).default("1"), // Default to admin user
   publishedAt: z.union([z.string(), z.date()]).transform(val => new Date(val)),
   createdAt: z.union([z.string(), z.date()]).transform(val => new Date(val)),
-  updatedAt: z.union([z.string(), z.date()]).transform(val => new Date(val))
+  updatedAt: z.union([z.string(), z.date()]).transform(val => new Date(val)),
+  sections: z.array(sectionSchema).optional(),
+  tags: z.array(z.string()).optional()
 });
 
 // Export the schema for use in validation
@@ -345,6 +358,16 @@ export type BlogPost = {
   publishedAt: Date;
   createdAt: Date;
   updatedAt: Date;
+  sections?: Array<{
+    type: 'text' | 'image' | 'quote' | 'heading' | 'list';
+    content?: string;
+    imageUrl?: string;
+    caption?: string;
+    level?: number;
+    items?: string[];
+    alignment?: 'left' | 'center' | 'right';
+  }>;
+  tags?: string[];
 };
 
 export type InsertInquiry = z.infer<typeof insertInquirySchema>;

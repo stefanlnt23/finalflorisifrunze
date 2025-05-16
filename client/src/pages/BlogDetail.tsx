@@ -1,3 +1,4 @@
+
 import MainLayout from "@/components/layouts/MainLayout";
 import { useQuery } from "@tanstack/react-query";
 import { useParams, Link } from "wouter";
@@ -30,7 +31,7 @@ export default function BlogDetail() {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="text-3xl font-bold text-red-700 mb-4">Invalid Blog Post ID</h1>
             <p className="text-lg text-red-600 mb-6">The blog post ID provided is not valid.</p>
-            <Link href="/blog">
+            <Link href="/blog" state={{ from: 'blogDetail' }}>
               <Button className="bg-green-600 hover:bg-green-700">View All Blog Posts</Button>
             </Link>
           </div>
@@ -68,7 +69,7 @@ export default function BlogDetail() {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="text-3xl font-bold text-red-700 mb-4">Blog Post Not Found</h1>
             <p className="text-lg text-red-600 mb-6">The blog post you're looking for could not be found or may have been removed.</p>
-            <Link href="/blog">
+            <Link href="/blog" state={{ from: 'blogDetail' }}>
               <Button className="bg-green-600 hover:bg-green-700">View All Blog Posts</Button>
             </Link>
           </div>
@@ -85,6 +86,95 @@ export default function BlogDetail() {
     day: 'numeric'
   });
 
+  // Function to render blog sections
+  const renderBlogContent = () => {
+    // If we have sections, render them
+    if (blogPost.sections && blogPost.sections.length > 0) {
+      return (
+        <div className="space-y-6">
+          {blogPost.sections.map((section, index) => {
+            switch(section.type) {
+              case "text":
+                return (
+                  <div 
+                    key={index} 
+                    className="text-gray-700 leading-relaxed" 
+                    style={{ textAlign: section.alignment || 'left' }}
+                    dangerouslySetInnerHTML={{ __html: section.content.replace(/\n/g, '<br>') }}
+                  />
+                );
+              case "image":
+                return (
+                  <figure key={index} className="my-8">
+                    <img 
+                      src={section.imageUrl} 
+                      alt={section.caption || ''} 
+                      className="w-full h-auto rounded-lg shadow-md mb-2"
+                      style={{ 
+                        maxWidth: '100%', 
+                        margin: section.alignment === 'center' ? '0 auto' : 
+                                section.alignment === 'right' ? '0 0 0 auto' : '0' 
+                      }} 
+                    />
+                    {section.caption && (
+                      <figcaption className="text-sm text-gray-500 text-center italic">
+                        {section.caption}
+                      </figcaption>
+                    )}
+                  </figure>
+                );
+              case "quote":
+                return (
+                  <blockquote key={index} className="border-l-4 border-green-600 pl-4 py-2 italic my-8 text-gray-700">
+                    <p>{section.content}</p>
+                    {section.caption && (
+                      <footer className="text-sm mt-2 text-gray-500 not-italic">
+                        — {section.caption}
+                      </footer>
+                    )}
+                  </blockquote>
+                );
+              case "heading":
+                const HeadingTag = `h${section.level || 2}` as keyof JSX.IntrinsicElements;
+                return (
+                  <HeadingTag 
+                    key={index} 
+                    className={`font-bold text-gray-900 my-4 ${
+                      section.level === 2 ? 'text-2xl' : 
+                      section.level === 3 ? 'text-xl' : 
+                      'text-lg'
+                    }`}
+                  >
+                    {section.content}
+                  </HeadingTag>
+                );
+              case "list":
+                return (
+                  <ul key={index} className="list-disc pl-6 space-y-2 my-6">
+                    {section.items?.map((item, itemIndex) => (
+                      <li key={itemIndex} className="text-gray-700">{item}</li>
+                    ))}
+                  </ul>
+                );
+              default:
+                return null;
+            }
+          })}
+        </div>
+      );
+    }
+    
+    // Fallback to regular content
+    return (
+      <div className="prose prose-green max-w-none">
+        <p className="text-lg text-gray-600 mb-6 font-medium">
+          {blogPost.excerpt}
+        </p>
+        <div dangerouslySetInnerHTML={{ __html: blogPost.content }} />
+      </div>
+    );
+  };
+
   return (
     <MainLayout>
       <article className="py-16 bg-white">
@@ -95,10 +185,19 @@ export default function BlogDetail() {
               <h1 className="text-4xl font-bold text-gray-900 mb-4">
                 {blogPost.title}
               </h1>
-              <div className="text-gray-600 mb-6">
-                <span>
+              <div className="text-gray-600 mb-6 flex items-center">
+                <span className="inline-flex items-center">
                   <i className="fas fa-calendar-alt mr-2"></i> {formattedDate}
                 </span>
+                {blogPost.tags && blogPost.tags.length > 0 && (
+                  <div className="ml-6 flex flex-wrap gap-2">
+                    {blogPost.tags.map((tag, index) => (
+                      <span key={index} className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
               {blogPost.imageUrl && (
                 <div className="rounded-lg overflow-hidden shadow-lg mb-8">
@@ -109,28 +208,78 @@ export default function BlogDetail() {
                   />
                 </div>
               )}
+              {/* Excerpt as introduction */}
+              <p className="text-lg text-gray-600 mb-8 font-medium italic border-l-4 border-green-600 pl-4 py-2">
+                {blogPost.excerpt}
+              </p>
             </header>
 
             {/* Blog Content */}
-            <div className="prose prose-green max-w-none mb-12">
-              <p className="text-lg text-gray-600 mb-6 font-medium">
-                {blogPost.excerpt}
-              </p>
-              <div dangerouslySetInnerHTML={{ __html: blogPost.content }} />
+            <div className="mb-12">
+              {renderBlogContent()}
             </div>
 
-            {/* Tags and Categories */}
-            <div className="border-t border-b border-gray-200 py-4 mb-8">
-              <div className="flex flex-wrap gap-2">
-                <span className="bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">
-                  Gardening Tips
-                </span>
-                <span className="bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">
-                  Lawn Care
-                </span>
-                <span className="bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">
-                  Plants
-                </span>
+            {/* Author Section */}
+            <div className="bg-gray-50 p-6 rounded-lg border border-gray-100 mb-8">
+              <div className="flex items-center">
+                <div className="w-14 h-14 bg-green-600 rounded-full flex items-center justify-center text-white text-xl font-bold mr-4">
+                  <i className="fas fa-user"></i>
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900">The Green Garden Team</h3>
+                  <p className="text-gray-600">Garden and landscaping experts with years of experience in creating beautiful outdoor spaces.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Tags Section */}
+            {blogPost.tags && blogPost.tags.length > 0 && (
+              <div className="border-t border-b border-gray-200 py-4 mb-8">
+                <div className="flex items-center">
+                  <span className="text-gray-700 font-medium mr-3">Tags:</span>
+                  <div className="flex flex-wrap gap-2">
+                    {blogPost.tags.map((tag, index) => (
+                      <span key={index} className="bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Related Posts Section */}
+            <div className="mb-8">
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">Related Articles</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Card className="overflow-hidden">
+                  <div className="aspect-video bg-gray-100 flex items-center justify-center">
+                    <i className="fas fa-image text-green-600 text-4xl"></i>
+                  </div>
+                  <CardContent className="p-4">
+                    <h4 className="font-bold text-lg mb-2">10 Essential Spring Gardening Tips</h4>
+                    <p className="text-gray-600 text-sm mb-3">Prepare your garden for the growing season with these expert tips.</p>
+                    <Link href="/blog">
+                      <Button variant="outline" className="text-sm border-green-600 text-green-600">
+                        Read Article
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+                <Card className="overflow-hidden">
+                  <div className="aspect-video bg-gray-100 flex items-center justify-center">
+                    <i className="fas fa-image text-green-600 text-4xl"></i>
+                  </div>
+                  <CardContent className="p-4">
+                    <h4 className="font-bold text-lg mb-2">How to Design a Water-Efficient Garden</h4>
+                    <p className="text-gray-600 text-sm mb-3">Create a beautiful garden that conserves water and thrives in any climate.</p>
+                    <Link href="/blog">
+                      <Button variant="outline" className="text-sm border-green-600 text-green-600">
+                        Read Article
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
               </div>
             </div>
 
@@ -156,7 +305,7 @@ export default function BlogDetail() {
 
             {/* Navigation */}
             <div className="flex justify-between items-center">
-              <Link href="/blog">
+              <Link href="/blog" state={{ from: 'blogDetail' }}>
                 <Button variant="outline" className="flex items-center space-x-2">
                   <i className="fas fa-arrow-left"></i>
                   <span>Back to Blog</span>

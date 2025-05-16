@@ -8,10 +8,10 @@ export async function connectToMongoDB() {
   try {
     await mongoose.connect(DATABASE_URL);
     log('Connected to MongoDB', 'mongodb');
-    
+
     // Check if we have any users, if not create a default admin user
     await ensureAdminUser();
-    
+
     return mongoose.connection;
   } catch (error) {
     log(`Error connecting to MongoDB: ${error}`, 'mongodb');
@@ -25,11 +25,11 @@ async function ensureAdminUser() {
     const userCount = await User.countDocuments();
     if (userCount === 0) {
       log("No users found, creating default admin user...", "mongodb");
-      
+
       // Import auth for password hashing
       const auth = await import('./auth');
       const hashedPassword = await auth.hashPassword('password123');
-      
+
       // Create admin user
       const adminUser = new User({
         name: 'Admin User',
@@ -40,7 +40,7 @@ async function ensureAdminUser() {
         createdAt: new Date(),
         updatedAt: new Date()
       });
-      
+
       await adminUser.save();
       log("Default admin user created successfully", "mongodb");
     }
@@ -75,10 +75,10 @@ const portfolioItemSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
   serviceId: { type: mongoose.Schema.Types.ObjectId, ref: 'Service' },
-  
+
   // Legacy field for backward compatibility
   imageUrl: { type: String },
-  
+
   // Before/After images
   images: [{
     before: { type: String, required: true },
@@ -87,49 +87,63 @@ const portfolioItemSchema = new mongoose.Schema({
     richDescription: { type: String },
     order: { type: Number, default: 0 }
   }],
-  
+
   // Project details
   location: { type: String },
   completionDate: { type: Date },
   projectDuration: { type: String },
   difficultyLevel: { type: String, enum: ['Easy', 'Moderate', 'Complex'] },
-  
+
   // Client testimonial
   clientTestimonial: {
     clientName: { type: String },
     comment: { type: String },
     displayPermission: { type: Boolean, default: false }
   },
-  
+
   // Featured status
   featured: { type: Boolean, default: false },
-  
+
   // SEO fields
   seo: {
     metaTitle: { type: String },
     metaDescription: { type: String },
     tags: [{ type: String }]
   },
-  
+
   // Status
   status: { type: String, enum: ['Published', 'Draft'], default: 'Draft' },
-  
+
   // Analytics
   viewCount: { type: Number, default: 0 },
-  
+
   // Metadata
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });
 
+// Section Schema for blog posts
+const sectionSchema = new mongoose.Schema({
+  type: { type: String, enum: ['text', 'image', 'quote', 'heading', 'list'], required: true },
+  content: { type: String },
+  imageUrl: { type: String },
+  caption: { type: String },
+  level: { type: Number },
+  items: [{ type: String }],
+  alignment: { type: String, enum: ['left', 'center', 'right'], default: 'left' }
+}, { _id: false });
+
+// Blog Posts Schema
 const blogPostSchema = new mongoose.Schema({
   title: { type: String, required: true },
   content: { type: String, required: true },
   excerpt: { type: String, required: true },
-  imageUrl: { type: String },
+  imageUrl: { type: String, default: null },
+  sections: [sectionSchema],
+  tags: [{ type: String }],
   publishedAt: { type: Date, required: true },
-  createdAt: { type: Date, required: true },
-  updatedAt: { type: Date, required: true }
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
 });
 
 const inquirySchema = new mongoose.Schema({
@@ -148,7 +162,7 @@ const appointmentSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
   phone: { type: String, required: true },
-  
+
   // Address information
   buildingName: { type: String },
   streetName: { type: String, required: true },
@@ -156,16 +170,16 @@ const appointmentSchema = new mongoose.Schema({
   city: { type: String, required: true },
   county: { type: String, required: true },
   postalCode: { type: String, required: true },
-  
+
   // Appointment details
   serviceId: { type: mongoose.Schema.Types.ObjectId, ref: 'Service', required: true },
   date: { type: Date, required: true },
   priority: { type: String, enum: ['Normal', 'Urgent'], default: 'Normal' },
-  
+
   // Admin fields
   notes: { type: String },
   status: { type: String, enum: ['Scheduled', 'Completed', 'Cancelled', 'Rescheduled'], default: 'Scheduled' },
-  
+
   // Metadata
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
@@ -263,6 +277,8 @@ export function mapBlogPostToSchema(post: any): any {
     content: post.content,
     excerpt: post.excerpt,
     imageUrl: post.imageUrl,
+    sections: post.sections,
+    tags: post.tags,
     publishedAt: post.publishedAt,
     createdAt: post.createdAt,
     updatedAt: post.updatedAt
