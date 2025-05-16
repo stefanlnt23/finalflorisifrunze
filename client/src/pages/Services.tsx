@@ -9,7 +9,10 @@ import { ChevronRight, Leaf, Clock, CheckCircle2 } from "lucide-react";
 export default function Services() {
   const { data, isLoading, error } = useQuery({
     queryKey: ['/api/services'],
-    refetchOnWindowFocus: false
+    refetchOnWindowFocus: false,
+    staleTime: 60000, // Keep data fresh for 1 minute
+    cacheTime: 300000, // Cache data for 5 minutes
+    refetchOnMount: false // Don't refetch when component mounts if data exists
   });
 
   const services = data?.services || [];
