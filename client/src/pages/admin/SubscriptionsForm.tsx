@@ -1,13 +1,15 @@
-
-import React, { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams, useLocation } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useToast } from "@/hooks/use-toast";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -15,33 +17,28 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useParams, useLocation } from "wouter";
-import { Checkbox } from "@/components/ui/checkbox"
-import { FormDescription } from "@/components/ui/form";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
+import AdminLayout from "@/components/layouts/AdminLayout";
 import { X } from "lucide-react";
 
-// Define form schema
+// Form schema
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
   description: z.string().optional(),
   color: z.string().default("#FFFFFF"),
   price: z.string().min(1, "Price is required"),
   features: z.array(
-    z.union([
-      z.string(),
-      z.object({
-        name: z.string().min(1, "Feature name is required"),
-        value: z.string().min(1, "Feature value is required")
-      })
-    ])
-  ).default([]),
+    z.object({
+      name: z.string().min(1, "Feature name is required"),
+      value: z.string().min(1, "Feature value is required"),
+    })
+  ),
   isPopular: z.boolean().default(false),
   displayOrder: z.number().default(0),
 });
 
-// Define form values type
 type FormValues = z.infer<typeof formSchema>;
 
 export default function SubscriptionsForm() {
@@ -80,22 +77,44 @@ export default function SubscriptionsForm() {
     retry: 1
   });
 
-  // Set form values when editing an existing subscription
+  // Update form values when subscription data is loaded
   useEffect(() => {
-    if (subscriptionData && !isLoading) {
+    if (subscriptionData?.subscription && isEditing) {
+      const subscription = subscriptionData.subscription;
       form.reset({
-        name: subscriptionData.subscription.name,
-        description: subscriptionData.subscription.description || "",
-        color: subscriptionData.subscription.color || "#FFFFFF",
-        price: subscriptionData.subscription.price || "",
-        features: subscriptionData.subscription.features || [],
-        isPopular: subscriptionData.subscription.isPopular || false,
-        displayOrder: subscriptionData.subscription.displayOrder || 0,
+        name: subscription.name,
+        description: subscription.description || "",
+        color: subscription.color || "#FFFFFF",
+        price: subscription.price,
+        features: subscription.features || [],
+        isPopular: subscription.isPopular || false,
+        displayOrder: subscription.displayOrder || 0,
       });
     }
-  }, [subscriptionData, isLoading, form]);
+  }, [subscriptionData, form, isEditing]);
 
-  // Handle form submission
+  // Add feature handler
+  const handleAddFeature = () => {
+    if (newFeature.trim()) {
+      const currentFeatures = form.getValues("features") || [];
+      form.setValue("features", [
+        ...currentFeatures,
+        { name: newFeature, value: "Included" },
+      ]);
+      setNewFeature("");
+    }
+  };
+
+  // Remove feature handler
+  const handleRemoveFeature = (index: number) => {
+    const currentFeatures = form.getValues("features");
+    form.setValue(
+      "features",
+      currentFeatures.filter((_, i) => i !== index)
+    );
+  };
+
+  // Create mutation
   const createMutation = useMutation({
     mutationFn: async (data: FormValues) => {
       const response = await fetch("/api/admin/subscriptions", {
@@ -122,15 +141,16 @@ export default function SubscriptionsForm() {
       queryClient.invalidateQueries({ queryKey: ["/api/subscriptions"] });
       setLocation("/admin/subscriptions");
     },
-    onError: (error: Error) => {
+    onError: (error: any) => {
       toast({
         title: "Error",
-        description: error.message,
+        description: error.message || "Failed to create subscription",
         variant: "destructive",
       });
     },
   });
 
+  // Update mutation
   const updateMutation = useMutation({
     mutationFn: async (data: FormValues) => {
       const response = await fetch(`/api/admin/subscriptions/${params.id}`, {
@@ -155,56 +175,32 @@ export default function SubscriptionsForm() {
       });
       queryClient.invalidateQueries({ queryKey: ["/api/admin/subscriptions"] });
       queryClient.invalidateQueries({ queryKey: ["/api/subscriptions"] });
-      queryClient.invalidateQueries({ queryKey: [`/api/admin/subscriptions/${params.id}`] });
       setLocation("/admin/subscriptions");
     },
-    onError: (error: Error) => {
+    onError: (error: any) => {
       toast({
         title: "Error",
-        description: error.message,
+        description: error.message || "Failed to update subscription",
         variant: "destructive",
       });
     },
   });
 
-  const onSubmit = (data: FormValues) => {
+  // Form submission handler
+  const onSubmit = (values: FormValues) => {
     if (isEditing) {
-      updateMutation.mutate(data);
+      updateMutation.mutate(values);
     } else {
-      createMutation.mutate(data);
+      createMutation.mutate(values);
     }
-  };
-
-  const addFeature = () => {
-    if (newFeature.trim()) {
-      const currentFeatures = form.getValues("features") || [];
-      form.setValue("features", [...currentFeatures, { 
-        name: newFeature.trim(), 
-        value: newFeature.trim() 
-      }]);
-      setNewFeature("");
-    }
-  };
-
-  const removeFeature = (index: number) => {
-    const currentFeatures = form.getValues("features") || [];
-    form.setValue(
-      "features",
-      currentFeatures.filter((_, i) => i !== index)
-    );
   };
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle>
-          {isEditing ? "Edit Subscription Plan" : "Create Subscription Plan"}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
+    <Card>
+      <CardContent className="pt-6">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <div className="space-y-4">
               <FormField
                 control={form.control}
                 name="name"
@@ -212,83 +208,12 @@ export default function SubscriptionsForm() {
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter plan name" {...field} />
+                      <Input placeholder="e.g. Basic Plan" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="color"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Color</FormLabel>
-                    <FormControl>
-                      <div className="flex items-center gap-2">
-                        <Input
-                          type="color"
-                          className="w-12 h-10 p-1"
-                          {...field}
-                        />
-                        <Input
-                          type="text"
-                          placeholder="#FFFFFF"
-                          className="flex-1"
-                          {...field}
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className="grid gap-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <FormField
-                    control={form.control}
-                    name="price"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Price</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="text"
-                            {...field}
-                            placeholder="$29.99/month"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <FormField
-                    control={form.control}
-                    name="displayOrder"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Display Order</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="number"
-                            {...field}
-                            onChange={(e) =>
-                              field.onChange(parseInt(e.target.value))
-                            }
-                            placeholder="0"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
 
               <FormField
                 control={form.control}
@@ -298,7 +223,7 @@ export default function SubscriptionsForm() {
                     <FormLabel>Description</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Enter plan description"
+                        placeholder="Enter a short description of the plan"
                         {...field}
                       />
                     </FormControl>
@@ -307,71 +232,98 @@ export default function SubscriptionsForm() {
                 )}
               />
 
-              <div className="space-y-2">
+              <div className="grid grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
-                  name="features"
+                  name="price"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Features</FormLabel>
-                      <div className="space-y-2">
-                        <div className="flex gap-2">
-                          <Input
-                            value={newFeature}
-                            onChange={(e) => setNewFeature(e.target.value)}
-                            placeholder="Add a feature..."
-                          />
-                          <Button
-                            type="button"
-                            onClick={() => {
-                              if (newFeature.trim()) {
-                                // Add feature as an object with name and value properties
-                                field.onChange([...field.value, { 
-                                  name: newFeature,
-                                  value: newFeature
-                                }]);
-                                setNewFeature("");
-                              }
-                            }}
-                          >
-                            Add
-                          </Button>
-                        </div>
-                        <div className="rounded-md border border-border p-3">
-                          {field.value.length > 0 ? (
-                            <ul className="space-y-2">
-                              {field.value.map((feature, index) => (
-                                <li
-                                  key={index}
-                                  className="flex items-center justify-between"
-                                >
-                                  <span>{typeof feature === 'string' ? feature : feature.name}</span>
-                                  <Button
-                                    type="button"
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={() => {
-                                      const newFeatures = [...field.value];
-                                      newFeatures.splice(index, 1);
-                                      field.onChange(newFeatures);
-                                    }}
-                                  >
-                                    <X className="h-4 w-4" />
-                                  </Button>
-                                </li>
-                              ))}
-                            </ul>
-                          ) : (
-                            <div className="text-center text-muted-foreground py-2">
-                              No features added
-                            </div>
-                          )}
-                        </div>
+                      <FormLabel>Price</FormLabel>
+                      <FormControl>
+                        <Input placeholder="e.g. $19.99/month" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="color"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Color</FormLabel>
+                      <div className="flex items-center gap-2">
+                        <FormControl>
+                          <Input type="color" {...field} />
+                        </FormControl>
+                        <Input
+                          type="text"
+                          value={field.value}
+                          onChange={(e) => field.onChange(e.target.value)}
+                        />
                       </div>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
+              </div>
+
+              <div className="space-y-2">
+                <FormLabel>Features</FormLabel>
+                <div className="flex space-x-2">
+                  <Input
+                    placeholder="Add a feature"
+                    value={newFeature}
+                    onChange={(e) => setNewFeature(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleAddFeature();
+                      }
+                    }}
+                  />
+                  <Button
+                    type="button"
+                    onClick={handleAddFeature}
+                    className="flex-shrink-0"
+                  >
+                    Add
+                  </Button>
+                </div>
+
+                <div className="border rounded-md p-3 mt-2">
+                  {form.watch("features").length === 0 ? (
+                    <div className="text-center py-2 text-gray-500">
+                      No features added yet
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      {form.watch("features").map((feature, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center justify-between border-b pb-2 last:border-0 last:pb-0"
+                        >
+                          <div className="flex-1">
+                            <p className="font-medium">{feature.name}</p>
+                            <p className="text-sm text-gray-500">
+                              {feature.value}
+                            </p>
+                          </div>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleRemoveFeature(index)}
+                            className="h-7 w-7 p-0"
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className="space-y-2">
