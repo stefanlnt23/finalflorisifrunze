@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import MainLayout from "@/components/layouts/MainLayout";
 import { HomeCarousel } from "@/components/ui/home-carousel";
 import { ServicesCarousel } from "@/components/ui/services-carousel";
+import ParallaxSection from "@/components/sections/ParallaxSection";
 
 // Default feature cards as fallback
 const defaultFeatureCards = [
@@ -146,6 +147,22 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Parallax Section 1 */}
+      <ParallaxSection 
+        imageUrl="https://images.unsplash.com/photo-1532450106241-3cf5d9f886a6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+        height="400px"
+      >
+        <div className="text-center w-full">
+          <h2 className="text-4xl font-bold text-white mb-4">Transformă Grădina Ta</h2>
+          <p className="text-xl text-white max-w-2xl mx-auto mb-6">
+            Servicii profesionale pentru a face grădina ta să strălucească în fiecare anotimp
+          </p>
+          <button className="px-8 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-colors">
+            Programează o Consultație
+          </button>
+        </div>
+      </ParallaxSection>
+
       {/* Services Section */}
       <section className="py-20 bg-white relative">
         <div className="absolute right-0 top-0 w-1/3 h-full bg-green-50 opacity-50 clip-path-slant"></div>
@@ -178,22 +195,36 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-green-700 text-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-6">Ești Gata să Îți Transformi Grădina?</h2>
-            <p className="text-lg mb-8 text-green-100">
-              Programează o consultație cu grădinarii noștri experți astăzi și obține un plan personalizat pentru spațiul tău exterior.
-            </p>
-            <Link href="/contact">
-              <Button className="bg-white text-green-700 hover:bg-green-100 px-8 py-3 text-lg">
-                Contactează-ne Acum
-              </Button>
-            </Link>
-          </div>
+      {/* Parallax Section 2 */}
+      <ParallaxSection 
+        imageUrl="https://images.unsplash.com/photo-1598902108854-10e335adac99?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+        height="400px"
+      >
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-3xl font-bold mb-6 text-white">Ești Gata să Îți Transformi Grădina?</h2>
+          <p className="text-lg mb-8 text-white">
+            Programează o consultație cu grădinarii noștri experți astăzi și obține un plan personalizat pentru spațiul tău exterior.
+          </p>
+          <Link href="/contact">
+            <Button className="bg-white text-green-700 hover:bg-green-100 px-8 py-3 text-lg">
+              Contactează-ne Acum
+            </Button>
+          </Link>
         </div>
-      </section>
+      </ParallaxSection>
+
+      {/* Parallax Section 3 */}
+      <ParallaxSection 
+        imageUrl="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+        height="350px"
+      >
+        <div className="text-center w-full">
+          <h2 className="text-4xl font-bold text-white mb-4">Expertiză și Pasiune</h2>
+          <p className="text-xl text-white max-w-2xl mx-auto">
+            Grădinarii noștri combină cunoștințe avansate cu pasiunea pentru natura și frumos
+          </p>
+        </div>
+      </ParallaxSection>
 
       {/* Why Choose Us Section */}
       <section className="py-24 bg-white">
