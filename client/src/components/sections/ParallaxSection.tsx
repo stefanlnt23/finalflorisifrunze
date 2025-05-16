@@ -16,6 +16,7 @@ export default function ParallaxSection({ imageUrl, height = '500px', children }
     };
     
     window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initialize scroll position on mount
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -35,6 +36,9 @@ export default function ParallaxSection({ imageUrl, height = '500px', children }
         style={{ 
           backgroundImage: `url(${imageUrl})`,
           transform: `translateY(${parallaxOffset}px)`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
         }}
       />
       <div className="absolute inset-0 bg-black bg-opacity-50" />
