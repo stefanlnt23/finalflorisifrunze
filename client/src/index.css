@@ -163,6 +163,162 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Enhanced services carousel styling */
+.services-carousel {
+  margin: 2rem 0;
+  perspective: 1000px;
+}
+
+.service-card {
+  transition: all 0.5s ease;
+}
+
+.service-card-active {
+  transform: scale(1.03);
+  z-index: 10;
+}
+
+.service-card-inner {
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  overflow: hidden;
+  background: linear-gradient(145deg, #ffffff, #f8f9fa);
+  border-radius: 12px;
+}
+
+.service-card-inner:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0, 128, 0, 0.1);
+}
+
+.service-image-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.service-image-container:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(0deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 50%);
+  z-index: 1;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+}
+
+.service-card-inner:hover .service-image-container:before {
+  opacity: 1;
+}
+
+.service-icon {
+  transition: all 0.5s ease;
+  position: relative;
+  background: linear-gradient(145deg, #e6f7e6, #ffffff);
+}
+
+.service-icon:after {
+  content: '';
+  position: absolute;
+  width: 110%;
+  height: 110%;
+  border: 2px dashed rgba(34, 197, 94, 0.3);
+  border-radius: 50%;
+  animation: spin 12s linear infinite;
+  top: -5%;
+  left: -5%;
+}
+
+.service-card-inner:hover .service-icon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.service-title {
+  position: relative;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+.service-title:after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -4px;
+  left: 50%;
+  background-color: #22c55e;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.service-card-inner:hover .service-title:after {
+  width: 80%;
+}
+
+.service-description {
+  transition: all 0.3s ease;
+  line-height: 1.6;
+}
+
+.service-price {
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  background: -webkit-linear-gradient(45deg, #16a34a, #22c55e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.service-card-inner:hover .service-price {
+  transform: scale(1.1);
+}
+
+.service-button {
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.service-button:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  background-color: rgba(34, 197, 94, 0.05);
+  transition: all 0.3s ease;
+  z-index: -1;
+}
+
+.service-button:hover:before {
+  width: 100%;
+}
+
+/* Skeleton loading animation */
+.service-card-skeleton {
+  animation: skeleton-pulse 1.5s infinite alternate;
+  background: linear-gradient(90deg, #f8f9fa 0%, #ffffff 50%, #f8f9fa 100%);
+  background-size: 200% 100%;
+}
+
+@keyframes skeleton-pulse {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: -200% 0%;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 .animate-fadeInUp {
   animation: fadeInUp 0.8s ease-out forwards;
 }

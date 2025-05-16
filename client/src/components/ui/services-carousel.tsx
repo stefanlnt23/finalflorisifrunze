@@ -8,14 +8,20 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export function ServicesCarousel() {
+  // Keep all useState calls at the top to maintain order
   const [currentIndex, setCurrentIndex] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
+  
+  // Refs after state
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
+  
+  // Custom hooks
   const isMobile = useIsMobile();
 
+  // Query
   const { data: servicesData, isLoading } = useQuery({
     queryKey: ['/api/services'],
     refetchOnWindowFocus: false,
@@ -91,16 +97,16 @@ export function ServicesCarousel() {
     return (
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {Array(3).fill(0).map((_, i) => (
-          <Card key={i} className="transition-all duration-300 hover:shadow-lg">
+          <Card key={i} className="service-card-skeleton">
             <CardContent className="p-6 flex flex-col items-center text-center space-y-4">
-              <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-2">
-                <div className="animate-pulse w-8 h-8 bg-green-200 rounded-full"></div>
+              <div className="w-20 h-20 rounded-full bg-green-50 flex items-center justify-center mb-2">
+                <div className="animate-pulse w-10 h-10 bg-green-100 rounded-full"></div>
               </div>
               <div className="space-y-3 w-full">
-                <div className="animate-pulse h-6 bg-gray-200 rounded w-3/4 mx-auto"></div>
-                <div className="animate-pulse h-4 bg-gray-100 rounded w-full"></div>
-                <div className="animate-pulse h-4 bg-gray-100 rounded w-5/6 mx-auto"></div>
-                <div className="animate-pulse h-4 bg-gray-100 rounded w-4/6 mx-auto"></div>
+                <div className="animate-pulse h-6 bg-gray-100 rounded w-3/4 mx-auto"></div>
+                <div className="animate-pulse h-4 bg-gray-50 rounded w-full"></div>
+                <div className="animate-pulse h-4 bg-gray-50 rounded w-5/6 mx-auto"></div>
+                <div className="animate-pulse h-4 bg-gray-50 rounded w-4/6 mx-auto"></div>
               </div>
             </CardContent>
           </Card>
@@ -131,57 +137,59 @@ export function ServicesCarousel() {
 
   return (
     <div 
-      className="relative w-full" 
+      className="relative w-full services-carousel" 
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       ref={sliderRef}
     >
       {/* Main slider content */}
       <div 
-        className="overflow-hidden carousel-container"
+        className="overflow-hidden carousel-container rounded-xl"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
         <div 
-          className="flex transition-transform duration-500 ease-out"
+          className="flex transition-transform duration-700 ease-in-out"
           style={{ 
-            transform: `translateX(-${currentIndex * (100 / (isMobile ? 1 : visibleSlides.desktop))}%)` 
+            transform: `translateX(-${currentIndex * (100 / visibleCount)}%)` 
           }}
         >
           {services.map((service, index) => (
             <div 
               key={service.id} 
-              className="min-w-full sm:min-w-[50%] md:min-w-[33.333%] px-2 md:px-4 transition-all duration-300"
+              className={`min-w-full sm:min-w-[50%] md:min-w-[33.333%] px-3 md:px-4 py-4 transition-all duration-500 service-card ${
+                index === currentIndex ? 'service-card-active' : ''
+              }`}
             >
-              <Card className="transition-all duration-300 hover:shadow-lg hover:scale-105 h-full">
+              <Card className="service-card-inner h-full overflow-hidden border-green-100 hover:border-green-300 shadow-sm hover:shadow-md">
                 <CardContent className="p-6 flex flex-col items-center text-center space-y-4 h-full">
                   {service.imageUrl ? (
-                    <div className="w-full h-40 overflow-hidden rounded-md mb-4">
+                    <div className="w-full h-48 overflow-hidden rounded-lg mb-4 service-image-container">
                       <img 
                         src={service.imageUrl} 
                         alt={service.name} 
-                        className="w-full h-full object-cover transition-transform duration-500"
+                        className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
                       />
                     </div>
                   ) : (
-                    <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-2">
+                    <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mb-2 service-icon">
                       <span className="text-green-600 text-2xl">
                         <i className="fas fa-leaf"></i>
                       </span>
                     </div>
                   )}
-                  <h3 className="text-xl font-semibold text-gray-900">{service.name}</h3>
-                  <p className="text-gray-600 flex-grow">
+                  <h3 className="text-xl font-semibold text-gray-900 service-title">{service.name}</h3>
+                  <p className="text-gray-600 flex-grow service-description">
                     {service.description.length > 120
                       ? `${service.description.substring(0, 120)}...`
                       : service.description}
                   </p>
-                  <div className="w-full flex flex-col items-center mt-auto">
-                    <span className="text-green-600 font-semibold mb-3">{service.price}</span>
+                  <div className="w-full flex flex-col items-center mt-auto service-price-action">
+                    <span className="text-green-600 font-semibold mb-3 service-price">{service.price}</span>
                     <Link href={`/services/${service.id}`}>
-                      <Button variant="outline" className="border-green-600 text-green-600 hover:bg-green-50 w-full">
-                        Get Started
+                      <Button variant="outline" className="service-button border-green-600 text-green-600 hover:bg-green-50 hover:text-green-700 w-full transition-all duration-300">
+                        View Details
                       </Button>
                     </Link>
                   </div>
@@ -192,10 +200,10 @@ export function ServicesCarousel() {
         </div>
       </div>
       
-      {/* Navigation arrows - always visible on mobile for better UX */}
+      {/* Navigation arrows with improved UI */}
       <button 
         onClick={prevSlide}
-        className="absolute top-1/2 left-0 -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-green-50 border border-green-200 z-10 flex items-center justify-center"
+        className="absolute top-1/2 left-0 -translate-y-1/2 bg-white/80 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-green-50 border border-green-200 z-10 flex items-center justify-center transform transition-all hover:scale-110 -translate-x-3 hover:-translate-x-1"
         aria-label="Previous slide"
       >
         <ChevronLeft className="h-6 w-6 text-green-600" />
@@ -203,19 +211,21 @@ export function ServicesCarousel() {
       
       <button 
         onClick={nextSlide}
-        className="absolute top-1/2 right-0 -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-green-50 border border-green-200 z-10 flex items-center justify-center"
+        className="absolute top-1/2 right-0 -translate-y-1/2 bg-white/80 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-green-50 border border-green-200 z-10 flex items-center justify-center transform transition-all hover:scale-110 translate-x-3 hover:translate-x-1"
         aria-label="Next slide"
       >
         <ChevronRight className="h-6 w-6 text-green-600" />
       </button>
       
-      {/* Slide indicators */}
-      <div className="flex justify-center space-x-2 mt-6">
+      {/* Enhanced slide indicators */}
+      <div className="flex justify-center space-x-2 mt-8">
         {Array.from({ length: totalSlides }).map((_, index) => (
           <button
             key={index}
-            className={`w-2.5 h-2.5 rounded-full transition-colors ${
-              index === currentIndex ? "bg-green-600" : "bg-gray-300"
+            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              index === currentIndex 
+                ? "bg-green-600 w-8" 
+                : "bg-gray-300 hover:bg-green-300"
             }`}
             onClick={() => goToSlide(index)}
             aria-label={`Go to slide ${index + 1}`}
