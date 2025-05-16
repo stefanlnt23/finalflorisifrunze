@@ -225,6 +225,24 @@ export default function Home() {
           </p>
         </div>
       </ParallaxSection>
+      
+      {/* Garden Design Showcase Parallax */}
+      <ParallaxSection 
+        imageUrl="https://media.istockphoto.com/id/1467596838/photo/residential-garden-landscaping-design-idea.jpg?s=1024x1024&w=is&k=20&c=Wxl3Z-HNifWU9wEGFuarA0F1MsD6IOcuy75LPm_Xp5g="
+        height="450px"
+      >
+        <div className="text-center w-full">
+          <h2 className="text-4xl font-bold text-white mb-4">Design Peisagistic Inspirațional</h2>
+          <p className="text-xl text-white max-w-2xl mx-auto">
+            Creăm spații exterioare care îmbină frumusețea naturală cu funcționalitatea
+          </p>
+          <Link href="/portfolio" className="mt-6 inline-block">
+            <Button className="bg-white text-green-700 hover:bg-green-50">
+              Vezi Portofoliul Nostru
+            </Button>
+          </Link>
+        </div>
+      </ParallaxSection>
 
       {/* Why Choose Us Section */}
       <section className="py-24 bg-white">
