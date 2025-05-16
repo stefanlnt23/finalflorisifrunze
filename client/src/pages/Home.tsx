@@ -199,14 +199,16 @@ export default function Home() {
       <ParallaxSection 
         imageUrl="https://media.istockphoto.com/id/1467596838/photo/residential-garden-landscaping-design-idea.jpg?s=1024x1024&w=is&k=20&c=Wxl3Z-HNifWU9wEGFuarA0F1MsD6IOcuy75LPm_Xp5g="
         height="400px"
+        overlayOpacity={0.1}
+        brightnessFactor={1.2}
       >
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6 text-white">Ești Gata să Îți Transformi Grădina?</h2>
-          <p className="text-lg mb-8 text-white">
+          <h2 className="text-3xl font-bold mb-6 text-white text-shadow-lg">Ești Gata să Îți Transformi Grădina?</h2>
+          <p className="text-lg mb-8 text-white text-shadow-md">
             Programează o consultație cu grădinarii noștri experți astăzi și obține un plan personalizat pentru spațiul tău exterior.
           </p>
           <Link href="/contact">
-            <Button className="bg-white text-green-700 hover:bg-green-100 px-8 py-3 text-lg">
+            <Button className="bg-white text-green-700 hover:bg-green-100 px-8 py-3 text-lg shadow-lg">
               Contactează-ne Acum
             </Button>
           </Link>
@@ -230,14 +232,16 @@ export default function Home() {
       <ParallaxSection 
         imageUrl="https://media.istockphoto.com/id/1467596838/photo/residential-garden-landscaping-design-idea.jpg?s=1024x1024&w=is&k=20&c=Wxl3Z-HNifWU9wEGFuarA0F1MsD6IOcuy75LPm_Xp5g="
         height="450px"
+        overlayOpacity={0.05}
+        brightnessFactor={1.3}
       >
         <div className="text-center w-full">
-          <h2 className="text-4xl font-bold text-white mb-4">Design Peisagistic Inspirațional</h2>
-          <p className="text-xl text-white max-w-2xl mx-auto">
+          <h2 className="text-4xl font-bold text-white mb-4 text-shadow-lg">Design Peisagistic Inspirațional</h2>
+          <p className="text-xl text-white max-w-2xl mx-auto text-shadow-md">
             Creăm spații exterioare care îmbină frumusețea naturală cu funcționalitatea
           </p>
           <Link href="/portfolio" className="mt-6 inline-block">
-            <Button className="bg-white text-green-700 hover:bg-green-50">
+            <Button className="bg-white text-green-700 hover:bg-green-50 shadow-lg">
               Vezi Portofoliul Nostru
             </Button>
           </Link>

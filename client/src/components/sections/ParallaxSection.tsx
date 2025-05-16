@@ -5,9 +5,17 @@ interface ParallaxSectionProps {
   imageUrl: string;
   height?: string;
   children?: React.ReactNode;
+  overlayOpacity?: number;
+  brightnessFactor?: number;
 }
 
-export default function ParallaxSection({ imageUrl, height = '500px', children }: ParallaxSectionProps) {
+export default function ParallaxSection({ 
+  imageUrl, 
+  height = '500px', 
+  children,
+  overlayOpacity = 0.2,
+  brightnessFactor = 1.1
+}: ParallaxSectionProps) {
   const [scrollPosition, setScrollPosition] = useState(0);
 
   useEffect(() => {
@@ -39,13 +47,20 @@ export default function ParallaxSection({ imageUrl, height = '500px', children }
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
+          filter: `brightness(${brightnessFactor})`,
           zIndex: 1
         }}
       />
-      <div className="absolute inset-0 bg-black bg-opacity-20" style={{ zIndex: 2 }}>
-      <div className="relative z-10 container mx-auto px-4 h-full flex items-center">
-        {children}
-      </div>
+      <div 
+        className={`absolute inset-0`} 
+        style={{ 
+          backgroundColor: `rgba(0, 0, 0, ${overlayOpacity})`,
+          zIndex: 2 
+        }}
+      >
+        <div className="relative z-10 container mx-auto px-4 h-full flex items-center">
+          {children}
+        </div>
       </div>
     </section>
   );
