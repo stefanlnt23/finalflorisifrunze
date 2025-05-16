@@ -30,16 +30,39 @@ import { insertBlogPostSchema } from "@shared/schema";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-// Section schema for blog content
-const sectionSchema = z.object({
-  type: z.enum(["text", "image", "quote", "list", "heading"]),
-  content: z.string().min(1, "Content is required"),
-  imageUrl: z.string().optional(),
-  caption: z.string().optional(),
-  level: z.number().optional(),
-  items: z.array(z.string()).optional(),
-  alignment: z.enum(["left", "center", "right"]).optional().default("left"),
-});
+// Section schema for blog content with conditional validation
+const sectionSchema = z.discriminatedUnion("type", [
+  // Text section
+  z.object({
+    type: z.literal("text"),
+    content: z.string().min(1, "Content is required"),
+    alignment: z.enum(["left", "center", "right"]).default("left"),
+  }),
+  // Image section
+  z.object({
+    type: z.literal("image"),
+    imageUrl: z.string().min(1, "Image URL is required"),
+    caption: z.string().optional(),
+    alignment: z.enum(["left", "center", "right"]).default("center"),
+  }),
+  // Quote section
+  z.object({
+    type: z.literal("quote"),
+    content: z.string().min(1, "Quote content is required"),
+    caption: z.string().optional(),
+  }),
+  // Heading section
+  z.object({
+    type: z.literal("heading"),
+    content: z.string().min(1, "Heading text is required"),
+    level: z.number().default(2),
+  }),
+  // List section
+  z.object({
+    type: z.literal("list"),
+    items: z.array(z.string()).min(1, "At least one list item is required"),
+  }),
+]);
 
 // Extended schema with validation for rich content
 const formSchema = insertBlogPostSchema.extend({
@@ -295,8 +318,14 @@ export default function AdminBlogPostForm() {
   // Remove list item
   const removeListItem = (sectionIndex: number, itemIndex: number) => {
     const currentSection = form.getValues(`sections.${sectionIndex}`);
-    const items = currentSection.items || [];
+    const items = [...(currentSection.items || [])];
     items.splice(itemIndex, 1);
+    
+    // Ensure we always have at least one item (empty is okay)
+    if (items.length === 0) {
+      items.push("");
+    }
+    
     form.setValue(`sections.${sectionIndex}.items`, items);
   };
 
@@ -314,7 +343,7 @@ export default function AdminBlogPostForm() {
       });
     }
     
-    // Clean up sections data to ensure it's properly formatted for submission
+    // Validate and clean up sections data to ensure it's properly formatted for submission
     const cleanedSections = values.sections?.map(section => {
       // Make sure each section has the required fields based on its type
       switch(section.type) {
@@ -344,9 +373,14 @@ export default function AdminBlogPostForm() {
             level: section.level || 2
           };
         case "list":
+          // Filter out empty items and ensure we have at least one non-empty item
+          const nonEmptyItems = (section.items || []).filter(item => item.trim() !== '');
+          if (nonEmptyItems.length === 0) {
+            nonEmptyItems.push("List item"); // Default item if all are empty
+          }
           return {
             type: section.type,
-            items: section.items || []
+            items: nonEmptyItems
           };
         default:
           return section;
@@ -369,6 +403,32 @@ export default function AdminBlogPostForm() {
       };
 
       console.log("Submitting blog post data:", JSON.stringify(submissionData, null, 2));
+
+      // Validate that all sections have required data before submission
+      let hasInvalidSections = false;
+      submissionData.sections?.forEach((section, index) => {
+        if (section.type === "list" && (!section.items || section.items.length === 0)) {
+          toast({
+            title: "Validation Error",
+            description: `List section #${index + 1} must have at least one item`,
+            variant: "destructive",
+          });
+          hasInvalidSections = true;
+        }
+        
+        if (section.type === "image" && !section.imageUrl) {
+          toast({
+            title: "Validation Error", 
+            description: `Image section #${index + 1} must have an image URL`,
+            variant: "destructive",
+          });
+          hasInvalidSections = true;
+        }
+      });
+      
+      if (hasInvalidSections) {
+        return; // Don't submit if there are invalid sections
+      }
 
       if (isEditing) {
         console.log("Updating existing blog post...");

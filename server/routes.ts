@@ -524,16 +524,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
         updatedAt: typeof data.updatedAt,
       });
 
-      // Section schema for validation
-      const sectionSchema = z.object({
-        type: z.enum(["text", "image", "quote", "heading", "list"]),
-        content: z.string().optional(),
-        imageUrl: z.string().optional(),
-        caption: z.string().optional(),
-        level: z.number().optional(),
-        items: z.array(z.string()).optional(),
-        alignment: z.enum(["left", "center", "right"]).optional()
-      });
+      // Section schema for validation with better type checking
+      const sectionSchema = z.discriminatedUnion("type", [
+        // Text section
+        z.object({
+          type: z.literal("text"),
+          content: z.string(),
+          alignment: z.enum(["left", "center", "right"]).optional().default("left"),
+        }),
+        // Image section
+        z.object({
+          type: z.literal("image"),
+          imageUrl: z.string(),
+          caption: z.string().optional().default(""),
+          alignment: z.enum(["left", "center", "right"]).optional().default("center"),
+        }),
+        // Quote section
+        z.object({
+          type: z.literal("quote"),
+          content: z.string(),
+          caption: z.string().optional().default(""),
+        }),
+        // Heading section
+        z.object({
+          type: z.literal("heading"),
+          content: z.string(),
+          level: z.number().optional().default(2),
+        }),
+        // List section
+        z.object({
+          type: z.literal("list"),
+          items: z.array(z.string()).min(1),
+        }),
+      ]);
       
       // Create a custom schema for this specific endpoint with better date handling
       const customBlogPostSchema = z.object({
