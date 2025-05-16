@@ -28,6 +28,22 @@ import { insertSubscriptionSchema } from "@shared/schema";
 const formSchema = insertSubscriptionSchema;
 
 // Define form values type
+// Define form schema for subscriptions
+const formSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  description: z.string().optional(),
+  color: z.string().default("#FFFFFF"),
+  features: z.array(
+    z.object({
+      name: z.string().min(1, "Feature name is required"),
+      value: z.string().min(1, "Feature value is required")
+    })
+  ),
+  price: z.string().min(1, "Price is required"),
+  isPopular: z.boolean().default(false),
+  displayOrder: z.number().default(0)
+});
+
 type FormValues = z.infer<typeof formSchema>;
 
 export default function SubscriptionsForm() {
@@ -55,6 +71,40 @@ export default function SubscriptionsForm() {
     control: form.control,
     name: "features"
   });
+  
+  // Create/Edit mutation
+  const saveMutation = useMutation({
+    mutationFn: async (data: FormValues) => {
+      if (isEditing) {
+        return await apiRequest('PUT', `/api/admin/subscriptions/${id}`, data);
+      } else {
+        return await apiRequest('POST', '/api/admin/subscriptions', data);
+      }
+    },
+    onSuccess: () => {
+      toast({
+        title: isEditing ? "Subscription Updated" : "Subscription Created",
+        description: isEditing 
+          ? "The subscription has been successfully updated"
+          : "The subscription has been successfully created",
+      });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/subscriptions'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/subscriptions'] });
+      setLocation("/admin/subscriptions");
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error",
+        description: error.message || `Failed to ${isEditing ? 'update' : 'create'} the subscription`,
+        variant: "destructive",
+      });
+    },
+  });
+  
+  // Form submission handler
+  const onSubmit = (data: FormValues) => {
+    saveMutation.mutate(data);
+  };
 
   // Fetch subscription data if editing
   const { isLoading: isLoadingSubscription } = useQuery({
@@ -174,7 +224,21 @@ export default function SubscriptionsForm() {
     }
   };
 
-  return (
+  import { z } from "zod";
+import { useParams } from "wouter";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { useForm, useFieldArray } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
+import { apiRequest, queryClient } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
+import AdminLayout from "@/components/layouts/AdminLayout";
+
+return (
     <AdminLayout
       title={isEditing ? "Edit Subscription" : "Add New Subscription"}
       description={isEditing ? "Update subscription details" : "Create a new subscription plan"}

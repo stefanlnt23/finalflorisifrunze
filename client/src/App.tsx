@@ -118,9 +118,21 @@ function Router() {
           <AdminFeatureCards />
         </React.Suspense>
       </Route>
-      <Route path="/admin/subscriptions" component={() => import('./pages/admin/Subscriptions').then(mod => <mod.default />)} />
-      <Route path="/admin/subscriptions/new" component={() => import('./pages/admin/SubscriptionsForm').then(mod => <mod.default />)} />
-      <Route path="/admin/subscriptions/:id" component={() => import('./pages/admin/SubscriptionsForm').then(mod => <mod.default />)} />
+      <Route path="/admin/subscriptions">
+        <React.Suspense fallback={<div>Loading...</div>}>
+          <React.lazy(() => import('./pages/admin/Subscriptions'))/>
+        </React.Suspense>
+      </Route>
+      <Route path="/admin/subscriptions/new">
+        <React.Suspense fallback={<div>Loading...</div>}>
+          <React.lazy(() => import('./pages/admin/SubscriptionsForm'))/>
+        </React.Suspense>
+      </Route>
+      <Route path="/admin/subscriptions/:id">
+        <React.Suspense fallback={<div>Loading...</div>}>
+          <React.lazy(() => import('./pages/admin/SubscriptionsForm'))/>
+        </React.Suspense>
+      </Route>
 
       {/* Admin Blog Posts */}
       <Route path="/admin/blog/new">

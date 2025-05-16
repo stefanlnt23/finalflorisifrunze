@@ -13,6 +13,9 @@ export default function Subscriptions() {
     queryKey: ['/api/subscriptions'],
     queryFn: async () => {
       const response = await apiRequest('GET', '/api/subscriptions');
+      if (!response || !response.subscriptions) {
+        return [];
+      }
       return response.subscriptions as Subscription[];
     },
     refetchOnWindowFocus: false,

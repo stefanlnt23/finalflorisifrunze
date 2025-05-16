@@ -1096,6 +1096,147 @@ export class MongoDBStorage implements IStorage {
       return [];
     }
   }
+  
+  async getSubscription(id: string): Promise<Subscription | null> {
+    try {
+      if (!this.db) {
+        await this.initDb();
+        if (!this.db) return null;
+      }
+      
+      const { ObjectId } = require('mongodb');
+      let objectId;
+      try {
+        objectId = new ObjectId(id);
+      } catch (error) {
+        console.error(`Invalid ObjectId: ${id}`);
+        return null;
+      }
+      
+      const subscription = await this.db.collection("subscriptions").findOne({ _id: objectId });
+      
+      if (!subscription) return null;
+      
+      return {
+        id: subscription._id.toString(),
+        name: subscription.name,
+        description: subscription.description || null,
+        color: subscription.color || "#FFFFFF",
+        features: subscription.features || [],
+        price: subscription.price,
+        isPopular: subscription.isPopular || false,
+        displayOrder: subscription.displayOrder || 0
+      };
+    } catch (error) {
+      console.error(`Error fetching subscription ${id}:`, error);
+      return null;
+    }
+  }
+  
+  async createSubscription(data: any): Promise<Subscription> {
+    try {
+      if (!this.db) {
+        await this.initDb();
+        if (!this.db) throw new Error("Database connection failed");
+      }
+      
+      const result = await this.db.collection("subscriptions").insertOne({
+        name: data.name,
+        description: data.description || null,
+        color: data.color || "#FFFFFF",
+        features: data.features || [],
+        price: data.price,
+        isPopular: data.isPopular || false,
+        displayOrder: data.displayOrder || 0,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+      
+      return {
+        id: result.insertedId.toString(),
+        name: data.name,
+        description: data.description || null,
+        color: data.color || "#FFFFFF",
+        features: data.features || [],
+        price: data.price,
+        isPopular: data.isPopular || false,
+        displayOrder: data.displayOrder || 0
+      };
+    } catch (error) {
+      console.error("Error creating subscription:", error);
+      throw error;
+    }
+  }
+  
+  async updateSubscription(id: string, data: any): Promise<Subscription | null> {
+    try {
+      if (!this.db) {
+        await this.initDb();
+        if (!this.db) return null;
+      }
+      
+      const { ObjectId } = require('mongodb');
+      let objectId;
+      try {
+        objectId = new ObjectId(id);
+      } catch (error) {
+        console.error(`Invalid ObjectId: ${id}`);
+        return null;
+      }
+      
+      const updateData = {
+        ...data,
+        updatedAt: new Date()
+      };
+      
+      await this.db.collection("subscriptions").updateOne(
+        { _id: objectId },
+        { $set: updateData }
+      );
+      
+      const updatedSubscription = await this.db.collection("subscriptions").findOne({ _id: objectId });
+      
+      if (!updatedSubscription) return null;
+      
+      return {
+        id: updatedSubscription._id.toString(),
+        name: updatedSubscription.name,
+        description: updatedSubscription.description || null,
+        color: updatedSubscription.color || "#FFFFFF",
+        features: updatedSubscription.features || [],
+        price: updatedSubscription.price,
+        isPopular: updatedSubscription.isPopular || false,
+        displayOrder: updatedSubscription.displayOrder || 0
+      };
+    } catch (error) {
+      console.error(`Error updating subscription ${id}:`, error);
+      return null;
+    }
+  }
+  
+  async deleteSubscription(id: string): Promise<boolean> {
+    try {
+      if (!this.db) {
+        await this.initDb();
+        if (!this.db) return false;
+      }
+      
+      const { ObjectId } = require('mongodb');
+      let objectId;
+      try {
+        objectId = new ObjectId(id);
+      } catch (error) {
+        console.error(`Invalid ObjectId: ${id}`);
+        return false;
+      }
+      
+      const result = await this.db.collection("subscriptions").deleteOne({ _id: objectId });
+      return result.deletedCount > 0;
+    } catch (error) {
+      console.error(`Error deleting subscription ${id}:`, error);
+      return false;
+    }
+  }
 
   async getSubscription(id: string): Promise<Subscription | null> {
     try {
