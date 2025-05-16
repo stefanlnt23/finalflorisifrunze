@@ -16,9 +16,18 @@ export default function Services() {
 
   return (
     <MainLayout>
-      {/* Hero Section with Background Pattern */}
-      <div className="relative py-24 bg-gradient-to-b from-green-900 to-green-700 bg-pattern-leaves overflow-hidden">
-        <div className="absolute inset-0 bg-black opacity-30"></div>
+      {/* Hero Section with Lawn Mower Background */}
+      <div className="relative py-24 overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img 
+            src="https://media.istockphoto.com/id/1419427334/photo/banner-a-human-lawn-mower-cuts-the-grass-in-the-backyard-agricultural-machinery-for-the-care.jpg?s=2048x2048&w=is&k=20&c=tMDk5EOOGu636didpzBMOY29ZXJjM07MlKfrTs6jgg4=" 
+            alt="Lawn mowing service" 
+            className="object-cover object-center w-full h-full"
+          />
+          <div className="absolute inset-0 bg-black opacity-50"></div>
+        </div>
+        
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
             <span className="inline-block px-4 py-1 rounded-full bg-white bg-opacity-20 text-white text-sm font-medium mb-6 animate-fadeIn">
@@ -34,7 +43,7 @@ export default function Services() {
             </p>
             <div className="flex flex-wrap justify-center gap-4 animate-fadeIn animation-delay-500">
               <Link href="/appointment">
-                <Button size="lg" className="bg-white text-green-700 hover:bg-green-50 hover:text-green-800 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
+                <Button size="lg" className="bg-green-600 text-white hover:bg-green-700 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
                   Programează o Consultație
                 </Button>
               </Link>
