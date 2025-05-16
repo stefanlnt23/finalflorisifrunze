@@ -50,8 +50,15 @@ export default function MainNavigation() {
         ))}
       </nav>
 
-      {/* Mobile Navigation Button */}
-      <div className="md:hidden">
+      {/* Mobile Logo and Navigation Button */}
+      <div className="md:hidden flex items-center space-x-4">
+        <Link href="/" className="flex items-center">
+          <img 
+            src="https://i.imgur.com/eHGs2HM.png" 
+            alt="Green Garden Logo" 
+            className="h-8 w-auto"
+          />
+        </Link>
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           className="text-gray-500 hover:text-gray-900 focus:outline-none"

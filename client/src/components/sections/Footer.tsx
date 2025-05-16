@@ -1,4 +1,3 @@
-
 import { Link } from "wouter";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -30,13 +29,15 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           <div>
             <div className="flex items-center space-x-2 mb-6">
-              <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-green-300 rounded-md flex items-center justify-center">
-                <i className="fas fa-leaf text-white text-lg"></i>
+                <img 
+                  src="https://i.imgur.com/eHGs2HM.png" 
+                  alt="Green Garden Logo" 
+                  className="h-12 w-auto"
+                />
+                <span className="text-xl font-bold text-white">
+                  Green Garden
+                </span>
               </div>
-              <span className="text-xl font-bold text-white">
-                Green Garden
-              </span>
-            </div>
             <p className="text-gray-400 mb-6">
               Transformăm spațiile exterioare în grădini frumoase și sustenabile din 2010.
             </p>

@@ -16,9 +16,11 @@ export default function MainLayout({ children }: MainLayoutProps) {
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center">
               <Link href="/" className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-r from-green-600 to-green-700 rounded-md flex items-center justify-center">
-                  <i className="fas fa-leaf text-white text-lg"></i>
-                </div>
+                <img 
+                  src="https://i.imgur.com/eHGs2HM.png" 
+                  alt="Green Garden Logo" 
+                  className="h-10 w-auto"
+                />
                 <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-green-700">
                   Green Garden
                 </span>
