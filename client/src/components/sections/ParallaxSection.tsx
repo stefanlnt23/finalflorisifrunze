@@ -46,6 +46,7 @@ export default function ParallaxSection({ imageUrl, height = '500px', children }
       <div className="relative z-10 container mx-auto px-4 h-full flex items-center">
         {children}
       </div>
+      </div>
     </section>
   );
 }
