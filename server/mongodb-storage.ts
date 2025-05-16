@@ -1080,17 +1080,24 @@ export class MongoDBStorage implements IStorage {
         await this.db.createCollection('subscriptions');
         log('Created subscriptions collection', 'mongodb');
       }
+      
+      log('Fetching subscriptions from MongoDB...', 'mongodb');
       const subscriptions = await this.db.collection("subscriptions").find().sort({ displayOrder: 1 }).toArray();
-      return subscriptions.map(sub => ({
-        id: sub._id.toString(),
-        name: sub.name,
-        description: sub.description || null,
-        color: sub.color || "#FFFFFF",
-        features: Array.isArray(sub.features) ? sub.features : [],
-        price: sub.price,
-        isPopular: sub.isPopular || false,
-        displayOrder: sub.displayOrder || 0
-      }));
+      log(`Found ${subscriptions.length} subscriptions`, 'mongodb');
+      
+      return subscriptions.map(sub => {
+        const mapped = {
+          id: sub._id.toString(),
+          name: sub.name,
+          description: sub.description || '',
+          color: sub.color || "#FFFFFF",
+          features: Array.isArray(sub.features) ? sub.features : [],
+          price: sub.price,
+          isPopular: sub.isPopular || false,
+          displayOrder: sub.displayOrder || 0
+        };
+        return mapped;
+      });
     } catch (error) {
       console.error("Error fetching subscriptions:", error);
       return [];

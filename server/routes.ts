@@ -1114,7 +1114,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Public endpoint to get subscriptions
   app.get("/api/subscriptions", async (req, res) => {
     try {
+      console.log("API: Fetching subscriptions");
       const subscriptions = await storage.getSubscriptions();
+      console.log(`API: Found ${subscriptions.length} subscriptions to return`);
+      console.log("API: Subscription data:", JSON.stringify(subscriptions).substring(0, 200) + "...");
       res.json({ subscriptions });
     } catch (error) {
       console.error("Error fetching subscriptions:", error);

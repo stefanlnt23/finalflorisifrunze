@@ -21,20 +21,54 @@ async function throwIfResNotOk(res: Response) {
   }
 }
 
-export async function apiRequest(
-  method: string,
-  url: string,
-  data?: unknown | undefined,
-): Promise<Response> {
-  const res = await fetch(url, {
-    method,
-    headers: data ? { "Content-Type": "application/json" } : {},
-    body: data ? JSON.stringify(data) : undefined,
-    credentials: "include",
-  });
+export async function apiRequest(method: string, path: string, body?: any) {
+  try {
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json'
+    };
 
-  await throwIfResNotOk(res);
-  return res;
+    const options: RequestInit = {
+      method,
+      headers,
+      credentials: 'include'
+    };
+
+    if (body && method !== 'GET') {
+      options.body = JSON.stringify(body);
+    }
+
+    console.log(`Making API request: ${method} ${path}`);
+    const response = await fetch(path, options);
+    console.log(`API response status: ${response.status}`);
+
+    // Clone the response for debugging
+    const responseClone = response.clone();
+    let responseText;
+
+    try {
+      responseText = await responseClone.text();
+      console.log(`API response text: ${responseText.substring(0, 100)}...`);
+    } catch (e) {
+      console.error("Could not read response text", e);
+    }
+
+    let data;
+    try {
+      data = await response.json();
+    } catch (e) {
+      console.error("Error parsing JSON:", e);
+      throw new Error(`Failed to parse JSON response: ${responseText}`);
+    }
+
+    if (!response.ok) {
+      throw new Error(data.message || 'API request failed');
+    }
+
+    return data;
+  } catch (error) {
+    console.error(`API Error (${method} ${path}):`, error);
+    throw error;
+  }
 }
 
 type UnauthorizedBehavior = "returnNull" | "throw";

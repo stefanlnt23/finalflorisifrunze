@@ -13,10 +13,21 @@ export default function Subscriptions() {
     queryKey: ['/api/subscriptions'],
     queryFn: async () => {
       try {
+        console.log("Fetching subscriptions from API...");
         const response = await apiRequest('GET', '/api/subscriptions');
-        if (!response || !response.subscriptions) {
+        console.log("API response:", response);
+        
+        if (!response) {
+          console.error("No response from API");
           return [] as Subscription[];
         }
+        
+        if (!response.subscriptions) {
+          console.error("No subscriptions in response", response);
+          return [] as Subscription[];
+        }
+        
+        console.log(`Retrieved ${response.subscriptions.length} subscriptions`);
         return response.subscriptions as Subscription[];
       } catch (err) {
         console.error("Error fetching subscriptions:", err);
@@ -27,6 +38,8 @@ export default function Subscriptions() {
   });
   
   const subscriptions = data || [];
+  
+  console.log("Rendered subscriptions:", subscriptions);
 
   return (
     <MainLayout>
