@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useParams, useLocation } from "wouter";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -65,13 +64,13 @@ export default function SubscriptionsForm() {
       displayOrder: 0
     },
   });
-  
+
   // Setup field array for features
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "features"
   });
-  
+
   // Create/Edit mutation
   const saveMutation = useMutation({
     mutationFn: async (data: FormValues) => {
@@ -100,7 +99,7 @@ export default function SubscriptionsForm() {
       });
     },
   });
-  
+
   // Form submission handler
   const onSubmit = (data: FormValues) => {
     saveMutation.mutate(data);
@@ -189,7 +188,7 @@ export default function SubscriptionsForm() {
       queryClient.invalidateQueries({ queryKey: ['/api/subscriptions'] });
       setLocation("/admin/subscriptions");
     },
-    onError: (error: any) => {
+    onError: async (error: any) => {
       toast({
         title: "Error",
         description: error.message || "Failed to update the subscription",
@@ -207,7 +206,7 @@ export default function SubscriptionsForm() {
       ...values,
       features: values.features.filter(f => f.name.trim() && f.value.trim())
     };
-    
+
     if (cleanedValues.features.length === 0) {
       toast({
         title: "Validation Error",
@@ -216,27 +215,13 @@ export default function SubscriptionsForm() {
       });
       return;
     }
-    
+
     if (isEditing) {
       updateMutation.mutate(cleanedValues);
     } else {
       createMutation.mutate(cleanedValues);
     }
   };
-
-  import { z } from "zod";
-import { useParams } from "wouter";
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { useForm, useFieldArray } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
-import { apiRequest, queryClient } from "@/lib/queryClient";
-import { useToast } from "@/hooks/use-toast";
-import AdminLayout from "@/components/layouts/AdminLayout";
 
 return (
     <AdminLayout
@@ -317,7 +302,7 @@ return (
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField
                   control={form.control}
                   name="color"
@@ -340,7 +325,7 @@ return (
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField
                   control={form.control}
                   name="isPopular"
@@ -361,7 +346,7 @@ return (
                     </FormItem>
                   )}
                 />
-                
+
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="text-lg font-medium">Features</h3>
@@ -374,7 +359,7 @@ return (
                       <i className="fas fa-plus mr-2"></i> Add Feature
                     </Button>
                   </div>
-                  
+
                   <div className="space-y-4 border rounded-md p-4">
                     {fields.map((field, index) => (
                       <div key={field.id} className="flex items-start space-x-2">
@@ -415,7 +400,7 @@ return (
                         </Button>
                       </div>
                     ))}
-                    
+
                     {fields.length === 0 && (
                       <div className="text-center py-4 text-gray-500">
                         No features added yet. Click "Add Feature" to start.
@@ -423,7 +408,7 @@ return (
                     )}
                   </div>
                 </div>
-                
+
                 <div className="flex justify-end space-x-4 pt-4">
                   <Button 
                     type="button" 

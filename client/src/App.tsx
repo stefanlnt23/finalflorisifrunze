@@ -39,6 +39,10 @@ const AdminAppointmentsForm = React.lazy(() => import("@/pages/admin/Appointment
 const AdminFrontPage = React.lazy(() => import("@/pages/admin/FrontPage"));
 const AdminFeatureCards = React.lazy(() => import("@/pages/admin/FeatureCards"));
 
+// Lazy-loaded admin components
+const AdminSubscriptions = React.lazy(() => import('./pages/admin/Subscriptions'));
+const AdminSubscriptionsForm = React.lazy(() => import('./pages/admin/SubscriptionsForm'));
+
 function Router() {
   return (
     <Switch>

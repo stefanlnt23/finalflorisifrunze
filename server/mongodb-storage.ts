@@ -1086,7 +1086,7 @@ export class MongoDBStorage implements IStorage {
         name: sub.name,
         description: sub.description || null,
         color: sub.color || "#FFFFFF",
-        features: sub.features || [],
+        features: Array.isArray(sub.features) ? sub.features : [],
         price: sub.price,
         isPopular: sub.isPopular || false,
         displayOrder: sub.displayOrder || 0
