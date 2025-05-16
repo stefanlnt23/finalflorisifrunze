@@ -177,7 +177,10 @@ export default function SubscriptionsForm() {
   const addFeature = () => {
     if (newFeature.trim()) {
       const currentFeatures = form.getValues("features") || [];
-      form.setValue("features", [...currentFeatures, newFeature.trim()]);
+      form.setValue("features", [...currentFeatures, { 
+        name: newFeature.trim(), 
+        value: newFeature.trim() 
+      }]);
       setNewFeature("");
     }
   };
@@ -370,7 +373,7 @@ export default function SubscriptionsForm() {
                   />
                 </div>
 
-<div className="space-y-2">
+                <div className="space-y-2">
                   <FormField
                     control={form.control}
                     name="isPopular"
