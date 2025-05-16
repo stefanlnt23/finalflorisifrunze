@@ -17,8 +17,16 @@ export default function AdminSubscriptions() {
   const { data, isLoading, error } = useQuery({
     queryKey: ['/api/admin/subscriptions'],
     queryFn: async () => {
-      const response = await apiRequest('GET', '/api/admin/subscriptions');
-      return response.subscriptions as Subscription[];
+      try {
+        const response = await apiRequest('GET', '/api/admin/subscriptions');
+        if (!response || !response.subscriptions) {
+          return [];
+        }
+        return response.subscriptions;
+      } catch (err) {
+        console.error("Error fetching subscriptions:", err);
+        return [];
+      }
     },
     refetchOnWindowFocus: false,
   });

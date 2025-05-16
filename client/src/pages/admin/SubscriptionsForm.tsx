@@ -59,6 +59,13 @@ export default function SubscriptionsForm() {
   // Fetch subscription data if editing
   const { data: subscriptionData, isLoading } = useQuery({
     queryKey: [`/api/admin/subscriptions/${params.id}`],
+    queryFn: async () => {
+      const response = await fetch(`/api/admin/subscriptions/${params.id}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch subscription');
+      }
+      return response.json();
+    },
     enabled: isEditing,
     retry: 1
   });
@@ -82,7 +89,7 @@ export default function SubscriptionsForm() {
   // Handle form submission
   const createMutation = useMutation({
     mutationFn: async (data: FormValues) => {
-      const response = await fetch("/api/subscriptions", {
+      const response = await fetch("/api/admin/subscriptions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -102,6 +109,7 @@ export default function SubscriptionsForm() {
         title: "Success",
         description: "Subscription plan created successfully",
       });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/subscriptions"] });
       queryClient.invalidateQueries({ queryKey: ["/api/subscriptions"] });
       setLocation("/admin/subscriptions");
     },
@@ -116,7 +124,7 @@ export default function SubscriptionsForm() {
 
   const updateMutation = useMutation({
     mutationFn: async (data: FormValues) => {
-      const response = await fetch(`/api/subscriptions/${params.id}`, {
+      const response = await fetch(`/api/admin/subscriptions/${params.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -136,8 +144,9 @@ export default function SubscriptionsForm() {
         title: "Success",
         description: "Subscription plan updated successfully",
       });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/subscriptions"] });
       queryClient.invalidateQueries({ queryKey: ["/api/subscriptions"] });
-      queryClient.invalidateQueries({ queryKey: [`/api/subscriptions/${params.id}`] });
+      queryClient.invalidateQueries({ queryKey: [`/api/admin/subscriptions/${params.id}`] });
       setLocation("/admin/subscriptions");
     },
     onError: (error: Error) => {
