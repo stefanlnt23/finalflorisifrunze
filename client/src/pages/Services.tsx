@@ -48,7 +48,7 @@ export default function Services() {
                 </Button>
               </Link>
               <Link href="/contact">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-green-700 transition-all transform hover:scale-105">
+                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-green-700 transition-all transform hover:scale-105 bg-green-600/30">
                   Contactează-ne
                 </Button>
               </Link>
