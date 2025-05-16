@@ -12,11 +12,16 @@ export default function Subscriptions() {
   const { data, isLoading, error } = useQuery({
     queryKey: ['/api/subscriptions'],
     queryFn: async () => {
-      const response = await apiRequest('GET', '/api/subscriptions');
-      if (!response || !response.subscriptions) {
-        return [];
+      try {
+        const response = await apiRequest('GET', '/api/subscriptions');
+        if (!response || !response.subscriptions) {
+          return [] as Subscription[];
+        }
+        return response.subscriptions as Subscription[];
+      } catch (err) {
+        console.error("Error fetching subscriptions:", err);
+        return [] as Subscription[];
       }
-      return response.subscriptions as Subscription[];
     },
     refetchOnWindowFocus: false,
   });

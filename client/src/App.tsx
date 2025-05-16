@@ -120,17 +120,17 @@ function Router() {
       </Route>
       <Route path="/admin/subscriptions">
         <React.Suspense fallback={<div>Loading...</div>}>
-          <React.lazy(() => import('./pages/admin/Subscriptions'))/>
+          {React.createElement(React.lazy(() => import('./pages/admin/Subscriptions')))}
         </React.Suspense>
       </Route>
       <Route path="/admin/subscriptions/new">
         <React.Suspense fallback={<div>Loading...</div>}>
-          <React.lazy(() => import('./pages/admin/SubscriptionsForm'))/>
+          {React.createElement(React.lazy(() => import('./pages/admin/SubscriptionsForm')))}
         </React.Suspense>
       </Route>
       <Route path="/admin/subscriptions/:id">
         <React.Suspense fallback={<div>Loading...</div>}>
-          <React.lazy(() => import('./pages/admin/SubscriptionsForm'))/>
+          {React.createElement(React.lazy(() => import('./pages/admin/SubscriptionsForm')))}
         </React.Suspense>
       </Route>
 
