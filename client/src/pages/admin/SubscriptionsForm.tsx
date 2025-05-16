@@ -17,17 +17,27 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams, useLocation } from "wouter";
+import { Checkbox } from "@/components/ui/checkbox"
+import { FormDescription } from "@/components/ui/form";
+import { X } from "lucide-react";
 
 // Define form schema
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
   description: z.string().optional(),
   color: z.string().default("#FFFFFF"),
-  monthlyPrice: z.coerce.number().min(0, "Price must be a positive number"),
-  annualPrice: z.coerce.number().min(0, "Price must be a positive number"),
-  features: z.array(z.string()),
-  isFeatured: z.boolean().default(false),
+  price: z.string().min(1, "Price is required"),
+  features: z.array(
+    z.union([
+      z.string(),
+      z.object({
+        name: z.string().min(1, "Feature name is required"),
+        value: z.string().min(1, "Feature value is required")
+      })
+    ])
+  ).default([]),
   isPopular: z.boolean().default(false),
+  displayOrder: z.number().default(0),
 });
 
 // Define form values type
@@ -48,11 +58,10 @@ export default function SubscriptionsForm() {
       name: "",
       description: "",
       color: "#FFFFFF",
-      monthlyPrice: 0,
-      annualPrice: 0,
+      price: "",
       features: [],
-      isFeatured: false,
       isPopular: false,
+      displayOrder: 0,
     },
   });
 
@@ -77,11 +86,10 @@ export default function SubscriptionsForm() {
         name: subscriptionData.subscription.name,
         description: subscriptionData.subscription.description || "",
         color: subscriptionData.subscription.color || "#FFFFFF",
-        monthlyPrice: subscriptionData.subscription.monthlyPrice || 0,
-        annualPrice: subscriptionData.subscription.annualPrice || 0,
+        price: subscriptionData.subscription.price || "",
         features: subscriptionData.subscription.features || [],
-        isFeatured: subscriptionData.subscription.isFeatured || false,
         isPopular: subscriptionData.subscription.isPopular || false,
+        displayOrder: subscriptionData.subscription.displayOrder || 0,
       });
     }
   }, [subscriptionData, isLoading, form]);
@@ -233,46 +241,50 @@ export default function SubscriptionsForm() {
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FormField
-                control={form.control}
-                name="monthlyPrice"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Monthly Price</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        placeholder="0.00"
-                        min="0"
-                        step="0.01"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="annualPrice"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Annual Price</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        placeholder="0.00"
-                        min="0"
-                        step="0.01"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            <div className="grid gap-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <FormField
+                      control={form.control}
+                      name="price"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Price</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="text"
+                              {...field}
+                              placeholder="$29.99/month"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <FormField
+                      control={form.control}
+                      name="displayOrder"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Display Order</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="number"
+                              {...field}
+                              onChange={(e) =>
+                                field.onChange(parseInt(e.target.value))
+                              }
+                              placeholder="0"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
 
             <FormField
               control={form.control}
@@ -291,90 +303,95 @@ export default function SubscriptionsForm() {
               )}
             />
 
-            <div className="space-y-4">
-              <FormLabel>Features</FormLabel>
-              <div className="flex items-center gap-2">
-                <Input
-                  value={newFeature}
-                  onChange={(e) => setNewFeature(e.target.value)}
-                  placeholder="Add a feature"
-                  className="flex-1"
-                />
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={addFeature}
-                >
-                  Add
-                </Button>
-              </div>
+<div className="space-y-2">
+                  <FormField
+                    control={form.control}
+                    name="features"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Features</FormLabel>
+                        <div className="space-y-2">
+                          <div className="flex gap-2">
+                            <Input
+                              value={newFeature}
+                              onChange={(e) => setNewFeature(e.target.value)}
+                              placeholder="Add a feature..."
+                            />
+                            <Button
+                              type="button"
+                              onClick={() => {
+                                if (newFeature.trim()) {
+                                  // Add feature as an object with name and value properties
+                                  field.onChange([...field.value, { 
+                                    name: newFeature,
+                                    value: newFeature
+                                  }]);
+                                  setNewFeature("");
+                                }
+                              }}
+                            >
+                              Add
+                            </Button>
+                          </div>
+                          <div className="rounded-md border border-border p-3">
+                            {field.value.length > 0 ? (
+                              <ul className="space-y-2">
+                                {field.value.map((feature, index) => (
+                                  <li
+                                    key={index}
+                                    className="flex items-center justify-between"
+                                  >
+                                    <span>{typeof feature === 'string' ? feature : feature.name}</span>
+                                    <Button
+                                      type="button"
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={() => {
+                                        const newFeatures = [...field.value];
+                                        newFeatures.splice(index, 1);
+                                        field.onChange(newFeatures);
+                                      }}
+                                    >
+                                      <X className="h-4 w-4" />
+                                    </Button>
+                                  </li>
+                                ))}
+                              </ul>
+                            ) : (
+                              <div className="text-center text-muted-foreground py-2">
+                                No features added
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
 
-              <ul className="space-y-2 mt-4">
-                {form.watch("features")?.map((feature, index) => (
-                  <li
-                    key={index}
-                    className="flex items-center justify-between p-3 bg-secondary/50 rounded-md"
-                  >
-                    <span>{feature}</span>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => removeFeature(index)}
-                    >
-                      <i className="fas fa-times"></i>
-                    </Button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FormField
-                control={form.control}
-                name="isFeatured"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                    <div className="space-y-0.5">
-                      <FormLabel className="text-base">
-                        Featured Plan
-                      </FormLabel>
-                      <FormMessage />
-                    </div>
-                    <FormControl>
-                      <input
-                        type="checkbox"
-                        checked={field.value}
-                        onChange={field.onChange}
-                        className="w-6 h-6"
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="isPopular"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                    <div className="space-y-0.5">
-                      <FormLabel className="text-base">
-                        Mark as Popular
-                      </FormLabel>
-                      <FormMessage />
-                    </div>
-                    <FormControl>
-                      <input
-                        type="checkbox"
-                        checked={field.value}
-                        onChange={field.onChange}
-                        className="w-6 h-6"
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
+<div className="space-y-2">
+                  <FormField
+                    control={form.control}
+                    name="isPopular"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-start space-x-3 space-y-0 p-4">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <div className="space-y-1 leading-none">
+                          <FormLabel>Popular Plan</FormLabel>
+                          <FormDescription>
+                            Highlight as a popular choice for users
+                          </FormDescription>
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                </div>
 
             <div className="flex items-center justify-end gap-4">
               <Button
