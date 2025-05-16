@@ -58,8 +58,9 @@ export default function SubscriptionsForm() {
 
   // Fetch subscription data if editing
   const { data: subscriptionData, isLoading } = useQuery({
-    queryKey: [`/api/subscriptions/${params.id}`],
+    queryKey: [`/api/admin/subscriptions/${params.id}`],
     enabled: isEditing,
+    retry: 1
   });
 
   // Set form values when editing an existing subscription
