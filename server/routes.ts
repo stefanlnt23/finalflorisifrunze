@@ -5,7 +5,7 @@ import path from 'path';
 import { exec } from 'child_process';
 import util from 'util';
 import { getStorage } from './storage';
-import { getMongoDBStorage } from './mongodb-storage';
+import { MongoDBStorage } from './mongodb-storage';
 import { schema } from '../shared/schema';
 
 const router = express.Router();
@@ -30,7 +30,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Configure MongoDB storage
-const mongoStorage = getMongoDBStorage();
+const mongoStorage = new MongoDBStorage();
 
 // Health check endpoint
 router.get('/api/healthz', (req, res) => {
