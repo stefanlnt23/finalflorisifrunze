@@ -252,29 +252,37 @@ export default function BlogDetail() {
             <div className="mb-8">
               <h3 className="text-2xl font-bold text-gray-900 mb-6">Related Articles</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card className="overflow-hidden">
-                  <div className="aspect-video bg-gray-100 flex items-center justify-center">
-                    <i className="fas fa-image text-green-600 text-4xl"></i>
+                <Card className="overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+                  <div className="aspect-video bg-gray-100 relative overflow-hidden">
+                    <img 
+                      src="https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
+                      alt="Spring Gardening Tips" 
+                      className="w-full h-full object-cover transition-transform hover:scale-105"
+                    />
                   </div>
                   <CardContent className="p-4">
                     <h4 className="font-bold text-lg mb-2">10 Essential Spring Gardening Tips</h4>
                     <p className="text-gray-600 text-sm mb-3">Prepare your garden for the growing season with these expert tips.</p>
                     <Link href="/blog">
-                      <Button variant="outline" className="text-sm border-green-600 text-green-600">
+                      <Button variant="outline" className="text-sm border-green-600 text-green-600 hover:bg-green-50">
                         Read Article
                       </Button>
                     </Link>
                   </CardContent>
                 </Card>
-                <Card className="overflow-hidden">
-                  <div className="aspect-video bg-gray-100 flex items-center justify-center">
-                    <i className="fas fa-image text-green-600 text-4xl"></i>
+                <Card className="overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+                  <div className="aspect-video bg-gray-100 relative overflow-hidden">
+                    <img 
+                      src="https://images.unsplash.com/photo-1601722222411-a1b56e664825?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
+                      alt="Water-Efficient Garden" 
+                      className="w-full h-full object-cover transition-transform hover:scale-105"
+                    />
                   </div>
                   <CardContent className="p-4">
                     <h4 className="font-bold text-lg mb-2">How to Design a Water-Efficient Garden</h4>
                     <p className="text-gray-600 text-sm mb-3">Create a beautiful garden that conserves water and thrives in any climate.</p>
                     <Link href="/blog">
-                      <Button variant="outline" className="text-sm border-green-600 text-green-600">
+                      <Button variant="outline" className="text-sm border-green-600 text-green-600 hover:bg-green-50">
                         Read Article
                       </Button>
                     </Link>
