@@ -176,10 +176,26 @@ export default function AdminBlogPostForm() {
   // Create mutation
   const createMutation = useMutation({
     mutationFn: async (values: FormValues) => {
-      console.log("Creating new blog post:", values);
-      return await apiRequest("POST", "/api/admin/blog", values);
+      console.log("Creating new blog post - sending request");
+      try {
+        const response = await apiRequest("POST", "/api/admin/blog", values);
+        console.log("Server response:", response);
+        
+        if (!response.ok) {
+          // Try to extract error message from response
+          const errorData = await response.json().catch(() => ({}));
+          console.error("Server returned error:", errorData);
+          throw new Error(errorData.message || `Server error: ${response.status}`);
+        }
+        
+        return response;
+      } catch (error) {
+        console.error("Network or parsing error:", error);
+        throw error;
+      }
     },
-    onSuccess: () => {
+    onSuccess: (response) => {
+      console.log("Blog post created successfully");
       toast({
         title: "Blog Post Created",
         description: "The blog post has been successfully created",
@@ -299,22 +315,34 @@ export default function AdminBlogPostForm() {
     // Ensure all dates are valid Date objects
     const publishedAt = values.publishedAt instanceof Date ? values.publishedAt : new Date(values.publishedAt);
     
-    const submissionData = {
-      ...values,
-      content: combinedContent.trim(), // Keep this for backward compatibility
-      imageUrl: values.imageUrl || null,
-      authorId: 1, // Add authorId field
-      publishedAt: publishedAt.toISOString(), // Convert to ISO string format
-      createdAt: now.toISOString(),
-      updatedAt: now.toISOString()
-    };
+    try {
+      const submissionData = {
+        ...values,
+        content: combinedContent.trim(), // Keep this for backward compatibility
+        imageUrl: values.imageUrl || null,
+        authorId: 1, // Add authorId field
+        publishedAt: publishedAt.toISOString(), // Convert to ISO string format
+        createdAt: now.toISOString(),
+        updatedAt: now.toISOString()
+      };
 
-    console.log("Submitting blog post data:", submissionData);
+      console.log("Submitting blog post data:", JSON.stringify(submissionData, null, 2));
 
-    if (isEditing) {
-      updateMutation.mutate(submissionData);
-    } else {
-      createMutation.mutate(submissionData);
+      // Add a delay to avoid multiple submissions
+      if (isEditing) {
+        console.log("Updating existing blog post...");
+        updateMutation.mutate(submissionData);
+      } else {
+        console.log("Creating new blog post...");
+        createMutation.mutate(submissionData);
+      }
+    } catch (error) {
+      console.error("Error preparing submission data:", error);
+      toast({
+        title: "Form Error",
+        description: "There was a problem preparing your submission",
+        variant: "destructive",
+      });
     }
   };
 
@@ -826,13 +854,16 @@ export default function AdminBlogPostForm() {
                   <Button 
                     type="submit"
                     className="bg-green-600 hover:bg-green-700"
-                    disabled={isSubmitting}
-                    onClick={() => {
-                      if (isSubmitting) return;
+                    disabled={isSubmitting || form.formState.isSubmitting}
+                    onClick={(e) => {
+                      if (isSubmitting || form.formState.isSubmitting) {
+                        e.preventDefault();
+                        return;
+                      }
                       console.log("Form submission button clicked");
                     }}
                   >
-                    {isSubmitting ? (
+                    {isSubmitting || form.formState.isSubmitting ? (
                       <>
                         <i className="fas fa-spinner fa-spin mr-2"></i>
                         {isEditing ? "Updating..." : "Publishing..."}

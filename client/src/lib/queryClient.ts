@@ -21,52 +21,58 @@ async function throwIfResNotOk(res: Response) {
   }
 }
 
-export async function apiRequest(method: string, path: string, body?: any) {
+export async function apiRequest(
+  method: "GET" | "POST" | "PUT" | "DELETE",
+  url: string,
+  data?: any
+) {
+  const options: RequestInit = {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "same-origin" // Include cookies for session handling
+  };
+
+  if (data) {
+    options.body = JSON.stringify(data);
+  }
+
   try {
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json'
-    };
-
-    const options: RequestInit = {
-      method,
-      headers,
-      credentials: 'include'
-    };
-
-    if (body && method !== 'GET') {
-      options.body = JSON.stringify(body);
+    console.log(`API ${method} request to ${url}`);
+    if (data) {
+      console.log("Request data:", JSON.stringify(data, null, 2).substring(0, 500) + (JSON.stringify(data).length > 500 ? "..." : ""));
     }
 
-    console.log(`Making API request: ${method} ${path}`);
-    const response = await fetch(path, options);
-    console.log(`API response status: ${response.status}`);
+    const response = await fetch(url, options);
 
-    // Clone the response for debugging
-    const responseClone = response.clone();
-    let responseText;
+    // Log response status
+    console.log(`Response status: ${response.status} ${response.statusText}`);
 
-    try {
-      responseText = await responseClone.text();
-      console.log(`API response text: ${responseText.substring(0, 100)}...`);
-    } catch (e) {
-      console.error("Could not read response text", e);
-    }
-
-    let data;
-    try {
-      data = await response.json();
-    } catch (e) {
-      console.error("Error parsing JSON:", e);
-      throw new Error(`Failed to parse JSON response: ${responseText}`);
-    }
-
+    // For non-ok responses, try to get more information
     if (!response.ok) {
-      throw new Error(data.message || 'API request failed');
+      let errorMessage = `Request failed with status ${response.status}`;
+
+      try {
+        const errorBody = await response.clone().json();
+        console.error("Error response body:", errorBody);
+        if (errorBody.message) {
+          errorMessage = errorBody.message;
+        }
+        if (errorBody.errors) {
+          errorMessage += ": " + JSON.stringify(errorBody.errors);
+        }
+      } catch (e) {
+        // Ignore error parsing error
+      }
+
+      // Create an error with the message but still return the response
+      response.errorMessage = errorMessage;
     }
 
-    return data;
+    return response;
   } catch (error) {
-    console.error(`API Error (${method} ${path}):`, error);
+    console.error("Network error during API request:", error);
     throw error;
   }
 }
