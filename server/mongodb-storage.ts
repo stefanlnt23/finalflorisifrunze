@@ -970,7 +970,7 @@ export class MongoDBStorage implements IStorage {
 
           const nextOrder = highestOrderCard.length > 0 ? highestOrderCard[0].order + 1 : 0;
 
-          const result = await this.db.collection('featureCards').insertOne({
+          const result = await thisdb.collection('featureCards').insertOne({
             imageUrl: card.imageUrl,
             title: card.title,
             description: card.description,

@@ -306,9 +306,50 @@ export default function AdminBlogPostForm() {
     
     // Generate content from sections for backward compatibility
     let combinedContent = "";
-    values.sections?.forEach(section => {
-      if (section.type === "text") {
-        combinedContent += section.content + "\n\n";
+    if (values.sections && values.sections.length > 0) {
+      values.sections.forEach(section => {
+        if (section.type === "text") {
+          combinedContent += section.content + "\n\n";
+        }
+      });
+    }
+    
+    // Clean up sections data to ensure it's properly formatted for submission
+    const cleanedSections = values.sections?.map(section => {
+      // Make sure each section has the required fields based on its type
+      switch(section.type) {
+        case "text":
+          return {
+            type: section.type,
+            content: section.content || "",
+            alignment: section.alignment || "left"
+          };
+        case "image":
+          return {
+            type: section.type,
+            imageUrl: section.imageUrl || "",
+            caption: section.caption || "",
+            alignment: section.alignment || "center"
+          };
+        case "quote":
+          return {
+            type: section.type,
+            content: section.content || "",
+            caption: section.caption || ""
+          };
+        case "heading":
+          return {
+            type: section.type,
+            content: section.content || "",
+            level: section.level || 2
+          };
+        case "list":
+          return {
+            type: section.type,
+            items: section.items || []
+          };
+        default:
+          return section;
       }
     });
     
@@ -323,12 +364,12 @@ export default function AdminBlogPostForm() {
         authorId: 1, // Add authorId field
         publishedAt: publishedAt.toISOString(), // Convert to ISO string format
         createdAt: now.toISOString(),
-        updatedAt: now.toISOString()
+        updatedAt: now.toISOString(),
+        sections: cleanedSections // Use cleaned sections data
       };
 
       console.log("Submitting blog post data:", JSON.stringify(submissionData, null, 2));
 
-      // Add a delay to avoid multiple submissions
       if (isEditing) {
         console.log("Updating existing blog post...");
         updateMutation.mutate(submissionData);
@@ -856,11 +897,9 @@ export default function AdminBlogPostForm() {
                     className="bg-green-600 hover:bg-green-700"
                     disabled={isSubmitting || form.formState.isSubmitting}
                     onClick={(e) => {
-                      if (isSubmitting || form.formState.isSubmitting) {
-                        e.preventDefault();
-                        return;
-                      }
+                      // Only log the click, don't interfere with the form submission
                       console.log("Form submission button clicked");
+                      // The actual submission will happen through form.handleSubmit(onSubmit)
                     }}
                   >
                     {isSubmitting || form.formState.isSubmitting ? (

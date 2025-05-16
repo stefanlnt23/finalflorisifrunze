@@ -524,6 +524,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
         updatedAt: typeof data.updatedAt,
       });
 
+      // Section schema for validation
+      const sectionSchema = z.object({
+        type: z.enum(["text", "image", "quote", "heading", "list"]),
+        content: z.string().optional(),
+        imageUrl: z.string().optional(),
+        caption: z.string().optional(),
+        level: z.number().optional(),
+        items: z.array(z.string()).optional(),
+        alignment: z.enum(["left", "center", "right"]).optional()
+      });
+      
       // Create a custom schema for this specific endpoint with better date handling
       const customBlogPostSchema = z.object({
         title: z.string().min(1, "Title is required"),
@@ -534,7 +545,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         publishedAt: z.string().transform(val => new Date(val)),
         createdAt: z.string().transform(val => new Date(val)),
         updatedAt: z.string().transform(val => new Date(val)),
-        sections: z.array(z.any()).optional(),
+        sections: z.array(sectionSchema).optional(),
         tags: z.array(z.string()).optional()
       });
 
