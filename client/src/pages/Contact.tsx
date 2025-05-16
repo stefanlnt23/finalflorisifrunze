@@ -324,12 +324,8 @@ export default function Contact() {
                           <h3 className="text-lg font-semibold mb-2">Program de Lucru</h3>
                           <div className="text-gray-600 space-y-1">
                             <p className="flex justify-between">
-                              <span>Luni - Vineri:</span>
-                              <span>8:00 - 18:00</span>
-                            </p>
-                            <p className="flex justify-between">
-                              <span>Sâmbătă:</span>
-                              <span>9:00 - 16:00</span>
+                              <span>Luni - Sâmbătă:</span>
+                              <span>07:00 - 19:00</span>
                             </p>
                             <p className="flex justify-between">
                               <span>Duminică:</span>
