@@ -32,16 +32,17 @@ export default function ParallaxSection({ imageUrl, height = '500px', children }
       style={{ height }}
     >
       <div 
-        className="absolute inset-0 w-full h-full bg-cover bg-center"
+        className="absolute inset-0 w-full h-full"
         style={{ 
           backgroundImage: `url(${imageUrl})`,
           transform: `translateY(${parallaxOffset}px)`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
+          zIndex: 1
         }}
       />
-      <div className="absolute inset-0 bg-black bg-opacity-50" />
+      <div className="absolute inset-0 bg-black bg-opacity-40" style={{ zIndex: 2 }}
       <div className="relative z-10 container mx-auto px-4 h-full flex items-center">
         {children}
       </div>
