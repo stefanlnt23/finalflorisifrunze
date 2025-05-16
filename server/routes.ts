@@ -522,23 +522,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
         publishedAt: typeof data.publishedAt,
         createdAt: typeof data.createdAt,
         updatedAt: typeof data.updatedAt,
-        publishedAtIsDate: data.publishedAt instanceof Date,
-        createdAtIsDate: data.createdAt instanceof Date,
-        updatedAtIsDate: data.updatedAt instanceof Date,
       });
 
-      console.log("Processed blog post data:", JSON.stringify(data, null, 2));
-
-      // Create a custom schema for this specific endpoint
+      // Create a custom schema for this specific endpoint with better date handling
       const customBlogPostSchema = z.object({
         title: z.string().min(1, "Title is required"),
-        content: z.string().min(1, "Content is required"),
+        content: z.string().optional(),
         excerpt: z.string().min(1, "Excerpt is required"),
         imageUrl: z.string().nullable().optional(),
-        authorId: z.number().default(1),
-        publishedAt: z.string().transform((val) => new Date(val)),
-        createdAt: z.string().transform((val) => new Date(val)),
-        updatedAt: z.string().transform((val) => new Date(val)),
+        authorId: z.union([z.string(), z.number()]).transform(val => Number(val)),
+        publishedAt: z.string().transform(val => new Date(val)),
+        createdAt: z.string().transform(val => new Date(val)),
+        updatedAt: z.string().transform(val => new Date(val)),
+        sections: z.array(z.any()).optional(),
+        tags: z.array(z.string()).optional()
       });
 
       const validated = customBlogPostSchema.safeParse(data);
@@ -554,13 +551,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      console.log("Validation successful, creating blog post");
+      console.log("Validation successful, creating blog post with data:", 
+        JSON.stringify(validated.data, null, 2));
+      
       const blogPost = await storage.createBlogPost(validated.data);
       console.log("Blog post created successfully:", blogPost.id);
       res.json({ success: true, blogPost });
     } catch (error) {
       console.error("Error creating blog post:", error);
-      res.status(500).json({ message: "Failed to create blog post" });
+      res.status(500).json({ 
+        message: "Failed to create blog post", 
+        error: error.message 
+      });
     }
   });
 

@@ -304,10 +304,12 @@ export default function AdminBlogPostForm() {
       content: combinedContent.trim(), // Keep this for backward compatibility
       imageUrl: values.imageUrl || null,
       authorId: 1, // Add authorId field
-      publishedAt: publishedAt,
-      createdAt: now,
-      updatedAt: now
+      publishedAt: publishedAt.toISOString(), // Convert to ISO string format
+      createdAt: now.toISOString(),
+      updatedAt: now.toISOString()
     };
+
+    console.log("Submitting blog post data:", submissionData);
 
     if (isEditing) {
       updateMutation.mutate(submissionData);
@@ -825,6 +827,10 @@ export default function AdminBlogPostForm() {
                     type="submit"
                     className="bg-green-600 hover:bg-green-700"
                     disabled={isSubmitting}
+                    onClick={() => {
+                      if (isSubmitting) return;
+                      console.log("Form submission button clicked");
+                    }}
                   >
                     {isSubmitting ? (
                       <>
