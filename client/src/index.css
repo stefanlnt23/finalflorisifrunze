@@ -139,6 +139,7 @@
   touch-action: pan-y;
 }
 
+/* Carousel animations and mobile styles */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -148,6 +149,18 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Mobile carousel touch enhancements */
+.carousel-container {
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+/* Disable link highlighting in carousel items during swipe */
+.carousel-container a {
+  -webkit-tap-highlight-color: transparent;
 }
 
 .animate-fadeInUp {

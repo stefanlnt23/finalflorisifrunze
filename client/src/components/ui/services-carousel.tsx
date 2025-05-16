@@ -5,12 +5,16 @@ import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export function ServicesCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   const { data: servicesData, isLoading } = useQuery({
     queryKey: ['/api/services'],
@@ -28,12 +32,13 @@ export function ServicesCarousel() {
     setCurrentIndex(prev => (prev - 1 + totalSlides) % totalSlides);
   };
 
-  // Handle auto-play
+  // Handle auto-play with infinite loop
   useEffect(() => {
     if (autoPlay && totalSlides > 1) {
       if (timerRef.current) clearInterval(timerRef.current);
       
       timerRef.current = setInterval(() => {
+        // For infinite loop, always use modulo for wrapping around
         nextSlide();
       }, 4000);
     }
@@ -55,6 +60,31 @@ export function ServicesCarousel() {
   // Slide indicators
   const goToSlide = (index: number) => {
     setCurrentIndex(index);
+  };
+
+  // Handle touch events for mobile swiping
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+    setAutoPlay(false); // Pause autoplay on touch
+  };
+  
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+  
+  const handleTouchEnd = () => {
+    if (touchStart - touchEnd > 75) {
+      // Swipe left
+      nextSlide();
+    }
+    
+    if (touchEnd - touchStart > 75) {
+      // Swipe right
+      prevSlide();
+    }
+    
+    // Resume autoplay after touch ends
+    setAutoPlay(true);
   };
 
   if (isLoading) {
@@ -94,49 +124,10 @@ export function ServicesCarousel() {
     desktop: 3
   };
 
-  // Initialize touch event variables
-  const [touchStart, setTouchStart] = useState(0);
-  const [touchEnd, setTouchEnd] = useState(0);
-  
-  // Handle touch events for mobile swiping
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-  
-  const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-  
-  const handleTouchEnd = () => {
-    if (touchStart - touchEnd > 75) {
-      // Swipe left
-      nextSlide();
-    }
-    
-    if (touchEnd - touchStart > 75) {
-      // Swipe right
-      prevSlide();
-    }
-  };
-  
-  // Display the correct number of slides based on viewport
-  const getVisibleCards = () => {
-    // Use a flexible slice approach to show the right number of cards
-    const cards = [];
-    
-    // Determine how many cards to show (simplified - would be better with a responsive hook)
-    const visibleCount = window.innerWidth < 640 ? visibleSlides.mobile : 
-                         window.innerWidth < 1024 ? visibleSlides.tablet : 
-                         visibleSlides.desktop;
-    
-    // Create a wrapped index array to handle looping
-    for (let i = 0; i < visibleCount; i++) {
-      const index = (currentIndex + i) % totalSlides;
-      cards.push(services[index]);
-    }
-    
-    return cards;
-  };
+  // Determine how many cards to show
+  const visibleCount = isMobile ? visibleSlides.mobile : 
+                      window.innerWidth < 1024 ? visibleSlides.tablet : 
+                      visibleSlides.desktop;
 
   return (
     <div 
@@ -147,14 +138,16 @@ export function ServicesCarousel() {
     >
       {/* Main slider content */}
       <div 
-        className="overflow-hidden"
+        className="overflow-hidden carousel-container"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
         <div 
-          className="flex transition-transform duration-500 ease-in-out"
-          style={{ transform: `translateX(-${currentIndex * (100 / visibleSlides.desktop)}%)` }}
+          className="flex transition-transform duration-500 ease-out"
+          style={{ 
+            transform: `translateX(-${currentIndex * (100 / (isMobile ? 1 : visibleSlides.desktop))}%)` 
+          }}
         >
           {services.map((service, index) => (
             <div 
@@ -199,10 +192,10 @@ export function ServicesCarousel() {
         </div>
       </div>
       
-      {/* Navigation arrows */}
+      {/* Navigation arrows - always visible on mobile for better UX */}
       <button 
         onClick={prevSlide}
-        className="absolute top-1/2 left-0 -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-green-50 border border-green-200 z-10 hidden md:flex items-center justify-center"
+        className="absolute top-1/2 left-0 -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-green-50 border border-green-200 z-10 flex items-center justify-center"
         aria-label="Previous slide"
       >
         <ChevronLeft className="h-6 w-6 text-green-600" />
@@ -210,7 +203,7 @@ export function ServicesCarousel() {
       
       <button 
         onClick={nextSlide}
-        className="absolute top-1/2 right-0 -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-green-50 border border-green-200 z-10 hidden md:flex items-center justify-center"
+        className="absolute top-1/2 right-0 -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-green-50 border border-green-200 z-10 flex items-center justify-center"
         aria-label="Next slide"
       >
         <ChevronRight className="h-6 w-6 text-green-600" />
