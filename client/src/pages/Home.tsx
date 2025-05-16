@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
@@ -6,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import MainLayout from "@/components/layouts/MainLayout";
 import { HomeCarousel } from "@/components/ui/home-carousel";
 import { ServicesCarousel } from "@/components/ui/services-carousel";
-import ParallaxSection from "@/components/sections/ParallaxSection";
 
 // Default feature cards as fallback
 const defaultFeatureCards = [
@@ -47,6 +47,7 @@ const defaultFeatureCards = [
 export default function Home() {
   // State for the testimonial carousel
   const [activeTestimonial, setActiveTestimonial] = useState(0);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   // Get services data
   const { data: servicesData, isLoading: isLoadingServices } = useQuery({
@@ -88,6 +89,16 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [testimonials.length]);
 
+  // Scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <MainLayout>
 
@@ -95,39 +106,39 @@ export default function Home() {
       <section className="bg-gradient-to-br from-green-50 to-green-100 py-20 md:py-32 relative overflow-hidden">
         {/* Decorative Elements */}
         <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
-          <div className="absolute -top-16 -left-16 w-64 h-64 rounded-full bg-green-300"></div>
-          <div className="absolute top-1/3 -right-24 w-96 h-96 rounded-full bg-green-200"></div>
-          <div className="absolute -bottom-20 left-1/4 w-72 h-72 rounded-full bg-green-400"></div>
+          <div className="absolute -top-16 -left-16 w-64 h-64 rounded-full bg-green-300 animate-blob"></div>
+          <div className="absolute top-1/3 -right-24 w-96 h-96 rounded-full bg-green-200 animate-blob animation-delay-2000"></div>
+          <div className="absolute -bottom-20 left-1/4 w-72 h-72 rounded-full bg-green-400 animate-blob animation-delay-4000"></div>
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="md:w-1/2 mb-10 md:mb-0 md:pr-8">
-              <span className="inline-block px-4 py-1 rounded-full bg-green-100 text-green-600 text-sm font-medium mb-6">
+              <span className="inline-block px-4 py-1 rounded-full bg-green-100 text-green-600 text-sm font-medium mb-6 animate-fadeIn">
                 Servicii Profesionale de Grădinărit
               </span>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight text-gray-900">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight text-gray-900 animate-slideUp">
                 Transformă Spațiul Tău Exterior Într-un <span className="text-green-600 relative">
                   Paradis
                   <span className="absolute bottom-0 left-0 w-full h-2 bg-green-200 -z-10"></span>
                 </span>
               </h1>
-              <p className="text-lg mb-8 text-gray-700 max-w-lg">
+              <p className="text-lg mb-8 text-gray-700 max-w-lg animate-fadeIn animation-delay-300">
                 Servicii profesionale de grădinărit pentru a face grădina ta frumoasă, sustenabilă și înfloritoare pe tot parcursul anului. Echipa noastră de experți îți transformă visele despre grădină în realitate.
               </p>
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap gap-4 animate-slideUp animation-delay-500">
                 <Link href="/contact">
-                  <Button className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all">
+                  <Button className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
                     Obține o Ofertă Gratuită
                   </Button>
                 </Link>
                 <Link href="/blog">
-                  <Button variant="outline" className="border-green-600 text-green-600 hover:bg-green-50 px-8 py-3 rounded-full">
+                  <Button variant="outline" className="border-green-600 text-green-600 hover:bg-green-50 px-8 py-3 rounded-full transform hover:scale-105">
                     Află Mai Multe
                   </Button>
                 </Link>
               </div>
-              <div className="mt-8 flex items-center text-gray-600">
+              <div className="mt-8 flex items-center text-gray-600 animate-fadeIn animation-delay-700">
                 <span className="flex items-center mr-6">
                   <i className="fas fa-check-circle text-green-500 mr-2"></i>
                   Echipă cu Experiență
@@ -138,8 +149,8 @@ export default function Home() {
                 </span>
               </div>
             </div>
-            <div className="md:w-1/2">
-              <div className="shadow-2xl rounded-lg overflow-hidden border-8 border-white">
+            <div className="md:w-1/2 animate-slideIn">
+              <div className="shadow-2xl rounded-lg overflow-hidden border-8 border-white transform transition-all hover:rotate-1 hover:scale-105">
                 <HomeCarousel />
               </div>
             </div>
@@ -147,82 +158,99 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Parallax Section 1 */}
-      <ParallaxSection 
-        imageUrl="https://images.unsplash.com/photo-1532450106241-3cf5d9f886a6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-        height="400px"
-      >
-        <div className="text-center w-full">
-          <h2 className="text-4xl font-bold text-white mb-4">Transformă Grădina Ta</h2>
-          <p className="text-xl text-white max-w-2xl mx-auto mb-6">
-            Servicii profesionale pentru a face grădina ta să strălucească în fiecare anotimp
-          </p>
-          <button className="px-8 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-colors">
-            Programează o Consultație
-          </button>
+      {/* Banner Section - Replacement for first ParallaxSection */}
+      <section className="py-20 bg-gradient-to-r from-green-600 to-green-700 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-0 right-0 w-full h-full bg-pattern-leaves"></div>
         </div>
-      </ParallaxSection>
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center w-full">
+            <h2 className="text-4xl font-bold text-white mb-4 animate-pulse">Transformă Grădina Ta</h2>
+            <p className="text-xl text-white max-w-2xl mx-auto mb-6">
+              Servicii profesionale pentru a face grădina ta să strălucească în fiecare anotimp
+            </p>
+            <Link href="/contact">
+              <Button className="px-8 py-3 bg-white text-green-600 rounded-full hover:bg-green-50 transition-colors shadow-xl transform hover:scale-105">
+                Programează o Consultație
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {/* Services Section */}
-      <section className="py-20 bg-white relative">
+      <section className="py-20 bg-white relative overflow-hidden">
         <div className="absolute right-0 top-0 w-1/3 h-full bg-green-50 opacity-50 clip-path-slant"></div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="inline-block px-4 py-1 rounded-full bg-green-100 text-green-600 text-sm font-medium mb-4">
+            <span className="inline-block px-4 py-1 rounded-full bg-green-100 text-green-600 text-sm font-medium mb-4 hover-float">
               Servicii de Experți
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 animate-fadeIn">
               Serviciile Noastre
             </h2>
-            <div className="w-24 h-1 bg-green-500 mx-auto mb-6"></div>
+            <div className="w-24 h-1 bg-green-500 mx-auto mb-6 animate-grow"></div>
             <p className="text-gray-600 text-lg">
               Oferim servicii complete de grădinărit și amenajare peisagistică pentru a menține spațiul tău exterior frumos și sănătos în toate anotimpurile.
             </p>
           </div>
 
           {/* Services Carousel */}
-          <div className="px-4 md:px-8 lg:px-12">
+          <div className="px-4 md:px-8 lg:px-12 animate-slideUp animation-delay-300">
             <ServicesCarousel />
           </div>
 
-          <div className="text-center mt-12">
+          <div className="text-center mt-12 animate-bounce animation-delay-500">
             <Link href="/services">
-              <Button className="bg-green-600 hover:bg-green-700">
+              <Button className="bg-green-600 hover:bg-green-700 transform transition-all hover:scale-105">
                 View All Services
               </Button>
             </Link>
           </div>
         </div>
       </section>
-            </Button>
-          g-green-50 shadow-lg">
+
+      {/* Inspirational Banner - Replacement for second ParallaxSection */}
+      <section className="relative py-24 flex items-center justify-center overflow-hidden bg-design-pattern">
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 opacity-90"></div>
+        <div className="container mx-auto px-6 relative z-10 text-center">
+          <h2 className="text-4xl font-bold text-white mb-6 animate-glow">Design Peisagistic Inspirațional</h2>
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+            Creăm spații exterioare captivante, transformate cu artă și funcționalitate
+          </p>
+          <Link href="/portfolio">
+            <Button className="bg-white hover:bg-gray-100 text-gray-900 px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
               Vezi Portofoliul Nostru
             </Button>
           </Link>
         </div>
-      </ParallaxSection>
+      </section>
 
       {/* Why Choose Us Section */}
       <section className="py-24 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl font-bold mb-4 text-gray-900">De Ce Să Ne Alegeți</h2>
+            <h2 className="text-3xl font-bold mb-4 text-gray-900 fade-in-view">De Ce Să Ne Alegeți</h2>
             <p className="text-gray-600">
-              Suntem dedicați să oferim servicii excepționale pentru grădină cu expertiză și grijă.ith expertise and care.
+              Suntem dedicați să oferim servicii excepționale pentru grădină cu expertiză și grijă.
             </p>
           </div>
 
           {/* Feature Cards with Images */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
-            {featureCards.map((card) => (
-              <div key={card.id} className="relative group overflow-hidden rounded-xl border-2 border-green-100 shadow-md hover:shadow-xl transition-all duration-300 h-80">
-                <div className="absolute inset-0 bg-cover bg-center" 
+            {featureCards.map((card, index) => (
+              <div 
+                key={card.id} 
+                className="relative group overflow-hidden rounded-xl border-2 border-green-100 shadow-md hover:shadow-xl transition-all duration-300 h-80 stagger-animate"
+                style={{ animationDelay: `${index * 150}ms` }}
+              >
+                <div className="absolute inset-0 bg-cover bg-center transform transition-transform group-hover:scale-110" 
                   style={{ backgroundImage: `url(${card.imageUrl})` }}>
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-green-900 via-green-900/70 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
-                <div className="absolute inset-0 flex flex-col items-center justify-end p-6 text-center">
+                <div className="absolute inset-0 flex flex-col items-center justify-end p-6 text-center transform transition-transform translate-y-2 group-hover:translate-y-0">
                   <h3 className="text-lg font-bold text-white mb-1 drop-shadow-md">{card.title}</h3>
-                  <p className="text-green-50 text-sm mb-4 max-w-[85%] leading-snug drop-shadow-md">{card.description}</p>
+                  <p className="text-green-50 text-sm mb-4 max-w-[85%] leading-snug drop-shadow-md transform transition-all opacity-80 group-hover:opacity-100">{card.description}</p>
                 </div>
               </div>
             ))}
@@ -230,7 +258,7 @@ export default function Home() {
 
           <div className="mt-12 text-center">
             <Link href="/services">
-              <Button className="bg-green-600 hover:bg-green-700">
+              <Button className="bg-green-600 hover:bg-green-700 transform hover:scale-105 transition">
                 Explore Our Services
               </Button>
             </Link>
@@ -242,7 +270,7 @@ export default function Home() {
       <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl font-bold mb-4 text-gray-900">Ce Spun Clienții Noștri</h2>
+            <h2 className="text-3xl font-bold mb-4 text-gray-900 fade-in-view">Ce Spun Clienții Noștri</h2>
             <p className="text-gray-600">
               Află de la clienții noștri mulțumiți despre experiențele lor cu serviciile noastre.
             </p>
@@ -274,7 +302,7 @@ export default function Home() {
                 {testimonials.length <= 3 ? (
                   // If we have 3 or fewer testimonials, show them directly
                   testimonials.map((testimonial) => (
-                    <Card key={testimonial.id} className="shadow-lg transform transition-all duration-300 hover:scale-105">
+                    <Card key={testimonial.id} className="shadow-lg transform transition-all duration-300 hover:scale-105 hover:rotate-1">
                       <CardContent className="p-6">
                         <div className="flex flex-col items-center text-center space-y-4">
                           {testimonial.imageUrl ? (
@@ -311,7 +339,7 @@ export default function Home() {
                     const testimonial = testimonials[index];
 
                     return testimonial ? (
-                      <Card key={`${testimonial.id}-${index}`} className="shadow-lg transform transition-all duration-300 hover:scale-105">
+                      <Card key={`${testimonial.id}-${index}`} className="shadow-lg transform transition-all duration-300 hover:scale-105 hover:rotate-1">
                         <CardContent className="p-6">
                           <div className="flex flex-col items-center text-center space-y-4">
                             {testimonial.imageUrl ? (
