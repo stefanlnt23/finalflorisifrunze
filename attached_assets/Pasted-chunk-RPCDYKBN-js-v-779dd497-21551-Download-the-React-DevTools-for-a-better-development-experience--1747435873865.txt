@@ -1,0 +1,342 @@
+chunk-RPCDYKBN.js?v=779dd497:21551 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+services-carousel.tsx:98 Warning: React has detected a change in the order of Hooks called by ServicesCarousel. This will lead to bugs and errors if not fixed. For more information, read the Rules of Hooks: https://reactjs.org/link/rules-of-hooks
+
+   Previous render            Next render
+   ------------------------------------------------------
+1. useState                   useState
+2. useState                   useState
+3. useRef                     useRef
+4. useRef                     useRef
+5. useContext                 useContext
+6. useContext                 useContext
+7. useContext                 useContext
+8. useEffect                  useEffect
+9. useState                   useState
+10. useCallback               useCallback
+11. useSyncExternalStore      useSyncExternalStore
+12. useEffect                 useEffect
+13. useEffect                 useEffect
+14. undefined                 useState
+   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    at ServicesCarousel (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/src/components/ui/services-carousel.tsx:26:43)
+    at div
+    at div
+    at div
+    at section
+    at main
+    at div
+    at MainLayout (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/src/components/layouts/MainLayout.tsx:21:38)
+    at Home (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/src/pages/Home.tsx:62:53)
+    at Route (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=779dd497:338:16)
+    at Switch (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=779dd497:394:17)
+    at Router
+    at Provider (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-OXZDJRWN.js?v=779dd497:38:15)
+    at TooltipProvider (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=779dd497:61:5)
+    at QueryClientProvider (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=779dd497:2875:3)
+    at App
+printWarning @ chunk-RPCDYKBN.js?v=779dd497:521
+error @ chunk-RPCDYKBN.js?v=779dd497:505
+warnOnHookMismatchInDev @ chunk-RPCDYKBN.js?v=779dd497:11495
+updateHookTypesDev @ chunk-RPCDYKBN.js?v=779dd497:11465
+useState @ chunk-RPCDYKBN.js?v=779dd497:12749
+useState @ chunk-QCHXOAYK.js?v=779dd497:1066
+ServicesCarousel @ services-carousel.tsx:98
+renderWithHooks @ chunk-RPCDYKBN.js?v=779dd497:11548
+updateFunctionComponent @ chunk-RPCDYKBN.js?v=779dd497:14582
+beginWork @ chunk-RPCDYKBN.js?v=779dd497:15924
+beginWork$1 @ chunk-RPCDYKBN.js?v=779dd497:19753
+performUnitOfWork @ chunk-RPCDYKBN.js?v=779dd497:19198
+workLoopSync @ chunk-RPCDYKBN.js?v=779dd497:19137
+renderRootSync @ chunk-RPCDYKBN.js?v=779dd497:19116
+performSyncWorkOnRoot @ chunk-RPCDYKBN.js?v=779dd497:18874
+flushSyncCallbacks @ chunk-RPCDYKBN.js?v=779dd497:9119
+(anonymous) @ chunk-RPCDYKBN.js?v=779dd497:18627
+setTimeout
+defaultScheduler @ @tanstack_react-query.js?v=779dd497:546
+flush @ @tanstack_react-query.js?v=779dd497:570
+batch @ @tanstack_react-query.js?v=779dd497:588
+dispatch_fn @ @tanstack_react-query.js?v=779dd497:1001
+setData @ @tanstack_react-query.js?v=779dd497:699
+onSuccess @ @tanstack_react-query.js?v=779dd497:902
+resolve @ @tanstack_react-query.js?v=779dd497:456
+Promise.then
+run @ @tanstack_react-query.js?v=779dd497:498
+start @ @tanstack_react-query.js?v=779dd497:536
+fetch @ @tanstack_react-query.js?v=779dd497:931
+executeFetch_fn @ @tanstack_react-query.js?v=779dd497:2238
+onSubscribe @ @tanstack_react-query.js?v=779dd497:1942
+subscribe @ @tanstack_react-query.js?v=779dd497:24
+(anonymous) @ @tanstack_react-query.js?v=779dd497:3099
+subscribeToStore @ chunk-RPCDYKBN.js?v=779dd497:11984
+commitHookEffectListMount @ chunk-RPCDYKBN.js?v=779dd497:16915
+commitPassiveMountOnFiber @ chunk-RPCDYKBN.js?v=779dd497:18156
+commitPassiveMountEffects_complete @ chunk-RPCDYKBN.js?v=779dd497:18129
+commitPassiveMountEffects_begin @ chunk-RPCDYKBN.js?v=779dd497:18119
+commitPassiveMountEffects @ chunk-RPCDYKBN.js?v=779dd497:18109
+flushPassiveEffectsImpl @ chunk-RPCDYKBN.js?v=779dd497:19490
+flushPassiveEffects @ chunk-RPCDYKBN.js?v=779dd497:19447
+performSyncWorkOnRoot @ chunk-RPCDYKBN.js?v=779dd497:18868
+flushSyncCallbacks @ chunk-RPCDYKBN.js?v=779dd497:9119
+commitRootImpl @ chunk-RPCDYKBN.js?v=779dd497:19432
+commitRoot @ chunk-RPCDYKBN.js?v=779dd497:19277
+finishConcurrentRender @ chunk-RPCDYKBN.js?v=779dd497:18805
+performConcurrentWorkOnRoot @ chunk-RPCDYKBN.js?v=779dd497:18718
+workLoop @ chunk-RPCDYKBN.js?v=779dd497:197
+flushWork @ chunk-RPCDYKBN.js?v=779dd497:176
+performWorkUntilDeadline @ chunk-RPCDYKBN.js?v=779dd497:384
+chunk-RPCDYKBN.js?v=779dd497:11678 Uncaught Error: Rendered more hooks than during the previous render.
+    at updateWorkInProgressHook (chunk-RPCDYKBN.js?v=779dd497:11678:21)
+    at updateReducer (chunk-RPCDYKBN.js?v=779dd497:11727:22)
+    at updateState (chunk-RPCDYKBN.js?v=779dd497:12021:18)
+    at Object.useState (chunk-RPCDYKBN.js?v=779dd497:12753:24)
+    at useState (chunk-QCHXOAYK.js?v=779dd497:1066:29)
+    at ServicesCarousel (services-carousel.tsx:98:39)
+    at renderWithHooks (chunk-RPCDYKBN.js?v=779dd497:11548:26)
+    at updateFunctionComponent (chunk-RPCDYKBN.js?v=779dd497:14582:28)
+    at beginWork (chunk-RPCDYKBN.js?v=779dd497:15924:22)
+    at HTMLUnknownElement.callCallback2 (chunk-RPCDYKBN.js?v=779dd497:3674:22)
+updateWorkInProgressHook @ chunk-RPCDYKBN.js?v=779dd497:11678
+updateReducer @ chunk-RPCDYKBN.js?v=779dd497:11727
+updateState @ chunk-RPCDYKBN.js?v=779dd497:12021
+useState @ chunk-RPCDYKBN.js?v=779dd497:12753
+useState @ chunk-QCHXOAYK.js?v=779dd497:1066
+ServicesCarousel @ services-carousel.tsx:98
+renderWithHooks @ chunk-RPCDYKBN.js?v=779dd497:11548
+updateFunctionComponent @ chunk-RPCDYKBN.js?v=779dd497:14582
+beginWork @ chunk-RPCDYKBN.js?v=779dd497:15924
+callCallback2 @ chunk-RPCDYKBN.js?v=779dd497:3674
+invokeGuardedCallbackDev @ chunk-RPCDYKBN.js?v=779dd497:3699
+invokeGuardedCallback @ chunk-RPCDYKBN.js?v=779dd497:3733
+beginWork$1 @ chunk-RPCDYKBN.js?v=779dd497:19765
+performUnitOfWork @ chunk-RPCDYKBN.js?v=779dd497:19198
+workLoopSync @ chunk-RPCDYKBN.js?v=779dd497:19137
+renderRootSync @ chunk-RPCDYKBN.js?v=779dd497:19116
+performSyncWorkOnRoot @ chunk-RPCDYKBN.js?v=779dd497:18874
+flushSyncCallbacks @ chunk-RPCDYKBN.js?v=779dd497:9119
+(anonymous) @ chunk-RPCDYKBN.js?v=779dd497:18627
+setTimeout
+defaultScheduler @ @tanstack_react-query.js?v=779dd497:546
+flush @ @tanstack_react-query.js?v=779dd497:570
+batch @ @tanstack_react-query.js?v=779dd497:588
+dispatch_fn @ @tanstack_react-query.js?v=779dd497:1001
+setData @ @tanstack_react-query.js?v=779dd497:699
+onSuccess @ @tanstack_react-query.js?v=779dd497:902
+resolve @ @tanstack_react-query.js?v=779dd497:456
+Promise.then
+run @ @tanstack_react-query.js?v=779dd497:498
+start @ @tanstack_react-query.js?v=779dd497:536
+fetch @ @tanstack_react-query.js?v=779dd497:931
+executeFetch_fn @ @tanstack_react-query.js?v=779dd497:2238
+onSubscribe @ @tanstack_react-query.js?v=779dd497:1942
+subscribe @ @tanstack_react-query.js?v=779dd497:24
+(anonymous) @ @tanstack_react-query.js?v=779dd497:3099
+subscribeToStore @ chunk-RPCDYKBN.js?v=779dd497:11984
+commitHookEffectListMount @ chunk-RPCDYKBN.js?v=779dd497:16915
+commitPassiveMountOnFiber @ chunk-RPCDYKBN.js?v=779dd497:18156
+commitPassiveMountEffects_complete @ chunk-RPCDYKBN.js?v=779dd497:18129
+commitPassiveMountEffects_begin @ chunk-RPCDYKBN.js?v=779dd497:18119
+commitPassiveMountEffects @ chunk-RPCDYKBN.js?v=779dd497:18109
+flushPassiveEffectsImpl @ chunk-RPCDYKBN.js?v=779dd497:19490
+flushPassiveEffects @ chunk-RPCDYKBN.js?v=779dd497:19447
+performSyncWorkOnRoot @ chunk-RPCDYKBN.js?v=779dd497:18868
+flushSyncCallbacks @ chunk-RPCDYKBN.js?v=779dd497:9119
+commitRootImpl @ chunk-RPCDYKBN.js?v=779dd497:19432
+commitRoot @ chunk-RPCDYKBN.js?v=779dd497:19277
+finishConcurrentRender @ chunk-RPCDYKBN.js?v=779dd497:18805
+performConcurrentWorkOnRoot @ chunk-RPCDYKBN.js?v=779dd497:18718
+workLoop @ chunk-RPCDYKBN.js?v=779dd497:197
+flushWork @ chunk-RPCDYKBN.js?v=779dd497:176
+performWorkUntilDeadline @ chunk-RPCDYKBN.js?v=779dd497:384
+chunk-RPCDYKBN.js?v=779dd497:11678 Uncaught Error: Rendered more hooks than during the previous render.
+    at updateWorkInProgressHook (chunk-RPCDYKBN.js?v=779dd497:11678:21)
+    at updateReducer (chunk-RPCDYKBN.js?v=779dd497:11727:22)
+    at updateState (chunk-RPCDYKBN.js?v=779dd497:12021:18)
+    at Object.useState (chunk-RPCDYKBN.js?v=779dd497:12753:24)
+    at useState (chunk-QCHXOAYK.js?v=779dd497:1066:29)
+    at ServicesCarousel (services-carousel.tsx:98:39)
+    at renderWithHooks (chunk-RPCDYKBN.js?v=779dd497:11548:26)
+    at updateFunctionComponent (chunk-RPCDYKBN.js?v=779dd497:14582:28)
+    at beginWork (chunk-RPCDYKBN.js?v=779dd497:15924:22)
+    at HTMLUnknownElement.callCallback2 (chunk-RPCDYKBN.js?v=779dd497:3674:22)
+updateWorkInProgressHook @ chunk-RPCDYKBN.js?v=779dd497:11678
+updateReducer @ chunk-RPCDYKBN.js?v=779dd497:11727
+updateState @ chunk-RPCDYKBN.js?v=779dd497:12021
+useState @ chunk-RPCDYKBN.js?v=779dd497:12753
+useState @ chunk-QCHXOAYK.js?v=779dd497:1066
+ServicesCarousel @ services-carousel.tsx:98
+renderWithHooks @ chunk-RPCDYKBN.js?v=779dd497:11548
+updateFunctionComponent @ chunk-RPCDYKBN.js?v=779dd497:14582
+beginWork @ chunk-RPCDYKBN.js?v=779dd497:15924
+callCallback2 @ chunk-RPCDYKBN.js?v=779dd497:3674
+invokeGuardedCallbackDev @ chunk-RPCDYKBN.js?v=779dd497:3699
+invokeGuardedCallback @ chunk-RPCDYKBN.js?v=779dd497:3733
+beginWork$1 @ chunk-RPCDYKBN.js?v=779dd497:19765
+performUnitOfWork @ chunk-RPCDYKBN.js?v=779dd497:19198
+workLoopSync @ chunk-RPCDYKBN.js?v=779dd497:19137
+renderRootSync @ chunk-RPCDYKBN.js?v=779dd497:19116
+recoverFromConcurrentError @ chunk-RPCDYKBN.js?v=779dd497:18736
+performSyncWorkOnRoot @ chunk-RPCDYKBN.js?v=779dd497:18879
+flushSyncCallbacks @ chunk-RPCDYKBN.js?v=779dd497:9119
+(anonymous) @ chunk-RPCDYKBN.js?v=779dd497:18627
+setTimeout
+defaultScheduler @ @tanstack_react-query.js?v=779dd497:546
+flush @ @tanstack_react-query.js?v=779dd497:570
+batch @ @tanstack_react-query.js?v=779dd497:588
+dispatch_fn @ @tanstack_react-query.js?v=779dd497:1001
+setData @ @tanstack_react-query.js?v=779dd497:699
+onSuccess @ @tanstack_react-query.js?v=779dd497:902
+resolve @ @tanstack_react-query.js?v=779dd497:456
+Promise.then
+run @ @tanstack_react-query.js?v=779dd497:498
+start @ @tanstack_react-query.js?v=779dd497:536
+fetch @ @tanstack_react-query.js?v=779dd497:931
+executeFetch_fn @ @tanstack_react-query.js?v=779dd497:2238
+onSubscribe @ @tanstack_react-query.js?v=779dd497:1942
+subscribe @ @tanstack_react-query.js?v=779dd497:24
+(anonymous) @ @tanstack_react-query.js?v=779dd497:3099
+subscribeToStore @ chunk-RPCDYKBN.js?v=779dd497:11984
+commitHookEffectListMount @ chunk-RPCDYKBN.js?v=779dd497:16915
+commitPassiveMountOnFiber @ chunk-RPCDYKBN.js?v=779dd497:18156
+commitPassiveMountEffects_complete @ chunk-RPCDYKBN.js?v=779dd497:18129
+commitPassiveMountEffects_begin @ chunk-RPCDYKBN.js?v=779dd497:18119
+commitPassiveMountEffects @ chunk-RPCDYKBN.js?v=779dd497:18109
+flushPassiveEffectsImpl @ chunk-RPCDYKBN.js?v=779dd497:19490
+flushPassiveEffects @ chunk-RPCDYKBN.js?v=779dd497:19447
+performSyncWorkOnRoot @ chunk-RPCDYKBN.js?v=779dd497:18868
+flushSyncCallbacks @ chunk-RPCDYKBN.js?v=779dd497:9119
+commitRootImpl @ chunk-RPCDYKBN.js?v=779dd497:19432
+commitRoot @ chunk-RPCDYKBN.js?v=779dd497:19277
+finishConcurrentRender @ chunk-RPCDYKBN.js?v=779dd497:18805
+performConcurrentWorkOnRoot @ chunk-RPCDYKBN.js?v=779dd497:18718
+workLoop @ chunk-RPCDYKBN.js?v=779dd497:197
+flushWork @ chunk-RPCDYKBN.js?v=779dd497:176
+performWorkUntilDeadline @ chunk-RPCDYKBN.js?v=779dd497:384
+chunk-RPCDYKBN.js?v=779dd497:14032 The above error occurred in the <ServicesCarousel> component:
+
+    at ServicesCarousel (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/src/components/ui/services-carousel.tsx:26:43)
+    at div
+    at div
+    at div
+    at section
+    at main
+    at div
+    at MainLayout (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/src/components/layouts/MainLayout.tsx:21:38)
+    at Home (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/src/pages/Home.tsx:62:53)
+    at Route (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=779dd497:338:16)
+    at Switch (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=779dd497:394:17)
+    at Router
+    at Provider (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-OXZDJRWN.js?v=779dd497:38:15)
+    at TooltipProvider (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=779dd497:61:5)
+    at QueryClientProvider (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=779dd497:2875:3)
+    at App
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+logCapturedError @ chunk-RPCDYKBN.js?v=779dd497:14032
+update.callback @ chunk-RPCDYKBN.js?v=779dd497:14052
+callCallback @ chunk-RPCDYKBN.js?v=779dd497:11248
+commitUpdateQueue @ chunk-RPCDYKBN.js?v=779dd497:11265
+commitLayoutEffectOnFiber @ chunk-RPCDYKBN.js?v=779dd497:17093
+commitLayoutMountEffects_complete @ chunk-RPCDYKBN.js?v=779dd497:17980
+commitLayoutEffects_begin @ chunk-RPCDYKBN.js?v=779dd497:17969
+commitLayoutEffects @ chunk-RPCDYKBN.js?v=779dd497:17920
+commitRootImpl @ chunk-RPCDYKBN.js?v=779dd497:19353
+commitRoot @ chunk-RPCDYKBN.js?v=779dd497:19277
+performSyncWorkOnRoot @ chunk-RPCDYKBN.js?v=779dd497:18895
+flushSyncCallbacks @ chunk-RPCDYKBN.js?v=779dd497:9119
+(anonymous) @ chunk-RPCDYKBN.js?v=779dd497:18627
+setTimeout
+defaultScheduler @ @tanstack_react-query.js?v=779dd497:546
+flush @ @tanstack_react-query.js?v=779dd497:570
+batch @ @tanstack_react-query.js?v=779dd497:588
+dispatch_fn @ @tanstack_react-query.js?v=779dd497:1001
+setData @ @tanstack_react-query.js?v=779dd497:699
+onSuccess @ @tanstack_react-query.js?v=779dd497:902
+resolve @ @tanstack_react-query.js?v=779dd497:456
+Promise.then
+run @ @tanstack_react-query.js?v=779dd497:498
+start @ @tanstack_react-query.js?v=779dd497:536
+fetch @ @tanstack_react-query.js?v=779dd497:931
+executeFetch_fn @ @tanstack_react-query.js?v=779dd497:2238
+onSubscribe @ @tanstack_react-query.js?v=779dd497:1942
+subscribe @ @tanstack_react-query.js?v=779dd497:24
+(anonymous) @ @tanstack_react-query.js?v=779dd497:3099
+subscribeToStore @ chunk-RPCDYKBN.js?v=779dd497:11984
+commitHookEffectListMount @ chunk-RPCDYKBN.js?v=779dd497:16915
+commitPassiveMountOnFiber @ chunk-RPCDYKBN.js?v=779dd497:18156
+commitPassiveMountEffects_complete @ chunk-RPCDYKBN.js?v=779dd497:18129
+commitPassiveMountEffects_begin @ chunk-RPCDYKBN.js?v=779dd497:18119
+commitPassiveMountEffects @ chunk-RPCDYKBN.js?v=779dd497:18109
+flushPassiveEffectsImpl @ chunk-RPCDYKBN.js?v=779dd497:19490
+flushPassiveEffects @ chunk-RPCDYKBN.js?v=779dd497:19447
+performSyncWorkOnRoot @ chunk-RPCDYKBN.js?v=779dd497:18868
+flushSyncCallbacks @ chunk-RPCDYKBN.js?v=779dd497:9119
+commitRootImpl @ chunk-RPCDYKBN.js?v=779dd497:19432
+commitRoot @ chunk-RPCDYKBN.js?v=779dd497:19277
+finishConcurrentRender @ chunk-RPCDYKBN.js?v=779dd497:18805
+performConcurrentWorkOnRoot @ chunk-RPCDYKBN.js?v=779dd497:18718
+workLoop @ chunk-RPCDYKBN.js?v=779dd497:197
+flushWork @ chunk-RPCDYKBN.js?v=779dd497:176
+performWorkUntilDeadline @ chunk-RPCDYKBN.js?v=779dd497:384
+chunk-RPCDYKBN.js?v=779dd497:11678 Uncaught Error: Rendered more hooks than during the previous render.
+    at updateWorkInProgressHook (chunk-RPCDYKBN.js?v=779dd497:11678:21)
+    at updateReducer (chunk-RPCDYKBN.js?v=779dd497:11727:22)
+    at updateState (chunk-RPCDYKBN.js?v=779dd497:12021:18)
+    at Object.useState (chunk-RPCDYKBN.js?v=779dd497:12753:24)
+    at useState (chunk-QCHXOAYK.js?v=779dd497:1066:29)
+    at ServicesCarousel (services-carousel.tsx:98:39)
+    at renderWithHooks (chunk-RPCDYKBN.js?v=779dd497:11548:26)
+    at updateFunctionComponent (chunk-RPCDYKBN.js?v=779dd497:14582:28)
+    at beginWork (chunk-RPCDYKBN.js?v=779dd497:15924:22)
+    at beginWork$1 (chunk-RPCDYKBN.js?v=779dd497:19753:22)
+updateWorkInProgressHook @ chunk-RPCDYKBN.js?v=779dd497:11678
+updateReducer @ chunk-RPCDYKBN.js?v=779dd497:11727
+updateState @ chunk-RPCDYKBN.js?v=779dd497:12021
+useState @ chunk-RPCDYKBN.js?v=779dd497:12753
+useState @ chunk-QCHXOAYK.js?v=779dd497:1066
+ServicesCarousel @ services-carousel.tsx:98
+renderWithHooks @ chunk-RPCDYKBN.js?v=779dd497:11548
+updateFunctionComponent @ chunk-RPCDYKBN.js?v=779dd497:14582
+beginWork @ chunk-RPCDYKBN.js?v=779dd497:15924
+beginWork$1 @ chunk-RPCDYKBN.js?v=779dd497:19753
+performUnitOfWork @ chunk-RPCDYKBN.js?v=779dd497:19198
+workLoopSync @ chunk-RPCDYKBN.js?v=779dd497:19137
+renderRootSync @ chunk-RPCDYKBN.js?v=779dd497:19116
+recoverFromConcurrentError @ chunk-RPCDYKBN.js?v=779dd497:18736
+performSyncWorkOnRoot @ chunk-RPCDYKBN.js?v=779dd497:18879
+flushSyncCallbacks @ chunk-RPCDYKBN.js?v=779dd497:9119
+(anonymous) @ chunk-RPCDYKBN.js?v=779dd497:18627
+setTimeout
+defaultScheduler @ @tanstack_react-query.js?v=779dd497:546
+flush @ @tanstack_react-query.js?v=779dd497:570
+batch @ @tanstack_react-query.js?v=779dd497:588
+dispatch_fn @ @tanstack_react-query.js?v=779dd497:1001
+setData @ @tanstack_react-query.js?v=779dd497:699
+onSuccess @ @tanstack_react-query.js?v=779dd497:902
+resolve @ @tanstack_react-query.js?v=779dd497:456
+Promise.then
+run @ @tanstack_react-query.js?v=779dd497:498
+start @ @tanstack_react-query.js?v=779dd497:536
+fetch @ @tanstack_react-query.js?v=779dd497:931
+executeFetch_fn @ @tanstack_react-query.js?v=779dd497:2238
+onSubscribe @ @tanstack_react-query.js?v=779dd497:1942
+subscribe @ @tanstack_react-query.js?v=779dd497:24
+(anonymous) @ @tanstack_react-query.js?v=779dd497:3099
+subscribeToStore @ chunk-RPCDYKBN.js?v=779dd497:11984
+commitHookEffectListMount @ chunk-RPCDYKBN.js?v=779dd497:16915
+commitPassiveMountOnFiber @ chunk-RPCDYKBN.js?v=779dd497:18156
+commitPassiveMountEffects_complete @ chunk-RPCDYKBN.js?v=779dd497:18129
+commitPassiveMountEffects_begin @ chunk-RPCDYKBN.js?v=779dd497:18119
+commitPassiveMountEffects @ chunk-RPCDYKBN.js?v=779dd497:18109
+flushPassiveEffectsImpl @ chunk-RPCDYKBN.js?v=779dd497:19490
+flushPassiveEffects @ chunk-RPCDYKBN.js?v=779dd497:19447
+performSyncWorkOnRoot @ chunk-RPCDYKBN.js?v=779dd497:18868
+flushSyncCallbacks @ chunk-RPCDYKBN.js?v=779dd497:9119
+commitRootImpl @ chunk-RPCDYKBN.js?v=779dd497:19432
+commitRoot @ chunk-RPCDYKBN.js?v=779dd497:19277
+finishConcurrentRender @ chunk-RPCDYKBN.js?v=779dd497:18805
+performConcurrentWorkOnRoot @ chunk-RPCDYKBN.js?v=779dd497:18718
+workLoop @ chunk-RPCDYKBN.js?v=779dd497:197
+flushWork @ chunk-RPCDYKBN.js?v=779dd497:176
+performWorkUntilDeadline @ chunk-RPCDYKBN.js?v=779dd497:384
