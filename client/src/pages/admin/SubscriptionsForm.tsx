@@ -396,18 +396,18 @@ export default function SubscriptionsForm() {
                   />
                 </div>
 
-            <div className="flex items-center justify-end gap-4">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setLocation("/admin/subscriptions")}
-              >
-                Cancel
-              </Button>
-              <Button type="submit">
-                {isEditing ? "Update Plan" : "Create Plan"}
-              </Button>
-            </div>
+                <div className="flex items-center justify-end gap-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setLocation("/admin/subscriptions")}
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="submit">
+                    {isEditing ? "Update Plan" : "Create Plan"}
+                  </Button>
+                </div>
           </form>
         </Form>
       </CardContent>
