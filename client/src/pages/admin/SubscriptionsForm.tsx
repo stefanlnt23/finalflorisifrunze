@@ -28,6 +28,7 @@ import { X } from "lucide-react";
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
   description: z.string().optional(),
+  imageUrl: z.string().optional(),
   color: z.string().default("#FFFFFF"),
   price: z.string().min(1, "Price is required"),
   features: z.array(
@@ -56,6 +57,7 @@ export default function SubscriptionsForm() {
     defaultValues: {
       name: "",
       description: "",
+      imageUrl: "",
       color: "#FFFFFF",
       price: "",
       features: [],
@@ -85,6 +87,7 @@ export default function SubscriptionsForm() {
       form.reset({
         name: subscription.name,
         description: subscription.description || "",
+        imageUrl: subscription.imageUrl || "",
         color: subscription.color || "#FFFFFF",
         price: subscription.price,
         features: subscription.features || [],
@@ -228,6 +231,27 @@ export default function SubscriptionsForm() {
                         {...field}
                       />
                     </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="imageUrl"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Image URL</FormLabel>
+                    <FormControl>
+                      <Input 
+                        placeholder="https://example.com/image.jpg" 
+                        {...field} 
+                        value={field.value || ''} 
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      URL to an image that represents this subscription plan
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}

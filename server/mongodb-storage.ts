@@ -38,6 +38,7 @@ export interface Subscription {
   price: string;
   isPopular: boolean;
   displayOrder: number;
+  imageUrl: string | null;
 }
 
 export interface InsertSubscription {
@@ -48,6 +49,7 @@ export interface InsertSubscription {
   price: string;
   isPopular?: boolean;
   displayOrder?: number;
+  imageUrl?: string | null;
 }
 
 export class MongoDBStorage implements IStorage {
@@ -1080,11 +1082,11 @@ export class MongoDBStorage implements IStorage {
         await this.db.createCollection('subscriptions');
         log('Created subscriptions collection', 'mongodb');
       }
-      
+
       log('Fetching subscriptions from MongoDB...', 'mongodb');
       const subscriptions = await this.db.collection("subscriptions").find().sort({ displayOrder: 1 }).toArray();
       log(`Found ${subscriptions.length} subscriptions`, 'mongodb');
-      
+
       return subscriptions.map(sub => {
         const mapped = {
           id: sub._id.toString(),
@@ -1094,7 +1096,8 @@ export class MongoDBStorage implements IStorage {
           features: Array.isArray(sub.features) ? sub.features : [],
           price: sub.price,
           isPopular: sub.isPopular || false,
-          displayOrder: sub.displayOrder || 0
+          displayOrder: sub.displayOrder || 0,
+          imageUrl: sub.imageUrl || null
         };
         return mapped;
       });
@@ -1103,14 +1106,14 @@ export class MongoDBStorage implements IStorage {
       return [];
     }
   }
-  
+
   async getSubscription(id: string): Promise<Subscription | null> {
     try {
       if (!this.db) {
         await this.initDb();
         if (!this.db) return null;
       }
-      
+
       const { ObjectId } = require('mongodb');
       let objectId;
       try {
@@ -1119,15 +1122,16 @@ export class MongoDBStorage implements IStorage {
         console.error(`Invalid ObjectId: ${id}`);
         return null;
       }
-      
+
       const subscription = await this.db.collection("subscriptions").findOne({ _id: objectId });
-      
+
       if (!subscription) return null;
-      
+
       return {
         id: subscription._id.toString(),
         name: subscription.name,
         description: subscription.description || null,
+        imageUrl: subscription.imageUrl || null,
         color: subscription.color || "#FFFFFF",
         features: subscription.features || [],
         price: subscription.price,
@@ -1139,14 +1143,14 @@ export class MongoDBStorage implements IStorage {
       return null;
     }
   }
-  
+
   async createSubscription(data: any): Promise<Subscription> {
     try {
       if (!this.db) {
         await this.initDb();
         if (!this.db) throw new Error("Database connection failed");
       }
-      
+
       const result = await this.db.collection("subscriptions").insertOne({
         name: data.name,
         description: data.description || null,
@@ -1155,14 +1159,16 @@ export class MongoDBStorage implements IStorage {
         price: data.price,
         isPopular: data.isPopular || false,
         displayOrder: data.displayOrder || 0,
+        imageUrl: data.imageUrl || null,
         createdAt: new Date(),
         updatedAt: new Date()
       });
-      
+
       return {
         id: result.insertedId.toString(),
         name: data.name,
         description: data.description || null,
+        imageUrl: data.imageUrl || null,
         color: data.color || "#FFFFFF",
         features: data.features || [],
         price: data.price,
@@ -1174,14 +1180,14 @@ export class MongoDBStorage implements IStorage {
       throw error;
     }
   }
-  
+
   async updateSubscription(id: string, data: any): Promise<Subscription | null> {
     try {
       if (!this.db) {
         await this.initDb();
         if (!this.db) return null;
       }
-      
+
       const { ObjectId } = require('mongodb');
       let objectId;
       try {
@@ -1190,25 +1196,26 @@ export class MongoDBStorage implements IStorage {
         console.error(`Invalid ObjectId: ${id}`);
         return null;
       }
-      
+
       const updateData = {
         ...data,
         updatedAt: new Date()
       };
-      
+
       await this.db.collection("subscriptions").updateOne(
         { _id: objectId },
         { $set: updateData }
       );
-      
+
       const updatedSubscription = await this.db.collection("subscriptions").findOne({ _id: objectId });
-      
+
       if (!updatedSubscription) return null;
-      
+
       return {
         id: updatedSubscription._id.toString(),
         name: updatedSubscription.name,
         description: updatedSubscription.description || null,
+        imageUrl: updatedSubscription.imageUrl || null,
         color: updatedSubscription.color || "#FFFFFF",
         features: updatedSubscription.features || [],
         price: updatedSubscription.price,
@@ -1220,14 +1227,14 @@ export class MongoDBStorage implements IStorage {
       return null;
     }
   }
-  
+
   async deleteSubscription(id: string): Promise<boolean> {
     try {
       if (!this.db) {
         await this.initDb();
         if (!this.db) return false;
       }
-      
+
       const { ObjectId } = require('mongodb');
       let objectId;
       try {
@@ -1236,47 +1243,12 @@ export class MongoDBStorage implements IStorage {
         console.error(`Invalid ObjectId: ${id}`);
         return false;
       }
-      
+
       const result = await this.db.collection("subscriptions").deleteOne({ _id: objectId });
       return result.deletedCount > 0;
     } catch (error) {
       console.error(`Error deleting subscription ${id}:`, error);
       return false;
-    }
-  }
-
-  async getSubscription(id: string): Promise<Subscription | null> {
-    try {
-      if (!this.db) {
-        log('Database connection not initialized yet, initializing now...', 'mongodb');
-        await this.initDb();
-        if (!this.db) {
-          log('Could not initialize database connection', 'mongodb');
-          return null;
-        }
-      }
-      const collections = await this.db.listCollections({ name: 'subscriptions' }).toArray();
-      if (collections.length === 0) {
-        await this.db.createCollection('subscriptions');
-        log('Created subscriptions collection', 'mongodb');
-      }
-      const subscription = await this.db.collection("subscriptions").findOne({ _id: new ObjectId(id) });
-
-      if (!subscription) return null;
-
-      return {
-        id: subscription._id.toString(),
-        name: subscription.name,
-        description: subscription.description || null,
-        color: subscription.color || "#FFFFFF",
-        features: subscription.features || [],
-        price: subscription.price,
-        isPopular: subscription.isPopular || false,
-        displayOrder: subscription.displayOrder || 0
-      };
-    } catch (error) {
-      console.error(`Error fetching subscription with ID ${id}:`, error);
-      return null;
     }
   }
 
@@ -1317,7 +1289,8 @@ export class MongoDBStorage implements IStorage {
         features: subscription.features || [],
         price: subscription.price,
         isPopular: subscription.isPopular || false,
-        displayOrder: displayOrder
+        displayOrder: displayOrder,
+        imageUrl: subscription.imageUrl || null
       };
     } catch (error) {
       console.error("Error creating subscription:", error);
@@ -1359,7 +1332,8 @@ export class MongoDBStorage implements IStorage {
         features: updatedSubscription.features || [],
         price: updatedSubscription.price,
         isPopular: updatedSubscription.isPopular || false,
-        displayOrder: updatedSubscription.displayOrder || 0
+        displayOrder: updatedSubscription.displayOrder || 0,
+        imageUrl: updatedSubscription.imageUrl || null
       };
     } catch (error) {
       console.error(`Error updating subscription with ID ${id}:`, error);

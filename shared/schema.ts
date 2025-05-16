@@ -263,6 +263,7 @@ export interface Subscription {
   id: string | number;
   name: string;
   description: string;
+  imageUrl?: string;
   color: string;
   features: Array<{
     name: string;

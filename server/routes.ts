@@ -1154,7 +1154,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/admin/subscriptions", requireAdmin, async (req, res) => {
     try {
-      const { name, description, color, features, price, isPopular, displayOrder } = req.body;
+      const { name, description, imageUrl, color, features, price, isPopular, displayOrder } = req.body;
 
       if (!name || !features || !price) {
         return res.status(400).json({ message: "Name, features and price are required" });
@@ -1163,6 +1163,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const newSubscription = await storage.createSubscription({
         name,
         description,
+        imageUrl,
         color,
         features,
         price,
@@ -1180,7 +1181,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.put("/api/admin/subscriptions/:id", requireAdmin, async (req, res) => {
     try {
       const { id } = req.params;
-      const { name, description, color, features, price, isPopular, displayOrder } = req.body;
+      const { name, description, imageUrl, color, features, price, isPopular, displayOrder } = req.body;
 
       if (!name || !features || !price) {
         return res.status(400).json({ message: "Name, features and price are required" });
@@ -1189,6 +1190,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const updatedSubscription = await storage.updateSubscription(id, {
         name,
         description,
+        imageUrl,
         color,
         features,
         price,

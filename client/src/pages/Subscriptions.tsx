@@ -66,36 +66,80 @@ export default function Subscriptions() {
               {subscriptions.map((subscription) => (
                 <div
                   key={subscription.id}
-                  className={`bg-white rounded-lg shadow-md overflow-hidden border-t-4 ${
-                    subscription.isPopular ? 'transform scale-105' : ''
+                  className={`bg-white rounded-lg shadow-md overflow-hidden ${
+                    subscription.isPopular ? 'transform scale-105 ring-2' : ''
                   }`}
-                  style={{ borderTopColor: subscription.color }}
+                  style={{ borderColor: subscription.color }}
                 >
+                  {subscription.imageUrl ? (
+                    <div className="w-full h-48 overflow-hidden">
+                      <img 
+                        src={subscription.imageUrl} 
+                        alt={subscription.name}
+                        className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                      />
+                    </div>
+                  ) : (
+                    <div 
+                      className="w-full h-16" 
+                      style={{ backgroundColor: subscription.color }}
+                    ></div>
+                  )}
+                  
                   <div className="p-6">
                     <h3 
-                      className="text-2xl font-bold text-center mb-6"
+                      className="text-2xl font-bold text-center mb-3"
                       style={{ color: subscription.color }}
                     >
                       {subscription.name}
                     </h3>
                     
-                    {subscription.features.map((feature, index) => (
-                      <div 
-                        key={index} 
-                        className="py-3 border-b border-gray-100 last:border-0"
-                      >
-                        <p className="text-gray-700">{feature.name}: {feature.value}</p>
-                      </div>
-                    ))}
+                    {subscription.description && (
+                      <p className="text-gray-600 text-center mb-4 text-sm">{subscription.description}</p>
+                    )}
+                    
+                    <div className="text-center my-4">
+                      <span className="text-xl font-bold" style={{ color: subscription.color }}>
+                        {subscription.price}
+                      </span>
+                    </div>
+                    
+                    <div className="my-6 space-y-3">
+                      {subscription.features.map((feature, index) => (
+                        <div 
+                          key={index} 
+                          className="py-2 px-3 border-b border-gray-100 last:border-0 flex justify-between"
+                        >
+                          <span className="text-gray-700 font-medium">{feature.name}:</span>
+                          <span className="text-gray-900">{feature.value}</span>
+                        </div>
+                      ))}
+                    </div>
                     
                     <div className="mt-6 text-center">
                       <Link href="/contact">
-                        <Button className="bg-green-600 hover:bg-green-700 w-full">
-                          Contact Us
+                        <Button 
+                          className="w-full py-2 transition-transform duration-300 hover:scale-105 font-medium"
+                          style={{ 
+                            backgroundColor: subscription.color,
+                            color: '#FFFFFF',
+                            border: 'none'
+                          }}
+                        >
+                          Select Plan
                         </Button>
                       </Link>
                     </div>
                   </div>
+                  
+                  {subscription.isPopular && (
+                    <div 
+                      className="absolute top-0 right-0 bg-gradient-to-r px-4 py-1 text-white text-xs font-bold uppercase rounded-bl-lg"
+                      style={{ backgroundColor: subscription.color }}
+                    >
+                      Most Popular
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
