@@ -263,7 +263,7 @@ export default function BlogDetail() {
                   <CardContent className="p-4">
                     <h4 className="font-bold text-lg mb-2">10 Essential Spring Gardening Tips</h4>
                     <p className="text-gray-600 text-sm mb-3">Prepare your garden for the growing season with these expert tips.</p>
-                    <Link href="/blog">
+                    <Link href="/blog/spring-gardening-tips">
                       <Button variant="outline" className="text-sm border-green-600 text-green-600 hover:bg-green-50">
                         Read Article
                       </Button>
@@ -281,7 +281,7 @@ export default function BlogDetail() {
                   <CardContent className="p-4">
                     <h4 className="font-bold text-lg mb-2">How to Design a Water-Efficient Garden</h4>
                     <p className="text-gray-600 text-sm mb-3">Create a beautiful garden that conserves water and thrives in any climate.</p>
-                    <Link href="/blog">
+                    <Link href="/blog/water-efficient-garden">
                       <Button variant="outline" className="text-sm border-green-600 text-green-600 hover:bg-green-50">
                         Read Article
                       </Button>
