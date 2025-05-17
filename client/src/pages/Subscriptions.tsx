@@ -98,17 +98,18 @@ export default function Subscriptions() {
               <p>Nu există planuri de abonament disponibile momentan.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-5 subscription-grid">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-8 subscription-grid">
               {subscriptions.map((subscription) => (
                 <Card 
                   key={subscription.id} 
-                  className={`bg-white rounded-xl overflow-hidden flex flex-col h-full transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 subscription-card subscription-level-${subscription.displayOrder}`}
+                  className={`bg-white rounded-2xl overflow-hidden flex flex-col transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 subscription-card subscription-level-${subscription.displayOrder}`}
                   style={{ 
-                    boxShadow: `0 8px 30px -5px ${subscription.color || '#4CAF50'}30`,
+                    boxShadow: `0 10px 30px -5px ${subscription.color || '#4CAF50'}30`,
                     borderWidth: subscription.displayOrder > 1 ? '3px' : '1px',
                     borderColor: subscription.displayOrder === 4 ? `${subscription.color}` : 
                                subscription.displayOrder === 3 ? `${subscription.color}80` : 'rgb(229, 231, 235)',
-                    zIndex: subscription.displayOrder
+                    zIndex: subscription.displayOrder,
+                    maxHeight: '650px'
                   }}
                 >
                   {/* Popular badge & premium effect */}
@@ -124,102 +125,92 @@ export default function Subscriptions() {
                   
                   {/* Premium tier effects */}
                   {subscription.displayOrder >= 3 && (
-                    <div className="absolute top-0 left-0 w-full h-2 z-10" style={{ 
+                    <div className="absolute top-0 left-0 w-full h-3 z-10" style={{ 
                       background: `linear-gradient(90deg, transparent, ${subscription.color}, transparent)`,
                       animation: 'shimmer 2s infinite linear'
                     }}></div>
                   )}
                   
-                  {/* Card Header */}
-                  <CardHeader className="p-0 flex flex-col relative">
-                    <div className="p-8 text-center relative">
-                      {/* Price badge */}
-                      <div 
-                        className="absolute -top-4 right-0 left-0 mx-auto w-32 h-32 flex items-center justify-center rounded-full transform -translate-y-1/2 bg-white shadow-lg border-4"
-                        style={{ borderColor: subscription.color || '#4CAF50' }}
-                      >
-                        <div className="text-center">
-                          <p className="text-sm text-gray-500 font-medium">Preț</p>
-                          <p 
-                            className="text-xl font-extrabold" 
-                            style={{ color: subscription.color || '#4CAF50' }}
-                          >
-                            {subscription.price}
-                          </p>
+                  {/* Card Header with integrated image background */}
+                  <div className="relative">
+                    {/* Background image or color */}
+                    <div className="absolute inset-0 z-0">
+                      {subscription.imageUrl ? (
+                        <div className="w-full h-full overflow-hidden">
+                          <img 
+                            src={subscription.imageUrl} 
+                            alt={subscription.name}
+                            className="w-full h-full object-cover"
+                          />
+                          <div 
+                            className="absolute inset-0"
+                            style={{ 
+                              background: `linear-gradient(to bottom, ${subscription.color}CC, ${subscription.color}99)`,
+                              opacity: 0.85
+                            }}
+                          ></div>
                         </div>
-                      </div>
-                      
+                      ) : (
+                        <div 
+                          className="w-full h-full" 
+                          style={{ backgroundColor: subscription.color || '#4CAF50' }}
+                        >
+                          <div className="absolute inset-0 bg-white opacity-10 flex items-center justify-center">
+                            <div className="w-3/4 h-1/2 rounded-full bg-white opacity-10"></div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Content overlay */}
+                    <div className="relative z-10 pt-8 pb-4 px-6 text-center">
                       {/* Title */}
                       <h2 
-                        className="text-3xl font-extrabold mt-12 mb-2 transition-colors duration-300" 
-                        style={{ color: subscription.color || '#4CAF50' }}
+                        className="text-2xl font-extrabold mb-2 text-white" 
                       >
                         {subscription.name}
                       </h2>
                       
                       {/* Description */}
-                      <p className="text-gray-600 mt-2 mb-4 text-sm max-w-xs mx-auto">
+                      <p className="text-white text-opacity-90 mb-3 text-sm max-w-xs mx-auto">
                         {subscription.description || `Plan ${subscription.name} pentru întreținerea spațiilor verzi`}
                       </p>
-                    </div>
-                    
-                    {/* Image or color bar */}
-                    {subscription.imageUrl ? (
-                      <div className="w-full h-48 overflow-hidden relative">
-                        <div 
-                          className="absolute inset-0 z-10 opacity-30"
-                          style={{ 
-                            background: `linear-gradient(to bottom, ${subscription.color}80, transparent)` 
-                          }}
-                        ></div>
-                        <img 
-                          src={subscription.imageUrl} 
-                          alt={subscription.name}
-                          className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-                        />
-                      </div>
-                    ) : (
+                      
+                      {/* Price badge */}
                       <div 
-                        className="w-full h-16 relative overflow-hidden" 
-                        style={{ backgroundColor: subscription.color || '#4CAF50' }}
+                        className="mx-auto mt-2 mb-3 py-2 px-6 rounded-full inline-block bg-white shadow-lg"
                       >
-                        <div className="absolute inset-0 bg-white opacity-10 flex items-center justify-center">
-                          <div className="w-3/4 h-1/2 rounded-full bg-white opacity-10"></div>
-                        </div>
+                        <p 
+                          className="text-xl font-extrabold" 
+                          style={{ color: subscription.color || '#4CAF50' }}
+                        >
+                          {subscription.price}
+                        </p>
                       </div>
-                    )}
-                  </CardHeader>
+                    </div>
+                  </div>
                   
                   {/* Features list */}
-                  <CardContent className="flex-grow p-0 relative">
-                    {/* Decorative pattern */}
-                    <div 
-                      className="absolute right-0 top-0 w-24 h-24 opacity-5"
-                      style={{ 
-                        backgroundColor: subscription.color || '#4CAF50',
-                        clipPath: 'polygon(100% 0, 0 0, 100% 100%)'
-                      }}
-                    ></div>
-                    
-                    <div className="px-8 py-6">
+                  <CardContent className="flex-grow p-5 bg-white relative">
+                    <div className="space-y-2">
                       {Array.isArray(subscription.features) && subscription.features.map((feature, index) => (
                         <div 
                           key={index} 
-                          className="py-3 border-b border-gray-100 last:border-0 transition-colors hover:bg-gray-50 rounded-lg px-2"
+                          className="py-2 border-b border-gray-100 last:border-0 transition-colors hover:bg-gray-50 rounded-lg px-3"
                         >
                           <div className="flex justify-between items-center text-sm group">
                             <span className="text-gray-700 group-hover:font-medium transition-all flex items-center">
                               <span 
-                                className="w-6 h-6 rounded-full mr-2 flex items-center justify-center text-white text-xs"
+                                className="w-6 h-6 min-w-6 rounded-full mr-2 flex items-center justify-center text-white text-xs"
                                 style={{ backgroundColor: subscription.color || '#4CAF50' }}
                               >
                                 ✓
                               </span>
-                              {typeof feature === 'object' && feature.name ? feature.name + ':' : feature}
+                              <span className="line-clamp-1">{typeof feature === 'object' && feature.name ? feature.name + ':' : feature}</span>
                             </span>
                             {typeof feature === 'object' && feature.value && (
                               <span 
-                                className="text-gray-900 font-bold group-hover:text-green-600 transition-all"
+                                className="text-gray-900 font-bold group-hover:text-green-600 transition-all ml-2"
                                 style={{ color: subscription.color || '#4CAF50' }}
                               >
                                 {feature.value}
@@ -232,10 +223,10 @@ export default function Subscriptions() {
                   </CardContent>
                   
                   {/* Card Footer with button */}
-                  <CardFooter className="p-8 pt-4 mt-auto">
+                  <CardFooter className="p-5 pt-2 mt-auto bg-gray-50">
                     <Link href="/contact" className="w-full">
                       <Button 
-                        className={`w-full py-4 font-bold text-lg text-center relative overflow-hidden transition-all group hover:shadow-xl rounded-xl ${
+                        className={`w-full py-3 font-bold text-lg text-center relative overflow-hidden transition-all group hover:shadow-xl rounded-xl ${
                           subscription.displayOrder >= 3 ? 'subscription-premium-button' : ''
                         }`}
                         style={{ 

@@ -112,19 +112,20 @@
 }
 
 .subscription-card {
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s;
+  max-height: 650px;
 }
 
 .subscription-level-2 {
-  transform: translateY(-5px);
+  transform: translateY(-5px) scale(1.01);
 }
 
 .subscription-level-3 {
-  transform: translateY(-10px);
+  transform: translateY(-8px) scale(1.02);
 }
 
 .subscription-level-4 {
-  transform: translateY(-15px);
+  transform: translateY(-10px) scale(1.03);
 }
 
 .subscription-premium-button {
