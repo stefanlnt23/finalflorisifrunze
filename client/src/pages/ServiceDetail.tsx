@@ -1,16 +1,11 @@
 
+import React, { useState } from "react";
 import MainLayout from "@/components/layouts/MainLayout";
 import { useQuery } from "@tanstack/react-query";
 import { useParams, Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { 
-  Tabs, 
-  TabsContent, 
-  TabsList, 
-  TabsTrigger 
-} from "@/components/ui/tabs";
 import {
   Accordion,
   AccordionContent,
@@ -25,12 +20,16 @@ import {
   CheckCircle2, 
   ArrowRight, 
   Map, 
-  Award 
+  Award,
+  X,
+  ZoomIn
 } from "lucide-react";
+import { Dialog, DialogContent, DialogClose } from "@/components/ui/dialog";
 
 export default function ServiceDetail() {
   const { id } = useParams();
   const serviceId = id;
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const { data: serviceData, isLoading: serviceLoading, error: serviceError } = useQuery({
     queryKey: [`/api/services/${serviceId}`],
@@ -127,7 +126,7 @@ export default function ServiceDetail() {
             </Link>
           </div>
           
-          {/* Service highlights */}
+          {/* Service highlights cards */}
           {hasDetailedInfo && (
             <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
               {service.duration && (
@@ -170,175 +169,23 @@ export default function ServiceDetail() {
         </div>
       </div>
 
-      {/* Main content section */}
+      {/* Main content section - Vertical layout instead of tabs */}
       <section className="py-12 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          {hasDetailedInfo ? (
-            <Tabs defaultValue="overview" className="w-full">
-              <div className="flex justify-center mb-8">
-                <TabsList className="grid grid-cols-2 md:grid-cols-4 w-full max-w-2xl">
-                  <TabsTrigger value="overview">Overview</TabsTrigger>
-                  {(service.benefits && service.benefits.length > 0) || (service.includes && service.includes.length > 0) ? (
-                    <TabsTrigger value="benefits">Benefits & Details</TabsTrigger>
-                  ) : null}
-                  {service.galleryImages && service.galleryImages.length > 0 ? (
-                    <TabsTrigger value="gallery">Gallery</TabsTrigger>
-                  ) : null}
-                  {service.faqs && service.faqs.length > 0 ? (
-                    <TabsTrigger value="faqs">FAQs</TabsTrigger>
-                  ) : null}
-                </TabsList>
-              </div>
-              
-              {/* Overview Tab */}
-              <TabsContent value="overview">
-                <div className="grid md:grid-cols-2 gap-12 items-start max-w-6xl mx-auto">
-                  {service.imageUrl && (
-                    <div className="rounded-lg overflow-hidden shadow-lg">
-                      <img 
-                        src={service.imageUrl} 
-                        alt={service.name} 
-                        className="w-full h-auto"
-                      />
-                    </div>
-                  )}
-                  <div>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-4">About This Service</h2>
-                    <div className="prose prose-green max-w-none mb-6">
-                      <p className="text-gray-600">{service.description}</p>
-                    </div>
-                    
-                    {/* Seasonal availability */}
-                    {service.seasonalAvailability && service.seasonalAvailability.length > 0 && (
-                      <div className="mt-6">
-                        <h3 className="text-lg font-semibold mb-3">Seasonal Availability</h3>
-                        <div className="flex flex-wrap gap-2">
-                          {service.seasonalAvailability.map((season, index) => (
-                            <span key={index} className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
-                              {season}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                    
-                    <div className="mt-8">
-                      <Link href={`/appointment?service=${service.id}`}>
-                        <Button className="bg-green-600 hover:bg-green-700 w-full">
-                          Schedule This Service
-                        </Button>
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </TabsContent>
-              
-              {/* Benefits & Details Tab */}
-              <TabsContent value="benefits">
-                <div className="max-w-4xl mx-auto">
-                  {service.benefits && service.benefits.length > 0 && (
-                    <Card className="mb-8">
-                      <CardHeader>
-                        <CardTitle className="text-2xl font-bold text-gray-900">
-                          Benefits of Our {service.name} Service
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="grid md:grid-cols-2 gap-4">
-                          {service.benefits.map((benefit, index) => (
-                            <div key={index} className="flex items-start">
-                              <div className="flex-shrink-0 mt-1 mr-3">
-                                <CheckCircle2 className="h-5 w-5 text-green-600" />
-                              </div>
-                              <p className="text-gray-700">{benefit}</p>
-                            </div>
-                          ))}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  )}
-                  
-                  {service.includes && service.includes.length > 0 && (
-                    <Card>
-                      <CardHeader>
-                        <CardTitle className="text-2xl font-bold text-gray-900">
-                          What's Included
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-4">
-                          {service.includes.map((item, index) => (
-                            <div key={index} className="bg-gray-50 p-4 rounded-lg flex items-start">
-                              <div className="flex-shrink-0 mt-1 mr-3">
-                                <ArrowRight className="h-5 w-5 text-green-600" />
-                              </div>
-                              <div>
-                                <p className="text-gray-700">{item}</p>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  )}
-                </div>
-              </TabsContent>
-              
-              {/* Gallery Tab */}
-              {service.galleryImages && service.galleryImages.length > 0 && (
-                <TabsContent value="gallery">
-                  <div className="max-w-6xl mx-auto">
-                    <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-                      {service.name} Gallery
-                    </h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {service.galleryImages.map((image, index) => (
-                        <div key={index} className="rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
-                          <img 
-                            src={image} 
-                            alt={`${service.name} - Gallery image ${index + 1}`} 
-                            className="w-full h-64 object-cover hover:scale-105 transition-transform duration-500"
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </TabsContent>
-              )}
-              
-              {/* FAQs Tab */}
-              {service.faqs && service.faqs.length > 0 && (
-                <TabsContent value="faqs">
-                  <div className="max-w-3xl mx-auto">
-                    <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-                      Frequently Asked Questions
-                    </h2>
-                    <Accordion type="single" collapsible className="w-full">
-                      {service.faqs.map((faq, index) => (
-                        <AccordionItem key={index} value={`faq-${index}`}>
-                          <AccordionTrigger className="text-left font-medium">
-                            {faq.question}
-                          </AccordionTrigger>
-                          <AccordionContent>
-                            <p className="text-gray-700">{faq.answer}</p>
-                          </AccordionContent>
-                        </AccordionItem>
-                      ))}
-                    </Accordion>
-                  </div>
-                </TabsContent>
-              )}
-            </Tabs>
-          ) : (
-            // Simple view for services without additional data
-            <div className="grid md:grid-cols-2 gap-12 items-start max-w-4xl mx-auto">
+          <div className="max-w-6xl mx-auto">
+            {/* Overview Section */}
+            <div className="grid md:grid-cols-2 gap-12 items-start mb-16">
               {service.imageUrl && (
-                <div className="rounded-lg overflow-hidden shadow-lg">
+                <div className="rounded-lg overflow-hidden shadow-lg cursor-pointer relative group" 
+                     onClick={() => setSelectedImage(service.imageUrl)}>
                   <img 
                     src={service.imageUrl} 
                     alt={service.name} 
-                    className="w-full h-auto"
+                    className="w-full h-auto transition-transform duration-300 group-hover:scale-105"
                   />
+                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 flex items-center justify-center transition-all duration-300 opacity-0 group-hover:opacity-100">
+                    <ZoomIn className="text-white w-12 h-12" />
+                  </div>
                 </div>
               )}
               <div>
@@ -346,38 +193,131 @@ export default function ServiceDetail() {
                 <div className="prose prose-green max-w-none mb-6">
                   <p className="text-gray-600">{service.description}</p>
                 </div>
-                <div className="bg-green-50 p-6 rounded-lg border border-green-100">
-                  <h3 className="text-lg font-bold text-gray-900 mb-3">Why Choose Our {service.name} Service?</h3>
-                  <ul className="space-y-2">
-                    <li className="flex items-start">
-                      <div className="flex-shrink-0 mt-1 mr-3">
-                        <CheckCircle2 className="h-5 w-5 text-green-600" />
-                      </div>
-                      <p className="text-gray-600">Experienced and knowledgeable professionals</p>
-                    </li>
-                    <li className="flex items-start">
-                      <div className="flex-shrink-0 mt-1 mr-3">
-                        <CheckCircle2 className="h-5 w-5 text-green-600" />
-                      </div>
-                      <p className="text-gray-600">Eco-friendly practices and sustainable solutions</p>
-                    </li>
-                    <li className="flex items-start">
-                      <div className="flex-shrink-0 mt-1 mr-3">
-                        <CheckCircle2 className="h-5 w-5 text-green-600" />
-                      </div>
-                      <p className="text-gray-600">Tailored approaches for your specific needs</p>
-                    </li>
-                    <li className="flex items-start">
-                      <div className="flex-shrink-0 mt-1 mr-3">
-                        <CheckCircle2 className="h-5 w-5 text-green-600" />
-                      </div>
-                      <p className="text-gray-600">Satisfaction guaranteed</p>
-                    </li>
-                  </ul>
+                
+                {/* Seasonal availability */}
+                {service.seasonalAvailability && service.seasonalAvailability.length > 0 && (
+                  <div className="mt-8">
+                    <h3 className="text-lg font-semibold mb-3">Seasonal Availability</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {service.seasonalAvailability.map((season, index) => (
+                        <span key={index} className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
+                          {season}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
+                <div className="mt-8">
+                  <Link href={`/appointment?service=${service.id}`}>
+                    <Button className="bg-green-600 hover:bg-green-700 w-full">
+                      Schedule This Service
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>
-          )}
+            
+            {/* Benefits Section */}
+            {service.benefits && service.benefits.length > 0 && (
+              <div className="mb-16">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-2xl font-bold text-gray-900">
+                      Benefits of Our {service.name} Service
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      {service.benefits.map((benefit, index) => (
+                        <div key={index} className="flex items-start">
+                          <div className="flex-shrink-0 mt-1 mr-3">
+                            <CheckCircle2 className="h-5 w-5 text-green-600" />
+                          </div>
+                          <p className="text-gray-700">{benefit}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+            
+            {/* What's Included Section */}
+            {service.includes && service.includes.length > 0 && (
+              <div className="mb-16">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-2xl font-bold text-gray-900">
+                      What's Included
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {service.includes.map((item, index) => (
+                        <div key={index} className="bg-gray-50 p-4 rounded-lg flex items-start">
+                          <div className="flex-shrink-0 mt-1 mr-3">
+                            <ArrowRight className="h-5 w-5 text-green-600" />
+                          </div>
+                          <div>
+                            <p className="text-gray-700">{item}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+            
+            {/* Gallery Section */}
+            {service.galleryImages && service.galleryImages.length > 0 && (
+              <div className="mb-16">
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                  {service.name} Gallery
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {service.galleryImages.map((image, index) => (
+                    <div 
+                      key={index} 
+                      className="rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all cursor-pointer relative group"
+                      onClick={() => setSelectedImage(image)}
+                    >
+                      <img 
+                        src={image} 
+                        alt={`${service.name} - Gallery image ${index + 1}`} 
+                        className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 flex items-center justify-center transition-all duration-300 opacity-0 group-hover:opacity-100">
+                        <ZoomIn className="text-white w-12 h-12" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            {/* FAQs Section */}
+            {service.faqs && service.faqs.length > 0 && (
+              <div className="mb-16">
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                  Frequently Asked Questions
+                </h2>
+                <Accordion type="single" collapsible className="w-full">
+                  {service.faqs.map((faq, index) => (
+                    <AccordionItem key={index} value={`faq-${index}`}>
+                      <AccordionTrigger className="text-left font-medium">
+                        {faq.question}
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <p className="text-gray-700">{faq.answer}</p>
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </div>
+            )}
+          </div>
         </div>
       </section>
 
@@ -391,12 +331,16 @@ export default function ServiceDetail() {
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {portfolioItems.map((item) => (
                 <Card key={item.id} className="overflow-hidden hover:shadow-lg transition-all">
-                  <div className="aspect-square overflow-hidden">
+                  <div className="aspect-square overflow-hidden cursor-pointer relative group"
+                       onClick={() => setSelectedImage(item.imageUrl)}>
                     <img 
                       src={item.imageUrl} 
                       alt={item.title}
                       className="w-full h-full object-cover hover:scale-105 transition-transform" 
                     />
+                    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 flex items-center justify-center transition-all duration-300 opacity-0 group-hover:opacity-100">
+                      <ZoomIn className="text-white w-12 h-12" />
+                    </div>
                   </div>
                   <CardContent className="p-4">
                     <h3 className="font-bold text-gray-900 mb-2">{item.title}</h3>
@@ -437,6 +381,26 @@ export default function ServiceDetail() {
           </div>
         </div>
       </section>
+
+      {/* Image Lightbox */}
+      <Dialog open={!!selectedImage} onOpenChange={(open) => !open && setSelectedImage(null)}>
+        <DialogContent className="max-w-5xl p-0 bg-transparent border-none shadow-none" closeButton={false}>
+          <div className="relative bg-black bg-opacity-90 rounded-lg overflow-hidden">
+            <DialogClose className="absolute top-4 right-4 z-50">
+              <Button variant="ghost" className="text-white hover:bg-white/20 rounded-full p-2 h-auto">
+                <X className="h-6 w-6" />
+              </Button>
+            </DialogClose>
+            <div className="flex justify-center items-center p-4 md:p-8">
+              <img 
+                src={selectedImage ?? ''} 
+                alt="Enlarged view" 
+                className="max-h-[80vh] object-contain"
+              />
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </MainLayout>
   );
 }
