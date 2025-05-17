@@ -11,7 +11,7 @@ import { Separator } from '@/components/ui/separator';
 import { PlusCircle, MinusCircle } from 'lucide-react';
 
 export default function SubscriptionsForm() {
-  const { id } = useParams();
+  const { id = 'new' } = useParams();
   const [, setLocation] = useLocation();
   const queryClient = useQueryClient();
   const isEditMode = id !== 'new';
