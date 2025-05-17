@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Link } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Trash } from 'lucide-react';
@@ -83,16 +83,16 @@ export default function Subscriptions() {
     <div className="p-6">
       <div className="flex justify-between mb-6">
         <h1 className="text-2xl font-bold">Subscriptions</h1>
-        <Button asChild>
-          <Link href="/admin/subscriptions/new">Add New</Link>
+        <Button onClick={() => setLocation("/admin/subscriptions/new")}>
+          Add New
         </Button>
       </div>
 
       {subscriptions.length === 0 ? (
         <div className="text-center py-12">
           <p className="text-gray-500">No subscriptions found.</p>
-          <Button className="mt-4" asChild>
-            <Link href="/admin/subscriptions/new">Create your first subscription</Link>
+          <Button className="mt-4" onClick={() => setLocation("/admin/subscriptions/new")}>
+            Create your first subscription
           </Button>
         </div>
       ) : (
@@ -136,8 +136,8 @@ export default function Subscriptions() {
                 </div>
 
                 <div className="mt-4">
-                  <Button className="w-full" variant="outline" asChild>
-                    <Link href={`/admin/subscriptions/${subscription.id}`}>Edit</Link>
+                  <Button className="w-full" variant="outline" onClick={() => setLocation(`/admin/subscriptions/${subscription.id}`)}>
+                    Edit
                   </Button>
                 </div>
               </CardContent>

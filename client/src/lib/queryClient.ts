@@ -21,11 +21,12 @@ async function throwIfResNotOk(res: Response) {
   }
 }
 
-export async function apiRequest(method: string, url: string, data?: any) {
+export async function apiRequest(url: string, options?: RequestInit) {
   try {
-    console.log(`Making ${method} request to ${url}`);
+    console.log(`Making ${options?.method || 'GET'} request to ${url}`);
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
+      ...(options?.headers || {})
     };
 
     // Add auth token if available
@@ -36,9 +37,9 @@ export async function apiRequest(method: string, url: string, data?: any) {
     }
 
     const response = await fetch(url, {
-      method,
+      method: options?.method || 'GET',
       headers,
-      body: data ? JSON.stringify(data) : undefined,
+      body: options?.body,
     });
 
     console.log(`Response status: ${response.status} ${response.statusText}`);

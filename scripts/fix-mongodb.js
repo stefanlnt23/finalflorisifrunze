@@ -1,14 +1,14 @@
 
 const { MongoClient } = require('mongodb');
 
-// MongoDB connection string
-const DATABASE_URL = 'mongodb+srv://stefanlenta:MABCkbbCfNeUOo1M@cluster0.3ibgvtn.mongodb.net/garden_services_db';
+// MongoDB connection string - using localhost since we connect within the Replit environment
+const DATABASE_URL = 'mongodb://127.0.0.1:27017/garden_services_db';
 
 async function fixMongoDB() {
   let client;
   
   try {
-    console.log('Connecting to MongoDB...');
+    console.log('Connecting to MongoDB at localhost:27017...');
     client = new MongoClient(DATABASE_URL);
     await client.connect();
     console.log('Connected to MongoDB successfully!');
@@ -99,7 +99,7 @@ async function fixMongoDB() {
     // Display first subscription
     const firstSubscription = await db.collection('subscriptions').findOne();
     if (firstSubscription) {
-      console.log('Sample subscription:', firstSubscription);
+      console.log('Sample subscription:', JSON.stringify(firstSubscription, null, 2));
     }
     
     console.log('MongoDB check and fix completed successfully');
