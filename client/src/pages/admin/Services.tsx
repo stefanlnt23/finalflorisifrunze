@@ -157,7 +157,7 @@ export default function AdminServices() {
                           <Button 
                             variant="outline" 
                             size="sm"
-                            onClick={() => setLocation(`/admin/services/${service.id}`)}
+                            onClick={() => setLocation(`/admin/services/${service.id}/edit`)}
                           >
                             <i className="fas fa-edit text-blue-600"></i>
                           </Button>
