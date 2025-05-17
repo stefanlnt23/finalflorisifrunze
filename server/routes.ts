@@ -284,25 +284,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
           .json({ message: "Email/username and password are required" });
       }
 
-      // Try to find user by email first
-      let user = email ? await storage.getUserByEmail(email) : null;
+      console.log(`Login attempt with email: ${email}, username: ${username}`);
       
-      // If not found by email and username is provided, try by username
+      // Try to find user by any of the provided identifiers
+      let user = null;
+      
+      // First try email if provided
+      if (email) {
+        user = await storage.getUserByEmail(email);
+        console.log(`User lookup by email ${email}: ${user ? 'Found' : 'Not found'}`);
+      }
+      
+      // If not found and username is provided, try by username
       if (!user && username) {
         user = await storage.getUserByUsername(username);
+        console.log(`User lookup by username ${username}: ${user ? 'Found' : 'Not found'}`);
       }
 
       if (!user) {
+        console.log('Login failed: User not found');
         return res.status(401).json({ message: "Invalid credentials" });
       }
 
+      console.log(`User found, checking password for user: ${user.username}`);
       const passwordsMatch = await comparePasswords(password, user.password);
+      
       if (!passwordsMatch) {
+        console.log('Login failed: Password mismatch');
         return res.status(401).json({ message: "Invalid credentials" });
       }
 
       // Generate a simple token (in a real app you'd use JWT with proper signing)
       const token = Buffer.from(`${user.id}:${Date.now()}`).toString('base64');
+      console.log(`Login successful for user: ${user.username}`);
 
       res.json({
         success: true,

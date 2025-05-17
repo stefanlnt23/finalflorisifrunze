@@ -88,22 +88,38 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       setLoading(true);
       setError(null);
+      
+      console.log(`Attempting login with email: ${email}`);
 
-      // Send both email and username (using email as username)
+      // Determine if input is email or username
+      const isEmail = email.includes('@');
+      
+      // Build request payload based on whether input appears to be an email
+      const payload = {
+        password
+      };
+      
+      if (isEmail) {
+        payload['email'] = email;
+      } else {
+        payload['username'] = email;
+      }
+      
+      console.log('Login payload:', payload);
+      
       const response = await fetch('/api/admin/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
-          email,
-          username: email, // Include both for flexibility
-          password 
-        }),
+        body: JSON.stringify(payload),
       });
 
+      console.log(`Login response status: ${response.status}`);
+      
       if (response.ok) {
         const responseData = await response.json();
+        console.log('Login successful:', responseData.success);
         
         if (responseData.success && responseData.token) {
           // Store token in localStorage
@@ -111,31 +127,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           
           // Store user data
           if (responseData.user) {
-            setUser({
+            const userData = {
               id: responseData.user.id,
               name: responseData.user.name,
               email: responseData.user.email,
               role: responseData.user.role || 'user'
-            });
+            };
+            
+            setUser(userData);
             
             // Also store in localStorage for persistence
-            localStorage.setItem('user', JSON.stringify({
-              id: responseData.user.id,
-              name: responseData.user.name,
-              email: responseData.user.email,
-              role: responseData.user.role || 'user'
-            }));
+            localStorage.setItem('user', JSON.stringify(userData));
+            console.log('User data stored in localStorage');
           }
           
           navigate('/admin/dashboard');
         } else {
+          console.error('Login response missing success or token:', responseData);
           setError('Login failed. Invalid response from server.');
         }
       } else {
         try {
           const errorData = await response.json();
+          console.error('Login error response:', errorData);
           setError(errorData.message || 'Failed to login');
         } catch (e) {
+          console.error('Failed to parse error response:', e);
           setError('Login failed. Please check your credentials.');
         }
       }
@@ -152,10 +169,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(true);
       setError(null);
 
+      console.log(`Attempting to register with email: ${email}`);
+      
       // Create a unique username from the email (everything before the @)
       const username = email.split('@')[0] + Math.floor(Math.random() * 1000);
+      console.log(`Generated username: ${username}`);
 
-      const response = await fetch('/api/admin/register', {
+      const registerResponse = await fetch('/api/admin/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -169,27 +189,45 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }),
       });
 
-      if (response.ok) {
-        const data = await response.json();
+      console.log(`Registration response status: ${registerResponse.status}`);
+      
+      if (registerResponse.ok) {
+        const data = await registerResponse.json();
+        console.log('Registration response:', data);
         
         if (data.success) {
-          // On successful registration, log in the user
-          await login(email, password);
+          console.log('Registration successful. Attempting login with new credentials.');
+          
+          // On successful registration, attempt manual login after a short delay
+          // to ensure the credentials are properly saved in the database
+          setTimeout(async () => {
+            try {
+              await login(email, password);
+            } catch (loginError) {
+              console.error('Login after registration failed:', loginError);
+              setError('Registration successful, but automatic login failed. Please try logging in manually.');
+              setLoading(false);
+            }
+          }, 1000);
         } else {
+          console.error('Registration failed:', data.message);
           setError(data.message || 'Failed to register');
+          setLoading(false);
         }
       } else {
         try {
-          const errorData = await response.json();
+          const errorData = await registerResponse.json();
+          console.error('Registration error response:', errorData);
           setError(errorData.message || 'Failed to register');
         } catch (e) {
+          console.error('Failed to parse registration error:', e);
           setError('Registration failed. Please try again.');
         }
+        setLoading(false);
       }
     } catch (error) {
       console.error('Registration error:', error);
       setError('An unexpected error occurred. Please try again.');
-    } finally {
       setLoading(false);
     }
   };

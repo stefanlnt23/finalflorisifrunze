@@ -37,6 +37,26 @@ export default function AdminLogin() {
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate passwords match
+    if (registerPassword !== confirmPassword) {
+      toast({
+        title: 'Error',
+        description: 'Passwords do not match!',
+        variant: 'destructive',
+      });
+      return;
+    }
+    
+    try {
+      await register(registerName, registerEmail, registerPassword);
+    } catch (err) {
+      toast({
+        title: 'Error',
+        description: 'Failed to register. Please try again.',
+        variant: 'destructive',
+      });
+    }
 
     if (registerPassword !== confirmPassword) {
       toast({
