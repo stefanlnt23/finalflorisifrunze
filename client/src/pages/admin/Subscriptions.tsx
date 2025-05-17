@@ -11,6 +11,7 @@ export default function Subscriptions() {
   const queryClient = useQueryClient();
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [, setLocation] = useLocation();
 
   // Fetch subscriptions
   const { data, isLoading, error } = useQuery({
