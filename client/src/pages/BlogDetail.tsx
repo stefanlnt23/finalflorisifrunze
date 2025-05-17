@@ -251,44 +251,55 @@ export default function BlogDetail() {
             {/* Related Posts Section */}
             <div className="mb-8">
               <h3 className="text-2xl font-bold text-gray-900 mb-6">Related Articles</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card className="overflow-hidden shadow-md hover:shadow-lg transition-shadow">
-                  <div className="aspect-video bg-gray-100 relative overflow-hidden">
-                    <img 
-                      src="https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
-                      alt="Spring Gardening Tips" 
-                      className="w-full h-full object-cover transition-transform hover:scale-105"
-                    />
+              
+              {/* Fetch all blog posts to find related ones */}
+              {(() => {
+                // Use an immediately invoked function to scope variables
+                const { data: allBlogsData } = useQuery({
+                  queryKey: ['/api/blog'],
+                  refetchOnWindowFocus: false,
+                });
+                
+                const allPosts = allBlogsData?.blogPosts || [];
+                
+                // Filter out the current post and get up to 2 related posts
+                const relatedPosts = allPosts
+                  .filter(post => post.id !== blogId)
+                  .slice(0, 2);
+                
+                if (relatedPosts.length === 0) {
+                  return (
+                    <div className="text-center p-6 bg-gray-50 rounded-lg">
+                      <p className="text-gray-500">No related articles available.</p>
+                    </div>
+                  );
+                }
+                
+                return (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {relatedPosts.map((post) => (
+                      <Card key={post.id} className="overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+                        <div className="aspect-video bg-gray-100 relative overflow-hidden">
+                          <img 
+                            src={post.imageUrl || "https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"} 
+                            alt={post.title} 
+                            className="w-full h-full object-cover transition-transform hover:scale-105"
+                          />
+                        </div>
+                        <CardContent className="p-4">
+                          <h4 className="font-bold text-lg mb-2">{post.title}</h4>
+                          <p className="text-gray-600 text-sm mb-3">{post.excerpt}</p>
+                          <Link href={`/blog/${post.id}`}>
+                            <Button variant="outline" className="text-sm border-green-600 text-green-600 hover:bg-green-50">
+                              Read Article
+                            </Button>
+                          </Link>
+                        </CardContent>
+                      </Card>
+                    ))}
                   </div>
-                  <CardContent className="p-4">
-                    <h4 className="font-bold text-lg mb-2">10 Essential Spring Gardening Tips</h4>
-                    <p className="text-gray-600 text-sm mb-3">Prepare your garden for the growing season with these expert tips.</p>
-                    <Link href="/blog/spring-gardening-tips">
-                      <Button variant="outline" className="text-sm border-green-600 text-green-600 hover:bg-green-50">
-                        Read Article
-                      </Button>
-                    </Link>
-                  </CardContent>
-                </Card>
-                <Card className="overflow-hidden shadow-md hover:shadow-lg transition-shadow">
-                  <div className="aspect-video bg-gray-100 relative overflow-hidden">
-                    <img 
-                      src="https://images.unsplash.com/photo-1601722222411-a1b56e664825?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
-                      alt="Water-Efficient Garden" 
-                      className="w-full h-full object-cover transition-transform hover:scale-105"
-                    />
-                  </div>
-                  <CardContent className="p-4">
-                    <h4 className="font-bold text-lg mb-2">How to Design a Water-Efficient Garden</h4>
-                    <p className="text-gray-600 text-sm mb-3">Create a beautiful garden that conserves water and thrives in any climate.</p>
-                    <Link href="/blog/water-efficient-garden">
-                      <Button variant="outline" className="text-sm border-green-600 text-green-600 hover:bg-green-50">
-                        Read Article
-                      </Button>
-                    </Link>
-                  </CardContent>
-                </Card>
-              </div>
+                );
+              })()}
             </div>
 
             {/* Call to Action */}
