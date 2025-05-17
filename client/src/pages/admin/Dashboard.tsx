@@ -145,7 +145,7 @@ export default function AdminDashboard() {
                     </div>
                     <div className="inline-flex items-center text-sm font-medium text-blue-600">
                       <Link href={`/admin/appointments`}>
-                        <a>View</a>
+                        View
                       </Link>
                     </div>
                   </div>
@@ -157,10 +157,8 @@ export default function AdminDashboard() {
               </div>
             )}
             <div className="mt-4 text-center">
-              <Link href="/admin/appointments">
-                <a className="text-sm font-medium text-blue-600 hover:text-blue-800">
-                  View all appointments →
-                </a>
+              <Link href="/admin/appointments" className="text-sm font-medium text-blue-600 hover:text-blue-800">
+                View all appointments →
               </Link>
             </div>
           </CardContent>
@@ -198,7 +196,7 @@ export default function AdminDashboard() {
                     </div>
                     <div className="inline-flex items-center text-sm font-medium text-blue-600">
                       <Link href={`/admin/inquiries`}>
-                        <a>View</a>
+                        View
                       </Link>
                     </div>
                   </div>
@@ -210,10 +208,8 @@ export default function AdminDashboard() {
               </div>
             )}
             <div className="mt-4 text-center">
-              <Link href="/admin/inquiries">
-                <a className="text-sm font-medium text-blue-600 hover:text-blue-800">
-                  View all inquiries →
-                </a>
+              <Link href="/admin/inquiries" className="text-sm font-medium text-blue-600 hover:text-blue-800">
+                View all inquiries →
               </Link>
             </div>
           </CardContent>

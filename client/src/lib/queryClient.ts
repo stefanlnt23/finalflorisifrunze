@@ -16,62 +16,54 @@ async function throwIfResNotOk(res: Response) {
 }
 
 // Generic API request function
-export async function apiRequest(
-  endpoint: string,
-  options?: {
-    method?: string;
-    data?: any;
-    headers?: Record<string, string>;
-  }
-): Promise<any> {
-  const { method = 'GET', data, headers = {} } = options || {};
-
-  console.log(`Making ${method} request to ${endpoint}`, data ? { data } : '');
-
-  const requestHeaders: Record<string, string> = {
-    'Content-Type': 'application/json',
-    ...headers,
-  };
-
-  const requestOptions: RequestInit = {
-    method,
-    headers: requestHeaders,
-    credentials: 'include', // Include cookies for authentication
-  };
-
-  if (data) {
-    requestOptions.body = JSON.stringify(data);
-  }
+export const apiRequest = async (endpoint: string, options?: { method?: string, data?: any }) => {
+  const method = options?.method || "GET";
+  const data = options?.data;
+  const url = endpoint.startsWith('http') ? endpoint : `${getApiBaseUrl()}${endpoint}`;
+  console.log(`Making ${method} request to ${endpoint} ${data ? JSON.stringify(data) : ''}`);
 
   try {
-    const response = await fetch(endpoint, requestOptions);
+    const response = await fetch(url, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': getAuthToken() ? `Bearer ${getAuthToken()}` : '',
+      },
+      body: data ? JSON.stringify(data) : undefined,
+    });
+
+    // Handle 401 Unauthorized (expired token, etc.)
+    if (response.status === 401) {
+      removeAuthToken();
+      console.error('Unauthorized access, redirect to login');
+      window.location.href = '/admin/login';
+      return Promise.reject(new Error('Unauthorized'));
+    }
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error(`API error (${response.status}) from ${endpoint}:`, errorText);
+      console.error(`Error response from ${endpoint}:`, errorText);
       try {
-        // Try to parse as JSON for a more detailed error
         const errorJson = JSON.parse(errorText);
-        throw new Error(errorJson.message || `HTTP error ${response.status}`);
+        return Promise.reject(new Error(errorJson.message || 'API request failed'));
       } catch (e) {
-        // If parsing fails, throw with the raw text
-        throw new Error(errorText || `HTTP error ${response.status}`);
+        return Promise.reject(new Error(`API request failed: ${errorText.substring(0, 100)}...`));
       }
     }
 
-    // For DELETE requests or those that might not return content
-    if (method === 'DELETE' || response.headers.get('Content-Length') === '0') {
-      return { success: true };
+    try {
+      const responseData = await response.json();
+      console.log(`Response from ${endpoint}:`, responseData);
+      return responseData;
+    } catch (error) {
+      console.error('Error parsing JSON response:', error);
+      return null;
     }
-
-    const responseData = await response.json();
-    console.log(`Response from ${endpoint}:`, responseData);
-    return responseData;
   } catch (error) {
-    console.error(`Error in API request to ${endpoint}:`, error);
+    console.error('Error in API request to', method, url, ':', error);
     throw error;
   }
-}
+};
 
 type RequestOptions = {
   method?: string;
