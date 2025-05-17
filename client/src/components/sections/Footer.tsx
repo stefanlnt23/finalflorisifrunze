@@ -30,9 +30,9 @@ export default function Footer() {
           <div>
             <div className="flex items-center space-x-2 mb-6">
                 <img 
-                  src="https://i.imgur.com/eHGs2HM.png" 
-                  alt="Green Garden Logo" 
-                  className="h-12 w-auto"
+                  src="https://i.imgur.com/LG8LKFU.png" 
+                  alt="Flori si Frunze Logo" 
+                  className="h-16 w-auto"
                 />
                 <span className="text-xl font-bold text-white">
                   Flori si Frunze
