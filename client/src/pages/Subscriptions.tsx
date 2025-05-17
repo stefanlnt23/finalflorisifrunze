@@ -97,7 +97,7 @@ export default function Subscriptions() {
               <p>Nu există planuri de abonament disponibile momentan.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-8 subscription-grid">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-12 subscription-grid">
               {subscriptions.map((subscription) => (
                 <Card 
                   key={subscription.id} 
@@ -195,7 +195,7 @@ export default function Subscriptions() {
                       {Array.isArray(subscription.features) && subscription.features.map((feature, index) => (
                         <div 
                           key={index} 
-                          className="py-2 border-b border-gray-100 last:border-0 transition-colors hover:bg-gray-50 rounded-lg px-3"
+                          className="py-2 border-b border-gray-100 last:border-0 transition-colors hover:bg-gray-50 rounded-lg px-4"
                         >
                           <div className="flex justify-between items-start text-sm group">
                             <span className="text-gray-700 group-hover:font-medium transition-all flex items-start">
@@ -209,7 +209,7 @@ export default function Subscriptions() {
                             </span>
                             {typeof feature === 'object' && feature.value && (
                               <span 
-                                className="text-gray-900 font-bold group-hover:text-green-600 transition-all ml-3 flex-shrink-0"
+                                className="text-gray-900 font-bold group-hover:text-green-600 transition-all ml-5 flex-shrink-0"
                                 style={{ color: subscription.color || '#4CAF50' }}
                               >
                                 {feature.value}
