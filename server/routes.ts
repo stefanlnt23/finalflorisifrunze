@@ -285,15 +285,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       console.log(`Login attempt with email: ${email}, username: ${username}, password length: ${password ? password.length : 0}`);
-      
+
       // Try to find user by any of the provided identifiers
       let user = null;
-      
+
       // First try email if provided
       if (email) {
         user = await storage.getUserByEmail(email);
         console.log(`User lookup by email ${email}: ${user ? 'Found' : 'Not found'}`);
-        
+
         if (user) {
           console.log(`Found user: ${JSON.stringify({
             id: user.id,
@@ -303,7 +303,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           })}`);
         }
       }
-      
+
       // If not found and username is provided, try by username
       if (!user && username) {
         user = await storage.getUserByUsername(username);
@@ -318,7 +318,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log(`User found, checking password for user: ${user.username}`);
       const passwordsMatch = await comparePasswords(password, user.password);
       console.log(`Password check result: ${passwordsMatch ? 'Match' : 'Mismatch'}`);
-      
+
       if (!passwordsMatch) {
         console.log('Login failed: Password mismatch');
         return res.status(401).json({ message: "Invalid credentials" });
@@ -348,60 +348,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Registration endpoint
   app.post("/api/admin/register", async (req, res) => {
     try {
-      const { name, email, username, password, role = "user" } = req.body;
+      const { email, password } = req.body;
 
-      // Validate required fields
-      if (!name || !email || !username || !password) {
-        return res.status(400).json({ 
-          message: "All fields are required", 
-          success: false 
-        });
+      // Validate request body
+      if (!email || !password) {
+        return res.status(400).json({ success: false, message: 'Email and password are required' });
       }
 
-      // Check if username already exists
-      const existingUser = await storage.getUserByUsername(username);
+      // Check if user already exists
+      const existingUser = await storage.getUserByEmail(email);
       if (existingUser) {
-        return res.status(400).json({ 
-          message: "Username already exists", 
-          success: false 
-        });
-      }
-
-      // Check if email already exists
-      const existingEmail = await storage.getUserByEmail(email);
-      if (existingEmail) {
-        return res.status(400).json({ 
-          message: "Email already in use", 
-          success: false 
-        });
+        return res.status(400).json({ success: false, message: 'Email already in use' });
       }
 
       // Hash the password
       const hashedPassword = await hashPassword(password);
 
       // Create the new user
-      const newUser = await storage.createUser({
-        name,
+      const newUser = {
+        name: email.split('@')[0],
         email,
-        username,
+        username: `user_${Date.now()}`,
         password: hashedPassword,
-        role,
+        role: 'user', // Default role
         createdAt: new Date(),
         updatedAt: new Date()
-      });
+      };
 
-      // Return success response (don't return the user object to avoid leaking password hash)
-      res.status(201).json({
-        success: true,
-        message: "User registered successfully"
-      });
+      await storage.createUser(newUser);
 
+      res.status(201).json({ success: true, message: 'User registered successfully' });
     } catch (error) {
-      console.error("Error during registration:", error);
-      res.status(500).json({ 
-        message: "Registration failed", 
-        success: false 
-      });
+      console.error('Registration error:', error);
+      res.status(500).json({ success: false, message: 'Server error during registration' });
     }
   });
 
@@ -931,7 +910,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       console.log(`Successfully updated inquiry: ${inquiry.id}`);
-      res.json({ success: true, inquiry });
+      res.json({        success: true, inquiry });
     } catch (error) {
       console.error("Error updating inquiry:", error);
       res.status(500).json({ message: "Failed to update inquiry" });

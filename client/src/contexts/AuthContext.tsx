@@ -13,7 +13,7 @@ type AuthContextType = {
   isAuthenticated: boolean;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
-  register: (name: string, email: string, password: string) => Promise<void>;
+  register: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   error: string | null;
 };
@@ -39,12 +39,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       setLoading(true);
       const token = localStorage.getItem('authToken');
-      
+
       if (!token) {
         setUser(null);
         return;
       }
-      
+
       const response = await fetch('/api/admin/validate-session', {
         method: 'GET',
         headers: {
@@ -55,7 +55,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (response.ok && response.json) {
         const data = await response.json();
-        
+
         if (data.valid) {
           // If session is valid, we need to get user details
           // This would ideally be combined in a single endpoint
@@ -88,12 +88,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       setLoading(true);
       setError(null);
-      
+
       console.log(`Attempting login with email: ${email}`);
 
       // Determine if input is email or username
       const isEmail = email.includes('@');
-      
+
       // Build request payload based on whether input appears to be an email
       const payload: {
         email?: string;
@@ -102,15 +102,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       } = {
         password
       };
-      
+
       if (isEmail) {
         payload.email = email;
       } else {
         payload.username = email;
       }
-      
+
       console.log('Login payload:', payload);
-      
+
       const response = await fetch('/api/admin/login', {
         method: 'POST',
         headers: {
@@ -120,16 +120,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
 
       console.log(`Login response status: ${response.status}`);
-      
+
       const responseData = await response.json();
-      
+
       if (response.ok) {
         console.log('Login successful response:', responseData);
-        
+
         if (responseData.success && responseData.token) {
           // Store token in localStorage
           localStorage.setItem('authToken', responseData.token);
-          
+
           // Store user data
           if (responseData.user) {
             const userData = {
@@ -138,14 +138,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
               email: responseData.user.email,
               role: responseData.user.role || 'user'
             };
-            
+
             setUser(userData);
-            
+
             // Also store in localStorage for persistence
             localStorage.setItem('user', JSON.stringify(userData));
             console.log('User data stored in localStorage');
           }
-          
+
           navigate('/admin/dashboard');
         } else {
           console.error('Login response missing success or token:', responseData);
@@ -163,40 +163,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const register = async (name: string, email: string, password: string) => {
+  const register = async (email: string, password: string) => {
     try {
       setLoading(true);
       setError(null);
 
       console.log(`Attempting to register with email: ${email}`);
-      
-      // Create a unique username from the email (everything before the @)
-      const username = email.split('@')[0] + Math.floor(Math.random() * 1000);
-      console.log(`Generated username: ${username}`);
 
       const registerResponse = await fetch('/api/admin/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
-          name, 
-          email, 
-          username, // Use a unique username instead of email directly
-          password, 
-          role: 'user' 
-        }),
+        body: JSON.stringify({ email, password }),
       });
 
       console.log(`Registration response status: ${registerResponse.status}`);
-      
+
       const data = await registerResponse.json();
       console.log('Registration response:', data);
-      
+
       if (registerResponse.ok) {
         if (data.success) {
           console.log('Registration successful. Attempting login with new credentials.');
-          
+
           // On successful registration, attempt login with the registered credentials
           await login(email, password);
         } else {
@@ -246,7 +236,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
               },
               ...(body ? { body: JSON.stringify(body) } : {})
             });
-            
+
             console.log('Response status:', response.status);
             try {
               const data = await response.json();
@@ -269,7 +259,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       localStorage.removeItem('user');
       setUser(null);
       navigate('/admin/login');
-      
+
     } catch (error) {
       console.error('Logout error:', error);
       setError('An unexpected error occurred. Please try again.');

@@ -17,7 +17,6 @@ export default function AdminLogin() {
   const [password, setPassword] = useState('');
 
   // Register state
-  const [registerName, setRegisterName] = useState('');
   const [registerEmail, setRegisterEmail] = useState('');
   const [registerPassword, setRegisterPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -49,7 +48,7 @@ export default function AdminLogin() {
     }
     
     try {
-      await register(registerName, registerEmail, registerPassword);
+      await register(registerEmail, registerPassword);
     } catch (err) {
       toast({
         title: 'Error',
@@ -119,16 +118,7 @@ export default function AdminLogin() {
                     {error}
                   </div>
                 )}
-                <div className="space-y-2">
-                  <Label htmlFor="registerName">Name</Label>
-                  <Input
-                    id="registerName"
-                    type="text"
-                    value={registerName}
-                    onChange={(e) => setRegisterName(e.target.value)}
-                    required
-                  />
-                </div>
+                
                 <div className="space-y-2">
                   <Label htmlFor="registerEmail">Email</Label>
                   <Input
