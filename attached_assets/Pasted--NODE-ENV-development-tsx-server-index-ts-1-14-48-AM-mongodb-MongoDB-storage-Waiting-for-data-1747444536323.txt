@@ -1,0 +1,67 @@
+> NODE_ENV=development tsx server/index.ts
+
+1:14:48 AM [mongodb] MongoDB storage: Waiting for database connection...
+1:14:49 AM [mongodb] MongoDB storage: Database connection initialized
+1:14:49 AM [mongodb] Connected to MongoDB
+1:14:51 AM [mongodb] Database already contains data, skipping seed operation
+1:14:51 AM [express] serving on port 5000
+1:14:57 AM [express] GET /api/services 304 in 115ms :: {"services":[{"id":"681e0e06fa79bf465e2799bf"…
+1:14:57 AM [express] GET /api/testimonials 304 in 115ms :: {"testimonials":[{"id":"681e8944d239da0fd…
+1:14:57 AM [express] GET /api/carousel-images 200 in 218ms :: {"images":[{"id":"681e7843b07313dd6508…
+1:14:57 AM [express] GET /api/feature-cards 200 in 219ms :: {"cards":[{"id":"681e93160ad2c327267a398…
+1:15:03 AM [mongodb] Error creating user: ValidationError: role: `user` is not a valid enum value for path `role`.
+Error during registration: Error: User validation failed: role: `user` is not a valid enum value for path `role`.
+    at ValidationError.inspect (/home/runner/workspace/node_modules/mongoose/lib/error/validation.js:52:26)
+    at formatValue (node:internal/util/inspect:809:19)
+    at inspect (node:internal/util/inspect:368:10)
+    at formatWithOptionsInternal (node:internal/util/inspect:2307:40)
+    at formatWithOptions (node:internal/util/inspect:2169:10)
+    at console.value (node:internal/console/constructor:350:14)
+    at console.warn (node:internal/console/constructor:383:61)
+    at <anonymous> (/home/runner/workspace/server/routes.ts:370:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+  errors: {
+    role: ValidatorError: `user` is not a valid enum value for path `role`.
+        at validate (/home/runner/workspace/node_modules/mongoose/lib/schemaType.js:1404:13)
+        at SchemaType.doValidate (/home/runner/workspace/node_modules/mongoose/lib/schemaType.js:1388:7)
+        at /home/runner/workspace/node_modules/mongoose/lib/document.js:3096:18
+        at process.processTicksAndRejections (node:internal/process/task_queues:77:11) {
+      properties: [Object],
+      kind: 'enum',
+      path: 'role',
+      value: 'user',
+      reason: undefined,
+      [Symbol(mongoose#validatorError)]: true
+    }
+  },
+  _message: 'User validation failed'
+}
+1:15:03 AM [express] POST /api/admin/register 500 in 320ms :: {"message":"Registration failed","succ…
+1:15:29 AM [mongodb] Error creating user: ValidationError: role: `user` is not a valid enum value for path `role`.
+Error during registration: Error: User validation failed: role: `user` is not a valid enum value for path `role`.
+    at ValidationError.inspect (/home/runner/workspace/node_modules/mongoose/lib/error/validation.js:52:26)
+    at formatValue (node:internal/util/inspect:809:19)
+    at inspect (node:internal/util/inspect:368:10)
+    at formatWithOptionsInternal (node:internal/util/inspect:2307:40)
+    at formatWithOptions (node:internal/util/inspect:2169:10)
+    at console.value (node:internal/console/constructor:350:14)
+    at console.warn (node:internal/console/constructor:383:61)
+    at <anonymous> (/home/runner/workspace/server/routes.ts:370:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+  errors: {
+    role: ValidatorError: `user` is not a valid enum value for path `role`.
+        at validate (/home/runner/workspace/node_modules/mongoose/lib/schemaType.js:1404:13)
+        at SchemaType.doValidate (/home/runner/workspace/node_modules/mongoose/lib/schemaType.js:1388:7)
+        at /home/runner/workspace/node_modules/mongoose/lib/document.js:3096:18
+        at process.processTicksAndRejections (node:internal/process/task_queues:77:11) {
+      properties: [Object],
+      kind: 'enum',
+      path: 'role',
+      value: 'user',
+      reason: undefined,
+      [Symbol(mongoose#validatorError)]: true
+    }
+  },
+  _message: 'User validation failed'
+}
+1:15:29 AM [express] POST /api/admin/register 500 in 315ms :: {"message":"Registration failed","succ…
