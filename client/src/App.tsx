@@ -83,6 +83,9 @@ function Router() {
           <Route path="/admin/blog/:id/edit">
             <ProtectedRoute component={AdminBlogPostForm} />
           </Route>
+          <Route path="/admin/blog/:id">
+            <ProtectedRoute component={AdminBlogPostForm} />
+          </Route>
           <Route path="/admin/feature-cards">
             <ProtectedRoute component={AdminFeatureCards} />
           </Route>
