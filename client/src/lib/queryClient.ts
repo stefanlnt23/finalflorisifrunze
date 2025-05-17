@@ -1,71 +1,74 @@
-
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
-    let errorMessage = res.statusText;
+    const errorText = await res.text();
+    console.error(`API error (${res.status}):`, errorText);
     try {
-      // Try to parse the response as JSON first
-      const contentType = res.headers.get('content-type');
-      if (contentType && contentType.includes('application/json')) {
-        const data = await res.clone().json();
-        errorMessage = data.message || data.error || JSON.stringify(data);
-      } else {
-        // If not JSON, get it as text
-        errorMessage = await res.text() || res.statusText;
-      }
-    } catch (err) {
-      // If we can't parse JSON or get text, just use the status text
-      console.error('Error parsing response:', err);
+      // Try to parse as JSON for a more detailed error
+      const errorJson = JSON.parse(errorText);
+      throw new Error(errorJson.message || `HTTP error ${res.status}`);
+    } catch (e) {
+      // If parsing fails, throw with the raw text
+      throw new Error(errorText || `HTTP error ${res.status}`);
     }
-    throw new Error(errorMessage);
   }
 }
 
 // Generic API request function
-export async function apiRequest(url: string, options: RequestOptions = {}): Promise<any> {
-  const { method = 'GET', data = null } = options;
+export async function apiRequest(
+  endpoint: string,
+  options?: {
+    method?: string;
+    data?: any;
+    headers?: Record<string, string>;
+  }
+): Promise<any> {
+  const { method = 'GET', data, headers = {} } = options || {};
 
-  console.log(`Making ${method} request to ${url}`);
+  console.log(`Making ${method} request to ${endpoint}`, data ? { data } : '');
 
-  const headers: HeadersInit = {
+  const requestHeaders: Record<string, string> = {
     'Content-Type': 'application/json',
-    ...(options.headers || {})
+    ...headers,
   };
 
-  // Add auth token if available
-  const token = localStorage.getItem('authToken');
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
+  const requestOptions: RequestInit = {
+    method,
+    headers: requestHeaders,
+    credentials: 'include', // Include cookies for authentication
+  };
+
+  if (data) {
+    requestOptions.body = JSON.stringify(data);
   }
 
   try {
-    const response = await fetch(url, {
-      method,
-      headers,
-      body: data ? JSON.stringify(data) : undefined
-    });
+    const response = await fetch(endpoint, requestOptions);
 
-    console.log(`Response status: ${response.status} ${response.statusText}`);
-
-    // Parse the response JSON regardless of status code
-    const responseData = await response.json().catch(() => {
-      console.log('Response is not JSON, returning text');
-      return response.text();
-    });
-
-    // Check if not successful after getting the response data
     if (!response.ok) {
-      console.log('API Error Response:', JSON.stringify(responseData));
-      throw new Error(responseData?.message || 'An error occurred with the API request');
+      const errorText = await response.text();
+      console.error(`API error (${response.status}) from ${endpoint}:`, errorText);
+      try {
+        // Try to parse as JSON for a more detailed error
+        const errorJson = JSON.parse(errorText);
+        throw new Error(errorJson.message || `HTTP error ${response.status}`);
+      } catch (e) {
+        // If parsing fails, throw with the raw text
+        throw new Error(errorText || `HTTP error ${response.status}`);
+      }
     }
 
-    // Log successful response
-    console.log('API response received:', responseData);
+    // For DELETE requests or those that might not return content
+    if (method === 'DELETE' || response.headers.get('Content-Length') === '0') {
+      return { success: true };
+    }
 
+    const responseData = await response.json();
+    console.log(`Response from ${endpoint}:`, responseData);
     return responseData;
   } catch (error) {
-    console.log('API Request Error:', error);
+    console.error(`Error in API request to ${endpoint}:`, error);
     throw error;
   }
 }

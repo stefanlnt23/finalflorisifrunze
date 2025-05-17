@@ -33,9 +33,20 @@ export default function SubscriptionsForm() {
     queryFn: async () => {
       if (isEditMode) {
         try {
+          console.log(`Fetching subscription with ID: ${id}`);
           const response = await apiRequest(`/api/admin/subscriptions/${id}`);
-          // Check if the response has the subscription property or is the subscription itself
-          return response.subscription || response;
+          console.log('API response:', response);
+          
+          // Check various response formats
+          if (response && response.subscription) {
+            return response.subscription;
+          } else if (response && typeof response === 'object' && response.id) {
+            return response;
+          } else if (Array.isArray(response) && response.length > 0) {
+            return response[0];
+          }
+          
+          throw new Error('Invalid response format from API');
         } catch (error) {
           console.error('Error fetching subscription:', error);
           throw error;
