@@ -15,7 +15,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
             <div className="flex items-center">
               <Link href="/" className="flex items-center space-x-2">
                 <img 
-                  src="https://i.imgur.com/eHGs2HM.png" 
+                  src="https://i.imgur.com/uI4Kx6k.png" 
                   alt="Green Garden Logo" 
                   className="h-10 w-auto"
                 />
@@ -29,7 +29,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
             <MainNavigation />
             <div className="flex items-center space-x-4">
             <Link href="/appointment">
-              <Button className="bg-[#c8a055] text-[#1f2328] hover:bg-[#d9b978] transition-colors">
+              <Button className="bg-[#c8a055] text-[#1f2328] hover:bg-[#d9b978] transition-colors text-xs sm:text-sm px-2 sm:px-4">
                 Programează o Întâlnire
               </Button>
             </Link>

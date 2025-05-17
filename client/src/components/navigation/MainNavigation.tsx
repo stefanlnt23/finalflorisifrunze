@@ -53,7 +53,7 @@ export default function MainNavigation() {
       <div className="md:hidden flex items-center space-x-4">
         <Link href="/" className="flex items-center">
           <img 
-            src="https://i.imgur.com/eHGs2HM.png" 
+            src="https://i.imgur.com/uI4Kx6k.png" 
             alt="Flori si Frunze Logo" 
             className="h-8 w-auto"
           />
