@@ -216,6 +216,7 @@
   width: 100%;
   max-width: 500px; 
   margin: 0 auto;
+  max-height: none;
 }
 
 .subscription-level-2 {
@@ -224,10 +225,12 @@
 
 .subscription-level-3 {
   transform: translateY(-10px);
+  min-height: 650px;
 }
 
 .subscription-level-4 {
   transform: translateY(-15px);
+  min-height: 700px;
 }
 
 .subscription-card:hover {

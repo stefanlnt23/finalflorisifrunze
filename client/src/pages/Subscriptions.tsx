@@ -97,11 +97,11 @@ export default function Subscriptions() {
               <p>Nu există planuri de abonament disponibile momentan.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-12 subscription-grid">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-6 subscription-grid">
               {subscriptions.map((subscription) => (
                 <Card 
                   key={subscription.id} 
-                  className={`bg-white rounded-2xl overflow-hidden flex flex-col transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 subscription-card subscription-level-${subscription.displayOrder}`}
+                  className={`bg-white rounded-2xl overflow-hidden flex flex-col transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 subscription-card subscription-level-${subscription.displayOrder} ${subscription.displayOrder >= 3 ? 'lg:col-span-2 xl:col-span-1' : ''}`}
                   style={{ 
                     boxShadow: `0 10px 30px -5px ${subscription.color || '#4CAF50'}30`,
                     borderWidth: subscription.displayOrder > 1 ? '3px' : '1px',
@@ -222,7 +222,7 @@ export default function Subscriptions() {
                   </CardContent>
 
                   {/* Card Footer with button */}
-                  <CardFooter className="p-5 pt-2 mt-auto bg-gray-50">
+                  <CardFooter className="p-5 pt-2 mt-auto bg-gray-50 sticky bottom-0">
                     <Link href="/contact" className="w-full">
                       <Button 
                         className={`w-full py-3 font-bold text-lg text-center relative overflow-hidden transition-all group hover:shadow-xl rounded-xl ${
