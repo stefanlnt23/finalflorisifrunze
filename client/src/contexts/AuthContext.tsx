@@ -89,12 +89,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(true);
       setError(null);
 
+      // Send both email and username (using email as username)
       const response = await fetch('/api/admin/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ 
+          email,
+          username: email, // Include both for flexibility
+          password 
+        }),
       });
 
       if (response.ok) {
@@ -147,7 +152,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(true);
       setError(null);
 
-      // Based on the server routes, the registration expects username, not email
+      // Create a unique username from the email (everything before the @)
+      const username = email.split('@')[0] + Math.floor(Math.random() * 1000);
+
       const response = await fetch('/api/admin/register', {
         method: 'POST',
         headers: {
@@ -156,7 +163,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         body: JSON.stringify({ 
           name, 
           email, 
-          username: email, // Using email as username since the Login page uses email for login
+          username, // Use a unique username instead of email directly
           password, 
           role: 'user' 
         }),
@@ -166,7 +173,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const data = await response.json();
         
         if (data.success) {
-          // On successful registration, we should automatically log in the user
+          // On successful registration, log in the user
           await login(email, password);
         } else {
           setError(data.message || 'Failed to register');

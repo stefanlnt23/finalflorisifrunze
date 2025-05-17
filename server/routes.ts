@@ -276,15 +276,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Admin authentication
   app.post("/api/admin/login", async (req, res) => {
     try {
-      const { email, password } = req.body;
+      const { email, username, password } = req.body;
 
-      if (!email || !password) {
+      if ((!email && !username) || !password) {
         return res
           .status(400)
-          .json({ message: "Email and password are required" });
+          .json({ message: "Email/username and password are required" });
       }
 
-      const user = await storage.getUserByEmail(email);
+      // Try to find user by email first
+      let user = email ? await storage.getUserByEmail(email) : null;
+      
+      // If not found by email and username is provided, try by username
+      if (!user && username) {
+        user = await storage.getUserByUsername(username);
+      }
 
       if (!user) {
         return res.status(401).json({ message: "Invalid credentials" });
