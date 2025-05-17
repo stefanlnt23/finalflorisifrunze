@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
 import MainLayout from "@/components/layouts/MainLayout";
@@ -68,11 +68,11 @@ export default function Subscriptions() {
             </div>
           ) : error ? (
             <div className="text-center py-12">
-              <p className="text-red-500">Failed to load subscription plans. Please try again later.</p>
+              <p className="text-red-500">Nu s-au putut încărca planurile de abonament. Vă rugăm să încercați din nou mai târziu.</p>
             </div>
           ) : subscriptions.length === 0 ? (
             <div className="text-center py-12">
-              <p>No subscription plans available at the moment.</p>
+              <p>Nu există planuri de abonament disponibile momentan.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 subscription-grid">
@@ -81,7 +81,7 @@ export default function Subscriptions() {
                   key={subscription.id} 
                   className="bg-white rounded-lg border border-gray-200 overflow-hidden flex flex-col h-full transform transition-all duration-300 hover:shadow-xl hover:-translate-y-2"
                   style={{ 
-                    boxShadow: `0 4px 20px -5px ${subscription.color}40` 
+                    boxShadow: `0 4px 20px -5px ${subscription.color || '#FFFFFF'}40` 
                   }}
                 >
                   {/* Card Header with name and image */}
@@ -89,13 +89,13 @@ export default function Subscriptions() {
                     {subscription.isPopular && (
                       <div 
                         className="absolute top-4 right-0 z-10 bg-yellow-500 text-white text-xs uppercase font-bold py-1 px-3 rounded-l-full shadow-md animate-pulse"
-                        style={{ backgroundColor: subscription.color }}
+                        style={{ backgroundColor: subscription.color || '#4CAF50' }}
                       >
                         Popular
                       </div>
                     )}
                     <div className="p-6 text-center">
-                      <h2 className="text-2xl font-bold mb-2 transition-colors duration-300" style={{ color: subscription.color }}>
+                      <h2 className="text-2xl font-bold mb-2 transition-colors duration-300" style={{ color: subscription.color || '#4CAF50' }}>
                         {subscription.name}
                       </h2>
                     </div>
@@ -111,7 +111,7 @@ export default function Subscriptions() {
                     ) : (
                       <div 
                         className="w-full h-12" 
-                        style={{ backgroundColor: subscription.color }}
+                        style={{ backgroundColor: subscription.color || '#4CAF50' }}
                       ></div>
                     )}
                   </CardHeader>
@@ -119,13 +119,13 @@ export default function Subscriptions() {
                   {/* Color bar */}
                   <div 
                     className="h-2 w-full" 
-                    style={{ backgroundColor: subscription.color }}
+                    style={{ backgroundColor: subscription.color || '#4CAF50' }}
                   ></div>
                   
                   {/* Features list */}
                   <CardContent className="flex-grow p-0">
                     <div className="px-6 py-4">
-                      {subscription.features.map((feature, index) => (
+                      {Array.isArray(subscription.features) && subscription.features.map((feature, index) => (
                         <div 
                           key={index} 
                           className="py-2 border-b border-gray-100 last:border-0 transition-colors hover:bg-gray-50"
@@ -136,7 +136,7 @@ export default function Subscriptions() {
                             </span>
                             <span 
                               className="text-gray-900 font-medium group-hover:text-green-600 transition-all"
-                              style={{ color: subscription.color }}
+                              style={{ color: subscription.color || '#4CAF50' }}
                             >
                               {feature.value}
                             </span>
@@ -152,7 +152,7 @@ export default function Subscriptions() {
                       <Button 
                         className="w-full py-3 font-medium text-center relative overflow-hidden transition-all group hover:shadow-lg"
                         style={{ 
-                          backgroundColor: subscription.color,
+                          backgroundColor: subscription.color || '#4CAF50',
                           color: '#FFFFFF'
                         }}
                       >

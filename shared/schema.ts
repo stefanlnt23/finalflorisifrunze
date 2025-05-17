@@ -332,6 +332,22 @@ export type User = typeof users.$inferSelect;
 export type InsertService = z.infer<typeof insertServiceSchema>;
 export type Service = typeof services.$inferSelect;
 
+export type InsertSubscription = z.infer<typeof insertSubscriptionSchema>;
+export type Subscription = {
+  id: string;
+  name: string;
+  description?: string;
+  color: string;
+  features: Array<{
+    name: string;
+    value: string;
+  }>;
+  price: string;
+  isPopular: boolean;
+  displayOrder: number;
+  imageUrl?: string;
+};
+
 export type InsertPortfolioItem = z.infer<typeof insertPortfolioItemSchema>;
 // Custom type for PortfolioItem that supports both string and number IDs
 export type PortfolioItem = {

@@ -1244,7 +1244,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log("API: Fetching subscriptions");
       const subscriptions = await storage.getSubscriptions();
       console.log(`API: Found ${subscriptions.length} subscriptions to return`);
-      console.log("API: Subscription data:", JSON.stringify(subscriptions).substring(0, 200) + "...");
+      
+      if (subscriptions.length > 0) {
+        console.log("API: First subscription:", JSON.stringify(subscriptions[0]));
+      } else {
+        console.log("API: No subscriptions found");
+      }
+      
       res.json({ subscriptions });
     } catch (error) {
       console.error("Error fetching subscriptions:", error);
