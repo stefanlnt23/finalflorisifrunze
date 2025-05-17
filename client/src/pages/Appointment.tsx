@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import MainLayout from "@/components/layouts/MainLayout";
 import { useLocation, Link } from "wouter";
@@ -21,14 +22,14 @@ import { useToast } from "@/hooks/use-toast";
 
 // Form validation schema
 const appointmentSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Please enter a valid email address"),
-  phone: z.string().min(10, "Phone number must be at least 10 characters"),
+  name: z.string().min(2, "Numele trebuie să aibă cel puțin 2 caractere"),
+  email: z.string().email("Vă rugăm să introduceți o adresă de email validă"),
+  phone: z.string().min(10, "Numărul de telefon trebuie să aibă cel puțin 10 caractere"),
   serviceId: z.string().refine(val => !isNaN(parseInt(val)), {
-    message: "Please select a service"
+    message: "Vă rugăm să selectați un serviciu"
   }),
   date: z.date({
-    required_error: "Please select a date",
+    required_error: "Vă rugăm să selectați o dată",
   }).refine(date => {
     // Must be at least tomorrow
     const tomorrow = new Date();
@@ -36,7 +37,7 @@ const appointmentSchema = z.object({
     tomorrow.setHours(0, 0, 0, 0);
     return date >= tomorrow;
   }, {
-    message: "Appointment must be at least 1 day in advance",
+    message: "Programarea trebuie să fie cu cel puțin o zi în avans",
   }),
   notes: z.string().optional(),
 });
@@ -90,8 +91,8 @@ export default function Appointment() {
       // Handle success
       setIsSuccess(true);
       toast({
-        title: "Appointment Booked",
-        description: "Your appointment has been successfully scheduled.",
+        title: "Programare Confirmată",
+        description: "Programarea dvs. a fost înregistrată cu succes.",
       });
       
       // Reset form
@@ -99,8 +100,8 @@ export default function Appointment() {
     } catch (error) {
       console.error("Error booking appointment:", error);
       toast({
-        title: "Booking Failed",
-        description: "There was a problem booking your appointment. Please try again.",
+        title: "Programarea a eșuat",
+        description: "A apărut o problemă la înregistrarea programării. Vă rugăm să încercați din nou.",
         variant: "destructive",
       });
     } finally {
@@ -119,24 +120,24 @@ export default function Appointment() {
                 <div className="w-16 h-16 mx-auto bg-green-100 rounded-full flex items-center justify-center mb-4">
                   <i className="fas fa-check text-green-600 text-2xl"></i>
                 </div>
-                <CardTitle className="text-center text-2xl">Appointment Confirmed!</CardTitle>
+                <CardTitle className="text-center text-2xl">Programare Confirmată!</CardTitle>
                 <CardDescription className="text-center">
-                  Thank you for scheduling an appointment with us.
+                  Vă mulțumim pentru programarea făcută la noi.
                 </CardDescription>
               </CardHeader>
               <CardContent className="text-center">
                 <p className="text-gray-600 mb-6">
-                  We've sent a confirmation email with all the details. Our team will be in touch soon to confirm your appointment.
+                  Am trimis un email de confirmare cu toate detaliile. Echipa noastră vă va contacta în curând pentru a confirma programarea.
                 </p>
                 <div className="flex flex-col space-y-4">
                   <Link href="/services">
                     <Button className="w-full bg-green-600 hover:bg-green-700">
-                      View More Services
+                      Vezi Mai Multe Servicii
                     </Button>
                   </Link>
                   <Link href="/">
                     <Button variant="outline" className="w-full">
-                      Return to Home
+                      Înapoi la Pagina Principală
                     </Button>
                   </Link>
                 </div>
@@ -154,10 +155,10 @@ export default function Appointment() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-8">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Book an Appointment
+              Programează o Vizită
             </h1>
             <p className="text-xl text-gray-600">
-              Schedule a service with our expert gardening team
+              Planifică un serviciu cu echipa noastră de grădinari experți
             </p>
           </div>
 
@@ -165,9 +166,9 @@ export default function Appointment() {
             <div className="md:col-span-2">
               <Card>
                 <CardHeader>
-                  <CardTitle>Appointment Details</CardTitle>
+                  <CardTitle>Detalii Programare</CardTitle>
                   <CardDescription>
-                    Fill out the form below to schedule your gardening service.
+                    Completați formularul de mai jos pentru a programa serviciul de grădinărit.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -178,9 +179,9 @@ export default function Appointment() {
                         name="name"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Full Name</FormLabel>
+                            <FormLabel>Nume Complet</FormLabel>
                             <FormControl>
-                              <Input placeholder="Your full name" {...field} />
+                              <Input placeholder="Numele dvs. complet" {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -195,7 +196,7 @@ export default function Appointment() {
                             <FormItem>
                               <FormLabel>Email</FormLabel>
                               <FormControl>
-                                <Input placeholder="Your email address" type="email" {...field} />
+                                <Input placeholder="Adresa dvs. de email" type="email" {...field} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -207,9 +208,9 @@ export default function Appointment() {
                           name="phone"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Phone Number</FormLabel>
+                              <FormLabel>Număr de Telefon</FormLabel>
                               <FormControl>
-                                <Input placeholder="Your phone number" {...field} />
+                                <Input placeholder="Numărul dvs. de telefon" {...field} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -222,7 +223,7 @@ export default function Appointment() {
                         name="serviceId"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Service</FormLabel>
+                            <FormLabel>Serviciu</FormLabel>
                             <Select 
                               onValueChange={field.onChange} 
                               defaultValue={field.value}
@@ -230,14 +231,14 @@ export default function Appointment() {
                             >
                               <FormControl>
                                 <SelectTrigger>
-                                  <SelectValue placeholder="Select a service" />
+                                  <SelectValue placeholder="Selectați un serviciu" />
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
                                 {isLoading ? (
-                                  <SelectItem value="loading" disabled>Loading services...</SelectItem>
+                                  <SelectItem value="loading" disabled>Se încarcă serviciile...</SelectItem>
                                 ) : services.length === 0 ? (
-                                  <SelectItem value="none" disabled>No services available</SelectItem>
+                                  <SelectItem value="none" disabled>Nu există servicii disponibile</SelectItem>
                                 ) : (
                                   services.map((service) => (
                                     <SelectItem key={service.id} value={service.id.toString()}>
@@ -257,7 +258,7 @@ export default function Appointment() {
                         name="date"
                         render={({ field }) => (
                           <FormItem className="flex flex-col">
-                            <FormLabel>Appointment Date</FormLabel>
+                            <FormLabel>Data Programării</FormLabel>
                             <Popover>
                               <PopoverTrigger asChild>
                                 <FormControl>
@@ -271,7 +272,7 @@ export default function Appointment() {
                                     {field.value ? (
                                       format(field.value, "PPP")
                                     ) : (
-                                      <span>Pick a date</span>
+                                      <span>Alegeți o dată</span>
                                     )}
                                     <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                                   </Button>
@@ -293,7 +294,7 @@ export default function Appointment() {
                               </PopoverContent>
                             </Popover>
                             <FormDescription>
-                              Select a date at least one day in advance.
+                              Selectați o dată cu cel puțin o zi în avans.
                             </FormDescription>
                             <FormMessage />
                           </FormItem>
@@ -305,17 +306,17 @@ export default function Appointment() {
                         name="notes"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Special Instructions</FormLabel>
+                            <FormLabel>Instrucțiuni Speciale</FormLabel>
                             <FormControl>
                               <Textarea
-                                placeholder="Please provide any additional information about your needs"
+                                placeholder="Vă rugăm să furnizați orice informație suplimentară despre nevoile dvs."
                                 className="resize-none"
                                 rows={4}
                                 {...field}
                               />
                             </FormControl>
                             <FormDescription>
-                              Any specific details or requirements for your appointment.
+                              Orice detalii sau cerințe specifice pentru programarea dvs.
                             </FormDescription>
                             <FormMessage />
                           </FormItem>
@@ -330,10 +331,10 @@ export default function Appointment() {
                         {isSubmitting ? (
                           <>
                             <i className="fas fa-spinner fa-spin mr-2"></i>
-                            Processing...
+                            Se procesează...
                           </>
                         ) : (
-                          "Book Appointment"
+                          "Programează"
                         )}
                       </Button>
                     </form>
@@ -345,7 +346,7 @@ export default function Appointment() {
             <div>
               <Card>
                 <CardHeader>
-                  <CardTitle>Why Choose Us?</CardTitle>
+                  <CardTitle>De ce să ne alegeți?</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-4">
@@ -353,36 +354,36 @@ export default function Appointment() {
                       <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mt-1 mr-3">
                         <i className="fas fa-check text-green-600 text-xs"></i>
                       </div>
-                      <p className="text-gray-600">Expert gardeners with years of experience</p>
+                      <p className="text-gray-600">Grădinari experți cu ani de experiență</p>
                     </li>
                     <li className="flex items-start">
                       <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mt-1 mr-3">
                         <i className="fas fa-check text-green-600 text-xs"></i>
                       </div>
-                      <p className="text-gray-600">Eco-friendly gardening practices</p>
+                      <p className="text-gray-600">Practici de grădinărit ecologice</p>
                     </li>
                     <li className="flex items-start">
                       <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mt-1 mr-3">
                         <i className="fas fa-check text-green-600 text-xs"></i>
                       </div>
-                      <p className="text-gray-600">Flexible scheduling options</p>
+                      <p className="text-gray-600">Opțiuni flexibile de programare</p>
                     </li>
                     <li className="flex items-start">
                       <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mt-1 mr-3">
                         <i className="fas fa-check text-green-600 text-xs"></i>
                       </div>
-                      <p className="text-gray-600">Comprehensive service guarantee</p>
+                      <p className="text-gray-600">Garanție completă a serviciilor</p>
                     </li>
                   </ul>
                   
                   <div className="mt-6 border-t pt-6">
-                    <h3 className="font-semibold text-gray-900 mb-2">Questions?</h3>
+                    <h3 className="font-semibold text-gray-900 mb-2">Întrebări?</h3>
                     <p className="text-gray-600 mb-4">
-                      If you have any questions about our services or booking process, please don't hesitate to contact us.
+                      Dacă aveți întrebări despre serviciile noastre sau despre procesul de programare, nu ezitați să ne contactați.
                     </p>
                     <Link href="/contact">
                       <Button variant="outline" className="w-full">
-                        Contact Us
+                        Contactați-ne
                       </Button>
                     </Link>
                   </div>
