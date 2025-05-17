@@ -1,0 +1,26 @@
+ Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+ Warning: validateDOMNesting(...): <a> cannot appear as a descendant of <a>.
+    at a
+    at a
+    at https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=150c12e6:352:18
+    at div
+    at div
+    at _c9 (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/src/components/ui/card.tsx:114:12)
+    at div
+    at _c (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/src/components/ui/card.tsx:20:11)
+    at div
+    at div
+    at main
+    at div
+    at AdminLayout (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/src/components/layouts/AdminLayout.tsx:18:39)
+    at AdminDashboard (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/src/pages/admin/Dashboard.tsx:25:62)
+    at ProtectedRoute (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/src/components/auth/ProtectedRoute.tsx:21:14)
+    at Route (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=150c12e6:338:16)
+    at Switch (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=150c12e6:394:17)
+    at Suspense
+    at AuthProvider (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/src/contexts/AuthContext.tsx:21:32)
+    at Router
+    at AuthProvider (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/src/contexts/AuthContext.tsx:21:32)
+    at QueryClientProvider (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=150c12e6:2875:3)
+    at App
+printWarning @ chunk-RPCDYKBN.js:521
