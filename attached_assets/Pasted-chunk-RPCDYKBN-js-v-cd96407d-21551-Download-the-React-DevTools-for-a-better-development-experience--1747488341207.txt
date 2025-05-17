@@ -1,0 +1,145 @@
+chunk-RPCDYKBN.js?v=cd96407d:21551 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+chunk-RPCDYKBN.js?v=cd96407d:521 Warning: validateDOMNesting(...): <a> cannot appear as a descendant of <a>.
+    at a
+    at a
+    at https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=cd96407d:352:18
+    at div
+    at div
+    at _c9 (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/src/components/ui/card.tsx:114:12)
+    at div
+    at _c (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/src/components/ui/card.tsx:20:11)
+    at div
+    at div
+    at div
+    at main
+    at div
+    at AdminLayout (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/src/components/layouts/AdminLayout.tsx:18:39)
+    at AdminDashboard (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/src/pages/admin/Dashboard.tsx:25:62)
+    at ProtectedRoute (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/src/components/auth/ProtectedRoute.tsx:21:14)
+    at Route (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=cd96407d:338:16)
+    at Switch (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=cd96407d:394:17)
+    at Suspense
+    at AuthProvider (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/src/contexts/AuthContext.tsx:21:32)
+    at Router
+    at AuthProvider (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/src/contexts/AuthContext.tsx:21:32)
+    at QueryClientProvider (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=cd96407d:2875:3)
+    at App
+printWarning @ chunk-RPCDYKBN.js?v=cd96407d:521
+error @ chunk-RPCDYKBN.js?v=cd96407d:505
+validateDOMNesting @ chunk-RPCDYKBN.js?v=cd96407d:8256
+createInstance @ chunk-RPCDYKBN.js?v=cd96407d:8328
+completeWork @ chunk-RPCDYKBN.js?v=cd96407d:16290
+completeUnitOfWork @ chunk-RPCDYKBN.js?v=cd96407d:19224
+performUnitOfWork @ chunk-RPCDYKBN.js?v=cd96407d:19206
+workLoopConcurrent @ chunk-RPCDYKBN.js?v=cd96407d:19189
+renderRootConcurrent @ chunk-RPCDYKBN.js?v=cd96407d:19164
+performConcurrentWorkOnRoot @ chunk-RPCDYKBN.js?v=cd96407d:18678
+workLoop @ chunk-RPCDYKBN.js?v=cd96407d:197
+flushWork @ chunk-RPCDYKBN.js?v=cd96407d:176
+performWorkUntilDeadline @ chunk-RPCDYKBN.js?v=cd96407d:384
+Subscriptions.tsx:20 Fetching subscriptions from admin API endpoint...
+queryClient.ts:29 Making GET request to /api/admin/subscriptions 
+queryClient.ts:68 Response from /api/admin/subscriptions: (3) [{…}, {…}, {…}]
+SubscriptionsForm.tsx:36 Fetching subscription with ID: 68286f71d5005103dead4561
+queryClient.ts:29 Making GET request to /api/admin/subscriptions/68286f71d5005103dead4561 
+queryClient.ts:47 
+            
+            
+           GET https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/api/admin/subscriptions/68286f71d5005103dead4561 404 (Not Found)
+apiRequest @ queryClient.ts:47
+queryFn @ SubscriptionsForm.tsx:37
+fetchFn @ @tanstack_react-query.js?v=cd96407d:844
+run @ @tanstack_react-query.js?v=cd96407d:494
+start @ @tanstack_react-query.js?v=cd96407d:536
+fetch @ @tanstack_react-query.js?v=cd96407d:931
+executeFetch_fn @ @tanstack_react-query.js?v=cd96407d:2238
+onSubscribe @ @tanstack_react-query.js?v=cd96407d:1942
+subscribe @ @tanstack_react-query.js?v=cd96407d:24
+(anonymous) @ @tanstack_react-query.js?v=cd96407d:3099
+subscribeToStore @ chunk-RPCDYKBN.js?v=cd96407d:11984
+commitHookEffectListMount @ chunk-RPCDYKBN.js?v=cd96407d:16915
+commitPassiveMountOnFiber @ chunk-RPCDYKBN.js?v=cd96407d:18156
+commitPassiveMountEffects_complete @ chunk-RPCDYKBN.js?v=cd96407d:18129
+commitPassiveMountEffects_begin @ chunk-RPCDYKBN.js?v=cd96407d:18119
+commitPassiveMountEffects @ chunk-RPCDYKBN.js?v=cd96407d:18109
+flushPassiveEffectsImpl @ chunk-RPCDYKBN.js?v=cd96407d:19490
+flushPassiveEffects @ chunk-RPCDYKBN.js?v=cd96407d:19447
+(anonymous) @ chunk-RPCDYKBN.js?v=cd96407d:19328
+workLoop @ chunk-RPCDYKBN.js?v=cd96407d:197
+flushWork @ chunk-RPCDYKBN.js?v=cd96407d:176
+performWorkUntilDeadline @ chunk-RPCDYKBN.js?v=cd96407d:384
+queryClient.ts:51 API error (404) from /api/admin/subscriptions/68286f71d5005103dead4561: {"message":"Subscription not found"}
+apiRequest @ queryClient.ts:51
+await in apiRequest
+queryFn @ SubscriptionsForm.tsx:37
+fetchFn @ @tanstack_react-query.js?v=cd96407d:844
+run @ @tanstack_react-query.js?v=cd96407d:494
+start @ @tanstack_react-query.js?v=cd96407d:536
+fetch @ @tanstack_react-query.js?v=cd96407d:931
+executeFetch_fn @ @tanstack_react-query.js?v=cd96407d:2238
+onSubscribe @ @tanstack_react-query.js?v=cd96407d:1942
+subscribe @ @tanstack_react-query.js?v=cd96407d:24
+(anonymous) @ @tanstack_react-query.js?v=cd96407d:3099
+subscribeToStore @ chunk-RPCDYKBN.js?v=cd96407d:11984
+commitHookEffectListMount @ chunk-RPCDYKBN.js?v=cd96407d:16915
+commitPassiveMountOnFiber @ chunk-RPCDYKBN.js?v=cd96407d:18156
+commitPassiveMountEffects_complete @ chunk-RPCDYKBN.js?v=cd96407d:18129
+commitPassiveMountEffects_begin @ chunk-RPCDYKBN.js?v=cd96407d:18119
+commitPassiveMountEffects @ chunk-RPCDYKBN.js?v=cd96407d:18109
+flushPassiveEffectsImpl @ chunk-RPCDYKBN.js?v=cd96407d:19490
+flushPassiveEffects @ chunk-RPCDYKBN.js?v=cd96407d:19447
+(anonymous) @ chunk-RPCDYKBN.js?v=cd96407d:19328
+workLoop @ chunk-RPCDYKBN.js?v=cd96407d:197
+flushWork @ chunk-RPCDYKBN.js?v=cd96407d:176
+performWorkUntilDeadline @ chunk-RPCDYKBN.js?v=cd96407d:384
+queryClient.ts:71 Error in API request to /api/admin/subscriptions/68286f71d5005103dead4561: Error: {"message":"Subscription not found"}
+    at apiRequest (queryClient.ts:58:15)
+    at async queryFn (SubscriptionsForm.tsx:37:28)
+apiRequest @ queryClient.ts:71
+await in apiRequest
+queryFn @ SubscriptionsForm.tsx:37
+fetchFn @ @tanstack_react-query.js?v=cd96407d:844
+run @ @tanstack_react-query.js?v=cd96407d:494
+start @ @tanstack_react-query.js?v=cd96407d:536
+fetch @ @tanstack_react-query.js?v=cd96407d:931
+executeFetch_fn @ @tanstack_react-query.js?v=cd96407d:2238
+onSubscribe @ @tanstack_react-query.js?v=cd96407d:1942
+subscribe @ @tanstack_react-query.js?v=cd96407d:24
+(anonymous) @ @tanstack_react-query.js?v=cd96407d:3099
+subscribeToStore @ chunk-RPCDYKBN.js?v=cd96407d:11984
+commitHookEffectListMount @ chunk-RPCDYKBN.js?v=cd96407d:16915
+commitPassiveMountOnFiber @ chunk-RPCDYKBN.js?v=cd96407d:18156
+commitPassiveMountEffects_complete @ chunk-RPCDYKBN.js?v=cd96407d:18129
+commitPassiveMountEffects_begin @ chunk-RPCDYKBN.js?v=cd96407d:18119
+commitPassiveMountEffects @ chunk-RPCDYKBN.js?v=cd96407d:18109
+flushPassiveEffectsImpl @ chunk-RPCDYKBN.js?v=cd96407d:19490
+flushPassiveEffects @ chunk-RPCDYKBN.js?v=cd96407d:19447
+(anonymous) @ chunk-RPCDYKBN.js?v=cd96407d:19328
+workLoop @ chunk-RPCDYKBN.js?v=cd96407d:197
+flushWork @ chunk-RPCDYKBN.js?v=cd96407d:176
+performWorkUntilDeadline @ chunk-RPCDYKBN.js?v=cd96407d:384
+SubscriptionsForm.tsx:51 Error fetching subscription: Error: {"message":"Subscription not found"}
+    at apiRequest (queryClient.ts:58:15)
+    at async queryFn (SubscriptionsForm.tsx:37:28)
+queryFn @ SubscriptionsForm.tsx:51
+await in queryFn
+fetchFn @ @tanstack_react-query.js?v=cd96407d:844
+run @ @tanstack_react-query.js?v=cd96407d:494
+start @ @tanstack_react-query.js?v=cd96407d:536
+fetch @ @tanstack_react-query.js?v=cd96407d:931
+executeFetch_fn @ @tanstack_react-query.js?v=cd96407d:2238
+onSubscribe @ @tanstack_react-query.js?v=cd96407d:1942
+subscribe @ @tanstack_react-query.js?v=cd96407d:24
+(anonymous) @ @tanstack_react-query.js?v=cd96407d:3099
+subscribeToStore @ chunk-RPCDYKBN.js?v=cd96407d:11984
+commitHookEffectListMount @ chunk-RPCDYKBN.js?v=cd96407d:16915
+commitPassiveMountOnFiber @ chunk-RPCDYKBN.js?v=cd96407d:18156
+commitPassiveMountEffects_complete @ chunk-RPCDYKBN.js?v=cd96407d:18129
+commitPassiveMountEffects_begin @ chunk-RPCDYKBN.js?v=cd96407d:18119
+commitPassiveMountEffects @ chunk-RPCDYKBN.js?v=cd96407d:18109
+flushPassiveEffectsImpl @ chunk-RPCDYKBN.js?v=cd96407d:19490
+flushPassiveEffects @ chunk-RPCDYKBN.js?v=cd96407d:19447
+(anonymous) @ chunk-RPCDYKBN.js?v=cd96407d:19328
+workLoop @ chunk-RPCDYKBN.js?v=cd96407d:197
+flushWork @ chunk-RPCDYKBN.js?v=cd96407d:176
+performWorkUntilDeadline @ chunk-RPCDYKBN.js?v=cd96407d:384
