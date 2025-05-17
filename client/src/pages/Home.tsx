@@ -382,13 +382,13 @@ export default function Home() {
                 <div className="flex justify-center space-x-2 mt-6">
                   {Array.from({ length: Math.ceil(testimonials.length / 3) }).map((_, index) => (
                     <button
-                      key={index}
-                      className={`w-2.5 h-2.5 rounded-full transition-colors ${
-                        Math.floor(activeTestimonial / 3) === index ? "bg-green-600" : "bg-gray-300"
-                      }`}
-                      onClick={() => setActiveTestimonial(index * 3)}
-                      aria-label={`Testimonial page ${index + 1}`}
-                    />
+                        key={index}
+                        className={`w-2.5 h-2.5 rounded-full transition-colors ${
+                          Math.floor(activeTestimonial / 3) === index ? "bg-[#c8a055]" : "bg-gray-600"
+                        }`}
+                        onClick={() => setActiveTestimonial(index * 3)}
+                        aria-label={`Testimonial page ${index + 1}`}
+                      />
                   ))}
                 </div>
               )}
