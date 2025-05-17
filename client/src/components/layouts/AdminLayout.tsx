@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
 import { Link } from "wouter";
 import AdminNavigation from "@/components/navigation/AdminNavigation";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface AdminLayoutProps {
   children: ReactNode;

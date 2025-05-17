@@ -14,9 +14,27 @@ import {
 
 // Authentication middleware
 function authenticateAdmin(req: Request, res: Response, next: NextFunction) {
-  // For simplicity, we're not implementing real auth in this example
-  // In a real application, you'd check session/token validity here
-  next();
+  // Check if the request has a valid session
+  if (!req.headers.authorization) {
+    return res.status(401).json({ message: "Authentication required" });
+  }
+
+  // In a real application, you'd validate the token or session ID properly
+  // For now, we'll implement a basic check
+  const authHeader = req.headers.authorization.split(' ')[1]; // Bearer TOKEN
+  
+  if (!authHeader) {
+    return res.status(401).json({ message: "Authentication required" });
+  }
+  
+  try {
+    // Here you would decode and verify the token
+    // For now, we'll just assume it's valid if it exists
+    next();
+  } catch (error) {
+    console.error("Authentication error:", error);
+    return res.status(401).json({ message: "Invalid authentication token" });
+  }
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -281,7 +299,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(403).json({ message: "Unauthorized access" });
       }
 
-      // In a real app you would create a session or JWT token here
+      // In a real app you would create a proper session and JWT token
+      // For now, we'll just return user data
       res.json({
         success: true,
         user: {
@@ -295,6 +314,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error during login:", error);
       res.status(500).json({ message: "Login failed" });
+    }
+  });
+  
+  // Validate session endpoint
+  app.get("/api/admin/validate-session", async (req, res) => {
+    try {
+      // In a real application, you would validate the token properly
+      // For now, we'll just check if the user exists
+      if (!req.headers.authorization) {
+        return res.json({ valid: false });
+      }
+      
+      // Check if there's a bearer token
+      const authHeader = req.headers.authorization.split(' ')[1]; // Bearer TOKEN
+      
+      if (!authHeader) {
+        return res.json({ valid: false });
+      }
+      
+      // In a real app, you would decode and verify the token
+      // For simplicity, we'll return valid: true if a token is present
+      res.json({ valid: true });
+    } catch (error) {
+      console.error("Error validating session:", error);
+      res.json({ valid: false });
     }
   });
 

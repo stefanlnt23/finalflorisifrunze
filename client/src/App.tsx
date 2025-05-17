@@ -43,6 +43,9 @@ const AdminFeatureCards = React.lazy(() => import("@/pages/admin/FeatureCards"))
 const AdminSubscriptions = React.lazy(() => import('./pages/admin/Subscriptions'));
 const AdminSubscriptionsForm = React.lazy(() => import('./pages/admin/SubscriptionsForm'));
 
+//Import AuthProvider
+import { AuthProvider } from './context/AuthContext';
+
 function Router() {
   return (
     <Switch>
@@ -191,8 +194,10 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <Toaster />
-        <Router />
+        <AuthProvider>
+          <Router />
+          <Toaster />
+        </AuthProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );

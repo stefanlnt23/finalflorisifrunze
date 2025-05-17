@@ -1,7 +1,9 @@
 import React from "react";
 import { Link, useLocation } from "wouter";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function AdminNavigation() {
+  const { logout } = useAuth();
   const [location] = useLocation();
 
   // Admin navigation items
@@ -46,12 +48,10 @@ export default function AdminNavigation() {
               View Website
             </div>
           </Link>
-          <Link href="/">
-            <div className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100 cursor-pointer">
-              <i className="fas fa-sign-out-alt mr-3"></i> 
-              Sign Out
-            </div>
-          </Link>
+          <div onClick={logout} className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100 cursor-pointer">
+            <i className="fas fa-sign-out-alt mr-3"></i> 
+            Sign Out
+          </div>
         </div>
       </div>
     </>

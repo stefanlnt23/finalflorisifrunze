@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -8,7 +8,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { apiRequest } from "@/lib/queryClient";
+import { useAuth } from "@/contexts/AuthContext";
 
 // Form validation schema
 const loginSchema = z.object({
@@ -32,17 +32,22 @@ export default function AdminLogin() {
     },
   });
 
+  const { login, isAuthenticated } = useAuth();
+  
+  // Redirect if already logged in
+  useEffect(() => {
+    if (isAuthenticated) {
+      setLocation("/admin/dashboard");
+    }
+  }, [isAuthenticated, setLocation]);
+  
   // Handle form submission
   async function onSubmit(values: LoginFormValues) {
     setIsLoading(true);
     try {
-      const response = await apiRequest("POST", "/api/admin/login", values);
+      const success = await login(values.username, values.password);
       
-      // Parse the JSON response
-      const data = await response.json();
-      
-      // Check if login was successful
-      if (data.success) {
+      if (success) {
         toast({
           title: "Login Successful",
           description: "Welcome to the Green Garden admin dashboard",
@@ -53,7 +58,7 @@ export default function AdminLogin() {
       } else {
         toast({
           title: "Login Failed",
-          description: data.message || "Invalid username or password",
+          description: "Invalid username or password",
           variant: "destructive",
         });
       }

@@ -21,18 +21,21 @@ async function throwIfResNotOk(res: Response) {
   }
 }
 
-export async function apiRequest(
-  method: "GET" | "POST" | "PUT" | "DELETE",
-  url: string,
-  data?: any
-) {
+export async function apiRequest(method: string, url: string, data?: any) {
   const options: RequestInit = {
     method,
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json'
     },
     credentials: "same-origin" // Include cookies for session handling
   };
+
+  // Add authentication token if available
+  const storedUser = localStorage.getItem('adminUser');
+  if (storedUser && url.includes('/api/admin/')) {
+    const user = JSON.parse(storedUser);
+    (options.headers as Record<string, string>)['Authorization'] = `Bearer ${user.id}`;
+  }
 
   if (data) {
     options.body = JSON.stringify(data);
