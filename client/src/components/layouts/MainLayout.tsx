@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import Footer from "@/components/sections/Footer";
 import { Button } from "@/components/ui/button";
 import MainNavigation from "@/components/navigation/MainNavigation";
+import { WhatsAppButton } from "@/components/ui/whatsapp-button";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -47,6 +48,9 @@ export default function MainLayout({ children }: MainLayoutProps) {
 
       {/* Footer */}
       <Footer />
+      
+      {/* WhatsApp Button */}
+      <WhatsAppButton phoneNumber="0742650670" />
     </div>
   );
 }
