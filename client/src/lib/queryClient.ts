@@ -1,3 +1,4 @@
+
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
 async function throwIfResNotOk(res: Response) {
@@ -69,6 +70,12 @@ export async function apiRequest(url: string, options: RequestOptions = {}): Pro
   }
 }
 
+type RequestOptions = {
+  method?: string;
+  data?: any;
+  headers?: Record<string, string>;
+};
+
 type UnauthorizedBehavior = "returnNull" | "throw";
 export const getQueryFn: <T>(options: {
   on401: UnauthorizedBehavior;
@@ -101,4 +108,3 @@ export const queryClient = new QueryClient({
     },
   },
 });
-`

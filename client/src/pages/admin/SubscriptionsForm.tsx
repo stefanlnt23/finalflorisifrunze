@@ -71,10 +71,10 @@ export default function SubscriptionsForm() {
   useEffect(() => {
     if (data && isEditMode) {
       console.log('Populating form data with:', data);
-      
+
       // Ensure features is an array of objects with name/value properties
       let features = data.features || [];
-      
+
       // Make sure features is an array
       if (!Array.isArray(features)) {
         console.log('Features is not an array, converting:', features);
@@ -83,7 +83,7 @@ export default function SubscriptionsForm() {
           value: features[key]
         }));
       }
-      
+
       if (features.length > 0) {
         // Convert any string or other format to the expected structure
         features = features.map((feature: any) => {
