@@ -18,10 +18,21 @@ export default function AdminSubscriptions() {
     queryKey: ['/api/admin/subscriptions'],
     queryFn: async () => {
       try {
+        console.log("Fetching admin subscriptions...");
         const response = await apiRequest('GET', '/api/admin/subscriptions');
-        if (!response || !response.subscriptions) {
+        console.log("Response from server:", response);
+        
+        if (!response) {
+          console.error("No response from server");
           return [];
         }
+        
+        if (!response.subscriptions) {
+          console.error("No subscriptions property in response");
+          return [];
+        }
+        
+        console.log(`Found ${response.subscriptions.length} subscriptions`);
         return response.subscriptions;
       } catch (err) {
         console.error("Error fetching subscriptions:", err);

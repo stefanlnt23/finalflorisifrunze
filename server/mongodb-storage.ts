@@ -970,7 +970,7 @@ export class MongoDBStorage implements IStorage {
 
           const nextOrder = highestOrderCard.length > 0 ? highestOrderCard[0].order + 1 : 0;
 
-          const result = await thisdb.collection('featureCards').insertOne({
+          const result = await this.db.collection('featureCards').insertOne({
             imageUrl: card.imageUrl,
             title: card.title,
             description: card.description,
@@ -1157,43 +1157,6 @@ export class MongoDBStorage implements IStorage {
     } catch (error) {
       console.error(`Error fetching subscription ${id}:`, error);
       return null;
-    }
-  }
-
-  async createSubscription(data: any): Promise<Subscription> {
-    try {
-      if (!this.db) {
-        await this.initDb();
-        if (!this.db) throw new Error("Database connection failed");
-      }
-
-      const result = await this.db.collection("subscriptions").insertOne({
-        name: data.name,
-        description: data.description || null,
-        color: data.color || "#FFFFFF",
-        features: data.features || [],
-        price: data.price,
-        isPopular: data.isPopular || false,
-        displayOrder: data.displayOrder || 0,
-        imageUrl: data.imageUrl || null,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      });
-
-      return {
-        id: result.insertedId.toString(),
-        name: data.name,
-        description: data.description || null,
-        imageUrl: data.imageUrl || null,
-        color: data.color || "#FFFFFF",
-        features: data.features || [],
-        price: data.price,
-        isPopular: data.isPopular || false,
-        displayOrder: data.displayOrder || 0
-      };
-    } catch (error) {
-      console.error("Error creating subscription:", error);
-      throw error;
     }
   }
 
