@@ -258,9 +258,9 @@ export default function Contact() {
                         <div>
                           <h3 className="text-lg font-semibold mb-2">Locația Noastră</h3>
                           <p className="text-gray-600">
-                            123 Garden Street<br />
-                            Greenville, 12345<br />
-                            United States
+                            Strada Alexandru Lăpușneanu 14<br />
+                            Iași, 700057<br />
+                            România
                           </p>
                         </div>
                       </div>
@@ -299,13 +299,13 @@ export default function Contact() {
                         <div>
                           <h3 className="text-lg font-semibold mb-2">Adrese de Email</h3>
                           <p className="text-gray-600 mb-2">
-                            <span className="font-medium">Informații Generale:</span> info@greengarden.com
+                            <span className="font-medium">Informații Generale:</span> info@florisifrunze.com
                           </p>
                           <p className="text-gray-600 mb-2">
-                            <span className="font-medium">Suport Clienți:</span> support@greengarden.com
+                            <span className="font-medium">Suport Clienți:</span> support@florisifrunze.com
                           </p>
                           <p className="text-gray-600">
-                            <span className="font-medium">Oportunități de Angajare:</span> careers@greengarden.com
+                            <span className="font-medium">Oportunități de Angajare:</span> careers@florisifrunze.com
                           </p>
                         </div>
                       </div>
