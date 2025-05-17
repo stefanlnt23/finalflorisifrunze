@@ -26,8 +26,12 @@ export function ServicesCarousel() {
     refetchOnWindowFocus: false,
   });
 
+  // Get the services data 
   const services = servicesData?.services || [];
   const totalSlides = services.length;
+  
+  // For truly infinite scrolling effect, duplicate the services array
+  const duplicatedServices = [...services, ...services];
 
   const nextSlide = () => {
     setCurrentIndex(prev => (prev + 1) % totalSlides);
@@ -43,7 +47,6 @@ export function ServicesCarousel() {
       if (timerRef.current) clearInterval(timerRef.current);
 
       timerRef.current = setInterval(() => {
-        // For infinite loop, always use modulo for wrapping around
         nextSlide();
       }, 4000);
     }
@@ -52,6 +55,31 @@ export function ServicesCarousel() {
       if (timerRef.current) clearInterval(timerRef.current);
     };
   }, [autoPlay, totalSlides]);
+
+  // Add an effect to handle seamless looping
+  useEffect(() => {
+    if (currentIndex >= totalSlides) {
+      // When we exceed the original services length, reset to the beginning without animation
+      const timer = setTimeout(() => {
+        const sliderElement = sliderRef.current?.querySelector('.flex');
+        if (sliderElement) {
+          sliderElement.style.transition = 'none';
+          setCurrentIndex(currentIndex % totalSlides);
+          
+          // Force a reflow to ensure the transition is removed before re-enabling
+          sliderElement.offsetHeight;
+          
+          setTimeout(() => {
+            if (sliderElement) {
+              sliderElement.style.transition = 'transform 700ms ease-in-out';
+            }
+          }, 50);
+        }
+      }, 700); // This should match your transition duration
+      
+      return () => clearTimeout(timer);
+    }
+  }, [currentIndex, totalSlides]);
 
   // Handle mouse interactions
   const handleMouseEnter = () => {
@@ -155,11 +183,11 @@ export function ServicesCarousel() {
             willChange: "transform"
           }}
         >
-          {services.map((service, index) => (
+          {duplicatedServices.map((service, index) => (
             <div 
-              key={service.id} 
+              key={`${service.id}-${index}`} 
               className={`min-w-full sm:min-w-[50%] md:min-w-[33.333%] px-3 md:px-4 py-4 transition-all duration-500 service-card ${
-                index === currentIndex ? 'service-card-active' : ''
+                (index % totalSlides) === currentIndex ? 'service-card-active' : ''
               }`}
             >
               <Card className="service-card-inner h-full overflow-hidden border-green-100 hover:border-green-300 shadow-sm hover:shadow-md">
@@ -223,7 +251,7 @@ export function ServicesCarousel() {
           <button
             key={index}
             className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              index === currentIndex 
+              index === (currentIndex % totalSlides)
                 ? "bg-[#c8a055] w-8" 
                 : "bg-gray-600 hover:bg-[#c8a055]/50"
             }`}
