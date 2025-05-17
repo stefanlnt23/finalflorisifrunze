@@ -284,7 +284,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           .json({ message: "Email/username and password are required" });
       }
 
-      console.log(`Login attempt with email: ${email}, username: ${username}`);
+      console.log(`Login attempt with email: ${email}, username: ${username}, password length: ${password ? password.length : 0}`);
       
       // Try to find user by any of the provided identifiers
       let user = null;
@@ -293,6 +293,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (email) {
         user = await storage.getUserByEmail(email);
         console.log(`User lookup by email ${email}: ${user ? 'Found' : 'Not found'}`);
+        
+        if (user) {
+          console.log(`Found user: ${JSON.stringify({
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            role: user.role
+          })}`);
+        }
       }
       
       // If not found and username is provided, try by username
@@ -308,6 +317,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       console.log(`User found, checking password for user: ${user.username}`);
       const passwordsMatch = await comparePasswords(password, user.password);
+      console.log(`Password check result: ${passwordsMatch ? 'Match' : 'Mismatch'}`);
       
       if (!passwordsMatch) {
         console.log('Login failed: Password mismatch');

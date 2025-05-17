@@ -95,14 +95,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const isEmail = email.includes('@');
       
       // Build request payload based on whether input appears to be an email
-      const payload = {
+      const payload: {
+        email?: string;
+        username?: string;
+        password: string;
+      } = {
         password
       };
       
       if (isEmail) {
-        payload['email'] = email;
+        payload.email = email;
       } else {
-        payload['username'] = email;
+        payload.username = email;
       }
       
       console.log('Login payload:', payload);
@@ -117,9 +121,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       console.log(`Login response status: ${response.status}`);
       
+      const responseData = await response.json();
+      
       if (response.ok) {
-        const responseData = await response.json();
-        console.log('Login successful:', responseData.success);
+        console.log('Login successful response:', responseData);
         
         if (responseData.success && responseData.token) {
           // Store token in localStorage
@@ -147,14 +152,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           setError('Login failed. Invalid response from server.');
         }
       } else {
-        try {
-          const errorData = await response.json();
-          console.error('Login error response:', errorData);
-          setError(errorData.message || 'Failed to login');
-        } catch (e) {
-          console.error('Failed to parse error response:', e);
-          setError('Login failed. Please check your credentials.');
-        }
+        console.error('Login error response:', responseData);
+        setError(responseData.message || 'Failed to login');
       }
     } catch (error) {
       console.error('Login error:', error);
@@ -191,43 +190,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       console.log(`Registration response status: ${registerResponse.status}`);
       
+      const data = await registerResponse.json();
+      console.log('Registration response:', data);
+      
       if (registerResponse.ok) {
-        const data = await registerResponse.json();
-        console.log('Registration response:', data);
-        
         if (data.success) {
           console.log('Registration successful. Attempting login with new credentials.');
           
-          // On successful registration, attempt manual login after a short delay
-          // to ensure the credentials are properly saved in the database
-          setTimeout(async () => {
-            try {
-              await login(email, password);
-            } catch (loginError) {
-              console.error('Login after registration failed:', loginError);
-              setError('Registration successful, but automatic login failed. Please try logging in manually.');
-              setLoading(false);
-            }
-          }, 1000);
+          // On successful registration, attempt login with the registered credentials
+          await login(email, password);
         } else {
           console.error('Registration failed:', data.message);
           setError(data.message || 'Failed to register');
-          setLoading(false);
         }
       } else {
-        try {
-          const errorData = await registerResponse.json();
-          console.error('Registration error response:', errorData);
-          setError(errorData.message || 'Failed to register');
-        } catch (e) {
-          console.error('Failed to parse registration error:', e);
-          setError('Registration failed. Please try again.');
-        }
-        setLoading(false);
+        console.error('Registration error response:', data);
+        setError(data.message || 'Failed to register');
       }
     } catch (error) {
       console.error('Registration error:', error);
       setError('An unexpected error occurred. Please try again.');
+    } finally {
       setLoading(false);
     }
   };
