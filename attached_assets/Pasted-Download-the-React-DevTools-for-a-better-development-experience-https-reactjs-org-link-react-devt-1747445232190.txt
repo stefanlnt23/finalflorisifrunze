@@ -1,0 +1,127 @@
+Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+AuthContext.tsx:172 Attempting to register with email: ggggg@ggggg.com
+AuthContext.tsx:176 Generated username: ggggg658
+AuthContext.tsx:192 Registration response status: 201
+AuthContext.tsx:196 Registration response: {success: true, message: 'User registered successfully'}
+AuthContext.tsx:199 Registration successful. Attempting login with new credentials.
+AuthContext.tsx:172 Attempting to register with email: ggggg@ggggg.com
+AuthContext.tsx:176 Generated username: ggggg62
+AuthContext.tsx:178 
+            
+            
+           POST https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/api/admin/register 400 (Bad Request)
+register @ AuthContext.tsx:178
+handleRegister @ Login.tsx:71
+await in handleRegister
+callCallback2 @ chunk-RPCDYKBN.js?v=7009f3e2:3674
+invokeGuardedCallbackDev @ chunk-RPCDYKBN.js?v=7009f3e2:3699
+invokeGuardedCallback @ chunk-RPCDYKBN.js?v=7009f3e2:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-RPCDYKBN.js?v=7009f3e2:3736
+executeDispatch @ chunk-RPCDYKBN.js?v=7009f3e2:7014
+processDispatchQueueItemsInOrder @ chunk-RPCDYKBN.js?v=7009f3e2:7034
+processDispatchQueue @ chunk-RPCDYKBN.js?v=7009f3e2:7043
+dispatchEventsForPlugins @ chunk-RPCDYKBN.js?v=7009f3e2:7051
+(anonymous) @ chunk-RPCDYKBN.js?v=7009f3e2:7174
+batchedUpdates$1 @ chunk-RPCDYKBN.js?v=7009f3e2:18913
+batchedUpdates @ chunk-RPCDYKBN.js?v=7009f3e2:3579
+dispatchEventForPluginEventSystem @ chunk-RPCDYKBN.js?v=7009f3e2:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-RPCDYKBN.js?v=7009f3e2:5478
+dispatchEvent @ chunk-RPCDYKBN.js?v=7009f3e2:5472
+dispatchDiscreteEvent @ chunk-RPCDYKBN.js?v=7009f3e2:5449
+AuthContext.tsx:192 Registration response status: 400
+AuthContext.tsx:220 Registration error response: {message: 'Email already in use', success: false}
+register @ AuthContext.tsx:220
+await in register
+handleRegister @ Login.tsx:71
+await in handleRegister
+callCallback2 @ chunk-RPCDYKBN.js?v=7009f3e2:3674
+invokeGuardedCallbackDev @ chunk-RPCDYKBN.js?v=7009f3e2:3699
+invokeGuardedCallback @ chunk-RPCDYKBN.js?v=7009f3e2:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-RPCDYKBN.js?v=7009f3e2:3736
+executeDispatch @ chunk-RPCDYKBN.js?v=7009f3e2:7014
+processDispatchQueueItemsInOrder @ chunk-RPCDYKBN.js?v=7009f3e2:7034
+processDispatchQueue @ chunk-RPCDYKBN.js?v=7009f3e2:7043
+dispatchEventsForPlugins @ chunk-RPCDYKBN.js?v=7009f3e2:7051
+(anonymous) @ chunk-RPCDYKBN.js?v=7009f3e2:7174
+batchedUpdates$1 @ chunk-RPCDYKBN.js?v=7009f3e2:18913
+batchedUpdates @ chunk-RPCDYKBN.js?v=7009f3e2:3579
+dispatchEventForPluginEventSystem @ chunk-RPCDYKBN.js?v=7009f3e2:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-RPCDYKBN.js?v=7009f3e2:5478
+dispatchEvent @ chunk-RPCDYKBN.js?v=7009f3e2:5472
+dispatchDiscreteEvent @ chunk-RPCDYKBN.js?v=7009f3e2:5449
+AuthContext.tsx:92 Attempting login with email: ggggg@ggggg.com
+AuthContext.tsx:108 Login payload: {password: 'ggggg@ggggg.com', email: 'ggggg@ggggg.com'}email: "ggggg@ggggg.com"password: "ggggg@ggggg.com"[[Prototype]]: Object
+AuthContext.tsx:110 
+            
+            
+           POST https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/api/admin/login 401 (Unauthorized)
+login @ AuthContext.tsx:110
+(anonymous) @ AuthContext.tsx:205
+setTimeout
+register @ AuthContext.tsx:203
+await in register
+handleRegister @ Login.tsx:52
+callCallback2 @ chunk-RPCDYKBN.js?v=7009f3e2:3674
+invokeGuardedCallbackDev @ chunk-RPCDYKBN.js?v=7009f3e2:3699
+invokeGuardedCallback @ chunk-RPCDYKBN.js?v=7009f3e2:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-RPCDYKBN.js?v=7009f3e2:3736
+executeDispatch @ chunk-RPCDYKBN.js?v=7009f3e2:7014
+processDispatchQueueItemsInOrder @ chunk-RPCDYKBN.js?v=7009f3e2:7034
+processDispatchQueue @ chunk-RPCDYKBN.js?v=7009f3e2:7043
+dispatchEventsForPlugins @ chunk-RPCDYKBN.js?v=7009f3e2:7051
+(anonymous) @ chunk-RPCDYKBN.js?v=7009f3e2:7174
+batchedUpdates$1 @ chunk-RPCDYKBN.js?v=7009f3e2:18913
+batchedUpdates @ chunk-RPCDYKBN.js?v=7009f3e2:3579
+dispatchEventForPluginEventSystem @ chunk-RPCDYKBN.js?v=7009f3e2:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-RPCDYKBN.js?v=7009f3e2:5478
+dispatchEvent @ chunk-RPCDYKBN.js?v=7009f3e2:5472
+dispatchDiscreteEvent @ chunk-RPCDYKBN.js?v=7009f3e2:5449
+AuthContext.tsx:118 Login response status: 401
+AuthContext.tsx:152 Login error response: {message: 'Invalid credentials'}
+login @ AuthContext.tsx:152
+await in login
+(anonymous) @ AuthContext.tsx:205
+setTimeout
+register @ AuthContext.tsx:203
+await in register
+handleRegister @ Login.tsx:52
+callCallback2 @ chunk-RPCDYKBN.js?v=7009f3e2:3674
+invokeGuardedCallbackDev @ chunk-RPCDYKBN.js?v=7009f3e2:3699
+invokeGuardedCallback @ chunk-RPCDYKBN.js?v=7009f3e2:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-RPCDYKBN.js?v=7009f3e2:3736
+executeDispatch @ chunk-RPCDYKBN.js?v=7009f3e2:7014
+processDispatchQueueItemsInOrder @ chunk-RPCDYKBN.js?v=7009f3e2:7034
+processDispatchQueue @ chunk-RPCDYKBN.js?v=7009f3e2:7043
+dispatchEventsForPlugins @ chunk-RPCDYKBN.js?v=7009f3e2:7051
+(anonymous) @ chunk-RPCDYKBN.js?v=7009f3e2:7174
+batchedUpdates$1 @ chunk-RPCDYKBN.js?v=7009f3e2:18913
+batchedUpdates @ chunk-RPCDYKBN.js?v=7009f3e2:3579
+dispatchEventForPluginEventSystem @ chunk-RPCDYKBN.js?v=7009f3e2:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-RPCDYKBN.js?v=7009f3e2:5478
+dispatchEvent @ chunk-RPCDYKBN.js?v=7009f3e2:5472
+dispatchDiscreteEvent @ chunk-RPCDYKBN.js?v=7009f3e2:5449
+AuthContext.tsx:92 Attempting login with email: ggggg@ggggg.com
+AuthContext.tsx:108 Login payload: {password: 'ggggg@ggggg.com', email: 'ggggg@ggggg.com'}email: "ggggg@ggggg.com"password: "ggggg@ggggg.com"[[Prototype]]: Object
+AuthContext.tsx:110 
+            
+            
+           POST https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/api/admin/login 401 (Unauthorized)
+login @ AuthContext.tsx:110
+handleLogin @ Login.tsx:28
+callCallback2 @ chunk-RPCDYKBN.js?v=7009f3e2:3674
+invokeGuardedCallbackDev @ chunk-RPCDYKBN.js?v=7009f3e2:3699
+invokeGuardedCallback @ chunk-RPCDYKBN.js?v=7009f3e2:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-RPCDYKBN.js?v=7009f3e2:3736
+executeDispatch @ chunk-RPCDYKBN.js?v=7009f3e2:7014
+processDispatchQueueItemsInOrder @ chunk-RPCDYKBN.js?v=7009f3e2:7034
+processDispatchQueue @ chunk-RPCDYKBN.js?v=7009f3e2:7043
+dispatchEventsForPlugins @ chunk-RPCDYKBN.js?v=7009f3e2:7051
+(anonymous) @ chunk-RPCDYKBN.js?v=7009f3e2:7174
+batchedUpdates$1 @ chunk-RPCDYKBN.js?v=7009f3e2:18913
+batchedUpdates @ chunk-RPCDYKBN.js?v=7009f3e2:3579
+dispatchEventForPluginEventSystem @ chunk-RPCDYKBN.js?v=7009f3e2:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-RPCDYKBN.js?v=7009f3e2:5478
+dispatchEvent @ chunk-RPCDYKBN.js?v=7009f3e2:5472
+dispatchDiscreteEvent @ chunk-RPCDYKBN.js?v=7009f3e2:5449
+AuthContext.tsx:118 Login response status: 401
+AuthContext.tsx:152 
