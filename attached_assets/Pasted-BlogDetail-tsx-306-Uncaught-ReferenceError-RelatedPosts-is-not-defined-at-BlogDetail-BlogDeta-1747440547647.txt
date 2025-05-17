@@ -1,0 +1,62 @@
+BlogDetail.tsx:306 Uncaught ReferenceError: RelatedPosts is not defined
+    at BlogDetail (BlogDetail.tsx:306:16)
+BlogDetail.tsx:306 Uncaught ReferenceError: RelatedPosts is not defined
+    at BlogDetail (BlogDetail.tsx:306:16)
+chunk-RPCDYKBN.js?v=779dd497:14032 The above error occurred in the <BlogDetail> component:
+
+    at BlogDetail (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/src/pages/BlogDetail.tsx:25:18)
+    at Route (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.d…/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=779dd497:338:16)
+    at Switch (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.d…/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=779dd497:394:17)
+    at Router
+    at Provider (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.d…unner/workspace/node_modules/.vite/deps/chunk-OXZDJRWN.js?v=779dd497:38:15)
+    at TooltipProvider (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.d…rkspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=779dd497:61:5)
+    at QueryClientProvider (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.d…rkspace/node_modules/.vite/deps/@tanstack_react-query.js?v=779dd497:2875:3)
+    at App
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+logCapturedError	@	chunk-RPCDYKBN.js?v=779dd497:14032
+update.callback	@	chunk-RPCDYKBN.js?v=779dd497:14052
+callCallback	@	chunk-RPCDYKBN.js?v=779dd497:11248
+commitUpdateQueue	@	chunk-RPCDYKBN.js?v=779dd497:11265
+commitLayoutEffectOnFiber	@	chunk-RPCDYKBN.js?v=779dd497:17093
+commitLayoutMountEffects_complete	@	chunk-RPCDYKBN.js?v=779dd497:17980
+commitLayoutEffects_begin	@	chunk-RPCDYKBN.js?v=779dd497:17969
+commitLayoutEffects	@	chunk-RPCDYKBN.js?v=779dd497:17920
+commitRootImpl	@	chunk-RPCDYKBN.js?v=779dd497:19353
+commitRoot	@	chunk-RPCDYKBN.js?v=779dd497:19277
+performSyncWorkOnRoot	@	chunk-RPCDYKBN.js?v=779dd497:18895
+flushSyncCallbacks	@	chunk-RPCDYKBN.js?v=779dd497:9119
+(anonymous)	@	chunk-RPCDYKBN.js?v=779dd497:18627
+setTimeout		
+defaultScheduler	@	@tanstack_react-query.js?v=779dd497:546
+flush	@	@tanstack_react-query.js?v=779dd497:570
+batch	@	@tanstack_react-query.js?v=779dd497:588
+dispatch_fn	@	@tanstack_react-query.js?v=779dd497:1001
+setData	@	@tanstack_react-query.js?v=779dd497:699
+onSuccess	@	@tanstack_react-query.js?v=779dd497:902
+resolve	@	@tanstack_react-query.js?v=779dd497:456
+Promise.then		
+run	@	@tanstack_react-query.js?v=779dd497:498
+start	@	@tanstack_react-query.js?v=779dd497:536
+fetch	@	@tanstack_react-query.js?v=779dd497:931
+executeFetch_fn	@	@tanstack_react-query.js?v=779dd497:2238
+onSubscribe	@	@tanstack_react-query.js?v=779dd497:1942
+subscribe	@	@tanstack_react-query.js?v=779dd497:24
+(anonymous)	@	@tanstack_react-query.js?v=779dd497:3099
+subscribeToStore	@	chunk-RPCDYKBN.js?v=779dd497:11984
+commitHookEffectListMount	@	chunk-RPCDYKBN.js?v=779dd497:16915
+commitPassiveMountOnFiber	@	chunk-RPCDYKBN.js?v=779dd497:18156
+commitPassiveMountEffects_complete	@	chunk-RPCDYKBN.js?v=779dd497:18129
+commitPassiveMountEffects_begin	@	chunk-RPCDYKBN.js?v=779dd497:18119
+commitPassiveMountEffects	@	chunk-RPCDYKBN.js?v=779dd497:18109
+flushPassiveEffectsImpl	@	chunk-RPCDYKBN.js?v=779dd497:19490
+flushPassiveEffects	@	chunk-RPCDYKBN.js?v=779dd497:19447
+commitRootImpl	@	chunk-RPCDYKBN.js?v=779dd497:19416
+commitRoot	@	chunk-RPCDYKBN.js?v=779dd497:19277
+performSyncWorkOnRoot	@	chunk-RPCDYKBN.js?v=779dd497:18895
+flushSyncCallbacks	@	chunk-RPCDYKBN.js?v=779dd497:9119
+(anonymous)	@	chunk-RPCDYKBN.js?v=779dd497:18627
+chunk-RPCDYKBN.js?v=779dd497:9129 Uncaught ReferenceError: RelatedPosts is not defined
+    at BlogDetail (BlogDetail.tsx:306:16)
+BlogDetail	@	BlogDetail.tsx:306
