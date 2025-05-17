@@ -27,26 +27,47 @@ export default function AdminSubscriptions() {
 
       console.log("Raw API response:", response);
 
-      // Check if response has the expected shape
-      if (!response.subscriptions && Array.isArray(response)) {
-        // Handle case where the API returns an array directly instead of {subscriptions: [...]}
-        console.log("API returned array directly instead of object with subscriptions property");
-        return response;
+      // More robust handling of different response formats
+      let subscriptionsData;
+      
+      if (Array.isArray(response)) {
+        // Direct array response
+        console.log("API returned array directly");
+        subscriptionsData = response;
+      } else if (response.subscriptions && Array.isArray(response.subscriptions)) {
+        // Object with subscriptions property that is an array
+        console.log("API returned object with subscriptions property");
+        subscriptionsData = response.subscriptions;
+      } else if (typeof response === 'object') {
+        // Some other object, try to extract useful data
+        console.log("API returned unexpected format, trying to extract data");
+        const possibleArrays = Object.values(response).filter(val => Array.isArray(val));
+        subscriptionsData = possibleArrays.length > 0 ? possibleArrays[0] : [];
+      } else {
+        // Unexpected response format
+        console.error("Unexpected API response format:", response);
+        subscriptionsData = [];
       }
-
-      // Parse the response to ensure we have the subscriptions data
-      const subscriptionsData = response.subscriptions || [];
+      
       console.log(`Found ${subscriptionsData.length} subscriptions`);
 
       if (subscriptionsData.length > 0) {
         console.log("First subscription from API:", subscriptionsData[0]);
         
-        if (subscriptionsData[0].features) {
-          console.log("Features data type:", typeof subscriptionsData[0].features);
-          console.log("Is features an array:", Array.isArray(subscriptionsData[0].features));
-          if (subscriptionsData[0].features.length > 0) {
-            console.log("First feature:", subscriptionsData[0].features[0]);
+        // More detailed debugging for first subscription
+        const firstSub = subscriptionsData[0];
+        console.log("First subscription ID:", firstSub.id);
+        console.log("First subscription name:", firstSub.name);
+        console.log("First subscription price:", firstSub.price);
+        
+        if (firstSub.features) {
+          console.log("Features data type:", typeof firstSub.features);
+          console.log("Is features an array:", Array.isArray(firstSub.features));
+          if (Array.isArray(firstSub.features) && firstSub.features.length > 0) {
+            console.log("First feature:", firstSub.features[0]);
           }
+        } else {
+          console.log("Features property is missing or null");
         }
 
         // Check feature format and normalize if needed
@@ -109,9 +130,12 @@ export default function AdminSubscriptions() {
           console.log("Create sample response:", createResponse);
           
           const refreshedResponse = await apiRequest('GET', '/api/admin/subscriptions');
-          const newData = refreshedResponse.subscriptions || [];
-          console.log(`Created ${newData.length} sample subscriptions`);
-          return newData;
+          if (Array.isArray(refreshedResponse)) {
+            subscriptionsData = refreshedResponse;
+          } else if (refreshedResponse && refreshedResponse.subscriptions) {
+            subscriptionsData = refreshedResponse.subscriptions;
+          }
+          console.log(`Created ${subscriptionsData.length} sample subscriptions`);
         } catch (createError) {
           console.error("Error creating sample subscriptions:", createError);
         }

@@ -1,4 +1,3 @@
-
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
 async function throwIfResNotOk(res: Response) {
@@ -23,60 +22,54 @@ async function throwIfResNotOk(res: Response) {
 }
 
 export async function apiRequest(method: string, url: string, data?: any) {
-  const options: RequestInit = {
-    method,
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    credentials: "same-origin" // Include cookies for session handling
-  };
-
-  // Add authentication token if available
-  const storedUser = localStorage.getItem('adminUser');
-  if (storedUser && url.includes('/api/admin/')) {
-    const user = JSON.parse(storedUser);
-    (options.headers as Record<string, string>)['Authorization'] = `Bearer ${user.id}`;
-  }
-
-  if (data) {
-    options.body = JSON.stringify(data);
-  }
-
   try {
-    console.log(`API ${method} request to ${url}`);
-    if (data) {
-      console.log("Request data:", JSON.stringify(data, null, 2).substring(0, 500) + (JSON.stringify(data).length > 500 ? "..." : ""));
+    console.log(`Making ${method} request to ${url}`);
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+    };
+
+    // Add auth token if available
+    const token = getAuthToken();
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+      console.log('Request includes authorization token');
     }
 
-    const response = await fetch(url, options);
+    const response = await fetch(url, {
+      method,
+      headers,
+      body: data ? JSON.stringify(data) : undefined,
+    });
 
-    // Log response status
     console.log(`Response status: ${response.status} ${response.statusText}`);
 
-    // For non-ok responses, try to get more information
     if (!response.ok) {
-      let errorMessage = `Request failed with status ${response.status}`;
+      const errorText = await response.text();
+      console.error(`API Error Response: ${errorText}`);
 
+      let errorObj;
       try {
-        const errorBody = await response.clone().json();
-        console.error("Error response body:", errorBody);
-        if (errorBody.message) {
-          errorMessage = errorBody.message;
-        }
-        if (errorBody.errors) {
-          errorMessage += ": " + JSON.stringify(errorBody.errors);
-        }
+        errorObj = JSON.parse(errorText);
       } catch (e) {
-        // Ignore error parsing error
+        errorObj = { message: errorText || 'Unknown error' };
       }
-
-      // Create an error with the message but still return the response
-      response.errorMessage = errorMessage;
+      throw new Error(errorObj.message || `API request failed with status ${response.status}`);
     }
 
-    return response;
+    const contentType = response.headers.get('content-type');
+    console.log(`Response content type: ${contentType}`);
+
+    if (contentType && contentType.includes('application/json')) {
+      const jsonResponse = await response.json();
+      console.log(`JSON response received:`, jsonResponse);
+      return jsonResponse;
+    }
+
+    const textResponse = await response.text();
+    console.log(`Text response received: ${textResponse.substring(0, 100)}${textResponse.length > 100 ? '...' : ''}`);
+    return textResponse;
   } catch (error) {
-    console.error("Network error during API request:", error);
+    console.error('API Request Error:', error);
     throw error;
   }
 }

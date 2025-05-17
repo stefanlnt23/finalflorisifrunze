@@ -1205,8 +1205,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Admin routes for carousel images
   async function requireAdmin(req: Request, res: Response, next: NextFunction) {
-    // Placeholder for admin check
-    // In real implementation, check user role from session/token
+    // For development, allow all requests through
+    // In a production environment, you would implement proper authentication
+    console.log("Admin middleware: allowing request to proceed");
     next();
   }
   app.get("/api/admin/carousel-images", requireAdmin, async (req, res) => {
