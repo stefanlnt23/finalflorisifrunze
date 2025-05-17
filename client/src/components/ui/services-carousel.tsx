@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -12,11 +13,11 @@ export function ServicesCarousel() {
   const [autoPlay, setAutoPlay] = useState(true);
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
-
+  
   // Refs after state
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
-
+  
   // Custom hooks
   const isMobile = useIsMobile();
 
@@ -26,12 +27,8 @@ export function ServicesCarousel() {
     refetchOnWindowFocus: false,
   });
 
-  // Get the services data 
   const services = servicesData?.services || [];
   const totalSlides = services.length;
-  
-  // For truly infinite scrolling effect, duplicate the services array
-  const duplicatedServices = [...services, ...services];
 
   const nextSlide = () => {
     setCurrentIndex(prev => (prev + 1) % totalSlides);
@@ -41,51 +38,27 @@ export function ServicesCarousel() {
     setCurrentIndex(prev => (prev - 1 + totalSlides) % totalSlides);
   };
 
-  // Handle auto-play with smooth infinite loop
+  // Handle auto-play with infinite loop
   useEffect(() => {
     if (autoPlay && totalSlides > 1) {
       if (timerRef.current) clearInterval(timerRef.current);
-
+      
       timerRef.current = setInterval(() => {
+        // For infinite loop, always use modulo for wrapping around
         nextSlide();
       }, 4000);
     }
-
+    
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [autoPlay, totalSlides]);
-
-  // Add an effect to handle seamless looping
-  useEffect(() => {
-    if (currentIndex >= totalSlides) {
-      // When we exceed the original services length, reset to the beginning without animation
-      const timer = setTimeout(() => {
-        const sliderElement = sliderRef.current?.querySelector('.flex');
-        if (sliderElement) {
-          sliderElement.style.transition = 'none';
-          setCurrentIndex(currentIndex % totalSlides);
-          
-          // Force a reflow to ensure the transition is removed before re-enabling
-          sliderElement.offsetHeight;
-          
-          setTimeout(() => {
-            if (sliderElement) {
-              sliderElement.style.transition = 'transform 700ms ease-in-out';
-            }
-          }, 50);
-        }
-      }, 700); // This should match your transition duration
-      
-      return () => clearTimeout(timer);
-    }
-  }, [currentIndex, totalSlides]);
+  }, [autoPlay, totalSlides, currentIndex]);
 
   // Handle mouse interactions
   const handleMouseEnter = () => {
     setAutoPlay(false);
   };
-
+  
   const handleMouseLeave = () => {
     setAutoPlay(true);
   };
@@ -100,22 +73,22 @@ export function ServicesCarousel() {
     setTouchStart(e.targetTouches[0].clientX);
     setAutoPlay(false); // Pause autoplay on touch
   };
-
+  
   const handleTouchMove = (e: React.TouchEvent) => {
     setTouchEnd(e.targetTouches[0].clientX);
   };
-
+  
   const handleTouchEnd = () => {
     if (touchStart - touchEnd > 75) {
       // Swipe left
       nextSlide();
     }
-
+    
     if (touchEnd - touchStart > 75) {
       // Swipe right
       prevSlide();
     }
-
+    
     // Resume autoplay after touch ends
     setAutoPlay(true);
   };
@@ -179,15 +152,14 @@ export function ServicesCarousel() {
         <div 
           className="flex transition-transform duration-700 ease-in-out"
           style={{ 
-            transform: `translateX(-${currentIndex * (100 / visibleCount)}%)`,
-            willChange: "transform"
+            transform: `translateX(-${currentIndex * (100 / visibleCount)}%)` 
           }}
         >
-          {duplicatedServices.map((service, index) => (
+          {services.map((service, index) => (
             <div 
-              key={`${service.id}-${index}`} 
+              key={service.id} 
               className={`min-w-full sm:min-w-[50%] md:min-w-[33.333%] px-3 md:px-4 py-4 transition-all duration-500 service-card ${
-                (index % totalSlides) === currentIndex ? 'service-card-active' : ''
+                index === currentIndex ? 'service-card-active' : ''
               }`}
             >
               <Card className="service-card-inner h-full overflow-hidden border-green-100 hover:border-green-300 shadow-sm hover:shadow-md">
@@ -227,33 +199,33 @@ export function ServicesCarousel() {
           ))}
         </div>
       </div>
-
+      
       {/* Navigation arrows with improved UI */}
       <button 
         onClick={prevSlide}
-        className="absolute top-1/2 left-0 -translate-y-1/2 bg-[#2a2f36]/80 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-[#1f2328] border border-[#c8a055]/30 z-10 flex items-center justify-center transform transition-all hover:scale-110 -translate-x-3 hover:-translate-x-1"
+        className="absolute top-1/2 left-0 -translate-y-1/2 bg-white/80 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-green-50 border border-green-200 z-10 flex items-center justify-center transform transition-all hover:scale-110 -translate-x-3 hover:-translate-x-1"
         aria-label="Previous slide"
       >
-        <ChevronLeft className="h-6 w-6 text-[#c8a055]" />
+        <ChevronLeft className="h-6 w-6 text-green-600" />
       </button>
-
+      
       <button 
         onClick={nextSlide}
-        className="absolute top-1/2 right-0 -translate-y-1/2 bg-[#2a2f36]/80 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-[#1f2328] border border-[#c8a055]/30 z-10 flex items-center justify-center transform transition-all hover:scale-110 translate-x-3 hover:translate-x-1"
+        className="absolute top-1/2 right-0 -translate-y-1/2 bg-white/80 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-green-50 border border-green-200 z-10 flex items-center justify-center transform transition-all hover:scale-110 translate-x-3 hover:translate-x-1"
         aria-label="Next slide"
       >
-        <ChevronRight className="h-6 w-6 text-[#c8a055]" />
+        <ChevronRight className="h-6 w-6 text-green-600" />
       </button>
-
+      
       {/* Enhanced slide indicators */}
       <div className="flex justify-center space-x-2 mt-8">
         {Array.from({ length: totalSlides }).map((_, index) => (
           <button
             key={index}
             className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              index === (currentIndex % totalSlides)
-                ? "bg-[#c8a055] w-8" 
-                : "bg-gray-600 hover:bg-[#c8a055]/50"
+              index === currentIndex 
+                ? "bg-green-600 w-8" 
+                : "bg-gray-300 hover:bg-green-300"
             }`}
             onClick={() => goToSlide(index)}
             aria-label={`Go to slide ${index + 1}`}

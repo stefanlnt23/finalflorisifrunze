@@ -38,10 +38,10 @@ export default function MainNavigation() {
           <Link
             key={link.path}
             href={link.path}
-            className={`font-medium transition-colors duration-200 ${
+            className={`font-medium ${
               location === link.path
-                ? "text-[#c8a055]"
-                : "text-white hover:text-[#c8a055]"
+                ? "text-gray-900"
+                : "text-gray-500 hover:text-gray-900"
             }`}
           >
             {link.label}
@@ -53,14 +53,14 @@ export default function MainNavigation() {
       <div className="md:hidden flex items-center space-x-4">
         <Link href="/" className="flex items-center">
           <img 
-            src="https://i.imgur.com/uI4Kx6k.png" 
-            alt="Flori si Frunze Logo" 
+            src="https://i.imgur.com/eHGs2HM.png" 
+            alt="Green Garden Logo" 
             className="h-8 w-auto"
           />
         </Link>
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="text-[#c8a055] hover:text-white focus:outline-none"
+          className="text-gray-500 hover:text-gray-900 focus:outline-none"
         >
           <i className={`fas ${mobileMenuOpen ? "fa-times" : "fa-bars"} text-xl`}></i>
         </button>
@@ -68,7 +68,7 @@ export default function MainNavigation() {
 
       {/* Mobile Navigation Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[#1f2328] border-t border-[#c8a055]/30 absolute top-full left-0 right-0 z-50">
+        <div className="md:hidden bg-white border-t border-gray-200 absolute top-full left-0 right-0 z-50">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {navLinks.map((link) => (
               <Link
@@ -76,8 +76,8 @@ export default function MainNavigation() {
                 href={link.path}
                 className={`block px-3 py-2 rounded-md text-base font-medium ${
                   location === link.path
-                    ? "text-[#c8a055] bg-[#2a2f36]"
-                    : "text-white hover:text-[#c8a055] hover:bg-[#2a2f36]"
+                    ? "text-gray-900 bg-gray-100"
+                    : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
                 }`}
               >
                 {link.label}
@@ -85,7 +85,7 @@ export default function MainNavigation() {
             ))}
             <Link
               href="/appointment"
-              className="block px-3 py-2 rounded-md text-base font-medium text-[#1f2328] bg-[#c8a055] hover:bg-[#d9b978]"
+              className="block px-3 py-2 rounded-md text-base font-medium text-white bg-green-600 hover:bg-green-700"
             >
               Programează o Întâlnire
             </Link>

@@ -102,48 +102,48 @@ export default function Home() {
     <MainLayout>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-[#1f2328] to-[#2a2f36] py-20 md:py-32 relative overflow-hidden">
+      <section className="bg-gradient-to-br from-green-50 to-green-100 py-20 md:py-32 relative overflow-hidden">
         {/* Decorative Elements */}
         <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
-          <div className="absolute -top-16 -left-16 w-64 h-64 rounded-full bg-[#c8a055] animate-blob"></div>
-          <div className="absolute top-1/3 -right-24 w-96 h-96 rounded-full bg-[#d9b978] animate-blob animation-delay-2000"></div>
-          <div className="absolute -bottom-20 left-1/4 w-72 h-72 rounded-full bg-[#b48e40] animate-blob animation-delay-4000"></div>
+          <div className="absolute -top-16 -left-16 w-64 h-64 rounded-full bg-green-300 animate-blob"></div>
+          <div className="absolute top-1/3 -right-24 w-96 h-96 rounded-full bg-green-200 animate-blob animation-delay-2000"></div>
+          <div className="absolute -bottom-20 left-1/4 w-72 h-72 rounded-full bg-green-400 animate-blob animation-delay-4000"></div>
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="md:w-1/2 mb-10 md:mb-0 md:pr-8">
-              <span className="inline-block px-4 py-1 rounded-full bg-[#1f2328]/80 text-[#c8a055] text-sm font-medium mb-6 animate-fadeIn border border-[#c8a055]/30">
+              <span className="inline-block px-4 py-1 rounded-full bg-green-100 text-green-600 text-sm font-medium mb-6 animate-fadeIn">
                 Servicii Profesionale de Grădinărit
               </span>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight text-white animate-slideUp">
-                Gradina ta pasunea noastra... <span className="text-[#c8a055] relative">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight text-gray-900 animate-slideUp">
+                Gradina ta pasunea noastra... <span className="text-green-600 relative">
                   Paradis
-                  <span className="absolute bottom-0 left-0 w-full h-2 bg-[#c8a055]/20 -z-10"></span>
+                  <span className="absolute bottom-0 left-0 w-full h-2 bg-green-200 -z-10"></span>
                 </span>
               </h1>
-              <p className="text-lg mb-8 text-gray-300 max-w-lg animate-fadeIn animation-delay-300">
+              <p className="text-lg mb-8 text-gray-700 max-w-lg animate-fadeIn animation-delay-300">
                 Servicii profesionale de grădinărit pentru a face grădina ta frumoasă, sustenabilă și înfloritoare pe tot parcursul anului. Echipa noastră de experți îți transformă visele despre grădină în realitate.
               </p>
               <div className="flex flex-wrap gap-4 animate-slideUp animation-delay-500">
                 <Link href="/contact">
-                  <Button className="bg-[#c8a055] hover:bg-[#b48e40] text-[#1f2328] px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
+                  <Button className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
                     Obține o Ofertă Gratuită
                   </Button>
                 </Link>
                 <Link href="/blog">
-                  <Button variant="outline" className="border-[#c8a055] text-[#c8a055] hover:bg-[#c8a055]/10 px-8 py-3 rounded-full transform hover:scale-105">
+                  <Button variant="outline" className="border-green-600 text-green-600 hover:bg-green-50 px-8 py-3 rounded-full transform hover:scale-105">
                     Află Mai Multe
                   </Button>
                 </Link>
               </div>
-              <div className="mt-8 flex items-center text-gray-300 animate-fadeIn animation-delay-700">
+              <div className="mt-8 flex items-center text-gray-600 animate-fadeIn animation-delay-700">
                 <span className="flex items-center mr-6">
-                  <i className="fas fa-check-circle text-[#c8a055] mr-2"></i>
+                  <i className="fas fa-check-circle text-green-500 mr-2"></i>
                   Echipă cu Experiență
                 </span>
                 <span className="flex items-center">
-                  <i className="fas fa-check-circle text-[#c8a055] mr-2"></i>
+                  <i className="fas fa-check-circle text-green-500 mr-2"></i>
                   Garanție de Calitate
                 </span>
               </div>
@@ -158,18 +158,18 @@ export default function Home() {
       </section>
 
       {/* Banner Section - Replacement for first ParallaxSection */}
-      <section className="py-20 bg-gradient-to-r from-[#1f2328] to-[#2a2f36] relative overflow-hidden border-y border-[#c8a055]/30">
+      <section className="py-20 bg-gradient-to-r from-green-600 to-green-700 relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute top-0 right-0 w-full h-full bg-pattern-leaves"></div>
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center w-full">
-            <h2 className="text-4xl font-bold text-[#c8a055] mb-4 animate-pulse">Transformă Grădina Ta</h2>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-6">
+            <h2 className="text-4xl font-bold text-white mb-4 animate-pulse">Transformă Grădina Ta</h2>
+            <p className="text-xl text-white max-w-2xl mx-auto mb-6">
               Servicii profesionale pentru a face grădina ta să strălucească în fiecare anotimp
             </p>
             <Link href="/contact">
-              <Button className="px-8 py-3 bg-[#c8a055] text-[#1f2328] rounded-full hover:bg-[#d9b978] transition-colors shadow-xl transform hover:scale-105">
+              <Button className="px-8 py-3 bg-white text-green-600 rounded-full hover:bg-green-50 transition-colors shadow-xl transform hover:scale-105">
                 Programează o Consultație
               </Button>
             </Link>
@@ -178,18 +178,18 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section className="py-20 bg-[#1f2328] relative overflow-hidden">
-        <div className="absolute right-0 top-0 w-1/3 h-full bg-[#2a2f36] opacity-50 clip-path-slant"></div>
+      <section className="py-20 bg-white relative overflow-hidden">
+        <div className="absolute right-0 top-0 w-1/3 h-full bg-green-50 opacity-50 clip-path-slant"></div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="inline-block px-4 py-1 rounded-full bg-white/10 text-[#c8a055] text-sm font-medium mb-4 hover-float border border-[#c8a055]/30">
+            <span className="inline-block px-4 py-1 rounded-full bg-green-100 text-green-600 text-sm font-medium mb-4 hover-float">
               Servicii de Experți
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white animate-fadeIn">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 animate-fadeIn">
               Serviciile Noastre
             </h2>
-            <div className="w-24 h-1 bg-[#c8a055] mx-auto mb-6 animate-grow"></div>
-            <p className="text-gray-300 text-lg">
+            <div className="w-24 h-1 bg-green-500 mx-auto mb-6 animate-grow"></div>
+            <p className="text-gray-600 text-lg">
               Oferim servicii complete de grădinărit și amenajare peisagistică pentru a menține spațiul tău exterior frumos și sănătos în toate anotimpurile.
             </p>
           </div>
@@ -206,7 +206,7 @@ export default function Home() {
 
           <div className="text-center mt-12 animate-bounce animation-delay-500">
             <Link href="/services">
-              <Button className="bg-[#c8a055] hover:bg-[#b48e40] text-[#1f2328] transform transition-all hover:scale-105 shadow-lg shadow-[#c8a055]/20">
+              <Button className="bg-green-600 hover:bg-green-700 transform transition-all hover:scale-105">
                 Vezi Toate Serviciile
               </Button>
             </Link>
@@ -216,14 +216,14 @@ export default function Home() {
 
       {/* Inspirational Banner - Replacement for second ParallaxSection */}
       <section className="relative py-24 flex items-center justify-center overflow-hidden bg-design-pattern">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#1f2328] via-[#2a2f36] to-[#1f2328] opacity-90"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 opacity-90"></div>
         <div className="container mx-auto px-6 relative z-10 text-center">
-          <h2 className="text-4xl font-bold text-[#c8a055] mb-6 animate-glow">Design Peisagistic Inspirațional</h2>
+          <h2 className="text-4xl font-bold text-white mb-6 animate-glow">Design Peisagistic Inspirațional</h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
             Creăm spații exterioare captivante, transformate cu artă și funcționalitate
           </p>
           <Link href="/portfolio">
-            <Button className="bg-[#c8a055] hover:bg-[#d9b978] text-[#1f2328] px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
+            <Button className="bg-white hover:bg-gray-100 text-gray-900 px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
               Vezi Portofoliul Nostru
             </Button>
           </Link>
@@ -231,15 +231,11 @@ export default function Home() {
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="py-24 bg-gradient-to-b from-[#2a2f36] to-[#1f2328] border-t border-[#c8a055]/20">
+      <section className="py-24 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="inline-block px-4 py-1 rounded-full bg-white/10 text-[#c8a055] text-sm font-medium mb-4 hover-float border border-[#c8a055]/30">
-              Expertiză și Excelență
-            </span>
-            <h2 className="text-3xl font-bold mb-4 text-white fade-in-view">De Ce Să Ne Alegeți</h2>
-            <div className="w-24 h-1 bg-[#c8a055] mx-auto mb-6 animate-grow"></div>
-            <p className="text-gray-300">
+            <h2 className="text-3xl font-bold mb-4 text-gray-900 fade-in-view">De Ce Să Ne Alegeți</h2>
+            <p className="text-gray-600">
               Suntem dedicați să oferim servicii excepționale pentru grădină cu expertiză și grijă.
             </p>
           </div>
@@ -249,7 +245,7 @@ export default function Home() {
             {featureCards.map((card, index) => (
               <div 
                 key={card.id} 
-                className="relative group overflow-hidden rounded-xl border-2 border-[#c8a055]/30 shadow-md hover:shadow-xl transition-all duration-300 h-80 stagger-animate"
+                className="relative group overflow-hidden rounded-xl border-2 border-green-100 shadow-md hover:shadow-xl transition-all duration-300 h-80 stagger-animate"
                 style={{ animationDelay: `${index * 150}ms` }}
               >
                 <div className="absolute inset-0 bg-cover bg-center transform transition-transform group-hover:scale-110" 
@@ -266,7 +262,7 @@ export default function Home() {
 
           <div className="mt-12 text-center">
             <Link href="/services">
-              <Button className="bg-[#c8a055] hover:bg-[#b48e40] text-[#1f2328] transform hover:scale-105 transition shadow-lg shadow-[#c8a055]/20">
+              <Button className="bg-green-600 hover:bg-green-700 transform hover:scale-105 transition">
                 Explorează Serviciile Noastre
               </Button>
             </Link>
@@ -275,15 +271,11 @@ export default function Home() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 bg-[#1f2328] border-t border-[#c8a055]/20">
+      <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="inline-block px-4 py-1 rounded-full bg-white/10 text-[#c8a055] text-sm font-medium mb-4 hover-float border border-[#c8a055]/30">
-              Recenzii
-            </span>
-            <h2 className="text-3xl font-bold mb-4 text-white fade-in-view">Ce Spun Clienții Noștri</h2>
-            <div className="w-24 h-1 bg-[#c8a055] mx-auto mb-6 animate-grow"></div>
-            <p className="text-gray-300">
+            <h2 className="text-3xl font-bold mb-4 text-gray-900 fade-in-view">Ce Spun Clienții Noștri</h2>
+            <p className="text-gray-600">
               Află de la clienții noștri mulțumiți despre experiențele lor cu serviciile noastre.
             </p>
           </div>
@@ -314,30 +306,30 @@ export default function Home() {
                 {testimonials.length <= 3 ? (
                   // If we have 3 or fewer testimonials, show them directly
                   testimonials.map((testimonial) => (
-                    <Card key={testimonial.id} className="shadow-lg transform transition-all duration-300 hover:scale-105 hover:rotate-1 bg-[#2a2f36] border-[#c8a055]/30">
+                    <Card key={testimonial.id} className="shadow-lg transform transition-all duration-300 hover:scale-105 hover:rotate-1">
                       <CardContent className="p-6">
                         <div className="flex flex-col items-center text-center space-y-4">
                           {testimonial.imageUrl ? (
                             <img 
                               src={testimonial.imageUrl} 
                               alt={testimonial.name}
-                              className="w-16 h-16 object-cover rounded-full border-2 border-[#c8a055]"
+                              className="w-16 h-16 object-cover rounded-full border-2 border-green-200"
                             />
                           ) : (
-                            <div className="w-16 h-16 rounded-full bg-[#1f2328] flex items-center justify-center border-2 border-[#c8a055]/50">
-                              <i className="fas fa-user text-[#c8a055] text-2xl"></i>
+                            <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
+                              <i className="fas fa-user text-green-600 text-2xl"></i>
                             </div>
                           )}
                           <div className="flex items-center justify-center">
                             {Array.from({ length: testimonial.rating || 5 }).map((_, i) => (
-                              <i key={i} className="fas fa-star text-[#c8a055] text-sm mr-0.5"></i>
+                              <i key={i} className="fas fa-star text-yellow-400 text-sm mr-0.5"></i>
                             ))}
                           </div>
-                          <blockquote className="text-lg italic text-white">"{testimonial.content}"</blockquote>
+                          <blockquote className="text-lg italic text-gray-800">"{testimonial.content}"</blockquote>
                           <div>
-                            <p className="font-bold text-[#c8a055]">{testimonial.name}</p>
+                            <p className="font-bold text-gray-900">{testimonial.name}</p>
                             {testimonial.company && (
-                              <p className="text-sm text-gray-300">{testimonial.company}</p>
+                              <p className="text-sm text-gray-600">{testimonial.company}</p>
                             )}
                           </div>
                         </div>
@@ -390,13 +382,13 @@ export default function Home() {
                 <div className="flex justify-center space-x-2 mt-6">
                   {Array.from({ length: Math.ceil(testimonials.length / 3) }).map((_, index) => (
                     <button
-                        key={index}
-                        className={`w-2.5 h-2.5 rounded-full transition-colors ${
-                          Math.floor(activeTestimonial / 3) === index ? "bg-[#c8a055]" : "bg-gray-600"
-                        }`}
-                        onClick={() => setActiveTestimonial(index * 3)}
-                        aria-label={`Testimonial page ${index + 1}`}
-                      />
+                      key={index}
+                      className={`w-2.5 h-2.5 rounded-full transition-colors ${
+                        Math.floor(activeTestimonial / 3) === index ? "bg-green-600" : "bg-gray-300"
+                      }`}
+                      onClick={() => setActiveTestimonial(index * 3)}
+                      aria-label={`Testimonial page ${index + 1}`}
+                    />
                   ))}
                 </div>
               )}
@@ -406,7 +398,7 @@ export default function Home() {
                 <Button 
                   variant="outline" 
                   size="sm"
-                  className="border-[#c8a055] text-[#c8a055] hover:bg-[#c8a055]/10"
+                  className="border-green-600 text-green-600 hover:bg-green-50"
                   onClick={() => setActiveTestimonial((activeTestimonial - 3 + testimonials.length) % testimonials.length)}
                 >
                   <i className="fas fa-chevron-left mr-2"></i>
@@ -415,7 +407,7 @@ export default function Home() {
                 <Button 
                   variant="outline" 
                   size="sm"
-                  className="border-[#c8a055] text-[#c8a055] hover:bg-[#c8a055]/10"
+                  className="border-green-600 text-green-600 hover:bg-green-50"
                   onClick={() => setActiveTestimonial((activeTestimonial + 3) % testimonials.length)}
                 >
                   Următor

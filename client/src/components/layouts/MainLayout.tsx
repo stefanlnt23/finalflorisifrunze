@@ -10,12 +10,14 @@ interface MainLayoutProps {
 export default function MainLayout({ children }: MainLayoutProps) {
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="sticky top-0 z-50 bg-[#1f2328] shadow-md">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+      {/* Header */}
+      <header className="bg-white shadow-sm sticky top-0 z-50">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-4">
             <div className="flex items-center">
               <Link href="/" className="flex items-center space-x-2">
                 <img 
-                  src="https://i.imgur.com/uI4Kx6k.png" 
+                  src="https://i.imgur.com/eHGs2HM.png" 
                   alt="Green Garden Logo" 
                   className="h-10 w-auto"
                 />
@@ -27,12 +29,15 @@ export default function MainLayout({ children }: MainLayoutProps) {
 
             {/* Navigation Component */}
             <MainNavigation />
-            <div className="flex items-center space-x-4">
-            <Link href="/appointment">
-              <Button className="bg-[#c8a055] text-[#1f2328] hover:bg-[#d9b978] transition-colors text-xs sm:text-sm px-2 sm:px-4">
-                Programează o Întâlnire
-              </Button>
-            </Link>
+
+            {/* Call to Action */}
+            <div className="hidden md:block">
+              <Link href="/appointment">
+                <Button className="bg-green-600 hover:bg-green-700 text-white">
+                  Programează o Întâlnire
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </header>

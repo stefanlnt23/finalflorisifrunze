@@ -1,3 +1,5 @@
+
+
 import { useEffect, useState } from "react";
 import { useParams, useLocation } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
@@ -52,7 +54,7 @@ export default function AdminPortfolioForm() {
   const { toast } = useToast();
   const isEditing = !!id;
   const [activeTab, setActiveTab] = useState("details");
-
+  
   // State for image pairs
   const [imagePairs, setImagePairs] = useState<ImagePair[]>([
     { before: "", after: "", caption: "", order: 0 }
@@ -121,24 +123,24 @@ export default function AdminPortfolioForm() {
   useEffect(() => {
     if (portfolioItem) {
       console.log("Populating form with portfolio item data:", portfolioItem);
-
+      
       // Make sure all dates are properly handled
       const portfolioDate = portfolioItem.completionDate || portfolioItem.date;
       const dateObject = portfolioDate ? new Date(portfolioDate) : new Date();
-
+      
       // Ensure all objects are properly initialized with defaults
       const seo = portfolioItem.seo || {
         metaTitle: "",
         metaDescription: "",
         tags: []
       };
-
+      
       const clientTestimonial = portfolioItem.clientTestimonial || {
         clientName: "",
         comment: "",
         displayPermission: false
       };
-
+      
       form.reset({
         title: portfolioItem.title || "",
         description: portfolioItem.description || "",
@@ -161,7 +163,7 @@ export default function AdminPortfolioForm() {
           displayPermission: !!clientTestimonial.displayPermission
         }
       });
-
+      
       // Set image pairs if they exist
       if (portfolioItem.images && portfolioItem.images.length > 0) {
         console.log("Setting image pairs:", portfolioItem.images);
@@ -466,7 +468,7 @@ export default function AdminPortfolioForm() {
                                   <Button
                                     variant={"outline"}
                                     className={cn(
-                                      "w-full pl-3 text-left font-normal bg-white text-gray-900",
+                                      "w-full pl-3 text-left font-normal",
                                       !field.value && "text-muted-foreground"
                                     )}
                                   >
@@ -691,7 +693,7 @@ export default function AdminPortfolioForm() {
                               value={pair.caption || ""}
                               onChange={(e) => updateImagePair(index, "caption", e.target.value, imagePairs, setImagePairs)}
                             />
-
+                            
                             <FormLabel>Detailed Description</FormLabel>
                             <Textarea
                               placeholder="Provide a detailed description of the transformation"
