@@ -1084,29 +1084,38 @@ export class MongoDBStorage implements IStorage {
           return [];
         }
       }
+      
+      log('Fetching subscriptions from MongoDB...', 'mongodb');
+      
+      // Ensure the collection exists
       const collections = await this.db.listCollections({ name: 'subscriptions' }).toArray();
       if (collections.length === 0) {
         await this.db.createCollection('subscriptions');
         log('Created subscriptions collection', 'mongodb');
       }
 
-      log('Fetching subscriptions from MongoDB...', 'mongodb');
       const subscriptions = await this.db.collection("subscriptions").find().sort({ displayOrder: 1 }).toArray();
       log(`Found ${subscriptions.length} subscriptions`, 'mongodb');
+      
+      // Log detailed information for debugging
+      if (subscriptions.length > 0) {
+        log(`Sample subscription data: ${JSON.stringify(subscriptions[0])}`, 'mongodb');
+      } else {
+        log('No subscriptions found in the database', 'mongodb');
+      }
 
       return subscriptions.map(sub => {
-        const mapped = {
+        return {
           id: sub._id.toString(),
           name: sub.name,
           description: sub.description || '',
-          color: sub.color || "#FFFFFF",
+          color: sub.color || "#4CAF50", // Default green color
           features: Array.isArray(sub.features) ? sub.features : [],
           price: sub.price,
-          isPopular: sub.isPopular || false,
-          displayOrder: sub.displayOrder || 0,
+          isPopular: Boolean(sub.isPopular),
+          displayOrder: parseInt(sub.displayOrder || 0),
           imageUrl: sub.imageUrl || null
         };
-        return mapped;
       });
     } catch (error) {
       console.error("Error fetching subscriptions:", error);

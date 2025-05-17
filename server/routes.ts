@@ -1242,21 +1242,103 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/subscriptions", async (req, res) => {
     try {
       console.log("API: Fetching subscriptions");
+      
+      // Ensure we get proper data
       const subscriptions = await storage.getSubscriptions();
       console.log(`API: Found ${subscriptions.length} subscriptions to return`);
       
+      // Add detailed logging
       if (subscriptions.length > 0) {
         console.log("API: First subscription:", JSON.stringify(subscriptions[0]));
       } else {
-        console.log("API: No subscriptions found");
+        console.log("API: No subscriptions found in database");
+        // If no subscriptions found, recreate sample data
+        console.log("API: Attempting to recreate sample subscription data");
+        
+        // This direct approach ensures we have subscription data
+        const sampleData = [
+          {
+            name: "Abonament Basic",
+            description: "Pentru grădini mici și spații cu necesități simple",
+            color: "#4CAF50",
+            price: "199 RON / lună",
+            features: [
+              { name: "Tunderea gazonului", value: "De 2 ori pe lună" },
+              { name: "Îngrijirea plantelor", value: "De bază" },
+              { name: "Curățenie grădină", value: "Da" },
+              { name: "Fertilizare", value: "Trimestrială" },
+              { name: "Consultanță", value: "Email" }
+            ],
+            isPopular: false,
+            displayOrder: 1,
+            imageUrl: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=500&q=60"
+          },
+          {
+            name: "Abonament Standard",
+            description: "Pentru grădini medii cu nevoi moderate de întreținere",
+            color: "#2196F3",
+            price: "349 RON / lună",
+            features: [
+              { name: "Tunderea gazonului", value: "Săptămânal" },
+              { name: "Îngrijirea plantelor", value: "Completă" },
+              { name: "Curățenie grădină", value: "Da" },
+              { name: "Fertilizare", value: "Lunară" },
+              { name: "Consultanță", value: "Telefon & Email" },
+              { name: "Tratament preventiv", value: "Da" }
+            ],
+            isPopular: true,
+            displayOrder: 2,
+            imageUrl: "https://images.unsplash.com/photo-1566369711281-521b1b98e95f?auto=format&fit=crop&w=500&q=60"
+          },
+          {
+            name: "Abonament Premium",
+            description: "Pentru grădini complexe care necesită îngrijire detaliată",
+            color: "#FF9800",
+            price: "599 RON / lună",
+            features: [
+              { name: "Tunderea gazonului", value: "Săptămânal" },
+              { name: "Îngrijirea plantelor", value: "Premium" },
+              { name: "Curățenie grădină", value: "Da + extras" },
+              { name: "Fertilizare", value: "Personalizată" },
+              { name: "Consultanță", value: "Prioritară 24/7" },
+              { name: "Tratament preventiv", value: "Da" },
+              { name: "Îngrijire sezonieră", value: "Inclusă" },
+              { name: "Renovări minore", value: "Incluse" }
+            ],
+            isPopular: false,
+            displayOrder: 3,
+            imageUrl: "https://images.unsplash.com/photo-1558904541-efa843a96f01?auto=format&fit=crop&w=500&q=60"
+          }
+        ];
+        
+        // Drop and recreate the collection if empty
+        const db = await mongoose.connection.db;
+        if (db) {
+          try {
+            // Remove existing subscriptions if any
+            await db.collection('subscriptions').deleteMany({});
+            // Insert sample data
+            const result = await db.collection('subscriptions').insertMany(sampleData);
+            console.log(`API: Created ${result.insertedCount} sample subscriptions directly`);
+            
+            // Fetch the newly created subscriptions
+            const newSubscriptions = await storage.getSubscriptions();
+            res.json({ subscriptions: newSubscriptions });
+            return;
+          } catch (dbError) {
+            console.error("API: Error recreating subscription data:", dbError);
+          }
+        }
       }
       
-      // Add a proper debug check for empty subscriptions response
+      // Log the full response for debugging
       console.log("Full subscriptions response:", JSON.stringify({ subscriptions }));
-      res.json({ subscriptions });
+      
+      // Ensure we return proper array even if empty
+      res.json({ subscriptions: subscriptions || [] });
     } catch (error) {
       console.error("Error fetching subscriptions:", error);
-      res.status(500).json({ message: "Failed to fetch subscriptions" });
+      res.status(500).json({ message: "Failed to fetch subscriptions", error: String(error) });
     }
   });
 

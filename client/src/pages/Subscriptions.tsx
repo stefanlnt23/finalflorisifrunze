@@ -25,17 +25,41 @@ export default function Subscriptions() {
         
         if (!response.subscriptions) {
           console.error("No subscriptions in response", response);
+          // Return an empty array with proper typing
           return [] as Subscription[];
         }
         
+        // Log each subscription for debugging
+        if (response.subscriptions && response.subscriptions.length > 0) {
+          console.log("Subscription details:");
+          response.subscriptions.forEach((sub: any, i: number) => {
+            console.log(`Sub ${i+1}:`, sub);
+          });
+        } else {
+          console.error("API returned empty subscriptions array");
+        }
+        
         console.log(`Retrieved ${response.subscriptions.length} subscriptions`);
-        return response.subscriptions as Subscription[];
+        
+        // Map to ensure proper format
+        return (response.subscriptions || []).map((sub: any) => ({
+          id: sub.id || `temp-${Math.random()}`,
+          name: sub.name || "Subscription",
+          description: sub.description || "",
+          imageUrl: sub.imageUrl || null,
+          color: sub.color || "#4CAF50",
+          features: Array.isArray(sub.features) ? sub.features : [],
+          price: sub.price || "0 RON",
+          isPopular: Boolean(sub.isPopular),
+          displayOrder: parseInt(sub.displayOrder || 0)
+        })) as Subscription[];
       } catch (err) {
         console.error("Error fetching subscriptions:", err);
-        return [] as Subscription[];
+        throw err; // Let the query handle the error
       }
     },
     refetchOnWindowFocus: false,
+    retry: 2,
   });
   
   const subscriptions = data || [];

@@ -337,15 +337,13 @@ export type Subscription = {
   id: string;
   name: string;
   description?: string;
-  color: string;
-  features: Array<{
-    name: string;
-    value: string;
-  }>;
+  imageUrl?: string | null;
+  color?: string;
+  // Allow features to be an array of objects or simple strings for flexibility
+  features: Array<{ name: string; value: string } | string>;
   price: string;
-  isPopular: boolean;
-  displayOrder: number;
-  imageUrl?: string;
+  isPopular?: boolean;
+  displayOrder?: number;
 };
 
 export type InsertPortfolioItem = z.infer<typeof insertPortfolioItemSchema>;
