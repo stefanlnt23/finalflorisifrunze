@@ -121,7 +121,7 @@ export default function ServiceDetail() {
             </p>
             <Link href={`/appointment?service=${service.id}`}>
               <Button className="bg-green-600 hover:bg-green-700 px-8 py-3 text-lg">
-                Book This Service
+                Programează Acest Serviciu
               </Button>
             </Link>
           </div>
@@ -135,7 +135,7 @@ export default function ServiceDetail() {
                     <Clock className="h-6 w-6 text-green-600" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">Duration</p>
+                    <p className="text-sm text-gray-500">Durată</p>
                     <p className="font-medium">{service.duration}</p>
                   </div>
                 </div>
@@ -147,7 +147,7 @@ export default function ServiceDetail() {
                     <Map className="h-6 w-6 text-green-600" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">Coverage</p>
+                    <p className="text-sm text-gray-500">Acoperire</p>
                     <p className="font-medium">{service.coverage}</p>
                   </div>
                 </div>
@@ -159,7 +159,7 @@ export default function ServiceDetail() {
                     <Calendar className="h-6 w-6 text-green-600" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">Frequency</p>
+                    <p className="text-sm text-gray-500">Frecvență</p>
                     <p className="font-medium">{service.recommendedFrequency}</p>
                   </div>
                 </div>
@@ -189,7 +189,7 @@ export default function ServiceDetail() {
                 </div>
               )}
               <div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">About This Service</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">Despre Acest Serviciu</h2>
                 <div className="prose prose-green max-w-none mb-6">
                   <p className="text-gray-600">{service.description}</p>
                 </div>
@@ -197,7 +197,7 @@ export default function ServiceDetail() {
                 {/* Seasonal availability */}
                 {service.seasonalAvailability && service.seasonalAvailability.length > 0 && (
                   <div className="mt-8">
-                    <h3 className="text-lg font-semibold mb-3">Seasonal Availability</h3>
+                    <h3 className="text-lg font-semibold mb-3">Disponibilitate Sezonieră</h3>
                     <div className="flex flex-wrap gap-2">
                       {service.seasonalAvailability.map((season, index) => (
                         <span key={index} className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
@@ -211,7 +211,7 @@ export default function ServiceDetail() {
                 <div className="mt-8">
                   <Link href={`/appointment?service=${service.id}`}>
                     <Button className="bg-green-600 hover:bg-green-700 w-full">
-                      Schedule This Service
+                      Programează Acest Serviciu
                     </Button>
                   </Link>
                 </div>
@@ -224,7 +224,7 @@ export default function ServiceDetail() {
                 <Card>
                   <CardHeader>
                     <CardTitle className="text-2xl font-bold text-gray-900">
-                      Benefits of Our {service.name} Service
+                      Beneficiile Serviciului Nostru {service.name}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -249,7 +249,7 @@ export default function ServiceDetail() {
                 <Card>
                   <CardHeader>
                     <CardTitle className="text-2xl font-bold text-gray-900">
-                      What's Included
+                      Ce Include
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -274,7 +274,7 @@ export default function ServiceDetail() {
             {service.galleryImages && service.galleryImages.length > 0 && (
               <div className="mb-16">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                  {service.name} Gallery
+                  Galerie {service.name}
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {service.galleryImages.map((image, index) => (
@@ -301,7 +301,7 @@ export default function ServiceDetail() {
             {service.faqs && service.faqs.length > 0 && (
               <div className="mb-16">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                  Frequently Asked Questions
+                  Întrebări Frecvente
                 </h2>
                 <Accordion type="single" collapsible className="w-full">
                   {service.faqs.map((faq, index) => (
@@ -326,7 +326,7 @@ export default function ServiceDetail() {
         <section className="py-12 bg-gray-50">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">
-              Our {service.name} Portfolio
+              Portofoliul Nostru de {service.name}
             </h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {portfolioItems.map((item) => (
@@ -352,7 +352,7 @@ export default function ServiceDetail() {
             <div className="text-center mt-8">
               <Link href="/portfolio" state={{ from: 'serviceDetail' }}>
                 <Button variant="outline" className="border-green-600 text-green-600 hover:bg-green-50">
-                  View All Portfolio Projects
+                  Vezi Toate Proiectele din Portofoliu
                 </Button>
               </Link>
             </div>
@@ -363,19 +363,19 @@ export default function ServiceDetail() {
       {/* Call to action */}
       <section className="py-12 bg-green-600">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl font-bold text-white mb-4">Ready to transform your garden?</h2>
+          <h2 className="text-2xl font-bold text-white mb-4">Gata să îți transformi grădina?</h2>
           <p className="text-white text-lg mb-8 max-w-2xl mx-auto">
-            Contact us today to schedule your {service.name} service or request a free consultation.
+            Contactează-ne astăzi pentru a programa serviciul tău de {service.name} sau pentru a solicita o consultație gratuită.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link href={`/appointment?service=${service.id}`}>
               <Button className="bg-white text-green-600 hover:bg-gray-100">
-                Book Now
+                Programează Acum
               </Button>
             </Link>
             <Link href="/contact">
               <Button variant="outline" className="text-white border-white hover:bg-green-700">
-                Contact Us
+                Contactează-ne
               </Button>
             </Link>
           </div>
