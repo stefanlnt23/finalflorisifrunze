@@ -44,7 +44,7 @@ export default function AdminPortfolio() {
 
   const allPortfolioItems = portfolioData?.portfolioItems || [];
   const services = servicesData?.services || [];
-  
+
   // Filter and sort portfolio items
   const filteredPortfolioItems = allPortfolioItems
     .filter((item: PortfolioItem) => {
@@ -54,18 +54,18 @@ export default function AdminPortfolio() {
         item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
         (item.location && item.location.toLowerCase().includes(searchQuery.toLowerCase()));
-      
+
       // Filter by status
       const matchesStatus = 
         filterStatus === "All" || 
         item.status === filterStatus;
-      
+
       // Filter by featured
       const matchesFeatured = 
         filterFeatured === "All" || 
         (filterFeatured === "Featured" && item.featured) || 
         (filterFeatured === "Regular" && !item.featured);
-      
+
       return matchesSearch && matchesStatus && matchesFeatured;
     })
     .sort((a: PortfolioItem, b: PortfolioItem) => {
@@ -90,7 +90,7 @@ export default function AdminPortfolio() {
     const service = services.find((s: Service) => s.id === serviceId);
     return service ? service.name : "Unknown Service";
   };
-  
+
   // Reset selected items when filtered items change
   useEffect(() => {
     setSelectedItems([]);
@@ -118,7 +118,7 @@ export default function AdminPortfolio() {
       });
     },
   });
-  
+
   // Bulk delete mutation
   const bulkDeleteMutation = useMutation({
     mutationFn: async (itemIds: number[]) => {
@@ -147,7 +147,7 @@ export default function AdminPortfolio() {
       });
     },
   });
-  
+
   // Bulk update status mutation
   const bulkUpdateStatusMutation = useMutation({
     mutationFn: async ({ itemIds, status }: { itemIds: number[], status: string }) => {
@@ -175,7 +175,7 @@ export default function AdminPortfolio() {
       });
     },
   });
-  
+
   // Duplicate portfolio item mutation
   const duplicateItemMutation = useMutation({
     mutationFn: async (itemId: number) => {
@@ -183,14 +183,14 @@ export default function AdminPortfolio() {
       const response = await apiRequest("GET", `/api/admin/portfolio/${itemId}`);
       const data = await response.json();
       const item = data.portfolioItem;
-      
+
       // Create a new item with the same data but a different title
       const newItem = {
         ...item,
         title: `${item.title} (Copy)`,
         id: undefined // Remove ID so a new one is generated
       };
-      
+
       return await apiRequest("POST", "/api/admin/portfolio", newItem);
     },
     onSuccess: () => {
@@ -222,21 +222,21 @@ export default function AdminPortfolio() {
       deletePortfolioItemMutation.mutate(itemToDelete.id);
     }
   };
-  
+
   // Handle bulk delete click
   const handleBulkDeleteClick = () => {
     if (selectedItems.length > 0) {
       setBulkDeleteDialogOpen(true);
     }
   };
-  
+
   // Handle confirm bulk delete
   const handleConfirmBulkDelete = () => {
     if (selectedItems.length > 0) {
       bulkDeleteMutation.mutate(selectedItems);
     }
   };
-  
+
   // Handle bulk publish
   const handleBulkPublish = () => {
     if (selectedItems.length > 0) {
@@ -246,7 +246,7 @@ export default function AdminPortfolio() {
       });
     }
   };
-  
+
   // Handle bulk unpublish
   const handleBulkUnpublish = () => {
     if (selectedItems.length > 0) {
@@ -256,12 +256,12 @@ export default function AdminPortfolio() {
       });
     }
   };
-  
+
   // Handle duplicate item
   const handleDuplicateItem = (itemId: number) => {
     duplicateItemMutation.mutate(itemId);
   };
-  
+
   // Handle item selection
   const handleSelectItem = (itemId: number, isSelected: boolean) => {
     if (isSelected) {
@@ -270,7 +270,7 @@ export default function AdminPortfolio() {
       setSelectedItems(selectedItems.filter(id => id !== itemId));
     }
   };
-  
+
   // Handle select all
   const handleSelectAll = (isSelected: boolean) => {
     if (isSelected) {
@@ -306,7 +306,7 @@ export default function AdminPortfolio() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
-              
+
               <Select value={filterStatus} onValueChange={(value: any) => setFilterStatus(value)}>
                 <SelectTrigger className="w-[130px]">
                   <Filter className="mr-2 h-4 w-4" />
@@ -318,7 +318,7 @@ export default function AdminPortfolio() {
                   <SelectItem value="Draft">Draft</SelectItem>
                 </SelectContent>
               </Select>
-              
+
               <Select value={filterFeatured} onValueChange={(value: any) => setFilterFeatured(value)}>
                 <SelectTrigger className="w-[130px]">
                   <SelectValue placeholder="Featured" />
@@ -330,7 +330,7 @@ export default function AdminPortfolio() {
                 </SelectContent>
               </Select>
             </div>
-            
+
             <div className="flex items-center space-x-2">
               <Select value={sortBy} onValueChange={(value: any) => setSortBy(value)}>
                 <SelectTrigger className="w-[130px]">
@@ -344,7 +344,7 @@ export default function AdminPortfolio() {
                   <SelectItem value="views">Most Views</SelectItem>
                 </SelectContent>
               </Select>
-              
+
               <Tabs value={viewMode} onValueChange={(value: any) => setViewMode(value)}>
                 <TabsList className="grid w-[100px] grid-cols-2">
                   <TabsTrigger value="list">
@@ -357,7 +357,7 @@ export default function AdminPortfolio() {
               </Tabs>
             </div>
           </div>
-          
+
           {/* Bulk Actions */}
           {selectedItems.length > 0 && (
             <div className="mt-4 flex items-center justify-between rounded-md border border-gray-200 bg-gray-50 p-2">
@@ -394,7 +394,7 @@ export default function AdminPortfolio() {
           )}
         </CardContent>
       </Card>
-      
+
       <Card>
         <CardContent className="p-0">
           {isLoading ? (
@@ -532,7 +532,7 @@ export default function AdminPortfolio() {
                           <Button 
                             variant="outline" 
                             size="sm"
-                            onClick={() => setLocation(`/admin/portfolio/${item.id}`)}
+                            onClick={() => setLocation(`/admin/portfolio/${item.id}/edit`)}
                           >
                             <i className="fas fa-edit text-blue-600"></i>
                           </Button>
@@ -623,7 +623,7 @@ export default function AdminPortfolio() {
                         <Button 
                           variant="outline" 
                           size="sm"
-                          onClick={() => setLocation(`/admin/portfolio/${item.id}`)}
+                          onClick={() => setLocation(`/admin/portfolio/${item.id}/edit`)}
                         >
                           <i className="fas fa-edit text-blue-600"></i>
                         </Button>
@@ -677,7 +677,7 @@ export default function AdminPortfolio() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      
+
       {/* Bulk Delete Confirmation Dialog */}
       <Dialog open={bulkDeleteDialogOpen} onOpenChange={setBulkDeleteDialogOpen}>
         <DialogContent>
