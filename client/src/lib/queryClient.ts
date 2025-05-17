@@ -1,5 +1,18 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
+// Helper functions for authentication and API base URL
+const getApiBaseUrl = (): string => {
+  return window.location.origin;
+};
+
+const getAuthToken = (): string | null => {
+  return localStorage.getItem('auth_token');
+};
+
+const removeAuthToken = (): void => {
+  localStorage.removeItem('auth_token');
+};
+
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
     const errorText = await res.text();
@@ -16,15 +29,14 @@ async function throwIfResNotOk(res: Response) {
 }
 
 // Generic API request function
-export const apiRequest = async (endpoint: string, options?: { method?: string, data?: any }) => {
-  const method = options?.method || "GET";
-  const data = options?.data;
+export const apiRequest = async (method: string | undefined, endpoint: string, data?: any) => {
   const url = endpoint.startsWith('http') ? endpoint : `${getApiBaseUrl()}${endpoint}`;
-  console.log(`Making ${method} request to ${endpoint} ${data ? JSON.stringify(data) : ''}`);
+  const requestMethod = method || "GET";
+  console.log(`Making ${requestMethod} request to ${endpoint} ${data ? JSON.stringify(data) : ''}`);
 
   try {
     const response = await fetch(url, {
-      method,
+      method: requestMethod,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': getAuthToken() ? `Bearer ${getAuthToken()}` : '',

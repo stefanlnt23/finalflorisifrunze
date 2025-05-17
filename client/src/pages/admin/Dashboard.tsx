@@ -144,9 +144,13 @@ export default function AdminDashboard() {
                       </p>
                     </div>
                     <div className="inline-flex items-center text-sm font-medium text-blue-600">
-                      <Link href={`/admin/appointments`}>
+                      <Button 
+                        variant="link" 
+                        className="p-0 h-auto text-blue-600" 
+                        onClick={() => window.location.href = '/admin/appointments'}
+                      >
                         View
-                      </Link>
+                      </Button>
                     </div>
                   </div>
                 ))}
@@ -157,9 +161,13 @@ export default function AdminDashboard() {
               </div>
             )}
             <div className="mt-4 text-center">
-              <Link href="/admin/appointments" className="text-sm font-medium text-blue-600 hover:text-blue-800">
+              <Button 
+                variant="link" 
+                className="p-0 h-auto text-sm font-medium text-blue-600 hover:text-blue-800"
+                onClick={() => window.location.href = '/admin/appointments'}
+              >
                 View all appointments →
-              </Link>
+              </Button>
             </div>
           </CardContent>
         </Card>
@@ -195,9 +203,13 @@ export default function AdminDashboard() {
                       </p>
                     </div>
                     <div className="inline-flex items-center text-sm font-medium text-blue-600">
-                      <Link href={`/admin/inquiries`}>
+                      <Button 
+                        variant="link" 
+                        className="p-0 h-auto text-blue-600" 
+                        onClick={() => window.location.href = '/admin/inquiries'}
+                      >
                         View
-                      </Link>
+                      </Button>
                     </div>
                   </div>
                 ))}
@@ -208,9 +220,13 @@ export default function AdminDashboard() {
               </div>
             )}
             <div className="mt-4 text-center">
-              <Link href="/admin/inquiries" className="text-sm font-medium text-blue-600 hover:text-blue-800">
+              <Button 
+                variant="link" 
+                className="p-0 h-auto text-sm font-medium text-blue-600 hover:text-blue-800"
+                onClick={() => window.location.href = '/admin/inquiries'}
+              >
                 View all inquiries →
-              </Link>
+              </Button>
             </div>
           </CardContent>
         </Card>

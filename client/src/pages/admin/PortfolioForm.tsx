@@ -67,7 +67,7 @@ export default function AdminPortfolioForm() {
       if (!id) return null;
       console.log("Fetching portfolio item data for editing, ID:", id);
       try {
-        const data = await apiRequest(`/api/admin/portfolio/${id}`);
+        const data = await apiRequest("GET", `/api/admin/portfolio/${id}`);
         console.log("Received portfolio item data:", data);
         return data;
       } catch (error) {
