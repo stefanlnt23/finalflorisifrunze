@@ -22,11 +22,11 @@ function authenticateAdmin(req: Request, res: Response, next: NextFunction) {
   // In a real application, you'd validate the token or session ID properly
   // For now, we'll implement a basic check
   const authHeader = req.headers.authorization.split(' ')[1]; // Bearer TOKEN
-  
+
   if (!authHeader) {
     return res.status(401).json({ message: "Authentication required" });
   }
-  
+
   try {
     // Here you would decode and verify the token
     // For now, we'll just assume it's valid if it exists
@@ -314,12 +314,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Login failed" });
     }
   });
-  
+
   // Registration endpoint
   app.post("/api/admin/register", async (req, res) => {
     try {
       const { name, email, username, password, role = "user" } = req.body;
-      
+
       // Validate required fields
       if (!name || !email || !username || !password) {
         return res.status(400).json({ 
@@ -327,7 +327,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           success: false 
         });
       }
-      
+
       // Check if username already exists
       const existingUser = await storage.getUserByUsername(username);
       if (existingUser) {
@@ -336,7 +336,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           success: false 
         });
       }
-      
+
       // Check if email already exists
       const existingEmail = await storage.getUserByEmail(email);
       if (existingEmail) {
@@ -345,10 +345,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
           success: false 
         });
       }
-      
+
       // Hash the password
       const hashedPassword = await hashPassword(password);
-      
+
       // Create the new user
       const newUser = await storage.createUser({
         name,
@@ -359,13 +359,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         createdAt: new Date(),
         updatedAt: new Date()
       });
-      
+
       // Return success response (don't return the user object to avoid leaking password hash)
       res.status(201).json({
         success: true,
         message: "User registered successfully"
       });
-      
+
     } catch (error) {
       console.error("Error during registration:", error);
       res.status(500).json({ 
@@ -374,7 +374,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
     }
   });
-  
+
   // Validate session endpoint
   app.get("/api/admin/validate-session", async (req, res) => {
     try {
@@ -383,14 +383,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!req.headers.authorization) {
         return res.json({ valid: false });
       }
-      
+
       // Check if there's a bearer token
       const authHeader = req.headers.authorization.split(' ')[1]; // Bearer TOKEN
-      
+
       if (!authHeader) {
         return res.json({ valid: false });
       }
-      
+
       // In a real app, you would decode and verify the token
       // For now, we'll return valid: true if a token is present
       res.json({ valid: true });
@@ -659,7 +659,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           items: z.array(z.string()).min(1),
         }),
       ]);
-      
+
       // Create a custom schema for this specific endpoint with better date handling
       const customBlogPostSchema = z.object({
         title: z.string().min(1, "Title is required"),
@@ -689,7 +689,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       console.log("Validation successful, creating blog post with data:", 
         JSON.stringify(validated.data, null, 2));
-      
+
       const blogPost = await storage.createBlogPost(validated.data);
       console.log("Blog post created successfully:", blogPost.id);
       res.json({ success: true, blogPost });
@@ -925,6 +925,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
         console.log(`Successfully deleted inquiry with ID: ${id}`);
         res.json({ success: true });
+      ```text
       } catch (error) {
         console.error("Error deleting inquiry:", error);
         res.status(500).json({ message: "Failed to delete inquiry" });
