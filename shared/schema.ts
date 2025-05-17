@@ -113,13 +113,31 @@ export const insertUserSchema = createInsertSchema(users).pick({
   role: true,
 });
 
-export const insertServiceSchema = createInsertSchema(services).pick({
+// Enhanced service schema with additional fields
+const serviceBaseSchema = createInsertSchema(services).pick({
   name: true,
   description: true,
   shortDesc: true,
   price: true,
   imageUrl: true,
   featured: true,
+});
+
+// Extend with additional fields
+export const insertServiceSchema = serviceBaseSchema.extend({
+  duration: z.string().optional(),
+  coverage: z.string().optional(),
+  benefits: z.array(z.string()).optional(),
+  includes: z.array(z.string()).optional(),
+  faqs: z.array(
+    z.object({
+      question: z.string(),
+      answer: z.string()
+    })
+  ).optional(),
+  recommendedFrequency: z.string().optional(),
+  seasonalAvailability: z.array(z.string()).optional(),
+  galleryImages: z.array(z.string()).optional()
 });
 
 // Image pair schema

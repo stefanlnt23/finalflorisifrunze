@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
 import { useParams, useLocation } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import AdminLayout from "@/components/layouts/AdminLayout";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Separator } from "@/components/ui/separator";
 import {
   Form,
   FormControl,
@@ -22,6 +24,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { insertServiceSchema } from "@shared/schema";
 import { apiRequest, queryClient } from "@/lib/queryClient";
+import { Plus, Trash2 } from "lucide-react";
 
 // Extend the schema with validation
 const formSchema = insertServiceSchema.extend({
@@ -57,12 +60,38 @@ export default function AdminServicesForm() {
     defaultValues: {
       name: "",
       description: "",
-      shortDesc: "", // Added shortDesc field
+      shortDesc: "",
       price: "",
       imageUrl: "",
-      featured: false
+      featured: false,
+      
+      // New fields
+      duration: "",
+      coverage: "",
+      benefits: [],
+      includes: [],
+      faqs: [],
+      recommendedFrequency: "",
+      seasonalAvailability: [],
+      galleryImages: []
     },
   });
+  
+  // Field arrays for dynamic fields
+  const { fields: benefitFields, append: appendBenefit, remove: removeBenefit } = 
+    useFieldArray({ control: form.control, name: "benefits" });
+    
+  const { fields: includeFields, append: appendInclude, remove: removeInclude } = 
+    useFieldArray({ control: form.control, name: "includes" });
+    
+  const { fields: faqFields, append: appendFaq, remove: removeFaq } = 
+    useFieldArray({ control: form.control, name: "faqs" });
+    
+  const { fields: seasonFields, append: appendSeason, remove: removeSeason } = 
+    useFieldArray({ control: form.control, name: "seasonalAvailability" });
+    
+  const { fields: galleryFields, append: appendGallery, remove: removeGallery } = 
+    useFieldArray({ control: form.control, name: "galleryImages" });
 
   // Update form values when service data is loaded
   useEffect(() => {
@@ -73,7 +102,17 @@ export default function AdminServicesForm() {
         shortDesc: service.shortDesc || "",
         price: service.price,
         imageUrl: service.imageUrl || "",
-        featured: !!service.featured
+        featured: !!service.featured,
+        
+        // New fields
+        duration: service.duration || "",
+        coverage: service.coverage || "",
+        benefits: service.benefits || [],
+        includes: service.includes || [],
+        faqs: service.faqs || [],
+        recommendedFrequency: service.recommendedFrequency || "",
+        seasonalAvailability: service.seasonalAvailability || [],
+        galleryImages: service.galleryImages || []
       });
     }
   }, [service, form]);
@@ -159,116 +198,417 @@ export default function AdminServicesForm() {
           ) : (
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Service Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter service name" {...field} />
-                      </FormControl>
-                      <FormDescription>
-                        The name of the gardening service you provide
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <Tabs defaultValue="basics" className="w-full">
+                  <TabsList className="grid grid-cols-4 mb-6">
+                    <TabsTrigger value="basics">Basic Information</TabsTrigger>
+                    <TabsTrigger value="details">Service Details</TabsTrigger>
+                    <TabsTrigger value="benefits">Benefits & Includes</TabsTrigger>
+                    <TabsTrigger value="extras">Gallery & FAQs</TabsTrigger>
+                  </TabsList>
+                  
+                  {/* Basic Information Tab */}
+                  <TabsContent value="basics" className="space-y-6">
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Service Name</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter service name" {...field} />
+                          </FormControl>
+                          <FormDescription>
+                            The name of the gardening service you provide
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                <FormField
-                  control={form.control}
-                  name="shortDesc"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Short Description</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Brief overview of the service" {...field} />
-                      </FormControl>
-                      <FormDescription>
-                        A short summary that will appear in service listings
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                    <FormField
+                      control={form.control}
+                      name="shortDesc"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Short Description</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Brief overview of the service" {...field} />
+                          </FormControl>
+                          <FormDescription>
+                            A short summary that will appear in service listings
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                <FormField
-                  control={form.control}
-                  name="description"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Description</FormLabel>
-                      <FormControl>
-                        <Textarea 
-                          placeholder="Enter a detailed description of the service"
-                          className="min-h-32"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormDescription>
-                        Describe what the service includes and why customers should choose it
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                    <FormField
+                      control={form.control}
+                      name="description"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Description</FormLabel>
+                          <FormControl>
+                            <Textarea 
+                              placeholder="Enter a detailed description of the service"
+                              className="min-h-32"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormDescription>
+                            Describe what the service includes and why customers should choose it
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                <FormField
-                  control={form.control}
-                  name="price"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Price</FormLabel>
-                      <FormControl>
-                        <Input placeholder="e.g. $99, From $199, $50-$100/hour" {...field} />
-                      </FormControl>
-                      <FormDescription>
-                        The price or price range for the service
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                    <FormField
+                      control={form.control}
+                      name="price"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Price</FormLabel>
+                          <FormControl>
+                            <Input placeholder="e.g. $99, From $199, $50-$100/hour" {...field} />
+                          </FormControl>
+                          <FormDescription>
+                            The price or price range for the service
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                <FormField
-                  control={form.control}
-                  name="imageUrl"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Image URL</FormLabel>
-                      <FormControl>
-                        <Input placeholder="https://example.com/image.jpg" {...field} />
-                      </FormControl>
-                      <FormDescription>
-                        An image representing the service (optional)
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                    <FormField
+                      control={form.control}
+                      name="imageUrl"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Main Image URL</FormLabel>
+                          <FormControl>
+                            <Input placeholder="https://example.com/image.jpg" {...field} />
+                          </FormControl>
+                          <FormDescription>
+                            The main image representing the service
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                <FormField
-                  control={form.control}
-                  name="featured"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                      <div className="space-y-0.5">
-                        <FormLabel className="text-base">Featured Service</FormLabel>
-                        <FormDescription>
-                          Display this service prominently on the homepage
-                        </FormDescription>
-                      </div>
-                      <FormControl>
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-
+                    <FormField
+                      control={form.control}
+                      name="featured"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                          <div className="space-y-0.5">
+                            <FormLabel className="text-base">Featured Service</FormLabel>
+                            <FormDescription>
+                              Display this service prominently on the homepage
+                            </FormDescription>
+                          </div>
+                          <FormControl>
+                            <Switch
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                  </TabsContent>
+                  
+                  {/* Service Details Tab */}
+                  <TabsContent value="details" className="space-y-6">
+                    <FormField
+                      control={form.control}
+                      name="duration"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Service Duration</FormLabel>
+                          <FormControl>
+                            <Input placeholder="e.g. 1-2 hours, 3-5 days" {...field} />
+                          </FormControl>
+                          <FormDescription>
+                            How long does this service typically take to complete?
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <FormField
+                      control={form.control}
+                      name="coverage"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Coverage Area</FormLabel>
+                          <FormControl>
+                            <Input placeholder="e.g. Up to 500 sq ft" {...field} />
+                          </FormControl>
+                          <FormDescription>
+                            What area does this service typically cover?
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <FormField
+                      control={form.control}
+                      name="recommendedFrequency"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Recommended Frequency</FormLabel>
+                          <FormControl>
+                            <Input placeholder="e.g. Weekly, Monthly, Seasonally" {...field} />
+                          </FormControl>
+                          <FormDescription>
+                            How often should this service be performed?
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="text-lg">Seasonal Availability</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        {seasonFields.map((field, index) => (
+                          <div key={field.id} className="flex items-center gap-2">
+                            <FormField
+                              control={form.control}
+                              name={`seasonalAvailability.${index}`}
+                              render={({ field }) => (
+                                <FormItem className="flex-1">
+                                  <FormControl>
+                                    <Input placeholder="e.g. Spring, Summer" {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <Button 
+                              type="button" 
+                              variant="outline" 
+                              size="icon"
+                              onClick={() => removeSeason(index)}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        ))}
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          className="mt-2"
+                          onClick={() => appendSeason("")}
+                        >
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add Season
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </TabsContent>
+                  
+                  {/* Benefits & Includes Tab */}
+                  <TabsContent value="benefits" className="space-y-6">
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="text-lg">Service Benefits</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        {benefitFields.map((field, index) => (
+                          <div key={field.id} className="flex items-center gap-2">
+                            <FormField
+                              control={form.control}
+                              name={`benefits.${index}`}
+                              render={({ field }) => (
+                                <FormItem className="flex-1">
+                                  <FormControl>
+                                    <Input placeholder="e.g. Improves soil health" {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <Button 
+                              type="button" 
+                              variant="outline" 
+                              size="icon"
+                              onClick={() => removeBenefit(index)}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        ))}
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          className="mt-2"
+                          onClick={() => appendBenefit("")}
+                        >
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add Benefit
+                        </Button>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="text-lg">What's Included</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        {includeFields.map((field, index) => (
+                          <div key={field.id} className="flex items-center gap-2">
+                            <FormField
+                              control={form.control}
+                              name={`includes.${index}`}
+                              render={({ field }) => (
+                                <FormItem className="flex-1">
+                                  <FormControl>
+                                    <Input placeholder="e.g. Initial consultation" {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <Button 
+                              type="button" 
+                              variant="outline" 
+                              size="icon"
+                              onClick={() => removeInclude(index)}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        ))}
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          className="mt-2"
+                          onClick={() => appendInclude("")}
+                        >
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add Item
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </TabsContent>
+                  
+                  {/* Gallery & FAQs Tab */}
+                  <TabsContent value="extras" className="space-y-6">
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="text-lg">Gallery Images</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        {galleryFields.map((field, index) => (
+                          <div key={field.id} className="flex items-center gap-2">
+                            <FormField
+                              control={form.control}
+                              name={`galleryImages.${index}`}
+                              render={({ field }) => (
+                                <FormItem className="flex-1">
+                                  <FormControl>
+                                    <Input placeholder="https://example.com/gallery1.jpg" {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <Button 
+                              type="button" 
+                              variant="outline" 
+                              size="icon"
+                              onClick={() => removeGallery(index)}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        ))}
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          className="mt-2"
+                          onClick={() => appendGallery("")}
+                        >
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add Image URL
+                        </Button>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="text-lg">Frequently Asked Questions</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-6">
+                        {faqFields.map((field, index) => (
+                          <div key={field.id} className="space-y-4 pb-4 border-b border-gray-100">
+                            <FormField
+                              control={form.control}
+                              name={`faqs.${index}.question`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Question {index + 1}</FormLabel>
+                                  <FormControl>
+                                    <Input placeholder="e.g. How often should I water my garden?" {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            
+                            <FormField
+                              control={form.control}
+                              name={`faqs.${index}.answer`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Answer</FormLabel>
+                                  <FormControl>
+                                    <Textarea placeholder="Provide a detailed answer..." {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            
+                            <Button 
+                              type="button" 
+                              variant="outline" 
+                              size="sm"
+                              onClick={() => removeFaq(index)}
+                              className="text-red-500"
+                            >
+                              <Trash2 className="h-4 w-4 mr-2" />
+                              Remove FAQ
+                            </Button>
+                          </div>
+                        ))}
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => appendFaq({ question: "", answer: "" })}
+                        >
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add FAQ
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </TabsContent>
+                </Tabs>
+                
+                <Separator className="my-6" />
+                
                 <div className="flex justify-end space-x-4 pt-4">
                   <Button 
                     type="button" 

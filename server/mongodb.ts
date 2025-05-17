@@ -64,9 +64,23 @@ const serviceSchema = new mongoose.Schema({
   name: { type: String, required: true },
   description: { type: String, required: true },
   shortDesc: { type: String, required: true },
-  price: { type: Number, required: true },
+  price: { type: String, required: true },
   imageUrl: { type: String },
   isFeatured: { type: Boolean, default: false },
+  
+  // Additional fields
+  duration: { type: String }, // e.g., "1-2 hours", "3-5 days"
+  coverage: { type: String }, // e.g., "Up to 500 sq ft"
+  benefits: [{ type: String }], // Array of benefits
+  includes: [{ type: String }], // What's included in the service
+  faqs: [{
+    question: { type: String },
+    answer: { type: String }
+  }],
+  recommendedFrequency: { type: String }, // e.g., "Weekly", "Monthly", "Seasonally"
+  seasonalAvailability: [{ type: String }], // e.g., ["Spring", "Summer"]
+  galleryImages: [{ type: String }], // Additional images
+  
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });
@@ -244,7 +258,17 @@ export function mapServiceToSchema(service: any): any {
     shortDesc: service.shortDesc,
     price: service.price,
     imageUrl: service.imageUrl,
-    featured: service.isFeatured // Map isFeatured from MongoDB to featured for frontend
+    featured: service.isFeatured, // Map isFeatured from MongoDB to featured for frontend
+    
+    // Additional fields
+    duration: service.duration || null,
+    coverage: service.coverage || null,
+    benefits: service.benefits || [],
+    includes: service.includes || [],
+    faqs: service.faqs || [],
+    recommendedFrequency: service.recommendedFrequency || null,
+    seasonalAvailability: service.seasonalAvailability || [],
+    galleryImages: service.galleryImages || []
   };
 }
 
