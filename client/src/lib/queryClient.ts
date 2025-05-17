@@ -35,6 +35,7 @@ export const apiRequest = async (method: string | undefined, endpoint: string, d
   console.log(`Making ${requestMethod} request to ${endpoint} ${data ? JSON.stringify(data) : ''}`);
 
   try {
+    // Create the request with proper headers
     const response = await fetch(url, {
       method: requestMethod,
       headers: {
@@ -52,6 +53,12 @@ export const apiRequest = async (method: string | undefined, endpoint: string, d
       return Promise.reject(new Error('Unauthorized'));
     }
 
+    // Return the response for GET methods, let the caller handle parsing
+    if (requestMethod === 'GET') {
+      return response;
+    }
+
+    // For non-GET methods, handle the response here
     if (!response.ok) {
       const errorText = await response.text();
       console.error(`Error response from ${endpoint}:`, errorText);
@@ -69,7 +76,7 @@ export const apiRequest = async (method: string | undefined, endpoint: string, d
       return responseData;
     } catch (error) {
       console.error('Error parsing JSON response:', error);
-      return null;
+      return response; // Return the response object so caller can handle it
     }
   } catch (error) {
     console.error('Error in API request to', method, url, ':', error);
