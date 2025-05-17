@@ -40,7 +40,7 @@ export default function AdminDashboard() {
 
   return (
     <AdminLayout 
-      title="Dashboard" 
+      title="Flori si Frunze Dashboard" 
       description="Welcome to the admin dashboard"
       action={
         <Link href="/admin/services">

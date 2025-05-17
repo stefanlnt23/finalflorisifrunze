@@ -47,7 +47,7 @@ export default function SubscriptionsForm() {
   const { data, isLoading, error } = useQuery({
     queryKey: ['subscription', id],
     queryFn: async () => {
-      if (isEditMode) {
+      if (isEditMode && id !== 'new') {
         try {
           console.log(`Fetching subscription with ID: ${id}`);
           
@@ -83,7 +83,7 @@ export default function SubscriptionsForm() {
       }
       return null;
     },
-    enabled: isEditMode,
+    enabled: isEditMode && id !== 'new',
     retry: false // Don't retry on failure
   });
 
@@ -212,7 +212,7 @@ export default function SubscriptionsForm() {
     );
   }
 
-  if (error && isEditMode) {
+  if (error && isEditMode && id !== 'new') {
     return (
       <div className="p-6">
         <div className="flex justify-between mb-6">
