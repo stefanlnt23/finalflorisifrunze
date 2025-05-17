@@ -5,16 +5,6 @@ import { useParams, Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
-export default function BlogDetail() {
-  const { id } = useParams();
-  const blogId = id;
-
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['/api/blog', blogId],
-    queryFn: async () => {
-      const response = await fetch(`/api/blog/${blogId}`);
-      if (!response.ok) {
-
 // Related Posts Component
 function RelatedPosts({ currentBlogId }: { currentBlogId: string }) {
   const { data: allBlogsData } = useQuery({
@@ -63,7 +53,15 @@ function RelatedPosts({ currentBlogId }: { currentBlogId: string }) {
   );
 }
 
+export default function BlogDetail() {
+  const { id } = useParams();
+  const blogId = id;
 
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['/api/blog', blogId],
+    queryFn: async () => {
+      const response = await fetch(`/api/blog/${blogId}`);
+      if (!response.ok) {
         throw new Error('Failed to fetch blog post');
       }
       return response.json();
