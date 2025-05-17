@@ -116,15 +116,15 @@ export default function Contact() {
                       <div className="mb-6 text-green-500 text-6xl">
                         <i className="fas fa-check-circle"></i>
                       </div>
-                      <h3 className="text-xl font-semibold mb-4">Thank You!</h3>
+                      <h3 className="text-xl font-semibold mb-4">Mulțumim!</h3>
                       <p className="text-gray-600 mb-6">
-                        Your message has been received. We'll get back to you as soon as possible.
+                        Mesajul dvs. a fost primit. Vă vom contacta cât mai curând.
                       </p>
                       <Button 
                         onClick={() => setFormSubmitted(false)}
                         className="bg-green-600 hover:bg-green-700"
                       >
-                        Send Another Message
+                        Trimite alt mesaj
                       </Button>
                     </CardContent>
                   </Card>
@@ -141,7 +141,7 @@ export default function Contact() {
                                 <FormItem>
                                   <FormLabel>Nume</FormLabel>
                                   <FormControl>
-                                    <Input placeholder="Your name" {...field} />
+                                    <Input placeholder="Numele dvs." {...field} />
                                   </FormControl>
                                   <FormMessage />
                                 </FormItem>
@@ -154,7 +154,7 @@ export default function Contact() {
                                 <FormItem>
                                   <FormLabel>Email</FormLabel>
                                   <FormControl>
-                                    <Input type="email" placeholder="you@example.com" {...field} />
+                                    <Input type="email" placeholder="dvs@exemplu.com" {...field} />
                                   </FormControl>
                                   <FormMessage />
                                 </FormItem>
@@ -184,14 +184,14 @@ export default function Contact() {
                                   <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isLoadingServices}>
                                     <FormControl>
                                       <SelectTrigger>
-                                        <SelectValue placeholder="Select a service" />
+                                        <SelectValue placeholder="Selectați un serviciu" />
                                       </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
                                       {isLoadingServices ? (
-                                        <SelectItem value="loading" disabled>Loading services...</SelectItem>
+                                        <SelectItem value="loading" disabled>Se încarcă serviciile...</SelectItem>
                                       ) : services.length === 0 ? (
-                                        <SelectItem value="none" disabled>No services available</SelectItem>
+                                        <SelectItem value="none" disabled>Nu există servicii disponibile</SelectItem>
                                       ) : (
                                         services.map((service: Service) => (
                                           <SelectItem key={service.id} value={String(service.id)}>
@@ -338,7 +338,7 @@ export default function Contact() {
                   </Card>
 
                   <div className="mt-6 space-y-4">
-                    <h3 className="text-lg font-semibold">Connect With Us</h3>
+                    <h3 className="text-lg font-semibold">Conectează-te cu Noi</h3>
                     <div className="flex space-x-4">
                       <a href="#" className="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white hover:bg-green-700 transition-colors">
                         <i className="fab fa-facebook-f"></i>

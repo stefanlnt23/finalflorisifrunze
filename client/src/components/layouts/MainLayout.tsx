@@ -34,7 +34,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
             <div className="hidden md:block">
               <Link href="/appointment">
                 <Button className="bg-green-600 hover:bg-green-700 text-white">
-                  Book Appointment
+                  Programează o Întâlnire
                 </Button>
               </Link>
             </div>
