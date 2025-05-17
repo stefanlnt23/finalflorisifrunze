@@ -170,7 +170,47 @@ export default function Subscriptions() {
                             {typeof feature === 'object' && feature.value && (
                               <span 
                                 className="text-gray-900 font-medium group-hover:text-green-600 transition-all"
-
+                                style={{ color: subscription.color || '#4CAF50' }}
+                              >
+                                {feature.value}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                  
+                  {/* Card Footer with button */}
+                  <CardFooter className="p-6 pt-2 mt-auto">
+                    <Link href="/contact" className="w-full">
+                      <Button 
+                        className={`w-full py-3 font-medium text-center relative overflow-hidden transition-all group hover:shadow-lg ${
+                          subscription.displayOrder >= 3 ? 'subscription-premium-button' : ''
+                        }`}
+                        style={{ 
+                          backgroundColor: subscription.color || '#4CAF50',
+                          color: '#FFFFFF',
+                          boxShadow: subscription.displayOrder >= 3 ? `0 4px 12px -2px ${subscription.color}70` : 'none'
+                        }}
+                      >
+                        <span className="relative z-10 group-hover:scale-110 inline-block transition-transform duration-300">
+                          {subscription.displayOrder >= 3 ? 'Alege Planul Premium!' : 'Discută Cu Noi!'}
+                        </span>
+                        <span 
+                          className={`absolute inset-0 w-full h-full scale-0 rounded-md transition-transform duration-300 group-hover:scale-100 ${
+                            subscription.displayOrder >= 3 ? 'opacity-40 bg-white' : 'opacity-30 bg-white'
+                          }`}
+                        ></span>
+                        {subscription.displayOrder === 4 && (
+                          <span className="absolute -inset-1 bg-gradient-to-r from-transparent via-white to-transparent opacity-30 blur-sm animate-pulse"></span>
+                        )}
+                      </Button>
+                    </Link>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
           )}
         </div>
         
@@ -275,50 +315,6 @@ export default function Subscriptions() {
             </div>
           </div>
         )}
-
-                                style={{ color: subscription.color || '#4CAF50' }}
-                              >
-                                {feature.value}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                  
-                  {/* Card Footer with button */}
-                  <CardFooter className="p-6 pt-2 mt-auto">
-                    <Link href="/contact" className="w-full">
-                      <Button 
-                        className={`w-full py-3 font-medium text-center relative overflow-hidden transition-all group hover:shadow-lg ${
-                          subscription.displayOrder >= 3 ? 'subscription-premium-button' : ''
-                        }`}
-                        style={{ 
-                          backgroundColor: subscription.color || '#4CAF50',
-                          color: '#FFFFFF',
-                          boxShadow: subscription.displayOrder >= 3 ? `0 4px 12px -2px ${subscription.color}70` : 'none'
-                        }}
-                      >
-                        <span className="relative z-10 group-hover:scale-110 inline-block transition-transform duration-300">
-                          {subscription.displayOrder >= 3 ? 'Alege Planul Premium!' : 'Discută Cu Noi!'}
-                        </span>
-                        <span 
-                          className={`absolute inset-0 w-full h-full scale-0 rounded-md transition-transform duration-300 group-hover:scale-100 ${
-                            subscription.displayOrder >= 3 ? 'opacity-40 bg-white' : 'opacity-30 bg-white'
-                          }`}
-                        ></span>
-                        {subscription.displayOrder === 4 && (
-                          <span className="absolute -inset-1 bg-gradient-to-r from-transparent via-white to-transparent opacity-30 blur-sm animate-pulse"></span>
-                        )}
-                      </Button>
-                    </Link>
-                  </CardFooter>
-                </Card>
-              ))}
-            </div>
-          )}
-        </div>
       </div>
     </MainLayout>
   );

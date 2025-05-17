@@ -100,6 +100,65 @@
   }
 
   body {
+
+/* Subscription animations */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.subscription-grid {
+  perspective: 1000px;
+}
+
+.subscription-card {
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.subscription-level-2 {
+  transform: translateY(-5px);
+}
+
+.subscription-level-3 {
+  transform: translateY(-10px);
+}
+
+.subscription-level-4 {
+  transform: translateY(-15px);
+}
+
+.subscription-premium-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.fade-in-section {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Staggered animation for cards */
+.subscription-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.subscription-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.subscription-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.subscription-card:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
     @apply font-sans antialiased bg-background text-foreground;
   }
 }
