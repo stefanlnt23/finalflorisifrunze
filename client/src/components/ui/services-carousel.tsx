@@ -31,20 +31,19 @@ export function ServicesCarousel() {
   const totalSlides = services.length;
 
   const nextSlide = () => {
-    setCurrentIndex(prev => (prev + 1) % totalSlides);
+    setCurrentIndex(prev => (prev + 1) % Math.max(1, totalSlides - 2));
   };
 
   const prevSlide = () => {
-    setCurrentIndex(prev => (prev - 1 + totalSlides) % totalSlides);
+    setCurrentIndex(prev => (prev - 1 + Math.max(1, totalSlides - 2)) % Math.max(1, totalSlides - 2));
   };
 
   // Handle auto-play with infinite loop
   useEffect(() => {
-    if (autoPlay && totalSlides > 1) {
+    if (autoPlay && totalSlides > 3) {
       if (timerRef.current) clearInterval(timerRef.current);
       
       timerRef.current = setInterval(() => {
-        // For infinite loop, always use modulo for wrapping around
         nextSlide();
       }, 4000);
     }
@@ -65,7 +64,9 @@ export function ServicesCarousel() {
 
   // Slide indicators
   const goToSlide = (index: number) => {
-    setCurrentIndex(index);
+    if (index < Math.max(1, totalSlides - 2)) {
+      setCurrentIndex(index);
+    }
   };
 
   // Handle touch events for mobile swiping
@@ -122,6 +123,52 @@ export function ServicesCarousel() {
       </div>
     );
   }
+  
+  // If we have 3 or fewer services, just display them without carousel functionality
+  if (services.length <= 3) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {services.map((service) => (
+          <Card key={service.id} className="service-card-inner h-full overflow-hidden border-green-100 hover:border-green-300 shadow-sm hover:shadow-md">
+            <CardContent className="p-6 flex flex-col items-center text-center space-y-4 h-full">
+              {service.imageUrl ? (
+                <div className="w-full h-48 overflow-hidden rounded-lg mb-4 service-image-container">
+                  <img 
+                    src={service.imageUrl} 
+                    alt={service.name} 
+                    className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
+                  />
+                </div>
+              ) : (
+                <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mb-2 service-icon">
+                  <span className="text-green-600 text-2xl">
+                    <i className="fas fa-leaf"></i>
+                  </span>
+                </div>
+              )}
+              <h3 className="text-xl font-semibold text-gray-900 service-title">{service.name}</h3>
+              <p className="text-gray-600 flex-grow service-description">
+                {service.description.length > 120
+                  ? `${service.description.substring(0, 120)}...`
+                  : service.description}
+              </p>
+              <div className="w-full flex flex-col items-center mt-auto service-price-action">
+                <span className="text-green-600 font-semibold mb-3 service-price">{service.price}</span>
+                <Link href={`/services/${service.id}`}>
+                  <Button variant="outline" className="service-button border-green-600 text-green-600 hover:bg-green-50 hover:text-green-700 w-full transition-all duration-300">
+                    View Details
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    );
+  }
+
+  // Create a duplicated array for infinite scrolling effect
+  const duplicatedServices = [...services, ...services];
 
   // Show 1 card on mobile, 2 on tablets, 3 on desktop
   const visibleSlides = {
@@ -155,9 +202,9 @@ export function ServicesCarousel() {
             transform: `translateX(-${currentIndex * (100 / visibleCount)}%)` 
           }}
         >
-          {services.map((service, index) => (
+          {duplicatedServices.map((service, index) => (
             <div 
-              key={service.id} 
+              key={`${service.id}-${index}`}
               className={`min-w-full sm:min-w-[50%] md:min-w-[33.333%] px-3 md:px-4 py-4 transition-all duration-500 service-card ${
                 index === currentIndex ? 'service-card-active' : ''
               }`}
@@ -219,7 +266,7 @@ export function ServicesCarousel() {
       
       {/* Enhanced slide indicators */}
       <div className="flex justify-center space-x-2 mt-8">
-        {Array.from({ length: totalSlides }).map((_, index) => (
+        {Array.from({ length: Math.max(1, totalSlides - 2) }).map((_, index) => (
           <button
             key={index}
             className={`w-3 h-3 rounded-full transition-all duration-300 ${
