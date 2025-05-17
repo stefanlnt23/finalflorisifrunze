@@ -213,6 +213,9 @@
   transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
   position: relative;
   min-height: 600px;
+  width: 100%;
+  max-width: 450px; 
+  margin: 0 auto;
 }
 
 .subscription-level-2 {
