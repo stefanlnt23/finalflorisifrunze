@@ -47,9 +47,12 @@ export default function AdminServicesForm() {
       if (!id) return null;
       const response = await apiRequest("GET", `/api/admin/services/${id}`);
       const data = await response.json();
+      console.log("Service data loaded:", data); // Debug fetched data
       return data;
     },
     enabled: isEditing,
+    retry: 3,
+    staleTime: 0 // Always fetch fresh data when editing
   });
 
   const service = data?.service;
@@ -96,23 +99,32 @@ export default function AdminServicesForm() {
   // Update form values when service data is loaded
   useEffect(() => {
     if (service) {
+      console.log("Populating form with service data:", service);
+      
+      // Ensure all arrays are properly handled
+      const benefits = Array.isArray(service.benefits) ? service.benefits : [];
+      const includes = Array.isArray(service.includes) ? service.includes : [];
+      const faqs = Array.isArray(service.faqs) ? service.faqs : [];
+      const seasonalAvailability = Array.isArray(service.seasonalAvailability) ? service.seasonalAvailability : [];
+      const galleryImages = Array.isArray(service.galleryImages) ? service.galleryImages : [];
+      
       form.reset({
-        name: service.name,
-        description: service.description,
+        name: service.name || "",
+        description: service.description || "",
         shortDesc: service.shortDesc || "",
-        price: service.price,
+        price: service.price || "",
         imageUrl: service.imageUrl || "",
         featured: !!service.featured,
         
         // New fields
         duration: service.duration || "",
         coverage: service.coverage || "",
-        benefits: service.benefits || [],
-        includes: service.includes || [],
-        faqs: service.faqs || [],
+        benefits: benefits,
+        includes: includes,
+        faqs: faqs,
         recommendedFrequency: service.recommendedFrequency || "",
-        seasonalAvailability: service.seasonalAvailability || [],
-        galleryImages: service.galleryImages || []
+        seasonalAvailability: seasonalAvailability,
+        galleryImages: galleryImages
       });
     }
   }, [service, form]);
