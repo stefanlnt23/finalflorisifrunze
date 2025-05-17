@@ -1465,13 +1465,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/admin/subscriptions/:id", requireAdmin, async (req, res) => {
     try {
       const { id } = req.params;
-      const subscription = await storage.getSubscription(id);
-
-      if (!subscription) {
+      console.log(`Admin API: Fetching subscription with ID: ${id}`);
+      
+      // First try to get all subscriptions
+      const allSubscriptions = await storage.getSubscriptions();
+      console.log(`Admin API: Found ${allSubscriptions.length} total subscriptions`);
+      
+      // Try to find the subscription by ID in the list
+      const subscription = allSubscriptions.find(sub => 
+        sub.id === id || sub.id.toString() === id
+      );
+      
+      if (subscription) {
+        console.log(`Admin API: Found subscription by ID: ${id}`);
+        return res.json({ subscription });
+      }
+      
+      // If not found in the list, try direct retrieval
+      const directSubscription = await storage.getSubscription(id);
+      
+      if (!directSubscription) {
+        console.log(`Admin API: Subscription not found with ID: ${id}`);
         return res.status(404).json({ message: "Subscription not found" });
       }
-
-      res.json({ subscription });
+      
+      console.log(`Admin API: Found subscription via direct lookup: ${id}`);
+      res.json({ subscription: directSubscription });
     } catch (error) {
       console.error(`Error fetching subscription ${req.params.id}:`, error);
       res.status(500).json({ message: "Failed to fetch subscription" });

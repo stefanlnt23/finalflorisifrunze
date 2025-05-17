@@ -27,6 +27,22 @@ export default function SubscriptionsForm() {
     features: [{ name: '', value: '' }]
   });
 
+  // Fetch subscriptions list first to verify the ID exists
+  const { data: subscriptionsData } = useQuery({
+    queryKey: ['admin-subscriptions'],
+    queryFn: async () => {
+      try {
+        const response = await apiRequest('/api/admin/subscriptions');
+        return Array.isArray(response) ? response : 
+               (response?.subscriptions || []);
+      } catch (err) {
+        console.error('Error fetching subscriptions list:', err);
+        return [];
+      }
+    },
+    enabled: isEditMode // Only fetch if we're in edit mode
+  });
+
   // Fetch subscription data for editing
   const { data, isLoading, error } = useQuery({
     queryKey: ['subscription', id],
@@ -34,6 +50,19 @@ export default function SubscriptionsForm() {
       if (isEditMode) {
         try {
           console.log(`Fetching subscription with ID: ${id}`);
+          
+          // Check if subscription ID exists in the list
+          const subscriptions = subscriptionsData || [];
+          console.log(`Checking ID ${id} against ${subscriptions.length} subscriptions`);
+          
+          // First try to find it in the list to avoid making an unnecessary API call
+          const foundInList = subscriptions.find(s => s.id === id);
+          if (foundInList) {
+            console.log('Found subscription in list:', foundInList);
+            return foundInList;
+          }
+          
+          // If not in list or list is empty, try direct API call
           const response = await apiRequest(`/api/admin/subscriptions/${id}`);
           console.log('API response:', response);
           
@@ -46,7 +75,7 @@ export default function SubscriptionsForm() {
             return response[0];
           }
           
-          throw new Error('Invalid response format from API');
+          throw new Error('Subscription not found');
         } catch (error) {
           console.error('Error fetching subscription:', error);
           throw error;
@@ -54,7 +83,8 @@ export default function SubscriptionsForm() {
       }
       return null;
     },
-    enabled: isEditMode
+    enabled: isEditMode,
+    retry: false // Don't retry on failure
   });
 
   // Save subscription data

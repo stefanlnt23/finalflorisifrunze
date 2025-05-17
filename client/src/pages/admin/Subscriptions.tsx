@@ -140,10 +140,7 @@ export default function Subscriptions() {
                   <Button 
                     className="w-full" 
                     variant="outline" 
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setLocation(`/admin/subscriptions/${subscription.id}`);
-                    }}
+                    onClick={() => setLocation(`/admin/subscriptions/${subscription.id}`)}
                   >
                     Edit
                   </Button>
