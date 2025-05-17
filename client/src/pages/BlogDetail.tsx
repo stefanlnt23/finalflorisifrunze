@@ -14,6 +14,56 @@ export default function BlogDetail() {
     queryFn: async () => {
       const response = await fetch(`/api/blog/${blogId}`);
       if (!response.ok) {
+
+// Related Posts Component
+function RelatedPosts({ currentBlogId }: { currentBlogId: string }) {
+  const { data: allBlogsData } = useQuery({
+    queryKey: ['/api/blog'],
+    refetchOnWindowFocus: false,
+  });
+  
+  const allPosts = allBlogsData?.blogPosts || [];
+  
+  // Filter out the current post and get up to 2 related posts
+  const relatedPosts = allPosts
+    .filter(post => post.id !== currentBlogId)
+    .slice(0, 2);
+  
+  if (relatedPosts.length === 0) {
+    return (
+      <div className="text-center p-6 bg-gray-50 rounded-lg">
+        <p className="text-gray-500">No related articles available.</p>
+      </div>
+    );
+  }
+  
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {relatedPosts.map((post) => (
+        <Card key={post.id} className="overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+          <div className="aspect-video bg-gray-100 relative overflow-hidden">
+            <img 
+              src={post.imageUrl || "https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"} 
+              alt={post.title} 
+              className="w-full h-full object-cover transition-transform hover:scale-105"
+            />
+          </div>
+          <CardContent className="p-4">
+            <h4 className="font-bold text-lg mb-2">{post.title}</h4>
+            <p className="text-gray-600 text-sm mb-3">{post.excerpt}</p>
+            <Link href={`/blog/${post.id}`}>
+              <Button variant="outline" className="text-sm border-green-600 text-green-600 hover:bg-green-50">
+                Read Article
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
+}
+
+
         throw new Error('Failed to fetch blog post');
       }
       return response.json();
@@ -253,53 +303,7 @@ export default function BlogDetail() {
               <h3 className="text-2xl font-bold text-gray-900 mb-6">Related Articles</h3>
               
               {/* Fetch all blog posts to find related ones */}
-              {(() => {
-                // Use an immediately invoked function to scope variables
-                const { data: allBlogsData } = useQuery({
-                  queryKey: ['/api/blog'],
-                  refetchOnWindowFocus: false,
-                });
-                
-                const allPosts = allBlogsData?.blogPosts || [];
-                
-                // Filter out the current post and get up to 2 related posts
-                const relatedPosts = allPosts
-                  .filter(post => post.id !== blogId)
-                  .slice(0, 2);
-                
-                if (relatedPosts.length === 0) {
-                  return (
-                    <div className="text-center p-6 bg-gray-50 rounded-lg">
-                      <p className="text-gray-500">No related articles available.</p>
-                    </div>
-                  );
-                }
-                
-                return (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {relatedPosts.map((post) => (
-                      <Card key={post.id} className="overflow-hidden shadow-md hover:shadow-lg transition-shadow">
-                        <div className="aspect-video bg-gray-100 relative overflow-hidden">
-                          <img 
-                            src={post.imageUrl || "https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"} 
-                            alt={post.title} 
-                            className="w-full h-full object-cover transition-transform hover:scale-105"
-                          />
-                        </div>
-                        <CardContent className="p-4">
-                          <h4 className="font-bold text-lg mb-2">{post.title}</h4>
-                          <p className="text-gray-600 text-sm mb-3">{post.excerpt}</p>
-                          <Link href={`/blog/${post.id}`}>
-                            <Button variant="outline" className="text-sm border-green-600 text-green-600 hover:bg-green-50">
-                              Read Article
-                            </Button>
-                          </Link>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                );
-              })()}
+              <RelatedPosts currentBlogId={blogId} />
             </div>
 
             {/* Call to Action */}
