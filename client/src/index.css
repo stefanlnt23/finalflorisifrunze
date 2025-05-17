@@ -102,6 +102,61 @@
 @layer base {
   * {
     @apply border-border;
+
+/* Enhanced infinite carousel behavior */
+.carousel-container {
+  overflow: hidden;
+  position: relative;
+}
+
+.carousel-container > div {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+@keyframes fadeTransition {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.95; }
+}
+
+.service-card-inner {
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  overflow: hidden;
+  background: linear-gradient(145deg, #1f2328, #2a2f36);
+  border-radius: 12px;
+  border: 1px solid rgba(200, 160, 85, 0.1);
+}
+
+.service-card-inner:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(200, 160, 85, 0.1);
+  border: 1px solid rgba(200, 160, 85, 0.3);
+}
+
+.service-title {
+  color: white;
+}
+
+.service-description {
+  color: #d4d4d8;
+}
+
+.service-button {
+  border-color: #c8a055 !important;
+  color: #c8a055 !important;
+}
+
+.service-button:hover {
+  background-color: rgba(200, 160, 85, 0.1) !important;
+}
+
+.service-price {
+  color: #c8a055 !important;
+  background: -webkit-linear-gradient(45deg, #c8a055, #d9b978);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
   }
 
   body {

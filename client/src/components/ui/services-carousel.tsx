@@ -37,7 +37,7 @@ export function ServicesCarousel() {
     setCurrentIndex(prev => (prev - 1 + totalSlides) % totalSlides);
   };
 
-  // Handle auto-play with infinite loop
+  // Handle auto-play with smooth infinite loop
   useEffect(() => {
     if (autoPlay && totalSlides > 1) {
       if (timerRef.current) clearInterval(timerRef.current);
@@ -51,7 +51,7 @@ export function ServicesCarousel() {
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [autoPlay, totalSlides, currentIndex]);
+  }, [autoPlay, totalSlides]);
 
   // Handle mouse interactions
   const handleMouseEnter = () => {
@@ -151,7 +151,8 @@ export function ServicesCarousel() {
         <div 
           className="flex transition-transform duration-700 ease-in-out"
           style={{ 
-            transform: `translateX(-${currentIndex * (100 / visibleCount)}%)` 
+            transform: `translateX(-${currentIndex * (100 / visibleCount)}%)`,
+            willChange: "transform"
           }}
         >
           {services.map((service, index) => (
@@ -202,18 +203,18 @@ export function ServicesCarousel() {
       {/* Navigation arrows with improved UI */}
       <button 
         onClick={prevSlide}
-        className="absolute top-1/2 left-0 -translate-y-1/2 bg-white/80 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-green-50 border border-green-200 z-10 flex items-center justify-center transform transition-all hover:scale-110 -translate-x-3 hover:-translate-x-1"
+        className="absolute top-1/2 left-0 -translate-y-1/2 bg-[#2a2f36]/80 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-[#1f2328] border border-[#c8a055]/30 z-10 flex items-center justify-center transform transition-all hover:scale-110 -translate-x-3 hover:-translate-x-1"
         aria-label="Previous slide"
       >
-        <ChevronLeft className="h-6 w-6 text-green-600" />
+        <ChevronLeft className="h-6 w-6 text-[#c8a055]" />
       </button>
 
       <button 
         onClick={nextSlide}
-        className="absolute top-1/2 right-0 -translate-y-1/2 bg-white/80 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-green-50 border border-green-200 z-10 flex items-center justify-center transform transition-all hover:scale-110 translate-x-3 hover:translate-x-1"
+        className="absolute top-1/2 right-0 -translate-y-1/2 bg-[#2a2f36]/80 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-[#1f2328] border border-[#c8a055]/30 z-10 flex items-center justify-center transform transition-all hover:scale-110 translate-x-3 hover:translate-x-1"
         aria-label="Next slide"
       >
-        <ChevronRight className="h-6 w-6 text-green-600" />
+        <ChevronRight className="h-6 w-6 text-[#c8a055]" />
       </button>
 
       {/* Enhanced slide indicators */}
@@ -223,8 +224,8 @@ export function ServicesCarousel() {
             key={index}
             className={`w-3 h-3 rounded-full transition-all duration-300 ${
               index === currentIndex 
-                ? "bg-green-600 w-8" 
-                : "bg-gray-300 hover:bg-green-300"
+                ? "bg-[#c8a055] w-8" 
+                : "bg-gray-600 hover:bg-[#c8a055]/50"
             }`}
             onClick={() => goToSlide(index)}
             aria-label={`Go to slide ${index + 1}`}
