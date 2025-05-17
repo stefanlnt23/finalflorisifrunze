@@ -39,7 +39,7 @@ return (
               <i className="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
               <Input
                 type="text"
-                placeholder="Search articles..."
+                placeholder="Caută articole..."
                 className="pl-10 pr-4 py-3 rounded-full"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -88,7 +88,7 @@ return (
                           variant="outline"
                           className="border-green-600 text-green-600 hover:bg-green-50"
                         >
-                          Read Article
+                          Citește Articolul
                         </Button>
                       </Link>
                       </div>
@@ -157,7 +157,7 @@ return (
                             variant="outline"
                             className="text-sm border-green-600 text-green-600 hover:bg-green-50"
                           >
-                            Read More
+                            Citește Mai Mult
                           </Button>
                         </Link>
                       </CardFooter>
@@ -193,20 +193,20 @@ return (
                 {searchQuery ? (
                   <div>
                     <i className="fas fa-search text-6xl mb-4 text-gray-300"></i>
-                    <h3 className="text-xl font-semibold mb-2">No results found</h3>
+                    <h3 className="text-xl font-semibold mb-2">Nu s-au găsit rezultate</h3>
                     <p className="text-gray-600 mb-6">
-                      No blog posts matching "{searchQuery}" were found.
+                      Nu au fost găsite articole care să corespundă cu "{searchQuery}".
                     </p>
                     <Button onClick={() => setSearchQuery("")}>
-                      Clear Search
+                      Șterge Căutarea
                     </Button>
                   </div>
                 ) : (
                   <div>
                     <i className="fas fa-file-alt text-6xl mb-4 text-gray-300"></i>
-                    <h3 className="text-xl font-semibold mb-2">No blog posts yet</h3>
+                    <h3 className="text-xl font-semibold mb-2">Nu există articole încă</h3>
                     <p className="text-gray-600">
-                      Check back soon for new content.
+                      Revino în curând pentru conținut nou.
                     </p>
                   </div>
                 )}

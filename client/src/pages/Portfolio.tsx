@@ -109,7 +109,7 @@ export default function Portfolio() {
               <h3 className="text-xl font-bold text-red-700 mb-2">Error Loading Portfolio</h3>
               <p className="text-red-600 mb-4">We encountered a problem while loading our portfolio projects.</p>
               <Button onClick={() => window.location.reload()} className="bg-red-600 hover:bg-red-700">
-                Try Again
+                Încearcă Din Nou
               </Button>
             </div>
           ) : (
@@ -174,7 +174,7 @@ export default function Portfolio() {
                           className="text-green-600 hover:text-green-800"
                           onClick={() => setLocation(`/portfolio/${item.id}`)}
                         >
-                          Read More
+                          Citește Mai Mult
                           <i className="fas fa-arrow-right ml-2"></i>
                         </Button>
                       </div>

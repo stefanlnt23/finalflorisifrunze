@@ -185,7 +185,7 @@ export default function Services() {
                     <CardFooter className="flex justify-between pt-4 border-t border-gray-100">
                       <Link href={`/services/${service.id}`}>
                         <Button variant="outline" className="border-green-600 text-green-600 hover:bg-green-50 group-hover:border-green-700 group-hover:text-green-700 transition-all">
-                          Află mai multe
+                          Află Mai Multe
                           <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
                         </Button>
                       </Link>

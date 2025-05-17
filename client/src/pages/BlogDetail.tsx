@@ -297,7 +297,7 @@ export default function BlogDetail() {
 
             {/* Related Posts Section */}
             <div className="mb-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">Articole similare</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">Articole Similare</h3>
 
               {/* Fetch all blog posts to find related ones */}
               <RelatedPosts currentBlogId={blogId} />

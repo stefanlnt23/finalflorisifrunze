@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import MainLayout from "@/components/layouts/MainLayout";
 import { useQuery } from "@tanstack/react-query";
@@ -125,7 +124,7 @@ export default function ServiceDetail() {
               </Button>
             </Link>
           </div>
-          
+
           {/* Service highlights cards */}
           {hasDetailedInfo && (
             <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
@@ -140,7 +139,7 @@ export default function ServiceDetail() {
                   </div>
                 </div>
               )}
-              
+
               {service.coverage && (
                 <div className="bg-white p-4 rounded-lg shadow-sm flex items-center">
                   <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
@@ -152,7 +151,7 @@ export default function ServiceDetail() {
                   </div>
                 </div>
               )}
-              
+
               {service.recommendedFrequency && (
                 <div className="bg-white p-4 rounded-lg shadow-sm flex items-center">
                   <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
@@ -193,7 +192,7 @@ export default function ServiceDetail() {
                 <div className="prose prose-green max-w-none mb-6">
                   <p className="text-gray-600">{service.description}</p>
                 </div>
-                
+
                 {/* Seasonal availability */}
                 {service.seasonalAvailability && service.seasonalAvailability.length > 0 && (
                   <div className="mt-8">
@@ -207,7 +206,7 @@ export default function ServiceDetail() {
                     </div>
                   </div>
                 )}
-                
+
                 <div className="mt-8">
                   <Link href={`/appointment?service=${service.id}`}>
                     <Button className="bg-green-600 hover:bg-green-700 w-full">
@@ -217,7 +216,7 @@ export default function ServiceDetail() {
                 </div>
               </div>
             </div>
-            
+
             {/* Benefits Section */}
             {service.benefits && service.benefits.length > 0 && (
               <div className="mb-16">
@@ -242,7 +241,7 @@ export default function ServiceDetail() {
                 </Card>
               </div>
             )}
-            
+
             {/* What's Included Section */}
             {service.includes && service.includes.length > 0 && (
               <div className="mb-16">
@@ -269,7 +268,7 @@ export default function ServiceDetail() {
                 </Card>
               </div>
             )}
-            
+
             {/* Gallery Section */}
             {service.galleryImages && service.galleryImages.length > 0 && (
               <div className="mb-16">
@@ -296,7 +295,7 @@ export default function ServiceDetail() {
                 </div>
               </div>
             )}
-            
+
             {/* FAQs Section */}
             {service.faqs && service.faqs.length > 0 && (
               <div className="mb-16">

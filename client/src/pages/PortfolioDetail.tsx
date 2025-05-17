@@ -151,22 +151,22 @@ export default function PortfolioDetail() {
             <div className="grid md:grid-cols-3 gap-6 mb-12">
               <Card>
                 <CardContent className="p-6">
-                  <h3 className="text-lg font-bold mb-2">Location</h3>
-                  <p>{portfolioItem.location || "Not specified"}</p>
+                  <h3 className="text-lg font-bold mb-2">Locație</h3>
+                  <p>{portfolioItem.location || "Nespecificat"}</p>
                 </CardContent>
               </Card>
               
               <Card>
                 <CardContent className="p-6">
-                  <h3 className="text-lg font-bold mb-2">Duration</h3>
-                  <p>{portfolioItem.projectDuration || "Not specified"}</p>
+                  <h3 className="text-lg font-bold mb-2">Durată</h3>
+                  <p>{portfolioItem.projectDuration || "Nespecificat"}</p>
                 </CardContent>
               </Card>
               
               <Card>
                 <CardContent className="p-6">
-                  <h3 className="text-lg font-bold mb-2">Service Type</h3>
-                  <p>{service?.name || "General Project"}</p>
+                  <h3 className="text-lg font-bold mb-2">Tip de Serviciu</h3>
+                  <p>{service?.name || "Proiect General"}</p>
                 </CardContent>
               </Card>
             </div>
@@ -174,7 +174,7 @@ export default function PortfolioDetail() {
             {/* Project Description */}
             <div className="mb-16">
               <div className="prose prose-green max-w-none">
-                <h2 className="text-2xl font-bold mb-4">About This Project</h2>
+                <h2 className="text-2xl font-bold mb-4">Despre Acest Proiect</h2>
                 <p className="whitespace-pre-line">{portfolioItem.description}</p>
               </div>
             </div>
@@ -182,7 +182,7 @@ export default function PortfolioDetail() {
             {/* Before & After Transformations - Integrated into a continuous flow */}
             {portfolioItem.images && portfolioItem.images.length > 0 && (
               <div className="mb-16">
-                <h2 className="text-2xl font-bold mb-6">Project Gallery</h2>
+                <h2 className="text-2xl font-bold mb-6">Galeria Proiectului</h2>
                 <div className="space-y-16">
                   {portfolioItem.images.map((image, index) => (
                     <div key={index} className="border border-green-100 rounded-xl overflow-hidden shadow-md">
@@ -259,7 +259,7 @@ export default function PortfolioDetail() {
                   variant="outline"
                   onClick={() => window.location.href = "/contact"}
                 >
-                  Contact Us
+                  Contactează-ne
                 </Button>
               </div>
             </div>

@@ -98,9 +98,9 @@ export default function About() {
                 <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4">
                   <i className="fas fa-leaf text-green-600 text-xl"></i>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Sustainability</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Sustenabilitate</h3>
                 <p className="text-gray-600">
-                  We believe in working with nature, not against it. Our practices promote ecological health and minimize environmental impact.
+                  Credem în a lucra cu natura, nu împotriva ei. Practicile noastre promovează sănătatea ecologică și minimizează impactul asupra mediului.
                 </p>
               </CardContent>
             </Card>
@@ -110,9 +110,9 @@ export default function About() {
                 <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4">
                   <i className="fas fa-star text-green-600 text-xl"></i>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Excellence</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Excelență</h3>
                 <p className="text-gray-600">
-                  We take pride in our work and strive for excellence in every aspect of our service, from design to execution to ongoing care.
+                  Suntem mândri de munca noastră și ne străduim pentru excelență în fiecare aspect al serviciului nostru, de la design la execuție și îngrijire continuă.
                 </p>
               </CardContent>
             </Card>
@@ -122,9 +122,9 @@ export default function About() {
                 <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4">
                   <i className="fas fa-users text-green-600 text-xl"></i>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Community</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Comunitate</h3>
                 <p className="text-gray-600">
-                  We're committed to building lasting relationships with our clients and contributing positively to our local community.
+                  Suntem dedicați construirii unor relații de durată cu clienții noștri și contribuției pozitive la comunitatea locală.
                 </p>
               </CardContent>
             </Card>
