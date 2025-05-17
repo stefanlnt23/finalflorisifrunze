@@ -8,7 +8,11 @@ interface WhatsAppButtonProps {
 export function WhatsAppButton({ phoneNumber }: WhatsAppButtonProps) {
   // Remove any non-numeric characters from the phone number
   const formattedNumber = phoneNumber.replace(/\D/g, '');
-  const whatsappUrl = `https://wa.me/${formattedNumber}`;
+  // Add Romania country code (40) if not already included
+  const numberWithCountryCode = formattedNumber.startsWith('40') 
+    ? formattedNumber 
+    : `40${formattedNumber}`;
+  const whatsappUrl = `https://wa.me/${numberWithCountryCode}`;
   
   return (
     <div className="fixed bottom-6 right-6 z-50">
