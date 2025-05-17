@@ -843,10 +843,29 @@ div[class*="AdminLayout"] span {
 
 div[class*="AdminLayout"] input,
 div[class*="AdminLayout"] textarea,
-div[class*="AdminLayout"] select {
+div[class*="AdminLayout"] select,
+div[class*="AdminLayout"] .react-datepicker-wrapper input,
+div[class*="AdminLayout"] [role="combobox"] {
   color: #1f2937 !important;
   background-color: #ffffff !important;
   border-color: #d1d5db !important;
+}
+
+div[class*="AdminLayout"] .react-datepicker,
+div[class*="AdminLayout"] .react-datepicker__header,
+div[class*="AdminLayout"] .react-datepicker__month-container,
+div[class*="AdminLayout"] .react-datepicker__day {
+  background-color: #ffffff !important;
+  color: #1f2937 !important;
+}
+
+div[class*="AdminLayout"] .react-datepicker__day:hover,
+div[class*="AdminLayout"] .react-datepicker__day--selected {
+  background-color: #f3f4f6 !important;
+}
+
+div[class*="AdminLayout"] .react-datepicker__day--selected {
+  font-weight: bold !important;
 }
 
 div[class*="AdminLayout"] .card {
@@ -858,6 +877,51 @@ div[class*="AdminLayout"] .card {
 div[class*="AdminLayout"] button:not([class*="bg-"]) {
   background-color: #f3f4f6 !important;
   color: #1f2937 !important;
+}
+
+/* Specific styles for admin forms and inputs */
+div[class*="AdminLayout"] [data-radix-select-content],
+div[class*="AdminLayout"] [data-radix-popper-content-wrapper] {
+  color: #1f2937 !important;
+  background-color: #ffffff !important;
+}
+
+div[class*="AdminLayout"] [data-radix-select-viewport] div,
+div[class*="AdminLayout"] [role="option"] {
+  color: #1f2937 !important;
+}
+
+div[class*="AdminLayout"] [role="option"]:hover,
+div[class*="AdminLayout"] [data-highlighted] {
+  background-color: #f3f4f6 !important;
+}
+
+div[class*="AdminLayout"] .form-description,
+div[class*="AdminLayout"] .form-message,
+div[class*="AdminLayout"] .form-label,
+div[class*="AdminLayout"] [id*="description"],
+div[class*="AdminLayout"] [id*="label"],
+div[class*="AdminLayout"] .text-sm,
+div[class*="AdminLayout"] .text-xs {
+  color: #4b5563 !important;
+}
+
+/* Fix dropdown menus in admin forms */
+div[class*="AdminLayout"] [cmdk-root] {
+  background-color: #ffffff !important;
+}
+
+div[class*="AdminLayout"] [cmdk-item] {
+  color: #1f2937 !important;
+}
+
+div[class*="AdminLayout"] [cmdk-item]:hover {
+  background-color: #f3f4f6 !important;
+}
+
+/* Fix date pickers in admin forms */
+div[class*="AdminLayout"] .react-datepicker-popper {
+  z-index: 50 !important;
 }
 
 /* Responsive appointment button */
