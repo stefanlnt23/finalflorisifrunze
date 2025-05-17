@@ -701,6 +701,16 @@
   animation: fadeInUpStaggered 0.6s ease forwards;
 }
 
+/* Dark theme card glow effect */
+.dark-card-glow {
+  box-shadow: 0 0 15px rgba(200, 160, 85, 0.15);
+  transition: box-shadow 0.3s ease;
+}
+
+.dark-card-glow:hover {
+  box-shadow: 0 0 25px rgba(200, 160, 85, 0.25);
+}
+
 
 .stagger-animate {
   opacity: 0;

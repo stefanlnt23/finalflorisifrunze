@@ -178,18 +178,18 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section className="py-20 bg-white relative overflow-hidden">
-        <div className="absolute right-0 top-0 w-1/3 h-full bg-green-50 opacity-50 clip-path-slant"></div>
+      <section className="py-20 bg-[#1f2328] relative overflow-hidden">
+        <div className="absolute right-0 top-0 w-1/3 h-full bg-[#2a2f36] opacity-50 clip-path-slant"></div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="inline-block px-4 py-1 rounded-full bg-[#1f2328]/10 text-[#c8a055] text-sm font-medium mb-4 hover-float border border-[#c8a055]/30">
+            <span className="inline-block px-4 py-1 rounded-full bg-white/10 text-[#c8a055] text-sm font-medium mb-4 hover-float border border-[#c8a055]/30">
               Servicii de Experți
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#1f2328] animate-fadeIn">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white animate-fadeIn">
               Serviciile Noastre
             </h2>
             <div className="w-24 h-1 bg-[#c8a055] mx-auto mb-6 animate-grow"></div>
-            <p className="text-gray-600 text-lg">
+            <p className="text-gray-300 text-lg">
               Oferim servicii complete de grădinărit și amenajare peisagistică pentru a menține spațiul tău exterior frumos și sănătos în toate anotimpurile.
             </p>
           </div>
@@ -206,7 +206,7 @@ export default function Home() {
 
           <div className="text-center mt-12 animate-bounce animation-delay-500">
             <Link href="/services">
-              <Button className="bg-[#c8a055] hover:bg-[#b48e40] text-[#1f2328] transform transition-all hover:scale-105">
+              <Button className="bg-[#c8a055] hover:bg-[#b48e40] text-[#1f2328] transform transition-all hover:scale-105 shadow-lg shadow-[#c8a055]/20">
                 Vezi Toate Serviciile
               </Button>
             </Link>
@@ -231,11 +231,15 @@ export default function Home() {
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-gradient-to-b from-[#2a2f36] to-[#1f2328] border-t border-[#c8a055]/20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl font-bold mb-4 text-gray-900 fade-in-view">De Ce Să Ne Alegeți</h2>
-            <p className="text-gray-600">
+            <span className="inline-block px-4 py-1 rounded-full bg-white/10 text-[#c8a055] text-sm font-medium mb-4 hover-float border border-[#c8a055]/30">
+              Expertiză și Excelență
+            </span>
+            <h2 className="text-3xl font-bold mb-4 text-white fade-in-view">De Ce Să Ne Alegeți</h2>
+            <div className="w-24 h-1 bg-[#c8a055] mx-auto mb-6 animate-grow"></div>
+            <p className="text-gray-300">
               Suntem dedicați să oferim servicii excepționale pentru grădină cu expertiză și grijă.
             </p>
           </div>
@@ -262,7 +266,7 @@ export default function Home() {
 
           <div className="mt-12 text-center">
             <Link href="/services">
-              <Button className="bg-[#c8a055] hover:bg-[#b48e40] text-[#1f2328] transform hover:scale-105 transition">
+              <Button className="bg-[#c8a055] hover:bg-[#b48e40] text-[#1f2328] transform hover:scale-105 transition shadow-lg shadow-[#c8a055]/20">
                 Explorează Serviciile Noastre
               </Button>
             </Link>
@@ -271,11 +275,15 @@ export default function Home() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-[#1f2328] border-t border-[#c8a055]/20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl font-bold mb-4 text-gray-900 fade-in-view">Ce Spun Clienții Noștri</h2>
-            <p className="text-gray-600">
+            <span className="inline-block px-4 py-1 rounded-full bg-white/10 text-[#c8a055] text-sm font-medium mb-4 hover-float border border-[#c8a055]/30">
+              Recenzii
+            </span>
+            <h2 className="text-3xl font-bold mb-4 text-white fade-in-view">Ce Spun Clienții Noștri</h2>
+            <div className="w-24 h-1 bg-[#c8a055] mx-auto mb-6 animate-grow"></div>
+            <p className="text-gray-300">
               Află de la clienții noștri mulțumiți despre experiențele lor cu serviciile noastre.
             </p>
           </div>
@@ -306,30 +314,30 @@ export default function Home() {
                 {testimonials.length <= 3 ? (
                   // If we have 3 or fewer testimonials, show them directly
                   testimonials.map((testimonial) => (
-                    <Card key={testimonial.id} className="shadow-lg transform transition-all duration-300 hover:scale-105 hover:rotate-1">
+                    <Card key={testimonial.id} className="shadow-lg transform transition-all duration-300 hover:scale-105 hover:rotate-1 bg-[#2a2f36] border-[#c8a055]/30">
                       <CardContent className="p-6">
                         <div className="flex flex-col items-center text-center space-y-4">
                           {testimonial.imageUrl ? (
                             <img 
                               src={testimonial.imageUrl} 
                               alt={testimonial.name}
-                              className="w-16 h-16 object-cover rounded-full border-2 border-green-200"
+                              className="w-16 h-16 object-cover rounded-full border-2 border-[#c8a055]"
                             />
                           ) : (
-                            <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
-                              <i className="fas fa-user text-green-600 text-2xl"></i>
+                            <div className="w-16 h-16 rounded-full bg-[#1f2328] flex items-center justify-center border-2 border-[#c8a055]/50">
+                              <i className="fas fa-user text-[#c8a055] text-2xl"></i>
                             </div>
                           )}
                           <div className="flex items-center justify-center">
                             {Array.from({ length: testimonial.rating || 5 }).map((_, i) => (
-                              <i key={i} className="fas fa-star text-yellow-400 text-sm mr-0.5"></i>
+                              <i key={i} className="fas fa-star text-[#c8a055] text-sm mr-0.5"></i>
                             ))}
                           </div>
-                          <blockquote className="text-lg italic text-gray-800">"{testimonial.content}"</blockquote>
+                          <blockquote className="text-lg italic text-white">"{testimonial.content}"</blockquote>
                           <div>
-                            <p className="font-bold text-gray-900">{testimonial.name}</p>
+                            <p className="font-bold text-[#c8a055]">{testimonial.name}</p>
                             {testimonial.company && (
-                              <p className="text-sm text-gray-600">{testimonial.company}</p>
+                              <p className="text-sm text-gray-300">{testimonial.company}</p>
                             )}
                           </div>
                         </div>
@@ -398,7 +406,7 @@ export default function Home() {
                 <Button 
                   variant="outline" 
                   size="sm"
-                  className="border-green-600 text-green-600 hover:bg-green-50"
+                  className="border-[#c8a055] text-[#c8a055] hover:bg-[#c8a055]/10"
                   onClick={() => setActiveTestimonial((activeTestimonial - 3 + testimonials.length) % testimonials.length)}
                 >
                   <i className="fas fa-chevron-left mr-2"></i>
@@ -407,7 +415,7 @@ export default function Home() {
                 <Button 
                   variant="outline" 
                   size="sm"
-                  className="border-green-600 text-green-600 hover:bg-green-50"
+                  className="border-[#c8a055] text-[#c8a055] hover:bg-[#c8a055]/10"
                   onClick={() => setActiveTestimonial((activeTestimonial + 3) % testimonials.length)}
                 >
                   Următor

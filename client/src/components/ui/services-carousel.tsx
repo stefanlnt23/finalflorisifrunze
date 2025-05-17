@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,11 +12,11 @@ export function ServicesCarousel() {
   const [autoPlay, setAutoPlay] = useState(true);
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
-  
+
   // Refs after state
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
-  
+
   // Custom hooks
   const isMobile = useIsMobile();
 
@@ -42,13 +41,13 @@ export function ServicesCarousel() {
   useEffect(() => {
     if (autoPlay && totalSlides > 1) {
       if (timerRef.current) clearInterval(timerRef.current);
-      
+
       timerRef.current = setInterval(() => {
         // For infinite loop, always use modulo for wrapping around
         nextSlide();
       }, 4000);
     }
-    
+
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
@@ -58,7 +57,7 @@ export function ServicesCarousel() {
   const handleMouseEnter = () => {
     setAutoPlay(false);
   };
-  
+
   const handleMouseLeave = () => {
     setAutoPlay(true);
   };
@@ -73,22 +72,22 @@ export function ServicesCarousel() {
     setTouchStart(e.targetTouches[0].clientX);
     setAutoPlay(false); // Pause autoplay on touch
   };
-  
+
   const handleTouchMove = (e: React.TouchEvent) => {
     setTouchEnd(e.targetTouches[0].clientX);
   };
-  
+
   const handleTouchEnd = () => {
     if (touchStart - touchEnd > 75) {
       // Swipe left
       nextSlide();
     }
-    
+
     if (touchEnd - touchStart > 75) {
       // Swipe right
       prevSlide();
     }
-    
+
     // Resume autoplay after touch ends
     setAutoPlay(true);
   };
@@ -199,7 +198,7 @@ export function ServicesCarousel() {
           ))}
         </div>
       </div>
-      
+
       {/* Navigation arrows with improved UI */}
       <button 
         onClick={prevSlide}
@@ -208,7 +207,7 @@ export function ServicesCarousel() {
       >
         <ChevronLeft className="h-6 w-6 text-green-600" />
       </button>
-      
+
       <button 
         onClick={nextSlide}
         className="absolute top-1/2 right-0 -translate-y-1/2 bg-white/80 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-green-50 border border-green-200 z-10 flex items-center justify-center transform transition-all hover:scale-110 translate-x-3 hover:translate-x-1"
@@ -216,7 +215,7 @@ export function ServicesCarousel() {
       >
         <ChevronRight className="h-6 w-6 text-green-600" />
       </button>
-      
+
       {/* Enhanced slide indicators */}
       <div className="flex justify-center space-x-2 mt-8">
         {Array.from({ length: totalSlides }).map((_, index) => (
