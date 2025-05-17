@@ -28,12 +28,18 @@ export default function SubscriptionsForm() {
   });
 
   // Fetch subscription data for editing
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ['subscription', id],
     queryFn: async () => {
       if (isEditMode) {
-        const data = await apiRequest(`/api/admin/subscriptions/${id}`);
-        return data;
+        try {
+          const response = await apiRequest(`/api/admin/subscriptions/${id}`);
+          // Check if the response has the subscription property or is the subscription itself
+          return response.subscription || response;
+        } catch (error) {
+          console.error('Error fetching subscription:', error);
+          throw error;
+        }
       }
       return null;
     },
@@ -64,29 +70,46 @@ export default function SubscriptionsForm() {
   // Populate form with existing data when editing
   useEffect(() => {
     if (data && isEditMode) {
+      console.log('Populating form data with:', data);
+      
       // Ensure features is an array of objects with name/value properties
       let features = data.features || [];
+      
+      // Make sure features is an array
+      if (!Array.isArray(features)) {
+        console.log('Features is not an array, converting:', features);
+        features = Object.keys(features || {}).map(key => ({
+          name: key,
+          value: features[key]
+        }));
+      }
+      
       if (features.length > 0) {
         // Convert any string or other format to the expected structure
         features = features.map((feature: any) => {
           if (typeof feature === 'string') {
             return { name: feature, value: '' };
-          } else if (feature.name && feature.value) {
-            return feature;
-          } else {
-            const key = Object.keys(feature)[0];
-            return { name: key, value: feature[key] };
+          } else if (feature && typeof feature === 'object') {
+            if (feature.name && 'value' in feature) {
+              return feature;
+            } else {
+              const key = Object.keys(feature)[0] || '';
+              return { name: key, value: feature[key] || '' };
+            }
           }
+          return { name: '', value: '' };
         });
       }
+
+      console.log('Processed features:', features);
 
       setFormData({
         name: data.name || '',
         description: data.description || '',
         price: data.price || '',
         color: data.color || '#4CAF50',
-        isPopular: data.isPopular || false,
-        displayOrder: data.displayOrder || 1,
+        isPopular: Boolean(data.isPopular),
+        displayOrder: typeof data.displayOrder === 'number' ? data.displayOrder : 1,
         imageUrl: data.imageUrl || '',
         features: features.length > 0 ? features : [{ name: '', value: '' }]
       });
@@ -144,6 +167,37 @@ export default function SubscriptionsForm() {
           {isEditMode ? 'Edit Subscription' : 'Add New Subscription'}
         </h1>
         <div>Loading...</div>
+      </div>
+    );
+  }
+
+  if (error && isEditMode) {
+    return (
+      <div className="p-6">
+        <div className="flex justify-between mb-6">
+          <h1 className="text-2xl font-bold">
+            Error Loading Subscription
+          </h1>
+          <Button variant="outline" onClick={() => setLocation('/admin/subscriptions')}>
+            Back to List
+          </Button>
+        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-red-500">Error</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p>Failed to load subscription data. The subscription may no longer exist.</p>
+            <div className="mt-4">
+              <Button 
+                variant="outline" 
+                onClick={() => setLocation('/admin/subscriptions/new')}
+              >
+                Create New Subscription
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     );
   }

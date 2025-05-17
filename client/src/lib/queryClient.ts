@@ -21,56 +21,50 @@ async function throwIfResNotOk(res: Response) {
   }
 }
 
-export async function apiRequest(url: string, options?: RequestInit) {
+// Generic API request function
+export async function apiRequest(url: string, options: RequestOptions = {}): Promise<any> {
+  const { method = 'GET', data = null } = options;
+
+  console.log(`Making ${method} request to ${url}`);
+
+  const headers: HeadersInit = {
+    'Content-Type': 'application/json',
+    ...(options.headers || {})
+  };
+
+  // Add auth token if available
+  const token = localStorage.getItem('authToken');
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
   try {
-    console.log(`Making ${options?.method || 'GET'} request to ${url}`);
-    const headers: HeadersInit = {
-      'Content-Type': 'application/json',
-      ...(options?.headers || {})
-    };
-
-    // Add auth token if available
-    const token = localStorage.getItem('auth_token');
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
-      console.log('Request includes authorization token');
-    }
-
     const response = await fetch(url, {
-      method: options?.method || 'GET',
+      method,
       headers,
-      body: options?.body,
+      body: data ? JSON.stringify(data) : undefined
     });
 
     console.log(`Response status: ${response.status} ${response.statusText}`);
 
+    // Parse the response JSON regardless of status code
+    const responseData = await response.json().catch(() => {
+      console.log('Response is not JSON, returning text');
+      return response.text();
+    });
+
+    // Check if not successful after getting the response data
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`API Error Response: ${errorText}`);
-
-      let errorObj;
-      try {
-        errorObj = JSON.parse(errorText);
-      } catch (e) {
-        errorObj = { message: errorText || 'Unknown error' };
-      }
-      throw new Error(errorObj.message || `API request failed with status ${response.status}`);
+      console.log('API Error Response:', JSON.stringify(responseData));
+      throw new Error(responseData?.message || 'An error occurred with the API request');
     }
 
-    const contentType = response.headers.get('content-type');
-    console.log(`Response content type: ${contentType}`);
+    // Log successful response
+    console.log('API response received:', responseData);
 
-    if (contentType && contentType.includes('application/json')) {
-      const jsonResponse = await response.json();
-      console.log(`JSON response received:`, jsonResponse);
-      return jsonResponse;
-    }
-
-    const textResponse = await response.text();
-    console.log(`Text response received: ${textResponse.substring(0, 100)}${textResponse.length > 100 ? '...' : ''}`);
-    return textResponse;
+    return responseData;
   } catch (error) {
-    console.error('API Request Error:', error);
+    console.log('API Request Error:', error);
     throw error;
   }
 }
@@ -107,3 +101,4 @@ export const queryClient = new QueryClient({
     },
   },
 });
+`
