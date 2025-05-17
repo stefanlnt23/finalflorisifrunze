@@ -102,48 +102,48 @@ export default function Home() {
     <MainLayout>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-green-50 to-green-100 py-20 md:py-32 relative overflow-hidden">
+      <section className="bg-gradient-to-br from-[#1f2328] to-[#2a2f36] py-20 md:py-32 relative overflow-hidden">
         {/* Decorative Elements */}
         <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
-          <div className="absolute -top-16 -left-16 w-64 h-64 rounded-full bg-green-300 animate-blob"></div>
-          <div className="absolute top-1/3 -right-24 w-96 h-96 rounded-full bg-green-200 animate-blob animation-delay-2000"></div>
-          <div className="absolute -bottom-20 left-1/4 w-72 h-72 rounded-full bg-green-400 animate-blob animation-delay-4000"></div>
+          <div className="absolute -top-16 -left-16 w-64 h-64 rounded-full bg-[#c8a055] animate-blob"></div>
+          <div className="absolute top-1/3 -right-24 w-96 h-96 rounded-full bg-[#d9b978] animate-blob animation-delay-2000"></div>
+          <div className="absolute -bottom-20 left-1/4 w-72 h-72 rounded-full bg-[#b48e40] animate-blob animation-delay-4000"></div>
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="md:w-1/2 mb-10 md:mb-0 md:pr-8">
-              <span className="inline-block px-4 py-1 rounded-full bg-green-100 text-green-600 text-sm font-medium mb-6 animate-fadeIn">
+              <span className="inline-block px-4 py-1 rounded-full bg-[#1f2328]/80 text-[#c8a055] text-sm font-medium mb-6 animate-fadeIn border border-[#c8a055]/30">
                 Servicii Profesionale de Grădinărit
               </span>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight text-gray-900 animate-slideUp">
-                Gradina ta pasunea noastra... <span className="text-green-600 relative">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight text-white animate-slideUp">
+                Gradina ta pasunea noastra... <span className="text-[#c8a055] relative">
                   Paradis
-                  <span className="absolute bottom-0 left-0 w-full h-2 bg-green-200 -z-10"></span>
+                  <span className="absolute bottom-0 left-0 w-full h-2 bg-[#c8a055]/20 -z-10"></span>
                 </span>
               </h1>
-              <p className="text-lg mb-8 text-gray-700 max-w-lg animate-fadeIn animation-delay-300">
+              <p className="text-lg mb-8 text-gray-300 max-w-lg animate-fadeIn animation-delay-300">
                 Servicii profesionale de grădinărit pentru a face grădina ta frumoasă, sustenabilă și înfloritoare pe tot parcursul anului. Echipa noastră de experți îți transformă visele despre grădină în realitate.
               </p>
               <div className="flex flex-wrap gap-4 animate-slideUp animation-delay-500">
                 <Link href="/contact">
-                  <Button className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
+                  <Button className="bg-[#c8a055] hover:bg-[#b48e40] text-[#1f2328] px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
                     Obține o Ofertă Gratuită
                   </Button>
                 </Link>
                 <Link href="/blog">
-                  <Button variant="outline" className="border-green-600 text-green-600 hover:bg-green-50 px-8 py-3 rounded-full transform hover:scale-105">
+                  <Button variant="outline" className="border-[#c8a055] text-[#c8a055] hover:bg-[#c8a055]/10 px-8 py-3 rounded-full transform hover:scale-105">
                     Află Mai Multe
                   </Button>
                 </Link>
               </div>
-              <div className="mt-8 flex items-center text-gray-600 animate-fadeIn animation-delay-700">
+              <div className="mt-8 flex items-center text-gray-300 animate-fadeIn animation-delay-700">
                 <span className="flex items-center mr-6">
-                  <i className="fas fa-check-circle text-green-500 mr-2"></i>
+                  <i className="fas fa-check-circle text-[#c8a055] mr-2"></i>
                   Echipă cu Experiență
                 </span>
                 <span className="flex items-center">
-                  <i className="fas fa-check-circle text-green-500 mr-2"></i>
+                  <i className="fas fa-check-circle text-[#c8a055] mr-2"></i>
                   Garanție de Calitate
                 </span>
               </div>
@@ -158,18 +158,18 @@ export default function Home() {
       </section>
 
       {/* Banner Section - Replacement for first ParallaxSection */}
-      <section className="py-20 bg-gradient-to-r from-green-600 to-green-700 relative overflow-hidden">
+      <section className="py-20 bg-gradient-to-r from-[#1f2328] to-[#2a2f36] relative overflow-hidden border-y border-[#c8a055]/30">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute top-0 right-0 w-full h-full bg-pattern-leaves"></div>
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center w-full">
-            <h2 className="text-4xl font-bold text-white mb-4 animate-pulse">Transformă Grădina Ta</h2>
-            <p className="text-xl text-white max-w-2xl mx-auto mb-6">
+            <h2 className="text-4xl font-bold text-[#c8a055] mb-4 animate-pulse">Transformă Grădina Ta</h2>
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-6">
               Servicii profesionale pentru a face grădina ta să strălucească în fiecare anotimp
             </p>
             <Link href="/contact">
-              <Button className="px-8 py-3 bg-white text-green-600 rounded-full hover:bg-green-50 transition-colors shadow-xl transform hover:scale-105">
+              <Button className="px-8 py-3 bg-[#c8a055] text-[#1f2328] rounded-full hover:bg-[#d9b978] transition-colors shadow-xl transform hover:scale-105">
                 Programează o Consultație
               </Button>
             </Link>
@@ -182,13 +182,13 @@ export default function Home() {
         <div className="absolute right-0 top-0 w-1/3 h-full bg-green-50 opacity-50 clip-path-slant"></div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="inline-block px-4 py-1 rounded-full bg-green-100 text-green-600 text-sm font-medium mb-4 hover-float">
+            <span className="inline-block px-4 py-1 rounded-full bg-[#1f2328]/10 text-[#c8a055] text-sm font-medium mb-4 hover-float border border-[#c8a055]/30">
               Servicii de Experți
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 animate-fadeIn">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#1f2328] animate-fadeIn">
               Serviciile Noastre
             </h2>
-            <div className="w-24 h-1 bg-green-500 mx-auto mb-6 animate-grow"></div>
+            <div className="w-24 h-1 bg-[#c8a055] mx-auto mb-6 animate-grow"></div>
             <p className="text-gray-600 text-lg">
               Oferim servicii complete de grădinărit și amenajare peisagistică pentru a menține spațiul tău exterior frumos și sănătos în toate anotimpurile.
             </p>
@@ -206,7 +206,7 @@ export default function Home() {
 
           <div className="text-center mt-12 animate-bounce animation-delay-500">
             <Link href="/services">
-              <Button className="bg-green-600 hover:bg-green-700 transform transition-all hover:scale-105">
+              <Button className="bg-[#c8a055] hover:bg-[#b48e40] text-[#1f2328] transform transition-all hover:scale-105">
                 Vezi Toate Serviciile
               </Button>
             </Link>
@@ -216,14 +216,14 @@ export default function Home() {
 
       {/* Inspirational Banner - Replacement for second ParallaxSection */}
       <section className="relative py-24 flex items-center justify-center overflow-hidden bg-design-pattern">
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 opacity-90"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-[#1f2328] via-[#2a2f36] to-[#1f2328] opacity-90"></div>
         <div className="container mx-auto px-6 relative z-10 text-center">
-          <h2 className="text-4xl font-bold text-white mb-6 animate-glow">Design Peisagistic Inspirațional</h2>
+          <h2 className="text-4xl font-bold text-[#c8a055] mb-6 animate-glow">Design Peisagistic Inspirațional</h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
             Creăm spații exterioare captivante, transformate cu artă și funcționalitate
           </p>
           <Link href="/portfolio">
-            <Button className="bg-white hover:bg-gray-100 text-gray-900 px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
+            <Button className="bg-[#c8a055] hover:bg-[#d9b978] text-[#1f2328] px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
               Vezi Portofoliul Nostru
             </Button>
           </Link>
@@ -245,7 +245,7 @@ export default function Home() {
             {featureCards.map((card, index) => (
               <div 
                 key={card.id} 
-                className="relative group overflow-hidden rounded-xl border-2 border-green-100 shadow-md hover:shadow-xl transition-all duration-300 h-80 stagger-animate"
+                className="relative group overflow-hidden rounded-xl border-2 border-[#c8a055]/30 shadow-md hover:shadow-xl transition-all duration-300 h-80 stagger-animate"
                 style={{ animationDelay: `${index * 150}ms` }}
               >
                 <div className="absolute inset-0 bg-cover bg-center transform transition-transform group-hover:scale-110" 
@@ -262,7 +262,7 @@ export default function Home() {
 
           <div className="mt-12 text-center">
             <Link href="/services">
-              <Button className="bg-green-600 hover:bg-green-700 transform hover:scale-105 transition">
+              <Button className="bg-[#c8a055] hover:bg-[#b48e40] text-[#1f2328] transform hover:scale-105 transition">
                 Explorează Serviciile Noastre
               </Button>
             </Link>
