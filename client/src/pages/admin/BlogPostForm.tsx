@@ -89,12 +89,21 @@ export default function AdminBlogPostForm() {
     queryFn: async () => {
       if (!id) return null;
       console.log(`Fetching blog post with ID: ${id}`);
-      const response = await apiRequest("GET", `/api/blog/${id}`);
-      const data = await response.json();
-      console.log("Retrieved blog post data:", data);
-      return data;
+      try {
+        const response = await apiRequest("GET", `/api/blog/${id}`);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch blog post: ${response.statusText}`);
+        }
+        const data = await response.json();
+        console.log("Retrieved blog post data:", data);
+        return data;
+      } catch (error) {
+        console.error("Error fetching blog post:", error);
+        throw error;
+      }
     },
     enabled: isEditing,
+    refetchOnWindowFocus: false
   });
 
   const blogPost = data?.blogPost;
@@ -128,6 +137,8 @@ export default function AdminBlogPostForm() {
   // Update form values when blog post data is loaded
   useEffect(() => {
     if (blogPost) {
+      console.log("Setting form data with blog post:", blogPost);
+      
       // Parse sections from content if not present
       let parsedSections = blogPost.sections || [];
       
@@ -135,21 +146,31 @@ export default function AdminBlogPostForm() {
         parsedSections = [{ type: "text", content: blogPost.content, alignment: "left" }];
       }
       
-      form.reset({
-        title: blogPost.title,
-        content: blogPost.content || "",
-        excerpt: blogPost.excerpt,
-        imageUrl: blogPost.imageUrl || "",
-        publishedAt: new Date(blogPost.publishedAt),
-        createdAt: new Date(blogPost.createdAt),
-        updatedAt: new Date(blogPost.updatedAt),
-        sections: parsedSections,
-        tags: blogPost.tags || []
-      });
-      
-      setTags(blogPost.tags || []);
+      try {
+        form.reset({
+          title: blogPost.title || "",
+          content: blogPost.content || "",
+          excerpt: blogPost.excerpt || "",
+          imageUrl: blogPost.imageUrl || "",
+          publishedAt: blogPost.publishedAt ? new Date(blogPost.publishedAt) : new Date(),
+          createdAt: blogPost.createdAt ? new Date(blogPost.createdAt) : new Date(),
+          updatedAt: blogPost.updatedAt ? new Date(blogPost.updatedAt) : new Date(),
+          sections: parsedSections.length ? parsedSections : [{ type: "text", content: "", alignment: "left" }],
+          tags: blogPost.tags || []
+        });
+        
+        setTags(blogPost.tags || []);
+        console.log("Form reset successfully with data");
+      } catch (error) {
+        console.error("Error resetting form with blog post data:", error);
+        toast({
+          title: "Form Error",
+          description: "Could not load blog post data into form",
+          variant: "destructive",
+        });
+      }
     }
-  }, [blogPost, form]);
+  }, [blogPost, form, toast]);
 
   // Preview content change handler
   useEffect(() => {
@@ -242,9 +263,15 @@ export default function AdminBlogPostForm() {
   const updateMutation = useMutation({
     mutationFn: async (values: FormValues) => {
       console.log(`Updating blog post with ID: ${id}`, values);
-      return await apiRequest("PUT", `/api/admin/blog/${id}`, values);
+      const response = await apiRequest("PUT", `/api/admin/blog/${id}`, values);
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `Server error: ${response.status}`);
+      }
+      return await response.json();
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log("Blog post update successful:", data);
       toast({
         title: "Blog Post Updated",
         description: "The blog post has been successfully updated",
