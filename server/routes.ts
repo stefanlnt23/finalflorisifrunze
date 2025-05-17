@@ -925,7 +925,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
         console.log(`Successfully deleted inquiry with ID: ${id}`);
         res.json({ success: true });
-      ```text
       } catch (error) {
         console.error("Error deleting inquiry:", error);
         res.status(500).json({ message: "Failed to delete inquiry" });
