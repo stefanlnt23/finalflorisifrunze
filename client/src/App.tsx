@@ -119,6 +119,9 @@ function Router() {
           <Route path="/admin/testimonials/:id/edit">
             <ProtectedRoute component={AdminTestimonialsForm} />
           </Route>
+          <Route path="/admin/testimonials/:id">
+            <ProtectedRoute component={AdminTestimonialsForm} />
+          </Route>
           <Route path="/admin/subscriptions">
             <ProtectedRoute component={AdminSubscriptions} />
           </Route>
