@@ -1244,18 +1244,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log("API: Fetching subscriptions");
       
       // Ensure we get proper data
-      const subscriptions = await storage.getSubscriptions();
+      let subscriptions = await storage.getSubscriptions();
       console.log(`API: Found ${subscriptions.length} subscriptions to return`);
       
-      // Add detailed logging
-      if (subscriptions.length > 0) {
-        console.log("API: First subscription:", JSON.stringify(subscriptions[0]));
-      } else {
-        console.log("API: No subscriptions found in database");
-        // If no subscriptions found, recreate sample data
-        console.log("API: Attempting to recreate sample subscription data");
+      // If no subscriptions found, create and insert sample data immediately
+      if (!subscriptions || subscriptions.length === 0) {
+        console.log("API: No subscriptions found in database. Creating sample data...");
         
-        // This direct approach ensures we have subscription data
         const sampleData = [
           {
             name: "Abonament Basic",
@@ -1311,31 +1306,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
         ];
         
-        // Drop and recreate the collection if empty
-        const db = await mongoose.connection.db;
-        if (db) {
-          try {
-            // Remove existing subscriptions if any
-            await db.collection('subscriptions').deleteMany({});
-            // Insert sample data
-            const result = await db.collection('subscriptions').insertMany(sampleData);
-            console.log(`API: Created ${result.insertedCount} sample subscriptions directly`);
+        try {
+          // Use direct MongoDB access to ensure data is created
+          if (mongoose.connection.readyState === 1) {
+            await mongoose.connection.db.collection('subscriptions').deleteMany({});
+            await mongoose.connection.db.collection('subscriptions').insertMany(sampleData);
+            console.log("API: Created sample subscriptions directly in MongoDB");
             
-            // Fetch the newly created subscriptions
-            const newSubscriptions = await storage.getSubscriptions();
-            res.json({ subscriptions: newSubscriptions });
-            return;
-          } catch (dbError) {
-            console.error("API: Error recreating subscription data:", dbError);
+            // Get the newly created subscriptions from storage
+            subscriptions = await storage.getSubscriptions();
+            console.log(`API: Now have ${subscriptions.length} subscriptions after direct insert`);
+          } else {
+            console.error("API: MongoDB connection not ready, cannot create sample data");
           }
+        } catch (dbError) {
+          console.error("API: Error recreating subscription data:", dbError);
         }
       }
       
-      // Log the full response for debugging
-      console.log("Full subscriptions response:", JSON.stringify({ subscriptions }));
+      // Log one subscription for debugging
+      if (subscriptions.length > 0) {
+        console.log("API: First subscription example:", JSON.stringify(subscriptions[0]));
+      }
       
-      // Ensure we return proper array even if empty
-      res.json({ subscriptions: subscriptions || [] });
+      // Always send the response with the current subscriptions array
+      console.log(`API: Sending response with ${subscriptions.length} subscriptions`);
+      return res.json({ subscriptions });
+      
     } catch (error) {
       console.error("Error fetching subscriptions:", error);
       res.status(500).json({ message: "Failed to fetch subscriptions", error: String(error) });

@@ -15,34 +15,33 @@ export default function Subscriptions() {
     queryFn: async () => {
       try {
         console.log("Fetching subscriptions from API...");
-        const response = await apiRequest('GET', '/api/subscriptions');
-        console.log("API response:", response);
+        const response = await fetch('/api/subscriptions');
         
-        if (!response) {
-          console.error("No response from API");
+        // Check if the response is ok
+        if (!response.ok) {
+          console.error(`API error: ${response.status} ${response.statusText}`);
           return [] as Subscription[];
         }
         
-        if (!response.subscriptions) {
-          console.error("No subscriptions in response", response);
-          // Return an empty array with proper typing
+        // Parse the JSON response
+        const data = await response.json();
+        console.log("API response data:", data);
+        
+        if (!data || !data.subscriptions) {
+          console.error("No subscriptions data in response");
           return [] as Subscription[];
         }
         
         // Log each subscription for debugging
-        if (response.subscriptions && response.subscriptions.length > 0) {
-          console.log("Subscription details:");
-          response.subscriptions.forEach((sub: any, i: number) => {
-            console.log(`Sub ${i+1}:`, sub);
-          });
+        if (data.subscriptions && data.subscriptions.length > 0) {
+          console.log(`Retrieved ${data.subscriptions.length} subscriptions`);
+          console.log("First subscription:", data.subscriptions[0]);
         } else {
           console.error("API returned empty subscriptions array");
         }
         
-        console.log(`Retrieved ${response.subscriptions.length} subscriptions`);
-        
         // Map to ensure proper format
-        return (response.subscriptions || []).map((sub: any) => ({
+        return (data.subscriptions || []).map((sub: any) => ({
           id: sub.id || `temp-${Math.random()}`,
           name: sub.name || "Subscription",
           description: sub.description || "",
