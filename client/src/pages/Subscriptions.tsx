@@ -98,13 +98,17 @@ export default function Subscriptions() {
               <p>Nu există planuri de abonament disponibile momentan.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 subscription-grid">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-5 subscription-grid">
               {subscriptions.map((subscription) => (
                 <Card 
                   key={subscription.id} 
-                  className="bg-white rounded-lg border border-gray-200 overflow-hidden flex flex-col h-full transform transition-all duration-300 hover:shadow-xl hover:-translate-y-2"
+                  className={`bg-white rounded-lg overflow-hidden flex flex-col h-full transform transition-all duration-300 hover:shadow-xl hover:-translate-y-2 subscription-card subscription-level-${subscription.displayOrder}`}
                   style={{ 
-                    boxShadow: `0 4px 20px -5px ${subscription.color || '#FFFFFF'}40` 
+                    boxShadow: `0 4px 20px -5px ${subscription.color || '#FFFFFF'}40`,
+                    borderWidth: subscription.displayOrder > 1 ? '2px' : '1px',
+                    borderColor: subscription.displayOrder === 4 ? `${subscription.color}` : 
+                               subscription.displayOrder === 3 ? `${subscription.color}80` : 'rgb(229, 231, 235)',
+                    zIndex: subscription.displayOrder
                   }}
                 >
                   {/* Card Header with name and image */}
@@ -116,6 +120,12 @@ export default function Subscriptions() {
                       >
                         Popular
                       </div>
+                    )}
+                    {subscription.displayOrder >= 3 && (
+                      <div className="absolute top-0 left-0 w-full h-1" style={{ 
+                        background: `linear-gradient(90deg, transparent, ${subscription.color}, transparent)`,
+                        animation: 'shimmer 2s infinite linear'
+                      }}></div>
                     )}
                     <div className="p-6 text-center">
                       <h2 className="text-2xl font-bold mb-2 transition-colors duration-300" style={{ color: subscription.color || '#4CAF50' }}>
@@ -160,6 +170,112 @@ export default function Subscriptions() {
                             {typeof feature === 'object' && feature.value && (
                               <span 
                                 className="text-gray-900 font-medium group-hover:text-green-600 transition-all"
+
+          )}
+        </div>
+        
+        {/* Comparison Section */}
+        {!isLoading && !error && subscriptions.length > 0 && (
+          <div className="mt-24 max-w-5xl mx-auto fade-in-section">
+            <div className="text-center mb-12">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Comparație Între Planuri</h2>
+              <div className="w-20 h-1 bg-green-500 mx-auto mb-6"></div>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                Mai jos puteți vedea o comparație detaliată între toate planurile noastre de abonament pentru a vă ajuta să faceți cea mai bună alegere.
+              </p>
+            </div>
+            
+            <div className="overflow-x-auto border rounded-lg shadow-sm">
+              <table className="w-full min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Caracteristică</th>
+                    {subscriptions.sort((a, b) => a.displayOrder - b.displayOrder).map((sub) => (
+                      <th 
+                        key={sub.id} 
+                        className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider"
+                        style={{ color: sub.color }}
+                      >
+                        {sub.name}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  <tr>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Preț</td>
+                    {subscriptions.sort((a, b) => a.displayOrder - b.displayOrder).map((sub) => (
+                      <td key={`${sub.id}-price`} className="px-6 py-4 whitespace-nowrap text-sm text-center font-medium" style={{ color: sub.color }}>
+                        {sub.price}
+                      </td>
+                    ))}
+                  </tr>
+                  
+                  {/* Generate rows for all unique features */}
+                  {Array.from(new Set(subscriptions.flatMap(sub => 
+                    sub.features.map(f => typeof f === 'object' ? f.name : f)
+                  ))).map((featureName, index) => (
+                    <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {featureName}
+                      </td>
+                      {subscriptions.sort((a, b) => a.displayOrder - b.displayOrder).map((sub) => {
+                        const feature = sub.features.find(f => 
+                          (typeof f === 'object' && f.name === featureName) || f === featureName
+                        );
+                        const value = feature ? (typeof feature === 'object' ? feature.value : 'Da') : 'Nu';
+                        return (
+                          <td key={`${sub.id}-${featureName}`} className="px-6 py-4 whitespace-nowrap text-sm text-center">
+                            {value === 'Da' || value === 'Included' ? (
+                              <span className="text-green-500">✓</span>
+                            ) : value === 'Nu' || value === 'No' ? (
+                              <span className="text-red-500">✗</span>
+                            ) : (
+                              <span>{value}</span>
+                            )}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+        
+        {/* FAQ Section */}
+        {!isLoading && !error && subscriptions.length > 0 && (
+          <div className="mt-24 max-w-4xl mx-auto fade-in-section">
+            <div className="text-center mb-12">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Întrebări Frecvente</h2>
+              <div className="w-20 h-1 bg-green-500 mx-auto mb-6"></div>
+            </div>
+            
+            <div className="space-y-4">
+              <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+                <h3 className="text-lg font-medium text-gray-900 mb-2">Ce include un abonament de întreținere?</h3>
+                <p className="text-gray-600">Abonamentele noastre includ vizite regulate pentru tuns gazonul, fertilizare, tratamente împotriva dăunătorilor, și menținerea generală a spațiului verde, în funcție de nivelul ales.</p>
+              </div>
+              
+              <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+                <h3 className="text-lg font-medium text-gray-900 mb-2">Pot schimba planul pe parcurs?</h3>
+                <p className="text-gray-600">Da, puteți face upgrade sau downgrade la abonamentul dvs. oricând. Modificările vor intra în vigoare la următoarea perioadă de facturare.</p>
+              </div>
+              
+              <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+                <h3 className="text-lg font-medium text-gray-900 mb-2">Care este frecvența vizitelor?</h3>
+                <p className="text-gray-600">Frecvența vizitelor variază în funcție de pachetul ales, de la o vizită lunară la abonamentul Basic, până la vizite săptămânale la pachetele premium.</p>
+              </div>
+              
+              <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+                <h3 className="text-lg font-medium text-gray-900 mb-2">Se poate personaliza un abonament?</h3>
+                <p className="text-gray-600">Absolut! Contactați-ne pentru a discuta despre nevoile specifice ale grădinii dumneavoastră și vom crea un plan personalizat.</p>
+              </div>
+            </div>
+          </div>
+        )}
+
                                 style={{ color: subscription.color || '#4CAF50' }}
                               >
                                 {feature.value}
@@ -175,18 +291,26 @@ export default function Subscriptions() {
                   <CardFooter className="p-6 pt-2 mt-auto">
                     <Link href="/contact" className="w-full">
                       <Button 
-                        className="w-full py-3 font-medium text-center relative overflow-hidden transition-all group hover:shadow-lg"
+                        className={`w-full py-3 font-medium text-center relative overflow-hidden transition-all group hover:shadow-lg ${
+                          subscription.displayOrder >= 3 ? 'subscription-premium-button' : ''
+                        }`}
                         style={{ 
                           backgroundColor: subscription.color || '#4CAF50',
-                          color: '#FFFFFF'
+                          color: '#FFFFFF',
+                          boxShadow: subscription.displayOrder >= 3 ? `0 4px 12px -2px ${subscription.color}70` : 'none'
                         }}
                       >
                         <span className="relative z-10 group-hover:scale-110 inline-block transition-transform duration-300">
-                          Discută Cu Noi!
+                          {subscription.displayOrder >= 3 ? 'Alege Planul Premium!' : 'Discută Cu Noi!'}
                         </span>
                         <span 
-                          className="absolute inset-0 w-full h-full scale-0 rounded-md transition-transform duration-300 group-hover:scale-100 opacity-30 bg-white"
+                          className={`absolute inset-0 w-full h-full scale-0 rounded-md transition-transform duration-300 group-hover:scale-100 ${
+                            subscription.displayOrder >= 3 ? 'opacity-40 bg-white' : 'opacity-30 bg-white'
+                          }`}
                         ></span>
+                        {subscription.displayOrder === 4 && (
+                          <span className="absolute -inset-1 bg-gradient-to-r from-transparent via-white to-transparent opacity-30 blur-sm animate-pulse"></span>
+                        )}
                       </Button>
                     </Link>
                   </CardFooter>

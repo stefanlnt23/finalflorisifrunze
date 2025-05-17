@@ -147,6 +147,98 @@
 
 @keyframes grow {
   0% { transform: scaleX(0); opacity: 0; }
+
+/* Subscription Card Animations and Effects */
+.subscription-card {
+  transition: all 0.4s ease-out;
+}
+
+.subscription-level-2 {
+  transform: translateY(-5px);
+}
+
+.subscription-level-3 {
+  transform: translateY(-10px);
+}
+
+.subscription-level-4 {
+  transform: translateY(-15px);
+}
+
+.subscription-card:hover {
+  z-index: 10;
+}
+
+.subscription-level-3:hover, .subscription-level-4:hover {
+  transform: translateY(-20px) scale(1.03);
+}
+
+.subscription-premium-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.subscription-premium-button::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  z-index: -1;
+  background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+  background-size: 400%;
+  opacity: 0;
+  border-radius: 8px;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.subscription-level-4:hover .subscription-premium-button::before {
+  opacity: 0.6;
+  animation: gradient-animation 8s linear infinite;
+}
+
+@keyframes gradient-animation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.fade-in-section {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease-out forwards;
+  animation-delay: 0.5s;
+}
+
+/* Add glow effect for premium tiers */
+.subscription-level-4 {
+  position: relative;
+}
+
+.subscription-level-4::after {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  z-index: -1;
+  border-radius: 15px;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.subscription-level-4:hover::after {
+  opacity: 0.4;
+}
+
   100% { transform: scaleX(1); opacity: 1; }
 }
 
