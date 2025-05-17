@@ -1,4 +1,5 @@
 import React, { ReactNode } from "react";
+import { Link } from "wouter";
 import AdminNavigation from "@/components/navigation/AdminNavigation";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -72,10 +73,18 @@ export default function AdminLayout({ children, title, description, action }: Ad
       {/* Main content */}
       <main className="flex-1 p-4 pt-4 md:p-8 md:pt-8 mt-16 md:mt-0">
         <div className="max-w-7xl mx-auto">
-          {/* Apply context to prevent nested anchor tag errors */}
-          <div className="admin-content-wrapper">
-            {children}
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
+              {description && <p className="text-gray-500">{description}</p>}
+            </div>
+            {action && (
+              <div className="mt-4 md:mt-0 flex space-x-3">
+                {action}
+              </div>
+            )}
           </div>
+          {children}
         </div>
       </main>
     </div>

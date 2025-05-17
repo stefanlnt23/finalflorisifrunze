@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useParams, useLocation } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
@@ -88,28 +89,12 @@ export default function AdminBlogPostForm() {
     queryFn: async () => {
       if (!id) return null;
       console.log(`Fetching blog post with ID: ${id}`);
-      try {
-        const response = await apiRequest("GET", `/api/blog/${id}`);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch blog post: ${response.statusText}`);
-        }
-        const data = await response.json();
-
-        if (!data || !data.blogPost) {
-          console.error("Invalid response format:", data);
-          throw new Error("Invalid response format from server");
-        }
-
-        console.log("Retrieved blog post data:", data);
-        return data;
-      } catch (error) {
-        console.error("Error fetching blog post:", error);
-        // Return null instead of throwing to prevent query from failing completely
-        return { blogPost: null };
-      }
+      const response = await apiRequest("GET", `/api/blog/${id}`);
+      const data = await response.json();
+      console.log("Retrieved blog post data:", data);
+      return data;
     },
     enabled: isEditing,
-    refetchOnWindowFocus: false
   });
 
   const blogPost = data?.blogPost;
@@ -143,40 +128,28 @@ export default function AdminBlogPostForm() {
   // Update form values when blog post data is loaded
   useEffect(() => {
     if (blogPost) {
-      console.log("Setting form data with blog post:", blogPost);
-
       // Parse sections from content if not present
       let parsedSections = blogPost.sections || [];
-
+      
       if (!parsedSections.length && blogPost.content) {
         parsedSections = [{ type: "text", content: blogPost.content, alignment: "left" }];
       }
-
-      try {
-        form.reset({
-          title: blogPost.title || "",
-          content: blogPost.content || "",
-          excerpt: blogPost.excerpt || "",
-          imageUrl: blogPost.imageUrl || "",
-          publishedAt: blogPost.publishedAt ? new Date(blogPost.publishedAt) : new Date(),
-          createdAt: blogPost.createdAt ? new Date(blogPost.createdAt) : new Date(),
-          updatedAt: blogPost.updatedAt ? new Date(blogPost.updatedAt) : new Date(),
-          sections: parsedSections.length ? parsedSections : [{ type: "text", content: "", alignment: "left" }],
-          tags: blogPost.tags || []
-        });
-
-        setTags(blogPost.tags || []);
-        console.log("Form reset successfully with data");
-      } catch (error) {
-        console.error("Error resetting form with blog post data:", error);
-        toast({
-          title: "Form Error",
-          description: "Could not load blog post data into form",
-          variant: "destructive",
-        });
-      }
+      
+      form.reset({
+        title: blogPost.title,
+        content: blogPost.content || "",
+        excerpt: blogPost.excerpt,
+        imageUrl: blogPost.imageUrl || "",
+        publishedAt: new Date(blogPost.publishedAt),
+        createdAt: new Date(blogPost.createdAt),
+        updatedAt: new Date(blogPost.updatedAt),
+        sections: parsedSections,
+        tags: blogPost.tags || []
+      });
+      
+      setTags(blogPost.tags || []);
     }
-  }, [blogPost, form, toast]);
+  }, [blogPost, form]);
 
   // Preview content change handler
   useEffect(() => {
@@ -230,14 +203,14 @@ export default function AdminBlogPostForm() {
       try {
         const response = await apiRequest("POST", "/api/admin/blog", values);
         console.log("Server response:", response);
-
+        
         if (!response.ok) {
           // Try to extract error message from response
           const errorData = await response.json().catch(() => ({}));
           console.error("Server returned error:", errorData);
           throw new Error(errorData.message || `Server error: ${response.status}`);
         }
-
+        
         return response;
       } catch (error) {
         console.error("Network or parsing error:", error);
@@ -269,15 +242,9 @@ export default function AdminBlogPostForm() {
   const updateMutation = useMutation({
     mutationFn: async (values: FormValues) => {
       console.log(`Updating blog post with ID: ${id}`, values);
-      const response = await apiRequest("PUT", `/api/admin/blog/${id}`, values);
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || `Server error: ${response.status}`);
-      }
-      return await response.json();
+      return await apiRequest("PUT", `/api/admin/blog/${id}`, values);
     },
-    onSuccess: (data) => {
-      console.log("Blog post update successful:", data);
+    onSuccess: () => {
       toast({
         title: "Blog Post Updated",
         description: "The blog post has been successfully updated",
@@ -347,25 +314,25 @@ export default function AdminBlogPostForm() {
     items.push("");
     form.setValue(`sections.${sectionIndex}.items`, items);
   };
-
+  
   // Remove list item
   const removeListItem = (sectionIndex: number, itemIndex: number) => {
     const currentSection = form.getValues(`sections.${sectionIndex}`);
     const items = [...(currentSection.items || [])];
     items.splice(itemIndex, 1);
-
+    
     // Ensure we always have at least one item (empty is okay)
     if (items.length === 0) {
       items.push("");
     }
-
+    
     form.setValue(`sections.${sectionIndex}.items`, items);
   };
 
   // Handle form submission
   const onSubmit = (values: FormValues) => {
     const now = new Date();
-
+    
     // Generate content from sections for backward compatibility
     let combinedContent = "";
     if (values.sections && values.sections.length > 0) {
@@ -375,7 +342,7 @@ export default function AdminBlogPostForm() {
         }
       });
     }
-
+    
     // Validate and clean up sections data to ensure it's properly formatted for submission
     const cleanedSections = values.sections?.map(section => {
       // Make sure each section has the required fields based on its type
@@ -419,10 +386,10 @@ export default function AdminBlogPostForm() {
           return section;
       }
     });
-
+    
     // Ensure all dates are valid Date objects
     const publishedAt = values.publishedAt instanceof Date ? values.publishedAt : new Date(values.publishedAt);
-
+    
     try {
       const submissionData = {
         ...values,
@@ -448,7 +415,7 @@ export default function AdminBlogPostForm() {
           });
           hasInvalidSections = true;
         }
-
+        
         if (section.type === "image" && !section.imageUrl) {
           toast({
             title: "Validation Error", 
@@ -458,7 +425,7 @@ export default function AdminBlogPostForm() {
           hasInvalidSections = true;
         }
       });
-
+      
       if (hasInvalidSections) {
         return; // Don't submit if there are invalid sections
       }

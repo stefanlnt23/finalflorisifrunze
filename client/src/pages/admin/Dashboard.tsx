@@ -40,7 +40,7 @@ export default function AdminDashboard() {
 
   return (
     <AdminLayout 
-      title="Flori si Frunze Dashboard" 
+      title="Dashboard" 
       description="Welcome to the admin dashboard"
       action={
         <Link href="/admin/services">
@@ -144,13 +144,9 @@ export default function AdminDashboard() {
                       </p>
                     </div>
                     <div className="inline-flex items-center text-sm font-medium text-blue-600">
-                      <Button 
-                        variant="link" 
-                        className="p-0 h-auto text-blue-600" 
-                        onClick={() => window.location.href = '/admin/appointments'}
-                      >
-                        View
-                      </Button>
+                      <Link href={`/admin/appointments`}>
+                        <a>View</a>
+                      </Link>
                     </div>
                   </div>
                 ))}
@@ -161,13 +157,11 @@ export default function AdminDashboard() {
               </div>
             )}
             <div className="mt-4 text-center">
-              <Button 
-                variant="link" 
-                className="p-0 h-auto text-sm font-medium text-blue-600 hover:text-blue-800"
-                onClick={() => window.location.href = '/admin/appointments'}
-              >
-                View all appointments →
-              </Button>
+              <Link href="/admin/appointments">
+                <a className="text-sm font-medium text-blue-600 hover:text-blue-800">
+                  View all appointments →
+                </a>
+              </Link>
             </div>
           </CardContent>
         </Card>
@@ -203,13 +197,9 @@ export default function AdminDashboard() {
                       </p>
                     </div>
                     <div className="inline-flex items-center text-sm font-medium text-blue-600">
-                      <Button 
-                        variant="link" 
-                        className="p-0 h-auto text-blue-600" 
-                        onClick={() => window.location.href = '/admin/inquiries'}
-                      >
-                        View
-                      </Button>
+                      <Link href={`/admin/inquiries`}>
+                        <a>View</a>
+                      </Link>
                     </div>
                   </div>
                 ))}
@@ -220,13 +210,11 @@ export default function AdminDashboard() {
               </div>
             )}
             <div className="mt-4 text-center">
-              <Button 
-                variant="link" 
-                className="p-0 h-auto text-sm font-medium text-blue-600 hover:text-blue-800"
-                onClick={() => window.location.href = '/admin/inquiries'}
-              >
-                View all inquiries →
-              </Button>
+              <Link href="/admin/inquiries">
+                <a className="text-sm font-medium text-blue-600 hover:text-blue-800">
+                  View all inquiries →
+                </a>
+              </Link>
             </div>
           </CardContent>
         </Card>

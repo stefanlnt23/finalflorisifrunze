@@ -1,94 +1,78 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
-// Helper functions for authentication and API base URL
-const getApiBaseUrl = (): string => {
-  return window.location.origin;
-};
-
-const getAuthToken = (): string | null => {
-  return localStorage.getItem('auth_token');
-};
-
-const removeAuthToken = (): void => {
-  localStorage.removeItem('auth_token');
-};
-
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
-    const errorText = await res.text();
-    console.error(`API error (${res.status}):`, errorText);
+    let errorMessage = res.statusText;
     try {
-      // Try to parse as JSON for a more detailed error
-      const errorJson = JSON.parse(errorText);
-      throw new Error(errorJson.message || `HTTP error ${res.status}`);
-    } catch (e) {
-      // If parsing fails, throw with the raw text
-      throw new Error(errorText || `HTTP error ${res.status}`);
+      // Try to parse the response as JSON first
+      const contentType = res.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        const data = await res.clone().json();
+        errorMessage = data.message || data.error || JSON.stringify(data);
+      } else {
+        // If not JSON, get it as text
+        errorMessage = await res.text() || res.statusText;
+      }
+    } catch (err) {
+      // If we can't parse JSON or get text, just use the status text
+      console.error('Error parsing response:', err);
     }
+    throw new Error(errorMessage);
   }
 }
 
-// Generic API request function
-export const apiRequest = async (method: string | undefined, endpoint: string, data?: any) => {
-  const url = endpoint.startsWith('http') ? endpoint : `${getApiBaseUrl()}${endpoint}`;
-  const requestMethod = method || "GET";
-  console.log(`Making ${requestMethod} request to ${endpoint} ${data ? JSON.stringify(data) : ''}`);
-
+export async function apiRequest(method: string, url: string, data?: any) {
   try {
-    // Create the request with proper headers
+    console.log(`Making ${method} request to ${url}`);
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+    };
+
+    // Add auth token if available
+    const token = getAuthToken();
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+      console.log('Request includes authorization token');
+    }
+
     const response = await fetch(url, {
-      method: requestMethod,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': getAuthToken() ? `Bearer ${getAuthToken()}` : '',
-      },
+      method,
+      headers,
       body: data ? JSON.stringify(data) : undefined,
     });
 
-    // Handle 401 Unauthorized (expired token, etc.)
-    if (response.status === 401) {
-      removeAuthToken();
-      console.error('Unauthorized access, redirect to login');
-      window.location.href = '/admin/login';
-      return Promise.reject(new Error('Unauthorized'));
-    }
+    console.log(`Response status: ${response.status} ${response.statusText}`);
 
-    // Return the response for GET methods, let the caller handle parsing
-    if (requestMethod === 'GET') {
-      return response;
-    }
-
-    // For non-GET methods, handle the response here
     if (!response.ok) {
       const errorText = await response.text();
-      console.error(`Error response from ${endpoint}:`, errorText);
+      console.error(`API Error Response: ${errorText}`);
+
+      let errorObj;
       try {
-        const errorJson = JSON.parse(errorText);
-        return Promise.reject(new Error(errorJson.message || 'API request failed'));
+        errorObj = JSON.parse(errorText);
       } catch (e) {
-        return Promise.reject(new Error(`API request failed: ${errorText.substring(0, 100)}...`));
+        errorObj = { message: errorText || 'Unknown error' };
       }
+      throw new Error(errorObj.message || `API request failed with status ${response.status}`);
     }
 
-    try {
-      const responseData = await response.json();
-      console.log(`Response from ${endpoint}:`, responseData);
-      return responseData;
-    } catch (error) {
-      console.error('Error parsing JSON response:', error);
-      return response; // Return the response object so caller can handle it
+    const contentType = response.headers.get('content-type');
+    console.log(`Response content type: ${contentType}`);
+
+    if (contentType && contentType.includes('application/json')) {
+      const jsonResponse = await response.json();
+      console.log(`JSON response received:`, jsonResponse);
+      return jsonResponse;
     }
+
+    const textResponse = await response.text();
+    console.log(`Text response received: ${textResponse.substring(0, 100)}${textResponse.length > 100 ? '...' : ''}`);
+    return textResponse;
   } catch (error) {
-    console.error('Error in API request to', method, url, ':', error);
+    console.error('API Request Error:', error);
     throw error;
   }
-};
-
-type RequestOptions = {
-  method?: string;
-  data?: any;
-  headers?: Record<string, string>;
-};
+}
 
 type UnauthorizedBehavior = "returnNull" | "throw";
 export const getQueryFn: <T>(options: {
