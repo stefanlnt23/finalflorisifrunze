@@ -1,21 +1,31 @@
 
-import React from 'react';
-import { Route, Redirect } from 'wouter';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLocation, Redirect } from 'wouter';
+import { useEffect } from 'react';
 
 interface ProtectedRouteProps {
   component: React.ComponentType<any>;
-  path?: string;
+  adminOnly?: boolean;
+  [key: string]: any;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ component: Component, ...rest }) => {
-  const { isAuthenticated, loading } = useAuth();
+export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
+  component: Component,
+  adminOnly = false,
+  ...rest
+}) => {
+  const { isAuthenticated, user } = useAuth();
+  const [location] = useLocation();
 
-  if (loading) {
-    return <div className="min-h-screen grid place-items-center">Loading...</div>;
+  if (!isAuthenticated) {
+    return <Redirect to="/admin/login" />;
   }
 
-  return isAuthenticated ? <Component {...rest} /> : <Redirect to="/admin/login" />;
+  if (adminOnly && user?.role !== 'admin') {
+    return <Redirect to="/admin/login" />;
+  }
+
+  return <Component {...rest} />;
 };
 
 export default ProtectedRoute;
