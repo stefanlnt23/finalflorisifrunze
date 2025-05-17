@@ -6,7 +6,7 @@ export default function AdminNavigation() {
   const { logout } = useAuth();
   const [location] = useLocation();
 
-  // Admin navigation items
+  // Admin navigation items - ensure all items are visible regardless of path
   const navItems = [
     { label: "Dashboard", path: "/admin/dashboard", icon: "fas fa-chart-line" },
     { label: "Services", path: "/admin/services", icon: "fas fa-tools" },
@@ -28,7 +28,7 @@ export default function AdminNavigation() {
             <li key={item.path}>
               <Link href={item.path}>
                 <div className={`flex items-center px-4 py-3 rounded-md text-sm font-medium transition-colors cursor-pointer ${
-                  location === item.path 
+                  location.startsWith(item.path)
                     ? "bg-green-50 text-green-700" 
                     : "text-gray-700 hover:bg-green-50 hover:text-green-700"
                 }`}>
