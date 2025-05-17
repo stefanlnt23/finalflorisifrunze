@@ -44,7 +44,7 @@ const AdminSubscriptions = React.lazy(() => import('./pages/admin/Subscriptions'
 const AdminSubscriptionsForm = React.lazy(() => import('./pages/admin/SubscriptionsForm'));
 
 //Import AuthProvider
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider } from './contexts/AuthContext';
 
 function Router() {
   return (
