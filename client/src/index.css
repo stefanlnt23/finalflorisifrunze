@@ -825,6 +825,41 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M0 0h80v80H0V0zm20 20v40h40V20H20zm20 35a15 15 0 1 1 0-30 15 15 0 0 1 0 30z' opacity='0.5'/%3E%3Cpath d='M15 15h50v50H15V15zm20 20v10h10V35h-10zm-5-5h20v20H30V30z'/%3E%3C/g%3E%3C/svg%3E");
 }
 
+/* Admin panel specific styles to ensure readability */
+div[class*="AdminLayout"] {
+  color: #1f2937 !important;
+  background-color: #f9fafb !important;
+}
+
+div[class*="AdminLayout"] h1,
+div[class*="AdminLayout"] h2,
+div[class*="AdminLayout"] h3,
+div[class*="AdminLayout"] h4,
+div[class*="AdminLayout"] p,
+div[class*="AdminLayout"] label,
+div[class*="AdminLayout"] span {
+  color: #1f2937 !important;
+}
+
+div[class*="AdminLayout"] input,
+div[class*="AdminLayout"] textarea,
+div[class*="AdminLayout"] select {
+  color: #1f2937 !important;
+  background-color: #ffffff !important;
+  border-color: #d1d5db !important;
+}
+
+div[class*="AdminLayout"] .card {
+  background-color: #ffffff !important;
+  color: #1f2937 !important;
+  border: 1px solid #e5e7eb !important;
+}
+
+div[class*="AdminLayout"] button:not([class*="bg-"]) {
+  background-color: #f3f4f6 !important;
+  color: #1f2937 !important;
+}
+
 /* Responsive appointment button */
 @media (max-width: 768px) {
   .appointment-button {
