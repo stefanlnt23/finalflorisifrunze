@@ -295,14 +295,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(401).json({ message: "Invalid credentials" });
       }
 
-      if (user.role !== "admin") {
-        return res.status(403).json({ message: "Unauthorized access" });
-      }
+      // Generate a simple token (in a real app you'd use JWT with proper signing)
+      const token = Buffer.from(`${user.id}:${Date.now()}`).toString('base64');
 
-      // In a real app you would create a proper session and JWT token
-      // For now, we'll just return user data
       res.json({
         success: true,
+        token,
         user: {
           id: user.id,
           username: user.username,
@@ -314,6 +312,66 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error during login:", error);
       res.status(500).json({ message: "Login failed" });
+    }
+  });
+  
+  // Registration endpoint
+  app.post("/api/admin/register", async (req, res) => {
+    try {
+      const { name, email, username, password, role = "user" } = req.body;
+      
+      // Validate required fields
+      if (!name || !email || !username || !password) {
+        return res.status(400).json({ 
+          message: "All fields are required", 
+          success: false 
+        });
+      }
+      
+      // Check if username already exists
+      const existingUser = await storage.getUserByUsername(username);
+      if (existingUser) {
+        return res.status(400).json({ 
+          message: "Username already exists", 
+          success: false 
+        });
+      }
+      
+      // Check if email already exists
+      const existingEmail = await storage.getUserByEmail(email);
+      if (existingEmail) {
+        return res.status(400).json({ 
+          message: "Email already in use", 
+          success: false 
+        });
+      }
+      
+      // Hash the password
+      const hashedPassword = await hashPassword(password);
+      
+      // Create the new user
+      const newUser = await storage.createUser({
+        name,
+        email,
+        username,
+        password: hashedPassword,
+        role,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+      
+      // Return success response (don't return the user object to avoid leaking password hash)
+      res.status(201).json({
+        success: true,
+        message: "User registered successfully"
+      });
+      
+    } catch (error) {
+      console.error("Error during registration:", error);
+      res.status(500).json({ 
+        message: "Registration failed", 
+        success: false 
+      });
     }
   });
   
@@ -334,7 +392,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       // In a real app, you would decode and verify the token
-      // For simplicity, we'll return valid: true if a token is present
+      // For now, we'll return valid: true if a token is present
       res.json({ valid: true });
     } catch (error) {
       console.error("Error validating session:", error);
