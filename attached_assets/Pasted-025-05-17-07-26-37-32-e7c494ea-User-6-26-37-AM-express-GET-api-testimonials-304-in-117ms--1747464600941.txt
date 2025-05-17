@@ -1,0 +1,140 @@
+025-05-17 07:26:37.32
+e7c494ea
+User
+6:26:37 AM [express] GET /api/testimonials 304 in 117ms :: {"testimonials":[{"id":"681e8944d239da0fd…
+2025-05-17 07:26:37.40
+e7c494ea
+User
+6:26:37 AM [express] GET /api/carousel-images 304 in 222ms :: {"images":[{"id":"681e7843b07313dd6508…
+2025-05-17 07:26:37.42
+e7c494ea
+User
+6:26:37 AM [express] GET /api/feature-cards 304 in 226ms :: {"cards":[{"id":"681e93160ad2c327267a398…
+2025-05-17 07:28:55.08
+e7c494ea
+User
+6:28:55 AM [vite] error while updating dependencies:
+2025-05-17 07:28:55.08
+e7c494ea
+User
+Error: The service was stopped
+2025-05-17 07:28:55.08
+e7c494ea
+User
+at /home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:993:26
+2025-05-17 07:28:55.08
+e7c494ea
+User
+at responseCallbacks. (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:622:9)
+2025-05-17 07:28:55.08
+e7c494ea
+User
+at Socket.afterClose (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:613:28)
+2025-05-17 07:28:55.08
+e7c494ea
+User
+at Socket.emit (node:events:530:35)
+2025-05-17 07:28:55.08
+e7c494ea
+User
+at endReadableNT (node:internal/streams/readable:1698:12)
+2025-05-17 07:28:55.08
+e7c494ea
+User
+at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+2025-05-17 07:28:55.17
+e7c494ea
+User
+npm notice
+2025-05-17 07:28:55.17
+e7c494ea
+User
+npm notice New major version of npm available! 10.8.2 -> 11.4.0
+2025-05-17 07:28:55.17
+e7c494ea
+User
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.4.0
+2025-05-17 07:28:55.17
+e7c494ea
+User
+npm notice To update run: npm install -g npm@11.4.0
+2025-05-17 07:28:55.17
+e7c494ea
+User
+npm notice
+2025-05-17 07:28:55.18
+e7c494ea
+System
+command finished with error [sh -c npm run dev]: exit status 1
+2025-05-17 07:29:00.92
+e7c494ea
+User
+> rest-express@1.0.0 dev
+2025-05-17 07:29:00.92
+e7c494ea
+User
+> NODE_ENV=development tsx server/index.ts
+2025-05-17 07:32:48.27
+126015ec
+System
+starting up user application
+2025-05-17 07:32:48.40
+126015ec
+System
+forwarding local port 5000 to external port 80 (mapped as 1104)
+2025-05-17 07:33:37.43
+126015ec
+User
+6:33:37 AM [express] GET /api/feature-cards 304 in 216ms :: {"cards":[{"id":"681e93160ad2c327267a398…
+2025-05-17 07:33:37.44
+126015ec
+User
+6:33:37 AM [express] GET /api/carousel-images 304 in 216ms :: {"images":[{"id":"681e7843b07313dd6508…
+2025-05-17 07:33:56.39
+126015ec
+User
+6:33:56 AM [express] GET /api/testimonials 200 in 110ms :: {"testimonials":[{"id":"681e8944d239da0fd…
+2025-05-17 07:33:56.40
+126015ec
+User
+6:33:56 AM [express] GET /api/services 200 in 116ms :: {"services":[{"id":"681e0e06fa79bf465e2799bf"…
+2025-05-17 07:33:56.50
+126015ec
+User
+6:33:56 AM [express] GET /api/feature-cards 200 in 221ms :: {"cards":[{"id":"681e93160ad2c327267a398…
+2025-05-17 07:33:56.51
+126015ec
+User
+6:33:56 AM [express] GET /api/carousel-images 200 in 224ms :: {"images":[{"id":"681e7843b07313dd6508…
+2025-05-17 07:34:38.80
+126015ec
+User
+6:34:38 AM [express] GET /api/blog 200 in 224ms :: {"blogPosts":[{"id":"6827d03ea6957b0b5d82360c","t…
+2025-05-17 07:34:42.29
+126015ec
+User
+Fetching blog post with ID: 6827d03ea6957b0b5d82360c
+2025-05-17 07:34:42.29
+126015ec
+User
+6:34:42 AM [mongodb] Fetching blog post with ID: 6827d03ea6957b0b5d82360c
+2025-05-17 07:34:42.40
+126015ec
+User
+Successfully found blog post: Transformă-ți Grădina într-un Paradis Verde cu Serviciile Noastre Profesionale
+2025-05-17 07:34:42.40
+126015ec
+User
+6:34:42 AM [express] GET /api/blog/6827d03ea6957b0b5d82360c 200 in 115ms :: {"blogPost":{"id":"6827d…
+2025-05-17 07:34:53.91
+126015ec
+User
+Fetching blog post with ID: 681e1ba0a2889be2daf8b55a
+2025-05-17 07:34:53.91
+126015ec
+User
+6:34:53 AM [mongodb] Fetching blog post with ID: 681e1ba0a2889be2daf8b55a
+2025-05-17 07:34:54.02
+126015ec
+User
+Successfully found blog post: 10 Essential Spring Gardening Tips
