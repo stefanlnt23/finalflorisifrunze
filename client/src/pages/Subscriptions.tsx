@@ -132,14 +132,16 @@ export default function Subscriptions() {
                         >
                           <div className="flex justify-between items-center text-sm group">
                             <span className="text-gray-700 group-hover:font-medium transition-all">
-                              {feature.name}:
+                              {typeof feature === 'object' && feature.name ? feature.name + ':' : feature}
                             </span>
-                            <span 
-                              className="text-gray-900 font-medium group-hover:text-green-600 transition-all"
-                              style={{ color: subscription.color || '#4CAF50' }}
-                            >
-                              {feature.value}
-                            </span>
+                            {typeof feature === 'object' && feature.value && (
+                              <span 
+                                className="text-gray-900 font-medium group-hover:text-green-600 transition-all"
+                                style={{ color: subscription.color || '#4CAF50' }}
+                              >
+                                {feature.value}
+                              </span>
+                            )}
                           </div>
                         </div>
                       ))}

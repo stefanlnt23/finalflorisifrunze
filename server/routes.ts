@@ -1251,6 +1251,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.log("API: No subscriptions found");
       }
       
+      // Add a proper debug check for empty subscriptions response
+      console.log("Full subscriptions response:", JSON.stringify({ subscriptions }));
       res.json({ subscriptions });
     } catch (error) {
       console.error("Error fetching subscriptions:", error);

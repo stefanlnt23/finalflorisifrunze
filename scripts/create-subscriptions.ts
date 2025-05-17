@@ -1,6 +1,7 @@
 
-import { connectToMongoDB, Subscription, mapSubscriptionToSchema } from '../server/mongodb';
 import { log } from '../server/vite';
+import { connectToMongoDB } from '../server/mongodb';
+import mongoose from 'mongoose';
 
 async function createSampleSubscriptions() {
   try {
@@ -33,7 +34,7 @@ async function createSampleSubscriptions() {
         ],
         isPopular: false,
         displayOrder: 1,
-        imageUrl: 'https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Z2FyZGVufGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60'
+        imageUrl: 'https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=500&q=60'
       },
       {
         name: 'Abonament Standard',
@@ -50,26 +51,26 @@ async function createSampleSubscriptions() {
         ],
         isPopular: true,
         displayOrder: 2,
-        imageUrl: 'https://images.unsplash.com/photo-1558904541-efa843a96f01?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8Z2FyZGVufGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60'
+        imageUrl: 'https://images.unsplash.com/photo-1566369711281-521b1b98e95f?auto=format&fit=crop&w=500&q=60'
       },
       {
         name: 'Abonament Premium',
-        description: 'Pentru grădini extinse și peisagistică profesională',
+        description: 'Pentru grădini complexe care necesită îngrijire detaliată',
         color: '#FF9800',
         price: '599 RON / lună',
         features: [
           { name: 'Tunderea gazonului', value: 'Săptămânal' },
           { name: 'Îngrijirea plantelor', value: 'Premium' },
-          { name: 'Curățenie grădină', value: 'Da' },
-          { name: 'Fertilizare', value: 'Săptămânală' },
-          { name: 'Consultanță', value: '24/7' },
+          { name: 'Curățenie grădină', value: 'Da + extras' },
+          { name: 'Fertilizare', value: 'Personalizată' },
+          { name: 'Consultanță', value: 'Prioritară 24/7' },
           { name: 'Tratament preventiv', value: 'Da' },
-          { name: 'Design peisagistic', value: 'Inclus' },
-          { name: 'Vizite urgente', value: 'Prioritar' }
+          { name: 'Îngrijire sezonieră', value: 'Inclusă' },
+          { name: 'Renovări minore', value: 'Incluse' }
         ],
         isPopular: false,
         displayOrder: 3,
-        imageUrl: 'https://images.unsplash.com/photo-1578901773885-54988aa5b472?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGdhcmRlbnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60'
+        imageUrl: 'https://images.unsplash.com/photo-1558904541-efa843a96f01?auto=format&fit=crop&w=500&q=60'
       }
     ];
 
