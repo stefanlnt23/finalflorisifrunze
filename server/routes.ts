@@ -1380,8 +1380,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Admin Subscription Management
   app.get("/api/admin/subscriptions", requireAdmin, async (req, res) => {
     try {
+      console.log("Fetching admin subscriptions from database");
       const subscriptions = await storage.getSubscriptions();
-      res.json({ subscriptions });
+      console.log(`Found ${subscriptions.length} subscriptions`);
+      
+      // Log the first subscription for debugging
+      if (subscriptions.length > 0) {
+        console.log("First subscription:", JSON.stringify(subscriptions[0]));
+      }
+      
+      // Make sure we explicitly return with the subscriptions property
+      return res.json({ subscriptions: subscriptions });
     } catch (error) {
       console.error("Error fetching subscriptions for admin:", error);
       res.status(500).json({ message: "Failed to fetch subscriptions" });
@@ -1469,6 +1478,83 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error(`Error deleting subscription ${req.params.id}:`, error);
       res.status(500).json({ message: "Failed to delete subscription" });
+    }
+  });
+
+  // Endpoint to create sample subscriptions on demand
+  app.post("/api/admin/create-sample-subscriptions", requireAdmin, async (req, res) => {
+    try {
+      console.log("Creating sample subscriptions on demand");
+      
+      const sampleData = [
+        {
+          name: "Abonament Basic",
+          description: "Pentru grădini mici și spații cu necesități simple",
+          color: "#4CAF50",
+          price: "199 RON / lună",
+          features: [
+            { name: "Tunderea gazonului", value: "De 2 ori pe lună" },
+            { name: "Îngrijirea plantelor", value: "De bază" },
+            { name: "Curățenie grădină", value: "Da" },
+            { name: "Fertilizare", value: "Trimestrială" },
+            { name: "Consultanță", value: "Email" }
+          ],
+          isPopular: false,
+          displayOrder: 1,
+          imageUrl: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=500&q=60"
+        },
+        {
+          name: "Abonament Standard",
+          description: "Pentru grădini medii cu nevoi moderate de întreținere",
+          color: "#2196F3",
+          price: "349 RON / lună",
+          features: [
+            { name: "Tunderea gazonului", value: "Săptămânal" },
+            { name: "Îngrijirea plantelor", value: "Completă" },
+            { name: "Curățenie grădină", value: "Da" },
+            { name: "Fertilizare", value: "Lunară" },
+            { name: "Consultanță", value: "Telefon & Email" },
+            { name: "Tratament preventiv", value: "Da" }
+          ],
+          isPopular: true,
+          displayOrder: 2,
+          imageUrl: "https://images.unsplash.com/photo-1566369711281-521b1b98e95f?auto=format&fit=crop&w=500&q=60"
+        },
+        {
+          name: "Abonament Premium",
+          description: "Pentru grădini complexe care necesită îngrijire detaliată",
+          color: "#FF9800",
+          price: "599 RON / lună",
+          features: [
+            { name: "Tunderea gazonului", value: "Săptămânal" },
+            { name: "Îngrijirea plantelor", value: "Premium" },
+            { name: "Curățenie grădină", value: "Da + extras" },
+            { name: "Fertilizare", value: "Personalizată" },
+            { name: "Consultanță", value: "Prioritară 24/7" },
+            { name: "Tratament preventiv", value: "Da" },
+            { name: "Îngrijire sezonieră", value: "Inclusă" },
+            { name: "Renovări minore", value: "Incluse" }
+          ],
+          isPopular: false,
+          displayOrder: 3,
+          imageUrl: "https://images.unsplash.com/photo-1558904541-efa843a96f01?auto=format&fit=crop&w=500&q=60"
+        }
+      ];
+      
+      const results = [];
+      for (const subscription of sampleData) {
+        const created = await storage.createSubscription(subscription);
+        results.push(created);
+      }
+      
+      res.json({ 
+        success: true, 
+        message: `Created ${results.length} sample subscriptions`,
+        subscriptions: results
+      });
+    } catch (error) {
+      console.error("Error creating sample subscriptions:", error);
+      res.status(500).json({ message: "Failed to create sample subscriptions" });
     }
   });
 

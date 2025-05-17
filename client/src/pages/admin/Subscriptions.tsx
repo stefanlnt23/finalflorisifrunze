@@ -27,13 +27,23 @@ export default function AdminSubscriptions() {
           return [];
         }
         
-        if (!response.subscriptions) {
-          console.error("No subscriptions property in response");
-          return [];
+        // Parse the response to ensure we have the subscriptions data
+        const subscriptionsData = response.subscriptions || [];
+        console.log(`Found ${subscriptionsData.length} subscriptions`);
+        
+        // If we have no subscriptions, try to create sample data
+        if (subscriptionsData.length === 0) {
+          console.log("No subscriptions found, attempting to create samples...");
+          try {
+            await apiRequest('POST', '/api/admin/create-sample-subscriptions');
+            const refreshedResponse = await apiRequest('GET', '/api/admin/subscriptions');
+            return refreshedResponse.subscriptions || [];
+          } catch (createError) {
+            console.error("Error creating sample subscriptions:", createError);
+          }
         }
         
-        console.log(`Found ${response.subscriptions.length} subscriptions`);
-        return response.subscriptions;
+        return subscriptionsData;
       } catch (err) {
         console.error("Error fetching subscriptions:", err);
         return [];
