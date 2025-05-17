@@ -41,21 +41,46 @@ export default function AdminServicesForm() {
   const isEditing = !!id;
 
   // Fetch service data if editing
-  const { data, isLoading: isLoadingService } = useQuery({
+  const { data, isLoading: isLoadingService, error: serviceError } = useQuery({
     queryKey: ['/api/admin/services', id],
     queryFn: async () => {
-      if (!id) return null;
+      if (!id) {
+        console.log("No ID provided for service fetch");
+        return null;
+      }
+      console.log(`Fetching service with ID: ${id}`);
       const response = await apiRequest("GET", `/api/admin/services/${id}`);
-      const data = await response.json();
-      console.log("Service data loaded:", data); // Debug fetched data
-      return data;
+      const responseData = await response.json();
+      console.log("Service data loaded:", JSON.stringify(responseData, null, 2));
+      
+      if (!responseData.service) {
+        console.error("Service data is missing in the response");
+        throw new Error("Service data not found in response");
+      }
+      
+      return responseData;
     },
     enabled: isEditing,
     retry: 3,
-    staleTime: 0 // Always fetch fresh data when editing
+    staleTime: 0, // Always fetch fresh data when editing
+    refetchOnWindowFocus: false
   });
 
   const service = data?.service;
+  
+  // Log any errors that occur during fetching
+  useEffect(() => {
+    if (serviceError) {
+      console.error("Error fetching service:", serviceError);
+    }
+  }, [serviceError]);
+  
+  // Log when service data changes
+  useEffect(() => {
+    if (service) {
+      console.log("Service data available for form:", JSON.stringify(service, null, 2));
+    }
+  }, [service]);
 
   // Form setup
   const form = useForm<FormValues>({

@@ -60,9 +60,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const service = await storage.getService(id);
 
       if (!service) {
+        console.log(`Service with ID ${id} not found`);
         return res.status(404).json({ message: "Service not found" });
       }
 
+      console.log(`Successfully found service: ${service.name}`);
       res.json({ service });
     } catch (error) {
       console.error("Error fetching service:", error);
@@ -399,6 +401,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Failed to fetch services" });
     }
   });
+  
+  // Get a specific service (admin)
+  app.get("/api/admin/services/:id", authenticateAdmin, async (req, res) => {
+    try {
+      const id = req.params.id;
+      console.log(`Admin fetching service with ID: ${id}`);
+      
+      const service = await storage.getService(id);
+      
+      if (!service) {
+        console.log(`Service with ID ${id} not found`);
+        return res.status(404).json({ message: "Service not found" });
+      }
+      
+      console.log(`Successfully found service for admin: ${service.name}`);
+      res.json({ service });
+    } catch (error) {
+      console.error("Error fetching service for admin:", error);
+      res.status(500).json({ message: "Failed to fetch service" });
+    }
+  });
 
   app.post("/api/admin/services", authenticateAdmin, async (req, res) => {
     try {
@@ -429,7 +452,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.put("/api/admin/services/:id", authenticateAdmin, async (req, res) => {
     try {
-      const id = parseInt(req.params.id);
+      const id = req.params.id; // Use string ID directly for MongoDB
+      console.log(`Admin updating service with ID: ${id}`);
       const validated = insertServiceSchema.partial().safeParse(req.body);
 
       if (!validated.success) {
@@ -439,12 +463,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
+      console.log("Validation successful, updating service");
       const service = await storage.updateService(id, validated.data);
 
       if (!service) {
+        console.log(`Service with ID ${id} not found for update`);
         return res.status(404).json({ message: "Service not found" });
       }
 
+      console.log(`Successfully updated service: ${service.name}`);
       res.json({ success: true, service });
     } catch (error) {
       console.error("Error updating service:", error);
