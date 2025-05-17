@@ -38,17 +38,37 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const fetchCurrentUser = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/auth/me', {
+      const token = localStorage.getItem('authToken');
+      
+      if (!token) {
+        setUser(null);
+        return;
+      }
+      
+      const response = await fetch('/api/admin/validate-session', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-        },
-        credentials: 'include',
+          'Authorization': `Bearer ${token}`
+        }
       });
 
-      if (response.ok) {
-        const userData = await response.json();
-        setUser(userData);
+      if (response.ok && response.json) {
+        const data = await response.json();
+        
+        if (data.valid) {
+          // If session is valid, we need to get user details
+          // This would ideally be combined in a single endpoint
+          // For now, just set a minimal user object
+          const storedUser = JSON.parse(localStorage.getItem('user') || 'null');
+          if (storedUser) {
+            setUser(storedUser);
+          }
+        } else {
+          setUser(null);
+          localStorage.removeItem('authToken');
+          localStorage.removeItem('user');
+        }
       } else {
         setUser(null);
       }
@@ -69,28 +89,50 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(true);
       setError(null);
 
-      const response = await fetch('/api/auth/login', {
+      const response = await fetch('/api/admin/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
-        credentials: 'include',
+        body: JSON.stringify({ username: email, password }),
       });
 
       if (response.ok) {
         const responseData = await response.json();
-        const userData = responseData.user;
-        setUser({
-          id: userData.id,
-          name: userData.name,
-          email: userData.email,
-          role: userData.role || 'user'
-        });
-        navigate('/admin/dashboard');
+        
+        if (responseData.success && responseData.token) {
+          // Store token in localStorage
+          localStorage.setItem('authToken', responseData.token);
+          
+          // Store user data
+          if (responseData.user) {
+            setUser({
+              id: responseData.user.id,
+              name: responseData.user.name,
+              email: responseData.user.email,
+              role: responseData.user.role || 'user'
+            });
+            
+            // Also store in localStorage for persistence
+            localStorage.setItem('user', JSON.stringify({
+              id: responseData.user.id,
+              name: responseData.user.name,
+              email: responseData.user.email,
+              role: responseData.user.role || 'user'
+            }));
+          }
+          
+          navigate('/admin/dashboard');
+        } else {
+          setError('Login failed. Invalid response from server.');
+        }
       } else {
-        const errorData = await response.json();
-        setError(errorData.message || 'Failed to login');
+        try {
+          const errorData = await response.json();
+          setError(errorData.message || 'Failed to login');
+        } catch (e) {
+          setError('Login failed. Please check your credentials.');
+        }
       }
     } catch (error) {
       console.error('Login error:', error);
@@ -105,22 +147,37 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(true);
       setError(null);
 
-      const response = await fetch('/api/auth/register', {
+      // Based on the server routes, the registration expects username, not email
+      const response = await fetch('/api/admin/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email, password, role: 'user' }),
-        credentials: 'include',
+        body: JSON.stringify({ 
+          name, 
+          email, 
+          username: email, // Using email as username since the Login page uses email for login
+          password, 
+          role: 'user' 
+        }),
       });
 
       if (response.ok) {
-        const userData = await response.json();
-        setUser(userData);
-        navigate('/admin/dashboard');
+        const data = await response.json();
+        
+        if (data.success) {
+          // On successful registration, we should automatically log in the user
+          await login(email, password);
+        } else {
+          setError(data.message || 'Failed to register');
+        }
       } else {
-        const errorData = await response.json();
-        setError(errorData.message || 'Failed to register');
+        try {
+          const errorData = await response.json();
+          setError(errorData.message || 'Failed to register');
+        } catch (e) {
+          setError('Registration failed. Please try again.');
+        }
       }
     } catch (error) {
       console.error('Registration error:', error);
@@ -135,21 +192,56 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(true);
       setError(null);
 
-      const response = await fetch('/api/auth/logout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-      });
+      // Since we're using token-based auth with localStorage
 
-      if (response.ok) {
-        setUser(null);
-        navigate('/admin/login');
-      } else {
-        const errorData = await response.json();
-        setError(errorData.message || 'Failed to logout');
-      }
+  // Debug helper functions
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      // @ts-ignore - Add to window for debugging
+      window.authDebug = {
+        getState: () => ({ user, isAuthenticated, loading, error }),
+        clearAuth: () => {
+          localStorage.removeItem('authToken');
+          localStorage.removeItem('user');
+          setUser(null);
+          console.log('Auth state cleared');
+        },
+        getToken: () => localStorage.getItem('authToken'),
+        testEndpoint: async (endpoint: string, method = 'GET', body = null) => {
+          try {
+            const token = localStorage.getItem('authToken');
+            const response = await fetch(endpoint, {
+              method,
+              headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+              },
+              ...(body ? { body: JSON.stringify(body) } : {})
+            });
+            
+            console.log('Response status:', response.status);
+            try {
+              const data = await response.json();
+              console.log('Response data:', data);
+              return data;
+            } catch (e) {
+              console.log('Response is not JSON:', await response.text());
+            }
+          } catch (error) {
+            console.error('Test request failed:', error);
+          }
+        }
+      };
+      console.log('Auth debug helpers available at window.authDebug');
+    }
+  }, [user, isAuthenticated, loading, error]);
+
+      // We just need to clear the token and user data
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('user');
+      setUser(null);
+      navigate('/admin/login');
+      
     } catch (error) {
       console.error('Logout error:', error);
       setError('An unexpected error occurred. Please try again.');
