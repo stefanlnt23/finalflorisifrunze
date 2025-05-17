@@ -1,0 +1,48 @@
+
+{
+  "title": "My Blog Post Title",
+  "excerpt": "A brief summary of the blog post (required, 10-150 characters)",
+  "imageUrl": "https://example.com/featured-image.jpg",
+  "tags": ["tag1", "tag2", "tag3"],
+  "sections": [
+    {
+      "type": "heading",
+      "content": "Introduction Section",
+      "level": 2
+    },
+    {
+      "type": "text",
+      "content": "This is the main text content of your intro section. You can write multiple paragraphs and format them however you'd like.",
+      "alignment": "left"
+    },
+    {
+      "type": "image",
+      "imageUrl": "https://example.com/section-image.jpg",
+      "caption": "Optional caption for the image",
+      "alignment": "center"
+    },
+    {
+      "type": "quote",
+      "content": "This is a blockquote that stands out in the content.",
+      "caption": "Attribution for the quote"
+    },
+    {
+      "type": "heading",
+      "content": "List Section Example",
+      "level": 3
+    },
+    {
+      "type": "list",
+      "items": [
+        "First list item",
+        "Second list item",
+        "Third list item with more details"
+      ]
+    },
+    {
+      "type": "text",
+      "content": "This is the conclusion paragraph that wraps up the blog post with key takeaways.",
+      "alignment": "left"
+    }
+  ]
+}
