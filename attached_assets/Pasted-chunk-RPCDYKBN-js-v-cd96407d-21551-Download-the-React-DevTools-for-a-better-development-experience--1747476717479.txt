@@ -1,0 +1,46 @@
+chunk-RPCDYKBN.js?v=cd96407d:21551 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+chunk-RPCDYKBN.js?v=cd96407d:521 Warning: validateDOMNesting(...): <a> cannot appear as a descendant of <a>.
+    at a
+    at a
+    at https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=cd96407d:352:18
+    at div
+    at div
+    at _c9 (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/src/components/ui/card.tsx:114:12)
+    at div
+    at _c (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/src/components/ui/card.tsx:20:11)
+    at div
+    at div
+    at main
+    at div
+    at AdminLayout (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/src/components/layouts/AdminLayout.tsx:18:39)
+    at AdminDashboard (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/src/pages/admin/Dashboard.tsx:25:62)
+    at ProtectedRoute (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/src/components/auth/ProtectedRoute.tsx:21:14)
+    at Route (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=cd96407d:338:16)
+    at Switch (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=cd96407d:394:17)
+    at Suspense
+    at AuthProvider (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/src/contexts/AuthContext.tsx:21:32)
+    at Router
+    at AuthProvider (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/src/contexts/AuthContext.tsx:21:32)
+    at QueryClientProvider (https://f48fa5b0-a18d-4392-82f9-88ce0d237f7e-00-vfktmyzydbuk.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=cd96407d:2875:3)
+    at App
+printWarning @ chunk-RPCDYKBN.js?v=cd96407d:521
+error @ chunk-RPCDYKBN.js?v=cd96407d:505
+validateDOMNesting @ chunk-RPCDYKBN.js?v=cd96407d:8256
+createInstance @ chunk-RPCDYKBN.js?v=cd96407d:8328
+completeWork @ chunk-RPCDYKBN.js?v=cd96407d:16290
+completeUnitOfWork @ chunk-RPCDYKBN.js?v=cd96407d:19224
+performUnitOfWork @ chunk-RPCDYKBN.js?v=cd96407d:19206
+workLoopConcurrent @ chunk-RPCDYKBN.js?v=cd96407d:19189
+renderRootConcurrent @ chunk-RPCDYKBN.js?v=cd96407d:19164
+performConcurrentWorkOnRoot @ chunk-RPCDYKBN.js?v=cd96407d:18678
+workLoop @ chunk-RPCDYKBN.js?v=cd96407d:197
+flushWork @ chunk-RPCDYKBN.js?v=cd96407d:176
+performWorkUntilDeadline @ chunk-RPCDYKBN.js?v=cd96407d:384
+queryClient.ts:46 API GET request to /api/admin/services/68284ba4bbf16be2ca35e537
+queryClient.ts:54 Response status: 200 OK
+queryClient.ts:46 API GET request to /api/admin/services/68284ba4bbf16be2ca35e537
+queryClient.ts:54 Response status: 200 OK
+queryClient.ts:46 API GET request to /api/admin/services/68284ba4bbf16be2ca35e537
+queryClient.ts:54 Response status: 200 OK
+queryClient.ts:46 API GET request to /api/admin/services/68284ba4bbf16be2ca35e537
+queryClient.ts:54 Response status: 200 OK
