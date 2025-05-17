@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { useLocation, useRoute } from 'wouter';
 
@@ -80,8 +79,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
 
       if (response.ok) {
-        const userData = await response.json();
-        setUser(userData);
+        const responseData = await response.json();
+        const userData = responseData.user;
+        setUser({
+          id: userData.id,
+          name: userData.name,
+          email: userData.email,
+          role: userData.role || 'user'
+        });
         navigate('/admin/dashboard');
       } else {
         const errorData = await response.json();
