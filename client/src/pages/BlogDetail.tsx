@@ -273,7 +273,7 @@ export default function BlogDetail() {
                   <i className="fas fa-user"></i>
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900">Echipa Green Garden</h3>
+                  <h3 className="text-lg font-bold text-gray-900">Echipa Flori si Frunze</h3>
                   <p className="text-gray-600">Experți în grădinărit și amenajare peisagistică cu ani de experiență în crearea de spații exterioare frumoase.</p>
                 </div>
               </div>

@@ -40,7 +40,7 @@ export default function About() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <h1 className="text-4xl font-bold text-gray-900 mb-6">
-              Despre Serviciile Green Garden
+              Despre Serviciile Flori si Frunze
             </h1>
             <p className="text-xl text-gray-600">
               Transformăm spații exterioare în grădini frumoase și sustenabile din 2005.
@@ -88,7 +88,7 @@ export default function About() {
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-6">Valorile Noastre</h2>
             <p className="text-lg text-gray-600">
-              La Green Garden Services, suntem ghidați de un set de valori fundamentale care stau la baza a tot ceea ce facem.
+              La Flori si Frunze, suntem ghidați de un set de valori fundamentale care stau la baza a tot ceea ce facem.
             </p>
           </div>
 

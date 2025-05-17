@@ -24,7 +24,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/status", (req, res) => {
     res.json({
       status: "ok",
-      message: "Green Garden Services API is running!",
+      message: "Flori si Frunze API is running!",
     });
   });
 

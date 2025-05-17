@@ -22,7 +22,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
                   className="h-10 w-auto"
                 />
                 <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-green-700">
-                  Green Garden
+                  Flori si Frunze
                 </span>
               </Link>
             </div>
