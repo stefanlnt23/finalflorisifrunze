@@ -117,7 +117,7 @@ export default function Home() {
                 Servicii Profesionale de Grădinărit
               </span>
               <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight text-gray-900 animate-slideUp">
-                Transformă Spațiul Tău Exterior Într-un <span className="text-green-600 relative">
+                Gradina ta pasunea noastra... <span className="text-green-600 relative">
                   Paradis
                   <span className="absolute bottom-0 left-0 w-full h-2 bg-green-200 -z-10"></span>
                 </span>
@@ -207,7 +207,7 @@ export default function Home() {
           <div className="text-center mt-12 animate-bounce animation-delay-500">
             <Link href="/services">
               <Button className="bg-green-600 hover:bg-green-700 transform transition-all hover:scale-105">
-                View All Services
+                Vezi Toate Serviciile
               </Button>
             </Link>
           </div>
@@ -263,7 +263,7 @@ export default function Home() {
           <div className="mt-12 text-center">
             <Link href="/services">
               <Button className="bg-green-600 hover:bg-green-700 transform hover:scale-105 transition">
-                Explore Our Services
+                Explorează Serviciile Noastre
               </Button>
             </Link>
           </div>
@@ -402,7 +402,7 @@ export default function Home() {
                   onClick={() => setActiveTestimonial((activeTestimonial - 3 + testimonials.length) % testimonials.length)}
                 >
                   <i className="fas fa-chevron-left mr-2"></i>
-                  Previous
+                  Anterior
                 </Button>
                 <Button 
                   variant="outline" 
@@ -410,14 +410,14 @@ export default function Home() {
                   className="border-green-600 text-green-600 hover:bg-green-50"
                   onClick={() => setActiveTestimonial((activeTestimonial + 3) % testimonials.length)}
                 >
-                  Next
+                  Următor
                   <i className="fas fa-chevron-right ml-2"></i>
                 </Button>
               </div>
             </div>
           ) : (
             <div className="text-center p-8">
-              <p className="text-gray-500">No testimonials available at the moment.</p>
+              <p className="text-gray-500">Nu există mărturii disponibile momentan.</p>
             </div>
           )}
         </div>

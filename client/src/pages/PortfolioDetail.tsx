@@ -244,16 +244,16 @@ export default function PortfolioDetail() {
             
             {/* Call to Action */}
             <div className="bg-gradient-to-br from-green-50 to-green-100 p-8 rounded-xl border border-green-200 text-center shadow-md mb-16">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Inspired by this project?</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Te inspiră acest proiect?</h2>
               <p className="text-lg text-gray-700 mb-6">
-                Let us transform your garden or outdoor space with our professional services.
+                Lasă-ne să transformăm grădina sau spațiul tău exterior cu serviciile noastre profesionale.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <Button 
                   className="bg-green-600 hover:bg-green-700 shadow-sm"
                   onClick={() => window.location.href = "/appointment"}
                 >
-                  Book an Appointment
+                  Programează o Întâlnire
                 </Button>
                 <Button 
                   variant="outline"

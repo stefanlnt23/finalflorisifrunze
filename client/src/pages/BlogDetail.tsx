@@ -1,4 +1,3 @@
-
 import MainLayout from "@/components/layouts/MainLayout";
 import { useQuery } from "@tanstack/react-query";
 import { useParams, Link } from "wouter";
@@ -11,22 +10,22 @@ function RelatedPosts({ currentBlogId }: { currentBlogId: string }) {
     queryKey: ['/api/blog'],
     refetchOnWindowFocus: false,
   });
-  
+
   const allPosts = allBlogsData?.blogPosts || [];
-  
+
   // Filter out the current post and get up to 2 related posts
   const relatedPosts = allPosts
     .filter(post => post.id !== currentBlogId)
     .slice(0, 2);
-  
+
   if (relatedPosts.length === 0) {
     return (
       <div className="text-center p-6 bg-gray-50 rounded-lg">
-        <p className="text-gray-500">No related articles available.</p>
+        <p className="text-gray-500">Nu există articole similare disponibile.</p>
       </div>
     );
   }
-  
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {relatedPosts.map((post) => (
@@ -43,7 +42,7 @@ function RelatedPosts({ currentBlogId }: { currentBlogId: string }) {
             <p className="text-gray-600 text-sm mb-3">{post.excerpt}</p>
             <Link href={`/blog/${post.id}`}>
               <Button variant="outline" className="text-sm border-green-600 text-green-600 hover:bg-green-50">
-                Read Article
+                Citește Articolul
               </Button>
             </Link>
           </CardContent>
@@ -77,10 +76,10 @@ export default function BlogDetail() {
       <MainLayout>
         <div className="py-16 bg-red-50">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-3xl font-bold text-red-700 mb-4">Invalid Blog Post ID</h1>
-            <p className="text-lg text-red-600 mb-6">The blog post ID provided is not valid.</p>
+            <h1 className="text-3xl font-bold text-red-700 mb-4">ID-ul articolului de blog este invalid</h1>
+            <p className="text-lg text-red-600 mb-6">ID-ul articolului de blog furnizat nu este valid.</p>
             <Link href="/blog" state={{ from: 'blogDetail' }}>
-              <Button className="bg-green-600 hover:bg-green-700">View All Blog Posts</Button>
+              <Button className="bg-green-600 hover:bg-green-700">Vezi toate articolele de blog</Button>
             </Link>
           </div>
         </div>
@@ -115,10 +114,10 @@ export default function BlogDetail() {
       <MainLayout>
         <div className="py-16 bg-red-50">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-3xl font-bold text-red-700 mb-4">Blog Post Not Found</h1>
-            <p className="text-lg text-red-600 mb-6">The blog post you're looking for could not be found or may have been removed.</p>
+            <h1 className="text-3xl font-bold text-red-700 mb-4">Articolul de blog nu a fost găsit</h1>
+            <p className="text-lg text-red-600 mb-6">Articolul de blog pe care îl căutați nu a putut fi găsit sau a fost eliminat.</p>
             <Link href="/blog" state={{ from: 'blogDetail' }}>
-              <Button className="bg-green-600 hover:bg-green-700">View All Blog Posts</Button>
+              <Button className="bg-green-600 hover:bg-green-700">Vezi toate articolele de blog</Button>
             </Link>
           </div>
         </div>
@@ -128,7 +127,7 @@ export default function BlogDetail() {
 
   // Format the published date
   const publishDate = new Date(blogPost.publishedAt);
-  const formattedDate = publishDate.toLocaleDateString('en-US', {
+  const formattedDate = publishDate.toLocaleDateString('ro-RO', {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
@@ -211,7 +210,7 @@ export default function BlogDetail() {
         </div>
       );
     }
-    
+
     // Fallback to regular content
     return (
       <div className="prose prose-green max-w-none">
@@ -274,8 +273,8 @@ export default function BlogDetail() {
                   <i className="fas fa-user"></i>
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900">The Green Garden Team</h3>
-                  <p className="text-gray-600">Garden and landscaping experts with years of experience in creating beautiful outdoor spaces.</p>
+                  <h3 className="text-lg font-bold text-gray-900">Echipa Green Garden</h3>
+                  <p className="text-gray-600">Experți în grădinărit și amenajare peisagistică cu ani de experiență în crearea de spații exterioare frumoase.</p>
                 </div>
               </div>
             </div>
@@ -284,7 +283,7 @@ export default function BlogDetail() {
             {blogPost.tags && blogPost.tags.length > 0 && (
               <div className="border-t border-b border-gray-200 py-4 mb-8">
                 <div className="flex items-center">
-                  <span className="text-gray-700 font-medium mr-3">Tags:</span>
+                  <span className="text-gray-700 font-medium mr-3">Etichete:</span>
                   <div className="flex flex-wrap gap-2">
                     {blogPost.tags.map((tag, index) => (
                       <span key={index} className="bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">
@@ -298,27 +297,27 @@ export default function BlogDetail() {
 
             {/* Related Posts Section */}
             <div className="mb-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">Related Articles</h3>
-              
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">Articole similare</h3>
+
               {/* Fetch all blog posts to find related ones */}
               <RelatedPosts currentBlogId={blogId} />
             </div>
 
             {/* Call to Action */}
             <div className="bg-green-50 p-8 rounded-lg border border-green-100 mb-8">
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Need help with your garden?</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-3">Aveți nevoie de ajutor cu grădina dvs.?</h3>
               <p className="text-gray-600 mb-4">
-                Our expert team is ready to assist you with all your gardening needs. Contact us today to schedule a consultation.
+                Echipa noastră de experți este gata să vă ajute cu toate nevoile dvs. de grădinărit. Contactați-ne astăzi pentru a programa o consultație.
               </p>
               <div className="flex space-x-4">
                 <Link href="/contact">
                   <Button className="bg-green-600 hover:bg-green-700">
-                    Contact Us
+                    Contactați-ne
                   </Button>
                 </Link>
                 <Link href="/services">
                   <Button variant="outline" className="border-green-600 text-green-600 hover:bg-green-50">
-                    View Our Services
+                    Vizualizați serviciile noastre
                   </Button>
                 </Link>
               </div>
@@ -329,7 +328,7 @@ export default function BlogDetail() {
               <Link href="/blog" state={{ from: 'blogDetail' }}>
                 <Button variant="outline" className="flex items-center space-x-2">
                   <i className="fas fa-arrow-left"></i>
-                  <span>Back to Blog</span>
+                  <span>Înapoi la blog</span>
                 </Button>
               </Link>
               <div className="flex space-x-4">

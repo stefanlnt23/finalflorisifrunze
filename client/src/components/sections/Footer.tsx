@@ -35,7 +35,7 @@ export default function Footer() {
                   className="h-12 w-auto"
                 />
                 <span className="text-xl font-bold text-white">
-                  Green Garden
+                  Flori si Frunze
                 </span>
               </div>
             <p className="text-gray-400 mb-6">
@@ -109,7 +109,7 @@ export default function Footer() {
 
         <div className="border-t border-gray-800 pt-8">
           <p className="text-center text-gray-500">
-            &copy; {new Date().getFullYear()} Green Garden Services. Toate drepturile rezervate.
+            &copy; {new Date().getFullYear()} Flori si Frunze. Toate drepturile rezervate.
           </p>
         </div>
       </div>

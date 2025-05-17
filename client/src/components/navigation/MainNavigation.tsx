@@ -87,7 +87,7 @@ export default function MainNavigation() {
               href="/appointment"
               className="block px-3 py-2 rounded-md text-base font-medium text-white bg-green-600 hover:bg-green-700"
             >
-              Book Appointment
+              Programează o Întâlnire
             </Link>
           </div>
         </div>
