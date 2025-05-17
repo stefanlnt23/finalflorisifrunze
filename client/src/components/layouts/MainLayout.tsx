@@ -17,8 +17,8 @@ export default function MainLayout({ children }: MainLayoutProps) {
             <div className="flex items-center">
               <Link href="/" className="flex items-center space-x-2">
                 <img 
-                  src="https://i.imgur.com/eHGs2HM.png" 
-                  alt="Green Garden Logo" 
+                  src="https://i.ibb.co/sJpknyb/logo.png" 
+                  alt="Flori si Frunze Logo" 
                   className="h-10 w-auto"
                 />
                 <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-green-700">
