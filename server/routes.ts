@@ -598,16 +598,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get a specific portfolio item (admin)
   app.get("/api/admin/portfolio/:id", async (req, res) => {
     try {
-      console.log(`Fetching admin portfolio item with ID: ${req.params.id}`);
-      const portfolioItem = await storage.getPortfolioItem(req.params.id);
+      const id = req.params.id;
+      console.log(`Fetching admin portfolio item with ID: ${id}`);
+      
+      const portfolioItem = await storage.getPortfolioItem(id);
+      
       if (!portfolioItem) {
-        console.log(`Portfolio item not found: ${req.params.id}`);
+        console.log(`Portfolio item not found: ${id}`);
         return res.status(404).json({ error: "Portfolio item not found" });
       }
-      console.log("Returning portfolio item data for admin editing");
+      
+      console.log(`Successfully found portfolio item: ${portfolioItem.title}`);
+      console.log("First few properties:", {
+        id: portfolioItem.id,
+        title: portfolioItem.title,
+        serviceId: portfolioItem.serviceId,
+        hasImages: Array.isArray(portfolioItem.images) && portfolioItem.images.length > 0
+      });
+      
       res.json({ portfolioItem });
     } catch (error) {
-      console.error("Error fetching portfolio item:", error);
+      console.error(`Error fetching portfolio item ${req.params.id}:`, error);
       res.status(500).json({ error: "Failed to fetch portfolio item" });
     }
   });

@@ -72,6 +72,8 @@ export default function AdminPortfolioForm() {
       return data;
     },
     enabled: isEditing,
+    retry: 3,
+    staleTime: 0 // Always fetch fresh data when editing
   });
 
   // Fetch services for the dropdown
@@ -120,32 +122,54 @@ export default function AdminPortfolioForm() {
   // Update form values when portfolio item data is loaded
   useEffect(() => {
     if (portfolioItem) {
+      console.log("Populating form with portfolio item data:", portfolioItem);
+      
+      // Make sure all dates are properly handled
+      const portfolioDate = portfolioItem.completionDate || portfolioItem.date;
+      const dateObject = portfolioDate ? new Date(portfolioDate) : new Date();
+      
+      // Ensure all objects are properly initialized with defaults
+      const seo = portfolioItem.seo || {
+        metaTitle: "",
+        metaDescription: "",
+        tags: []
+      };
+      
+      const clientTestimonial = portfolioItem.clientTestimonial || {
+        clientName: "",
+        comment: "",
+        displayPermission: false
+      };
+      
       form.reset({
-        title: portfolioItem.title,
-        description: portfolioItem.description,
+        title: portfolioItem.title || "",
+        description: portfolioItem.description || "",
         imageUrl: portfolioItem.imageUrl || "",
-        serviceId: portfolioItem.serviceId,
-        date: portfolioItem.date ? new Date(portfolioItem.date) : new Date(),
+        serviceId: portfolioItem.serviceId || undefined,
+        date: dateObject,
         location: portfolioItem.location || "",
         projectDuration: portfolioItem.projectDuration || "",
         difficultyLevel: portfolioItem.difficultyLevel || undefined,
-        featured: portfolioItem.featured || false,
+        featured: !!portfolioItem.featured,
         status: portfolioItem.status || "Draft",
-        seo: portfolioItem.seo || {
-          metaTitle: "",
-          metaDescription: "",
-          tags: []
+        seo: {
+          metaTitle: seo.metaTitle || "",
+          metaDescription: seo.metaDescription || "",
+          tags: Array.isArray(seo.tags) ? seo.tags : []
         },
-        clientTestimonial: portfolioItem.clientTestimonial || {
-          clientName: "",
-          comment: "",
-          displayPermission: false
+        clientTestimonial: {
+          clientName: clientTestimonial.clientName || "",
+          comment: clientTestimonial.comment || "",
+          displayPermission: !!clientTestimonial.displayPermission
         }
       });
       
       // Set image pairs if they exist
       if (portfolioItem.images && portfolioItem.images.length > 0) {
+        console.log("Setting image pairs:", portfolioItem.images);
         setImagePairs(portfolioItem.images);
+      } else {
+        console.log("No image pairs found in portfolio item");
       }
     }
   }, [portfolioItem, form]);
