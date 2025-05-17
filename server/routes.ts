@@ -1387,38 +1387,67 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Process subscriptions to ensure consistent format
       const processedSubscriptions = subscriptions.map(sub => {
         // Ensure features are in the expected format (array of {name, value} objects)
-        let features = Array.isArray(sub.features) ? sub.features : [];
+        let features = [];
         
-        // Check if features need to be converted
-        if (features.length > 0 && typeof features[0] === 'string') {
-          features = features.map(feature => ({
-            name: feature,
-            value: "Inclus"
-          }));
+        // Handle features array
+        if (sub.features) {
+          if (Array.isArray(sub.features)) {
+            features = sub.features.map(feature => {
+              // If already in correct format
+              if (feature && typeof feature === 'object' && feature.name && feature.value) {
+                return feature;
+              }
+              // If it's a string
+              else if (typeof feature === 'string') {
+                return { name: feature, value: "Inclus" };
+              }
+              // If it's an object in wrong format
+              else if (feature && typeof feature === 'object') {
+                const name = feature.name || Object.keys(feature)[0] || "Feature";
+                const value = feature.value || 
+                  (Object.keys(feature).length > 0 ? feature[Object.keys(feature)[0]] : "Inclus");
+                return { name, value };
+              }
+              // Fallback
+              return { name: "Feature", value: "Inclus" };
+            });
+          } else if (typeof sub.features === 'object') {
+            // Convert object to array of features
+            features = Object.keys(sub.features).map(key => ({
+              name: key,
+              value: sub.features[key] || "Inclus"
+            }));
+          }
         }
         
         // Return a properly formatted subscription object
         return {
-          ...sub,
-          features: features,
-          // Ensure other properties have reasonable defaults
+          id: sub.id,
+          name: sub.name || "Unnamed Subscription",
           description: sub.description || "",
           color: sub.color || "#4CAF50",
+          features: features,
+          price: sub.price || "Price not set", 
           isPopular: Boolean(sub.isPopular),
-          displayOrder: parseInt(sub.displayOrder || 0)
+          displayOrder: parseInt(String(sub.displayOrder || 0)),
+          imageUrl: sub.imageUrl || null
         };
       });
       
-      // Log the first processed subscription for debugging
+      // Log the count and first processed subscription for debugging
+      console.log(`Processed ${processedSubscriptions.length} subscriptions for client`);
       if (processedSubscriptions.length > 0) {
         console.log("First processed subscription:", JSON.stringify(processedSubscriptions[0]));
+        if (processedSubscriptions[0].features && processedSubscriptions[0].features.length > 0) {
+          console.log("First feature:", JSON.stringify(processedSubscriptions[0].features[0]));
+        }
       }
       
-      // Make sure we explicitly return with the subscriptions property
+      // Always return with a subscriptions property for consistency
       return res.json({ subscriptions: processedSubscriptions });
     } catch (error) {
       console.error("Error fetching subscriptions for admin:", error);
-      res.status(500).json({ message: "Failed to fetch subscriptions" });
+      res.status(500).json({ message: "Failed to fetch subscriptions", error: String(error) });
     }
   });
 

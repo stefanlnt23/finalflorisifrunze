@@ -17,6 +17,7 @@ export default function AdminSubscriptions() {
     queryKey: ['/api/admin/subscriptions'],
     queryFn: async () => {
     try {
+      console.log("Fetching subscriptions from admin API endpoint...");
       const response = await apiRequest('GET', '/api/admin/subscriptions');
 
       if (!response) {
@@ -26,33 +27,77 @@ export default function AdminSubscriptions() {
 
       console.log("Raw API response:", response);
 
+      // Check if response has the expected shape
+      if (!response.subscriptions && Array.isArray(response)) {
+        // Handle case where the API returns an array directly instead of {subscriptions: [...]}
+        console.log("API returned array directly instead of object with subscriptions property");
+        return response;
+      }
+
       // Parse the response to ensure we have the subscriptions data
       const subscriptionsData = response.subscriptions || [];
       console.log(`Found ${subscriptionsData.length} subscriptions`);
 
       if (subscriptionsData.length > 0) {
-        console.log("First subscription:", subscriptionsData[0]);
+        console.log("First subscription from API:", subscriptionsData[0]);
+        
+        if (subscriptionsData[0].features) {
+          console.log("Features data type:", typeof subscriptionsData[0].features);
+          console.log("Is features an array:", Array.isArray(subscriptionsData[0].features));
+          if (subscriptionsData[0].features.length > 0) {
+            console.log("First feature:", subscriptionsData[0].features[0]);
+          }
+        }
 
         // Check feature format and normalize if needed
         subscriptionsData.forEach(sub => {
-          if (!Array.isArray(sub.features)) {
-            console.warn(`Subscription ${sub.id} has invalid features format:`, sub.features);
+          if (!sub.features) {
+            console.warn(`Subscription ${sub.id} missing features property, setting to empty array`);
             sub.features = [];
+          } else if (!Array.isArray(sub.features)) {
+            console.warn(`Subscription ${sub.id} has invalid features format:`, sub.features);
+            
+            // Try to convert non-array features to array
+            if (typeof sub.features === 'object') {
+              sub.features = Object.entries(sub.features).map(([key, value]) => ({
+                name: key,
+                value: value || "Inclus"
+              }));
+            } else {
+              sub.features = [];
+            }
           } else {
             // Ensure each feature has name and value properties
             sub.features = sub.features.map(feature => {
-              if (typeof feature === 'string') {
-                return { name: feature, value: "Inclus" };
-              } else if (typeof feature === 'object' && feature !== null) {
-                return {
-                  name: feature.name || "Feature",
-                  value: feature.value || "Inclus"
-                };
-              } else {
+              if (feature === null || feature === undefined) {
                 return { name: "Feature", value: "Inclus" };
+              } else if (typeof feature === 'string') {
+                return { name: feature, value: "Inclus" };
+              } else if (typeof feature === 'object') {
+                if (feature.name && feature.value) {
+                  return feature; // Already in correct format
+                } else if (feature.name) {
+                  return { name: feature.name, value: "Inclus" };
+                } else {
+                  // Try to extract from object
+                  const keys = Object.keys(feature);
+                  if (keys.length > 0) {
+                    return { name: keys[0], value: feature[keys[0]] || "Inclus" };
+                  }
+                  return { name: "Feature", value: "Inclus" };
+                }
+              } else {
+                return { name: String(feature), value: "Inclus" };
               }
             });
           }
+          
+          // Ensure other required properties have default values
+          if (!sub.name) sub.name = "Unnamed Subscription";
+          if (!sub.price) sub.price = "Price not set";
+          if (!sub.color) sub.color = "#4CAF50";
+          if (sub.isPopular === undefined) sub.isPopular = false;
+          if (sub.displayOrder === undefined) sub.displayOrder = 0;
         });
       }
 
@@ -60,7 +105,9 @@ export default function AdminSubscriptions() {
       if (subscriptionsData.length === 0) {
         console.log("No subscriptions found, attempting to create samples...");
         try {
-          await apiRequest('POST', '/api/admin/create-sample-subscriptions');
+          const createResponse = await apiRequest('POST', '/api/admin/create-sample-subscriptions');
+          console.log("Create sample response:", createResponse);
+          
           const refreshedResponse = await apiRequest('GET', '/api/admin/subscriptions');
           const newData = refreshedResponse.subscriptions || [];
           console.log(`Created ${newData.length} sample subscriptions`);

@@ -1099,7 +1099,15 @@ export class MongoDBStorage implements IStorage {
       
       // Log detailed information for debugging
       if (subscriptions.length > 0) {
-        log(`Sample subscription data: ${JSON.stringify(subscriptions[0])}`, 'mongodb');
+        log(`First subscription raw data: ${JSON.stringify(subscriptions[0])}`, 'mongodb');
+        
+        // Log features structure if it exists
+        if (subscriptions[0].features) {
+          log(`First subscription features type: ${typeof subscriptions[0].features}, isArray: ${Array.isArray(subscriptions[0].features)}`, 'mongodb');
+          if (Array.isArray(subscriptions[0].features) && subscriptions[0].features.length > 0) {
+            log(`First feature type: ${typeof subscriptions[0].features[0]}`, 'mongodb');
+          }
+        }
       } else {
         log('No subscriptions found in the database', 'mongodb');
       }
@@ -1108,39 +1116,77 @@ export class MongoDBStorage implements IStorage {
         // Transform features based on their format in the database
         let transformedFeatures = [];
         
-        if (Array.isArray(sub.features)) {
-          // If features is an array, check its format
-          if (sub.features.length > 0) {
-            if (typeof sub.features[0] === 'string') {
-              // Convert string array to object array with name/value properties
-              transformedFeatures = sub.features.map(feature => ({
-                name: feature,
-                value: "Inclus"  // Default value
-              }));
-            } else if (typeof sub.features[0] === 'object') {
-              // Features is already an array of objects, check if they have the right properties
-              transformedFeatures = sub.features.map(feature => {
-                if (feature.name && feature.value) {
-                  return feature; // Already in correct format
-                } else {
-                  // Try to adapt to expected format
-                  const name = feature.name || Object.keys(feature)[0] || "Feature";
-                  const value = feature.value || (typeof feature === 'object' ? Object.values(feature)[0] : "Inclus");
-                  return { name, value };
-                }
-              });
+        // First try 'features' field
+        if (sub.features) {
+          if (Array.isArray(sub.features)) {
+            if (sub.features.length > 0) {
+              // Check the type of first feature to determine transformation
+              if (typeof sub.features[0] === 'string') {
+                // String array - convert to name/value objects
+                transformedFeatures = sub.features.map(feature => ({
+                  name: feature,
+                  value: "Inclus"
+                }));
+              } else if (typeof sub.features[0] === 'object') {
+                // Object array - normalize to name/value format
+                transformedFeatures = sub.features.map(feature => {
+                  if (feature.name && feature.value) {
+                    return { name: feature.name, value: feature.value }; // Already correct format
+                  } else if (feature.name) {
+                    return { name: feature.name, value: "Inclus" }; // Has name but no value
+                  } else {
+                    // Try to extract name/value from object
+                    const keys = Object.keys(feature);
+                    if (keys.length > 0) {
+                      return { name: keys[0], value: feature[keys[0]] || "Inclus" };
+                    } else {
+                      return { name: "Feature", value: "Inclus" }; // Fallback
+                    }
+                  }
+                });
+              }
             }
+          } else if (typeof sub.features === 'object') {
+            // Features is an object, not an array - convert to array
+            transformedFeatures = Object.keys(sub.features).map(key => ({
+              name: key,
+              value: sub.features[key] || "Inclus"
+            }));
           }
-        } else if (sub.includes) {
-          // If there's an 'includes' array, use that instead
-          transformedFeatures = Array.isArray(sub.includes) 
-            ? sub.includes.map(item => ({ name: item, value: "Inclus" }))
-            : [];
-        } else if (sub.benefits) {
-          // If there's a 'benefits' array, use that as a fallback
-          transformedFeatures = Array.isArray(sub.benefits)
-            ? sub.benefits.map(item => ({ name: item, value: "Inclus" }))
-            : [];
+        }
+        
+        // If no features found or empty array, try 'includes' field
+        if (transformedFeatures.length === 0 && sub.includes) {
+          if (Array.isArray(sub.includes)) {
+            transformedFeatures = sub.includes.map(item => {
+              if (typeof item === 'string') {
+                return { name: item, value: "Inclus" };
+              } else if (typeof item === 'object') {
+                const keys = Object.keys(item);
+                if (keys.length > 0) {
+                  return { name: keys[0], value: item[keys[0]] || "Inclus" };
+                }
+              }
+              return { name: String(item), value: "Inclus" };
+            });
+          }
+        }
+        
+        // If still empty, try 'benefits' field as last resort
+        if (transformedFeatures.length === 0 && sub.benefits) {
+          if (Array.isArray(sub.benefits)) {
+            transformedFeatures = sub.benefits.map(item => {
+              if (typeof item === 'string') {
+                return { name: item, value: "Inclus" };
+              } else if (typeof item === 'object') {
+                const keys = Object.keys(item);
+                if (keys.length > 0) {
+                  return { name: keys[0], value: item[keys[0]] || "Inclus" };
+                }
+              }
+              return { name: String(item), value: "Inclus" };
+            });
+          }
         }
         
         log(`Transformed features for ${sub.name}: ${JSON.stringify(transformedFeatures)}`, 'mongodb');
@@ -1151,9 +1197,9 @@ export class MongoDBStorage implements IStorage {
           description: sub.description || '',
           color: sub.color || "#4CAF50", // Default green color
           features: transformedFeatures,
-          price: sub.price,
+          price: sub.price || "Price not set",
           isPopular: Boolean(sub.isPopular),
-          displayOrder: parseInt(sub.displayOrder || 0),
+          displayOrder: parseInt(sub.displayOrder || "0"),
           imageUrl: sub.imageUrl || null
         };
       });
