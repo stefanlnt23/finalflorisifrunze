@@ -1384,13 +1384,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const subscriptions = await storage.getSubscriptions();
       console.log(`Found ${subscriptions.length} subscriptions`);
       
-      // Log the first subscription for debugging
-      if (subscriptions.length > 0) {
-        console.log("First subscription:", JSON.stringify(subscriptions[0]));
+      // Process subscriptions to ensure consistent format
+      const processedSubscriptions = subscriptions.map(sub => {
+        // Ensure features are in the expected format (array of {name, value} objects)
+        let features = Array.isArray(sub.features) ? sub.features : [];
+        
+        // Check if features need to be converted
+        if (features.length > 0 && typeof features[0] === 'string') {
+          features = features.map(feature => ({
+            name: feature,
+            value: "Inclus"
+          }));
+        }
+        
+        // Return a properly formatted subscription object
+        return {
+          ...sub,
+          features: features,
+          // Ensure other properties have reasonable defaults
+          description: sub.description || "",
+          color: sub.color || "#4CAF50",
+          isPopular: Boolean(sub.isPopular),
+          displayOrder: parseInt(sub.displayOrder || 0)
+        };
+      });
+      
+      // Log the first processed subscription for debugging
+      if (processedSubscriptions.length > 0) {
+        console.log("First processed subscription:", JSON.stringify(processedSubscriptions[0]));
       }
       
       // Make sure we explicitly return with the subscriptions property
-      return res.json({ subscriptions: subscriptions });
+      return res.json({ subscriptions: processedSubscriptions });
     } catch (error) {
       console.error("Error fetching subscriptions for admin:", error);
       res.status(500).json({ message: "Failed to fetch subscriptions" });

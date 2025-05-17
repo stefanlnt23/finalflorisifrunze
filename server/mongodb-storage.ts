@@ -1105,12 +1105,52 @@ export class MongoDBStorage implements IStorage {
       }
 
       return subscriptions.map(sub => {
+        // Transform features based on their format in the database
+        let transformedFeatures = [];
+        
+        if (Array.isArray(sub.features)) {
+          // If features is an array, check its format
+          if (sub.features.length > 0) {
+            if (typeof sub.features[0] === 'string') {
+              // Convert string array to object array with name/value properties
+              transformedFeatures = sub.features.map(feature => ({
+                name: feature,
+                value: "Inclus"  // Default value
+              }));
+            } else if (typeof sub.features[0] === 'object') {
+              // Features is already an array of objects, check if they have the right properties
+              transformedFeatures = sub.features.map(feature => {
+                if (feature.name && feature.value) {
+                  return feature; // Already in correct format
+                } else {
+                  // Try to adapt to expected format
+                  const name = feature.name || Object.keys(feature)[0] || "Feature";
+                  const value = feature.value || (typeof feature === 'object' ? Object.values(feature)[0] : "Inclus");
+                  return { name, value };
+                }
+              });
+            }
+          }
+        } else if (sub.includes) {
+          // If there's an 'includes' array, use that instead
+          transformedFeatures = Array.isArray(sub.includes) 
+            ? sub.includes.map(item => ({ name: item, value: "Inclus" }))
+            : [];
+        } else if (sub.benefits) {
+          // If there's a 'benefits' array, use that as a fallback
+          transformedFeatures = Array.isArray(sub.benefits)
+            ? sub.benefits.map(item => ({ name: item, value: "Inclus" }))
+            : [];
+        }
+        
+        log(`Transformed features for ${sub.name}: ${JSON.stringify(transformedFeatures)}`, 'mongodb');
+        
         return {
           id: sub._id.toString(),
           name: sub.name,
           description: sub.description || '',
           color: sub.color || "#4CAF50", // Default green color
-          features: Array.isArray(sub.features) ? sub.features : [],
+          features: transformedFeatures,
           price: sub.price,
           isPopular: Boolean(sub.isPopular),
           displayOrder: parseInt(sub.displayOrder || 0),

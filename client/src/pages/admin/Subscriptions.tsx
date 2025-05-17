@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
@@ -12,48 +11,76 @@ import { apiRequest, queryClient } from "@/lib/queryClient";
 export default function AdminSubscriptions() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
-  
+
   // Fetch subscriptions
   const { data, isLoading, error } = useQuery({
     queryKey: ['/api/admin/subscriptions'],
     queryFn: async () => {
-      try {
-        console.log("Fetching admin subscriptions...");
-        const response = await apiRequest('GET', '/api/admin/subscriptions');
-        console.log("Response from server:", response);
-        
-        if (!response) {
-          console.error("No response from server");
-          return [];
-        }
-        
-        // Parse the response to ensure we have the subscriptions data
-        const subscriptionsData = response.subscriptions || [];
-        console.log(`Found ${subscriptionsData.length} subscriptions`);
-        
-        // If we have no subscriptions, try to create sample data
-        if (subscriptionsData.length === 0) {
-          console.log("No subscriptions found, attempting to create samples...");
-          try {
-            await apiRequest('POST', '/api/admin/create-sample-subscriptions');
-            const refreshedResponse = await apiRequest('GET', '/api/admin/subscriptions');
-            return refreshedResponse.subscriptions || [];
-          } catch (createError) {
-            console.error("Error creating sample subscriptions:", createError);
-          }
-        }
-        
-        return subscriptionsData;
-      } catch (err) {
-        console.error("Error fetching subscriptions:", err);
+    try {
+      const response = await apiRequest('GET', '/api/admin/subscriptions');
+
+      if (!response) {
+        console.error("No response from server");
         return [];
       }
-    },
+
+      console.log("Raw API response:", response);
+
+      // Parse the response to ensure we have the subscriptions data
+      const subscriptionsData = response.subscriptions || [];
+      console.log(`Found ${subscriptionsData.length} subscriptions`);
+
+      if (subscriptionsData.length > 0) {
+        console.log("First subscription:", subscriptionsData[0]);
+
+        // Check feature format and normalize if needed
+        subscriptionsData.forEach(sub => {
+          if (!Array.isArray(sub.features)) {
+            console.warn(`Subscription ${sub.id} has invalid features format:`, sub.features);
+            sub.features = [];
+          } else {
+            // Ensure each feature has name and value properties
+            sub.features = sub.features.map(feature => {
+              if (typeof feature === 'string') {
+                return { name: feature, value: "Inclus" };
+              } else if (typeof feature === 'object' && feature !== null) {
+                return {
+                  name: feature.name || "Feature",
+                  value: feature.value || "Inclus"
+                };
+              } else {
+                return { name: "Feature", value: "Inclus" };
+              }
+            });
+          }
+        });
+      }
+
+      // If we have no subscriptions, try to create sample data
+      if (subscriptionsData.length === 0) {
+        console.log("No subscriptions found, attempting to create samples...");
+        try {
+          await apiRequest('POST', '/api/admin/create-sample-subscriptions');
+          const refreshedResponse = await apiRequest('GET', '/api/admin/subscriptions');
+          const newData = refreshedResponse.subscriptions || [];
+          console.log(`Created ${newData.length} sample subscriptions`);
+          return newData;
+        } catch (createError) {
+          console.error("Error creating sample subscriptions:", createError);
+        }
+      }
+
+      return subscriptionsData;
+    } catch (err) {
+      console.error("Error fetching subscriptions:", err);
+      return [];
+    }
+  },
     refetchOnWindowFocus: false,
   });
-  
+
   const subscriptions = data || [];
-  
+
   // Delete mutation
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
@@ -75,14 +102,14 @@ export default function AdminSubscriptions() {
       });
     },
   });
-  
+
   // Handle delete
   const handleDelete = (id: string, name: string) => {
     if (window.confirm(`Are you sure you want to delete the subscription "${name}"?`)) {
       deleteMutation.mutate(id);
     }
   };
-  
+
   return (
     <AdminLayout 
       title="Abonamente" 
