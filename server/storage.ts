@@ -721,8 +721,13 @@ export class MemStorage implements IStorage {
 // Import MongoDB storage
 import { MongoDBStorage } from './mongodb-storage';
 
-// Use MongoDB storage for production
-export const storage = new MongoDBStorage();
+// Create storage initialization function to avoid circular dependency
+export function createStorage(): IStorage {
+  return new MongoDBStorage();
+}
+
+// Use MongoDB storage for production  
+export const storage = createStorage();
 import { connectToMongoDB, AdminRegister, User, Service, PortfolioItem, BlogPost, Inquiry, Appointment, Testimonial, Subscription } from './mongodb';
 import { 
   mapUserToSchema, 

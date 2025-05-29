@@ -1,4 +1,81 @@
-import { IStorage } from './storage';
+// Define storage interface locally to avoid circular dependency
+interface IStorage {
+  // User operations
+  getUser(id: string | number): Promise<any | undefined>;
+  getUserByUsername(username: string): Promise<any | undefined>;
+  getUserByEmail(email: string): Promise<any | undefined>;
+  getUsers(): Promise<any[]>;
+  createUser(user: any): Promise<any>;
+  updateUser(id: string | number, userData: any): Promise<any | undefined>;
+  deleteUser(id: string | number): Promise<boolean>;
+
+  // Service operations
+  getService(id: number | string): Promise<any | undefined>;
+  getServices(): Promise<any[]>;
+  getFeaturedServices(): Promise<any[]>;
+  createService(service: any): Promise<any>;
+  updateService(id: number | string, serviceData: any): Promise<any | undefined>;
+  deleteService(id: number | string): Promise<boolean>;
+
+  // Portfolio operations
+  getPortfolioItem(id: string | number): Promise<any | undefined>;
+  getPortfolioItems(): Promise<any[]>;
+  getPortfolioItemsByService(serviceId: number | string): Promise<any[]>;
+  createPortfolioItem(portfolioItem: any): Promise<any>;
+  updatePortfolioItem(id: string | number, portfolioItemData: any): Promise<any | undefined>;
+  deletePortfolioItem(id: string | number): Promise<boolean>;
+
+  // Blog operations
+  getBlogPost(id: string | number): Promise<any | undefined>;
+  getBlogPosts(): Promise<any[]>;
+  createBlogPost(blogPost: any): Promise<any>;
+  updateBlogPost(id: string | number, blogPostData: any): Promise<any | undefined>;
+  deleteBlogPost(id: string | number): Promise<boolean>;
+
+  // Inquiry operations
+  getInquiry(id: number | string): Promise<any | undefined>;
+  getInquiries(): Promise<any[]>;
+  createInquiry(inquiry: any): Promise<any>;
+  updateInquiry(id: number | string, inquiryData: any): Promise<any | undefined>;
+  deleteInquiry(id: number | string): Promise<boolean>;
+
+  // Appointment operations
+  getAppointment(id: string | number): Promise<any | undefined>;
+  getAppointments(): Promise<any[]>;
+  createAppointment(appointment: any): Promise<any>;
+  updateAppointment(id: string | number, appointmentData: any): Promise<any | undefined>;
+  deleteAppointment(id: string | number): Promise<boolean>;
+
+  // Testimonial operations
+  getTestimonial(id: number | string): Promise<any | undefined>;
+  getTestimonials(): Promise<any[]>;
+  createTestimonial(testimonial: any): Promise<any>;
+  updateTestimonial(id: number | string, testimonialData: any): Promise<any | undefined>;
+  deleteTestimonial(id: number | string): Promise<boolean>;
+
+  // Carousel Images
+  getCarouselImages(): Promise<any[]>;
+  getCarouselImageById(id: string): Promise<any | null>;
+  createCarouselImage(imageData: any): Promise<any>;
+  updateCarouselImage(id: string, imageData: any): Promise<boolean>;
+  deleteCarouselImage(id: string): Promise<boolean>;
+  reorderCarouselImage(id: string, direction: 'up' | 'down'): Promise<boolean>;
+
+  // Feature Cards
+  getFeatureCards(): Promise<any[]>;
+  getFeatureCardById(id: string): Promise<any | null>;
+  createFeatureCard(cardData: any): Promise<any>;
+  updateFeatureCard(id: string, cardData: any): Promise<boolean>;
+  deleteFeatureCard(id: string): Promise<boolean>;
+  reorderFeatureCard(id: string, direction: 'up' | 'down'): Promise<boolean>;
+
+  // Subscriptions
+  getSubscriptions(): Promise<any[]>;
+  getSubscription(id: string): Promise<any | null>;
+  createSubscription(subscription: any): Promise<any>;
+  updateSubscription(id: string, subscription: any): Promise<any | null>;
+  deleteSubscription(id: string): Promise<boolean>;
+}
 import {
   User, Service, PortfolioItem, BlogPost, Inquiry, Appointment, Testimonial,
   mapUserToSchema, mapServiceToSchema, mapPortfolioItemToSchema, mapBlogPostToSchema,
