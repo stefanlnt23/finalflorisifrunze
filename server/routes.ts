@@ -16,13 +16,13 @@ import {
 function authenticateAdmin(req: Request, res: Response, next: NextFunction) {
   try {
     const authHeader = req.headers.authorization;
-    
+
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return res.status(401).json({ message: 'No valid authorization token provided' });
     }
 
     const token = authHeader.split(' ')[1];
-    
+
     if (!token) {
       return res.status(401).json({ message: 'No token provided' });
     }
@@ -31,11 +31,11 @@ function authenticateAdmin(req: Request, res: Response, next: NextFunction) {
     try {
       const decoded = Buffer.from(token, 'base64').toString();
       const [userId, timestamp] = decoded.split(':');
-      
+
       // Check if token is not too old (24 hours)
       const tokenAge = Date.now() - parseInt(timestamp);
       const maxAge = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-      
+
       if (tokenAge > maxAge) {
         return res.status(401).json({ message: 'Token expired' });
       }
@@ -52,7 +52,15 @@ function authenticateAdmin(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export async function registerRoutes(app: Express): Promise<Server> {
+// Helper function to get storage instance
+async function withStorage<T>(handler: (storage: any) => Promise<T>): Promise<T> {
+  const storage = await getStorage();
+  return handler(storage);
+}
+
+export function registerRoutes(app: Express): Server {
+  const httpServer = createServer(app);
+
   // API Status route
   app.get("/api/status", (req, res) => {
     res.json({
@@ -63,11 +71,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // =========== PUBLIC API ROUTES ===========
 
-  // Services API
   app.get("/api/services", async (req, res) => {
     try {
-      const services = await storage.getServices();
-      res.json({ services });
+      await withStorage(async (storage) => {
+        const services = await storage.getServices();
+        res.json({ services });
+      });
     } catch (error) {
       console.error("Error fetching services:", error);
       res.status(500).json({ message: "Failed to fetch services" });
@@ -76,8 +85,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/services/featured", async (req, res) => {
     try {
-      const featuredServices = await storage.getFeaturedServices();
-      res.json({ services: featuredServices });
+      await withStorage(async (storage) => {
+        const featuredServices = await storage.getFeaturedServices();
+        res.json({ services: featuredServices });
+      });
     } catch (error) {
       console.error("Error fetching featured services:", error);
       res.status(500).json({ message: "Failed to fetch featured services" });
@@ -86,19 +97,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/services/:id", async (req, res) => {
     try {
-      // With MongoDB we need to use the string ID directly instead of parsing to integer
-      const id = req.params.id;
-      console.log(`Fetching service with ID: ${id}`);
+      await withStorage(async (storage) => {
+        // With MongoDB we need to use the string ID directly instead of parsing to integer
+        const id = req.params.id;
+        console.log(`Fetching service with ID: ${id}`);
 
-      const service = await storage.getService(id);
+        const service = await storage.getService(id);
 
-      if (!service) {
-        console.log(`Service with ID ${id} not found`);
-        return res.status(404).json({ message: "Service not found" });
-      }
+        if (!service) {
+          console.log(`Service with ID ${id} not found`);
+          return res.status(404).json({ message: "Service not found" });
+        }
 
-      console.log(`Successfully found service: ${service.name}`);
-      res.json({ service });
+        console.log(`Successfully found service: ${service.name}`);
+        res.json({ service });
+      });
     } catch (error) {
       console.error("Error fetching service:", error);
       res.status(500).json({ message: "Failed to fetch service" });
@@ -456,13 +469,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/admin/validate-session", async (req, res) => {
     try {
       const authHeader = req.headers.authorization;
-      
+
       if (!authHeader || !authHeader.startsWith('Bearer ')) {
         return res.json({ valid: false });
       }
 
       const token = authHeader.split(' ')[1];
-      
+
       if (!token) {
         return res.json({ valid: false });
       }
@@ -471,11 +484,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       try {
         const decoded = Buffer.from(token, 'base64').toString();
         const [userId, timestamp] = decoded.split(':');
-        
+
         // Check if token is not too old (24 hours)
         const tokenAge = Date.now() - parseInt(timestamp);
         const maxAge = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-        
+
         if (tokenAge > maxAge) {
           return res.json({ valid: false });
         }
@@ -506,20 +519,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Failed to fetch services" });
     }
   });
-  
+
   // Get a specific service (admin)
   app.get("/api/admin/services/:id", authenticateAdmin, async (req, res) => {
     try {
       const id = req.params.id;
       console.log(`Admin fetching service with ID: ${id}`);
-      
+
       const service = await storage.getService(id);
-      
+
       if (!service) {
         console.log(`Service with ID ${id} not found`);
         return res.status(404).json({ message: "Service not found" });
       }
-      
+
       console.log(`Successfully found service for admin: ${service.name}`);
       res.json({ service });
     } catch (error) {
@@ -705,14 +718,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const id = req.params.id;
       console.log(`Fetching admin portfolio item with ID: ${id}`);
-      
+
       const portfolioItem = await storage.getPortfolioItem(id);
-      
+
       if (!portfolioItem) {
         console.log(`Portfolio item not found: ${id}`);
         return res.status(404).json({ error: "Portfolio item not found" });
       }
-      
+
       console.log(`Successfully found portfolio item: ${portfolioItem.title}`);
       console.log("First few properties:", {
         id: portfolioItem.id,
@@ -720,7 +733,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         serviceId: portfolioItem.serviceId,
         hasImages: Array.isArray(portfolioItem.images) && portfolioItem.images.length > 0
       });
-      
+
       res.json({ portfolioItem });
     } catch (error) {
       console.error(`Error fetching portfolio item ${req.params.id}:`, error);
@@ -1386,15 +1399,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/subscriptions", async (req, res) => {
     try {
       console.log("API: Fetching subscriptions");
-      
+
       // Ensure we get proper data
       let subscriptions = await storage.getSubscriptions();
       console.log(`API: Found ${subscriptions.length} subscriptions to return`);
-      
+
       // If no subscriptions found, create and insert sample data immediately
       if (!subscriptions || subscriptions.length === 0) {
         console.log("API: No subscriptions found in database. Creating sample data...");
-        
+
         const sampleData = [
           {
             name: "Abonament Basic",
@@ -1449,14 +1462,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
             imageUrl: "https://images.unsplash.com/photo-1558904541-efa843a96f01?auto=format&fit=crop&w=500&q=60"
           }
         ];
-        
+
         try {
           // Use direct MongoDB access to ensure data is created
           if (mongoose.connection.readyState === 1) {
             await mongoose.connection.db.collection('subscriptions').deleteMany({});
             await mongoose.connection.db.collection('subscriptions').insertMany(sampleData);
             console.log("API: Created sample subscriptions directly in MongoDB");
-            
+
             // Get the newly created subscriptions from storage
             subscriptions = await storage.getSubscriptions();
             console.log(`API: Now have ${subscriptions.length} subscriptions after direct insert`);
@@ -1467,16 +1480,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
           console.error("API: Error recreating subscription data:", dbError);
         }
       }
-      
+
       // Log one subscription for debugging
       if (subscriptions.length > 0) {
         console.log("API: First subscription example:", JSON.stringify(subscriptions[0]));
       }
-      
+
       // Always send the response with the current subscriptions array
       console.log(`API: Sending response with ${subscriptions.length} subscriptions`);
       return res.json({ subscriptions });
-      
+
     } catch (error) {
       console.error("Error fetching subscriptions:", error);
       res.status(500).json({ message: "Failed to fetch subscriptions", error: String(error) });
@@ -1489,12 +1502,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log("Fetching admin subscriptions from database");
       const subscriptions = await storage.getSubscriptions();
       console.log(`Found ${subscriptions.length} subscriptions`);
-      
+
       // Process subscriptions to ensure consistent format
       const processedSubscriptions = subscriptions.map(sub => {
         // Ensure features are in the expected format (array of {name, value} objects)
         let features = [];
-        
+
         // Handle features array
         if (sub.features) {
           if (Array.isArray(sub.features)) {
@@ -1525,7 +1538,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             }));
           }
         }
-        
+
         // Return a properly formatted subscription object
         return {
           id: sub.id,
@@ -1539,7 +1552,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           imageUrl: sub.imageUrl || null
         };
       });
-      
+
       // Log the count and first processed subscription for debugging
       console.log(`Processed ${processedSubscriptions.length} subscriptions for client`);
       if (processedSubscriptions.length > 0) {
@@ -1548,7 +1561,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           console.log("First feature:", JSON.stringify(processedSubscriptions[0].features[0]));
         }
       }
-      
+
       // Always return with a subscriptions property for consistency
       return res.json({ subscriptions: processedSubscriptions });
     } catch (error) {
@@ -1645,7 +1658,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/admin/create-sample-subscriptions", requireAdmin, async (req, res) => {
     try {
       console.log("Creating sample subscriptions on demand");
-      
+
       const sampleData = [
         {
           name: "Abonament Basic",
@@ -1700,13 +1713,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
           imageUrl: "https://images.unsplash.com/photo-1558904541-efa843a96f01?auto=format&fit=crop&w=500&q=60"
         }
       ];
-      
+
       const results = [];
       for (const subscription of sampleData) {
         const created = await storage.createSubscription(subscription);
         results.push(created);
       }
-      
+
       res.json({ 
         success: true, 
         message: `Created ${results.length} sample subscriptions`,

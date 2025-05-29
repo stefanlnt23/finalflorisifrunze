@@ -2,8 +2,7 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { connectToMongoDB } from "./mongodb";
-import { storage } from "./storage";
-import { MongoDBStorage } from "./mongodb-storage";
+import { getStorage } from "./storage";
 
 const app = express();
 app.use(express.json());
@@ -50,8 +49,9 @@ app.use((req, res, next) => {
     await connectToMongoDB();
     
     // Seed initial data if needed
-    if (storage instanceof MongoDBStorage) {
-      await (storage as any).seedDemoData();
+    const storageInstance = await getStorage();
+    if (storageInstance && typeof (storageInstance as any).seedDemoData === 'function') {
+      await (storageInstance as any).seedDemoData();
     }
     
     // Then register API routes
