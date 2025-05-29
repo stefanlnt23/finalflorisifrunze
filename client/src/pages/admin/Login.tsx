@@ -13,7 +13,7 @@ export default function AdminLogin() {
   const [, navigate] = useLocation();
 
   // Login state
-  const [email, setEmail] = useState('admin@admin.com');
+  const [email, setEmail] = useState('admin@greengarden.com');
   const [password, setPassword] = useState('admin123');
 
   // Redirect if already authenticated
