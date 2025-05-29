@@ -12,11 +12,44 @@ import {
   insertTestimonialSchema,
 } from "@shared/schema";
 
-// Authentication middleware - simplified for development
+// Proper authentication middleware
 function authenticateAdmin(req: Request, res: Response, next: NextFunction) {
-  // For now, we'll allow all requests through for simplicity
-  // In a production environment, you would implement proper authentication
-  next();
+  try {
+    const authHeader = req.headers.authorization;
+    
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ message: 'No valid authorization token provided' });
+    }
+
+    const token = authHeader.split(' ')[1];
+    
+    if (!token) {
+      return res.status(401).json({ message: 'No token provided' });
+    }
+
+    // Decode and validate token
+    try {
+      const decoded = Buffer.from(token, 'base64').toString();
+      const [userId, timestamp] = decoded.split(':');
+      
+      // Check if token is not too old (24 hours)
+      const tokenAge = Date.now() - parseInt(timestamp);
+      const maxAge = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+      
+      if (tokenAge > maxAge) {
+        return res.status(401).json({ message: 'Token expired' });
+      }
+
+      // Add user info to request for use in routes
+      req.user = { id: userId };
+      next();
+    } catch (err) {
+      return res.status(401).json({ message: 'Invalid token format' });
+    }
+  } catch (error) {
+    console.error('Authentication error:', error);
+    return res.status(500).json({ message: 'Authentication failed' });
+  }
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -369,22 +402,41 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Validate session endpoint
   app.get("/api/admin/validate-session", async (req, res) => {
     try {
-      // In a real application, you would validate the token properly
-      // For now, we'll just check if the user exists
-      if (!req.headers.authorization) {
+      const authHeader = req.headers.authorization;
+      
+      if (!authHeader || !authHeader.startsWith('Bearer ')) {
         return res.json({ valid: false });
       }
 
-      // Check if there's a bearer token
-      const authHeader = req.headers.authorization.split(' ')[1]; // Bearer TOKEN
-
-      if (!authHeader) {
+      const token = authHeader.split(' ')[1];
+      
+      if (!token) {
         return res.json({ valid: false });
       }
 
-      // In a real app, you would decode and verify the token
-      // For now, we'll return valid: true if a token is present
-      res.json({ valid: true });
+      // Validate token format and expiration
+      try {
+        const decoded = Buffer.from(token, 'base64').toString();
+        const [userId, timestamp] = decoded.split(':');
+        
+        // Check if token is not too old (24 hours)
+        const tokenAge = Date.now() - parseInt(timestamp);
+        const maxAge = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+        
+        if (tokenAge > maxAge) {
+          return res.json({ valid: false });
+        }
+
+        // Verify user still exists in database
+        const user = await storage.getUserById(userId);
+        if (!user) {
+          return res.json({ valid: false });
+        }
+
+        res.json({ valid: true });
+      } catch (err) {
+        return res.json({ valid: false });
+      }
     } catch (error) {
       console.error("Error validating session:", error);
       res.json({ valid: false });

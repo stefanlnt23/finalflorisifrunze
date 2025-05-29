@@ -106,3 +106,29 @@ export const queryClient = new QueryClient({
     },
   },
 });
+
+const makeRequest = async (url: string, options: RequestInit = {}): Promise<any> => {
+  const baseURL = import.meta.env.VITE_API_URL || '';
+  const fullURL = `${baseURL}${url}`;
+
+  console.log(`Making ${options.method || 'GET'} request to ${url}`);
+
+  // Add authentication token to admin requests
+  const headers: HeadersInit = {
+    'Content-Type': 'application/json',
+    ...options.headers,
+  };
+
+  // Add auth token for admin routes
+  if (url.includes('/admin/')) {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+  }
+
+  try {
+    const response = await fetch(fullURL, {
+      headers,
+      ...options,
+    });
