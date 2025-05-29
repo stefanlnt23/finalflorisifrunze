@@ -310,7 +310,9 @@ export function registerRoutes(app: Express): Server {
   // Check admin register status
   app.get("/api/admin/register-status", async (req, res) => {
     try {
+      console.log("API: Checking admin register status...");
       const status = await storage.getAdminRegisterStatus();
+      console.log(`API: Admin register status is: ${status}`);
       res.json({ adminregister: status });
     } catch (error) {
       console.error("Error getting admin register status:", error);
@@ -340,11 +342,12 @@ export function registerRoutes(app: Express): Server {
         console.log(`User lookup by email ${email}: ${user ? 'Found' : 'Not found'}`);
 
         if (user) {
-          console.log(`Found user: ${JSON.stringify({
+          console.log(`Found user by email: ${JSON.stringify({
             id: user.id,
             username: user.username,
             email: user.email,
-            role: user.role
+            role: user.role,
+            hasPassword: !!user.password
           })}`);
         }
       }
@@ -353,6 +356,16 @@ export function registerRoutes(app: Express): Server {
       if (!user && username) {
         user = await storage.getUserByUsername(username);
         console.log(`User lookup by username ${username}: ${user ? 'Found' : 'Not found'}`);
+        
+        if (user) {
+          console.log(`Found user by username: ${JSON.stringify({
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            role: user.role,
+            hasPassword: !!user.password
+          })}`);
+        }
       }
 
       if (!user) {
@@ -362,12 +375,14 @@ export function registerRoutes(app: Express): Server {
 
       // Check if user is admin
       if (user.role !== 'admin') {
-        console.log("User is not admin, access denied");
+        console.log(`User role is '${user.role}', not 'admin', access denied`);
         return res.status(401).json({ message: "Access denied. Admin role required." });
       }
 
       // Check password
-      console.log(`Checking password for user ${user.email}`);
+      console.log(`Checking password for user ${user.email || user.username}`);
+      console.log(`Stored password hash exists: ${!!user.password}`);
+      
       const passwordMatch = await comparePasswords(password, user.password);
       console.log(`Password match for ${email || username}: ${passwordMatch}`);
 
@@ -402,8 +417,12 @@ export function registerRoutes(app: Express): Server {
     try {
       const { name, email, username, password } = req.body;
 
+      console.log("Registration attempt:", { name, email, username, passwordLength: password?.length });
+
       // Check if admin registration is enabled
       const adminRegisterEnabled = await storage.getAdminRegisterStatus();
+      console.log(`Admin registration enabled: ${adminRegisterEnabled}`);
+      
       if (!adminRegisterEnabled) {
         return res.status(403).json({ 
           success: false, 
@@ -437,24 +456,22 @@ export function registerRoutes(app: Express): Server {
         });
       }
 
-      // Hash the password
-      const hashedPassword = await hashPassword(password);
-
-      // Create the new admin user
+      // Create the new admin user with proper role
       const newUser = {
         name,
         email,
         username,
-        password: hashedPassword,
-        role: 'admin', // Create as admin
-        createdAt: new Date(),
-        updatedAt: new Date()
+        password, // Don't hash here, let createUser handle it
+        role: 'admin'
       };
 
-      await storage.createUser(newUser);
+      console.log("Creating admin user:", { ...newUser, password: '[HIDDEN]' });
+      const createdUser = await storage.createUser(newUser);
+      console.log("Admin user created successfully:", createdUser.id);
 
       // After successful registration, disable admin registration
       await storage.setAdminRegisterStatus(false);
+      console.log("Admin registration disabled after successful registration");
 
       res.status(201).json({ 
         success: true, 

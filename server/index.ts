@@ -54,6 +54,11 @@ app.use((req, res, next) => {
       await (storageInstance as any).seedDemoData();
     }
     
+    // Ensure default admin exists
+    if (storageInstance && typeof (storageInstance as any).ensureDefaultAdminExists === 'function') {
+      await (storageInstance as any).ensureDefaultAdminExists();
+    }
+    
     // Then register API routes
     const server = await registerRoutes(app);
 

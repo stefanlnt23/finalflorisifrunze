@@ -25,9 +25,15 @@ export default function AdminRegister() {
   useEffect(() => {
     const checkRegistrationStatus = async () => {
       try {
+        console.log('Checking admin registration status...');
         const response = await fetch('/api/admin/register-status');
+        console.log('Registration status response:', response.status, response.statusText);
+        
         const data = await response.json();
+        console.log('Registration status data:', data);
+        
         setRegistrationEnabled(data.adminregister);
+        console.log('Registration enabled:', data.adminregister);
       } catch (error) {
         console.error('Error checking registration status:', error);
         setRegistrationEnabled(false);
@@ -63,6 +69,8 @@ export default function AdminRegister() {
     setIsSubmitting(true);
 
     try {
+      console.log('Submitting registration for:', { name, email, username });
+      
       const response = await fetch('/api/admin/register', {
         method: 'POST',
         headers: {
@@ -71,7 +79,10 @@ export default function AdminRegister() {
         body: JSON.stringify({ name, email, username, password }),
       });
 
+      console.log('Registration response status:', response.status, response.statusText);
+      
       const data = await response.json();
+      console.log('Registration response data:', data);
 
       if (response.ok && data.success) {
         toast({

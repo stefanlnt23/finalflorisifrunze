@@ -1541,11 +1541,20 @@ export class MongoDBStorage implements IStorage {
           adminregister: true,
           updatedAt: new Date()
         });
+        log('Created adminregisters collection with default status: true', 'mongodb');
         return true;
       }
 
       const record = await this.db.collection('adminregisters').findOne({});
-      return record ? record.adminregister : false;
+      log(`Admin register status record: ${JSON.stringify(record)}`, 'mongodb');
+      
+      if (record && record.adminregister !== undefined) {
+        log(`Returning admin register status: ${record.adminregister}`, 'mongodb');
+        return Boolean(record.adminregister);
+      } else {
+        log('No admin register record found, returning false', 'mongodb');
+        return false;
+      }
     } catch (error) {
       log(`Error getting admin register status: ${error}`, 'mongodb');
       return false;
@@ -1586,6 +1595,37 @@ export class MongoDBStorage implements IStorage {
     } catch (error) {
       log(`Error fetching user with id ${id}: ${error}`, 'mongodb');
       return undefined;
+    }
+  }
+
+  // Ensure default admin exists
+  async ensureDefaultAdminExists(): Promise<void> {
+    try {
+      const adminCount = await User.countDocuments({ role: 'admin' });
+      
+      if (adminCount === 0) {
+        log('No admin users found, creating default admin...', 'mongodb');
+        
+        // Create default admin
+        const defaultAdmin = {
+          name: 'Default Admin',
+          email: 'admin@admin.com',
+          username: 'admin',
+          password: 'admin123',
+          role: 'admin'
+        };
+
+        await this.createUser(defaultAdmin);
+        log('Default admin created: admin@admin.com / admin / admin123', 'mongodb');
+        
+        // Enable admin registration so more admins can be created
+        await this.setAdminRegisterStatus(true);
+        log('Admin registration enabled', 'mongodb');
+      } else {
+        log(`Found ${adminCount} admin users in system`, 'mongodb');
+      }
+    } catch (error) {
+      log(`Error ensuring default admin exists: ${error}`, 'mongodb');
     }
   }
 
