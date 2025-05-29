@@ -132,3 +132,35 @@ const makeRequest = async (url: string, options: RequestInit = {}): Promise<any>
       headers,
       ...options,
     });
+
+    console.log(`Response from ${url}: ${response.status} ${response.statusText}`);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`API Error Response: ${errorText}`);
+      
+      let errorObj;
+      try {
+        errorObj = JSON.parse(errorText);
+      } catch (e) {
+        errorObj = { message: errorText || 'Unknown error' };
+      }
+      throw new Error(errorObj.message || `API request failed with status ${response.status}`);
+    }
+
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      return await response.json();
+    }
+    
+    return await response.text();
+  } catch (error) {
+    console.error('API Request Error:', error);
+    throw error;
+  }
+};
+
+// Helper function to get auth token
+function getAuthToken(): string | null {
+  return localStorage.getItem('authToken');
+}
