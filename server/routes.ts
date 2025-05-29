@@ -52,10 +52,14 @@ function authenticateAdmin(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-// Helper function to get storage instance
+// Helper function to get storage instance  
+async function getStorage() {
+  return storage;
+}
+
 async function withStorage<T>(handler: (storage: any) => Promise<T>): Promise<T> {
-  const storage = await getStorage();
-  return handler(storage);
+  const storageInstance = await getStorage();
+  return handler(storageInstance);
 }
 
 export function registerRoutes(app: Express): Server {

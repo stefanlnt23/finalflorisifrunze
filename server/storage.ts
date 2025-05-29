@@ -65,7 +65,7 @@ export interface IStorage {
   getTestimonials(): Promise<Testimonial[]>;
   createTestimonial(testimonial: InsertTestimonial): Promise<Testimonial>;
   updateTestimonial(id: number | string, testimonialData: Partial<InsertTestimonial>): Promise<Testimonial | undefined>;
-  deleteTestimonial(id: number | string): Promise<boolean>;
+  deleteTestimonial(id: string | number): Promise<boolean>;
 
   // Carousel Images
   getCarouselImages(): Promise<CarouselImage[]>;
@@ -89,6 +89,10 @@ export interface IStorage {
   createSubscription(subscription: InsertSubscription): Promise<Subscription>;
   updateSubscription(id: string, subscription: Partial<InsertSubscription>): Promise<Subscription | null>;
   deleteSubscription(id: string): Promise<boolean>;
+
+  // Admin Register Status
+  getAdminRegisterStatus(): Promise<boolean>;
+  setAdminRegisterStatus(status: boolean): Promise<void>;
 }
 
 export class MemStorage implements IStorage {
@@ -103,6 +107,7 @@ export class MemStorage implements IStorage {
   private carouselImages: Map<string, CarouselImage>;
   private featureCards: Map<string, FeatureCard>;
   private subscriptions: Map<string, Subscription>;
+  private adminRegisterEnabled: boolean;
 
   // ID counters
   private userIdCounter: number;
@@ -140,6 +145,9 @@ export class MemStorage implements IStorage {
     this.carouselImageIdCounter = 1;
     this.featureCardIdCounter = 1;
     this.subscriptionIdCounter = 1;
+
+    // Initialize admin register status
+    this.adminRegisterEnabled = true; // Default to enabled
 
     // Add an admin user by default
     this.createUser({
@@ -321,6 +329,10 @@ export class MemStorage implements IStorage {
   async getUser(id: string | number): Promise<User | undefined> {
     return this.users.get(id);
   }
+
+    async getUserById(id: string): Promise<any | undefined> {
+        return Array.from(this.users.values()).find(user => String(user.id) === id);
+    }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
     return Array.from(this.users.values()).find(
@@ -716,6 +728,15 @@ export class MemStorage implements IStorage {
   async deleteSubscription(id: string): Promise<boolean> {
     return this.subscriptions.delete(id);
   }
+
+    // Admin Register Status methods
+  async getAdminRegisterStatus(): Promise<boolean> {
+    return this.adminRegisterEnabled;
+  }
+
+  async setAdminRegisterStatus(status: boolean): Promise<void> {
+    this.adminRegisterEnabled = status;
+  }
 }
 
 // Import MongoDB storage class
@@ -746,16 +767,19 @@ export async function getStorage(): Promise<IStorage> {
   return _storage;
 }
 
-// For backward compatibility, create a proxy that loads storage on demand
-export const storage = new Proxy({} as IStorage, {
-  get(target, prop) {
-    return async function(...args: any[]) {
-      const storageInstance = await getStorage();
-      const method = (storageInstance as any)[prop];
-      if (typeof method === 'function') {
-        return method.apply(storageInstance, args);
-      }
-      return method;
-    };
+// Helper function to get storage instance
+async function withStorage<T>(handler: (storage: any) => Promise<T>): Promise<T> {
+  const storage = await getStorage();
+  return handler(storage);
+}
+
+// Add missing methods to the storage interface
+declare module './mongodb-storage' {
+  interface MongoDBStorage {
+    getAdminRegisterStatus(): Promise<boolean>;
+    setAdminRegisterStatus(status: boolean): Promise<void>;
+    getUserById(id: string): Promise<any | undefined>;
   }
-});
+}
+
+export const storage = createStorage();

@@ -1525,6 +1525,70 @@ export class MongoDBStorage implements IStorage {
     return this.db.collection(collectionName);
   }
 
+  // Admin register status methods
+  async getAdminRegisterStatus(): Promise<boolean> {
+    try {
+      if (!this.db) {
+        await this.initDb();
+        if (!this.db) return false;
+      }
+
+      const collections = await this.db.listCollections({ name: 'adminregisters' }).toArray();
+      if (collections.length === 0) {
+        await this.db.createCollection('adminregisters');
+        // Create default record with adminregister: true
+        await this.db.collection('adminregisters').insertOne({
+          adminregister: true,
+          updatedAt: new Date()
+        });
+        return true;
+      }
+
+      const record = await this.db.collection('adminregisters').findOne({});
+      return record ? record.adminregister : false;
+    } catch (error) {
+      log(`Error getting admin register status: ${error}`, 'mongodb');
+      return false;
+    }
+  }
+
+  async setAdminRegisterStatus(status: boolean): Promise<void> {
+    try {
+      if (!this.db) {
+        await this.initDb();
+        if (!this.db) return;
+      }
+
+      const collections = await this.db.listCollections({ name: 'adminregisters' }).toArray();
+      if (collections.length === 0) {
+        await this.db.createCollection('adminregisters');
+      }
+
+      await this.db.collection('adminregisters').updateOne(
+        {},
+        { 
+          $set: { 
+            adminregister: status, 
+            updatedAt: new Date() 
+          } 
+        },
+        { upsert: true }
+      );
+    } catch (error) {
+      log(`Error setting admin register status: ${error}`, 'mongodb');
+    }
+  }
+
+  async getUserById(id: string): Promise<any | undefined> {
+    try {
+      const user = await User.findById(id);
+      return user ? mapUserToSchema(user) : undefined;
+    } catch (error) {
+      log(`Error fetching user with id ${id}: ${error}`, 'mongodb');
+      return undefined;
+    }
+  }
+
   // Initialize demo data 
   async seedDemoData(): Promise<void> {
     try {
