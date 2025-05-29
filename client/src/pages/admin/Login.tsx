@@ -74,12 +74,20 @@ export default function AdminLogin() {
               />
             </div>
             <div className="mt-2 text-sm text-gray-500">
-              Default credentials: admin@admin.com / admin123
+              Default credentials: admin@greengarden.com / admin123
             </div>
           </CardContent>
-          <CardFooter>
+          <CardFooter className="flex flex-col space-y-2">
             <Button type="submit" className="w-full">
               Sign in
+            </Button>
+            <Button 
+              type="button"
+              variant="outline" 
+              onClick={() => navigate('/admin/register')} 
+              className="w-full"
+            >
+              Register New Admin
             </Button>
           </CardFooter>
         </form>

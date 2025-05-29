@@ -290,6 +290,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // =========== ADMIN API ROUTES ===========
 
+  // Check admin register status
+  app.get("/api/admin/register-status", async (req, res) => {
+    try {
+      const status = await storage.getAdminRegisterStatus();
+      res.json({ adminregister: status });
+    } catch (error) {
+      console.error("Error getting admin register status:", error);
+      res.status(500).json({ message: "Failed to get admin register status" });
+    }
+  });
+
   // Admin authentication
   app.post("/api/admin/login", async (req, res) => {
     try {
@@ -328,14 +339,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       if (!user) {
+        console.log("User not found, returning invalid credentials");
         return res.status(401).json({ message: "Invalid credentials" });
       }
 
+      // Check if user is admin
+      if (user.role !== 'admin') {
+        console.log("User is not admin, access denied");
+        return res.status(401).json({ message: "Access denied. Admin role required." });
+      }
+
       // Check password
+      console.log(`Checking password for user ${user.email}`);
       const passwordMatch = await comparePasswords(password, user.password);
       console.log(`Password match for ${email || username}: ${passwordMatch}`);
 
       if (!passwordMatch) {
+        console.log("Password does not match, returning invalid credentials");
         return res.status(401).json({ message: "Invalid credentials" });
       }
 
@@ -363,39 +383,72 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Registration endpoint
   app.post("/api/admin/register", async (req, res) => {
     try {
-      const { email, password } = req.body;
+      const { name, email, username, password } = req.body;
 
-      // Validate request body
-      if (!email || !password) {
-        return res.status(400).json({ success: false, message: 'Email and password are required' });
+      // Check if admin registration is enabled
+      const adminRegisterEnabled = await storage.getAdminRegisterStatus();
+      if (!adminRegisterEnabled) {
+        return res.status(403).json({ 
+          success: false, 
+          message: 'Admin registration is currently disabled' 
+        });
       }
 
-      // Check if user already exists
-      const existingUser = await storage.getUserByEmail(email);
-      if (existingUser) {
-        return res.status(400).json({ success: false, message: 'Email already in use' });
+      // Validate request body
+      if (!name || !email || !username || !password) {
+        return res.status(400).json({ 
+          success: false, 
+          message: 'Name, email, username and password are required' 
+        });
+      }
+
+      // Check if user already exists by email
+      const existingUserByEmail = await storage.getUserByEmail(email);
+      if (existingUserByEmail) {
+        return res.status(400).json({ 
+          success: false, 
+          message: 'Email already in use' 
+        });
+      }
+
+      // Check if user already exists by username
+      const existingUserByUsername = await storage.getUserByUsername(username);
+      if (existingUserByUsername) {
+        return res.status(400).json({ 
+          success: false, 
+          message: 'Username already in use' 
+        });
       }
 
       // Hash the password
       const hashedPassword = await hashPassword(password);
 
-      // Create the new user
+      // Create the new admin user
       const newUser = {
-        name: email.split('@')[0],
+        name,
         email,
-        username: `user_${Date.now()}`,
+        username,
         password: hashedPassword,
-        role: 'user', // Default role
+        role: 'admin', // Create as admin
         createdAt: new Date(),
         updatedAt: new Date()
       };
 
       await storage.createUser(newUser);
 
-      res.status(201).json({ success: true, message: 'User registered successfully' });
+      // After successful registration, disable admin registration
+      await storage.setAdminRegisterStatus(false);
+
+      res.status(201).json({ 
+        success: true, 
+        message: 'Admin registered successfully. Registration has been disabled.' 
+      });
     } catch (error) {
       console.error('Registration error:', error);
-      res.status(500).json({ success: false, message: 'Server error during registration' });
+      res.status(500).json({ 
+        success: false, 
+        message: 'Server error during registration' 
+      });
     }
   });
 
