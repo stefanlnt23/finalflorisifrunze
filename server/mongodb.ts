@@ -1,4 +1,3 @@
-
 import mongoose from 'mongoose';
 import { log } from './vite';
 
@@ -10,8 +9,8 @@ export async function connectToMongoDB() {
     await mongoose.connect(DATABASE_URL);
     log('Connected to MongoDB', 'mongodb');
 
-    // Initialize admin register setting and ensure admin user
-    await initializeAdminSystem();
+    // Check if we have any users, if not create a default admin user
+    await ensureAdminUser();
 
     return mongoose.connection;
   } catch (error) {
@@ -20,33 +19,21 @@ export async function connectToMongoDB() {
   }
 }
 
-// Helper function to initialize admin system
-async function initializeAdminSystem() {
+// Helper function to ensure we have at least one admin user
+async function ensureAdminUser() {
   try {
-    // Check if admin register setting exists
-    const adminRegisterSetting = await AdminRegister.findOne();
-    if (!adminRegisterSetting) {
-      log("Creating admin register setting...", "mongodb");
-      const adminRegister = new AdminRegister({
-        adminregister: true // Set to true initially so you can register the first admin
-      });
-      await adminRegister.save();
-      log("Admin register setting created (set to true)", "mongodb");
-    }
-
-    // Check if we have any admin users
-    const adminCount = await User.countDocuments({ role: 'admin' });
-    if (adminCount === 0) {
-      log("No admin users found, creating default admin user...", "mongodb");
+    const userCount = await User.countDocuments();
+    if (userCount === 0) {
+      log("No users found, creating default admin user...", "mongodb");
 
       // Import auth for password hashing
       const auth = await import('./auth');
-      const hashedPassword = await auth.hashPassword('admin123');
+      const hashedPassword = await auth.hashPassword('password123');
 
-      // Create admin user with the exact credentials from your login form
+      // Create admin user
       const adminUser = new User({
-        name: 'Green Garden Admin',
-        email: 'admin@greengarden.com',
+        name: 'Admin User',
+        email: 'admin@example.com',
         username: 'admin',
         password: hashedPassword,
         role: 'admin',
@@ -55,18 +42,12 @@ async function initializeAdminSystem() {
       });
 
       await adminUser.save();
-      log("Default admin user created successfully (admin@greengarden.com / admin123)", "mongodb");
+      log("Default admin user created successfully", "mongodb");
     }
   } catch (error) {
-    log(`Error initializing admin system: ${error}`, "mongodb");
+    log(`Error creating admin user: ${error}`, "mongodb");
   }
 }
-
-// Admin register schema
-const adminRegisterSchema = new mongoose.Schema({
-  adminregister: { type: Boolean, default: false },
-  updatedAt: { type: Date, default: Date.now }
-});
 
 // Create schemas and models for the application
 const userSchema = new mongoose.Schema({
@@ -246,7 +227,6 @@ const subscriptionSchema = new mongoose.Schema({
 });
 
 // Create models
-export const AdminRegister = mongoose.model('AdminRegister', adminRegisterSchema);
 export const User = mongoose.model('User', userSchema);
 export const Service = mongoose.model('Service', serviceSchema);
 export const PortfolioItem = mongoose.model('PortfolioItem', portfolioItemSchema);

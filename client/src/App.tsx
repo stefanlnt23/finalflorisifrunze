@@ -39,8 +39,7 @@ const AdminTestimonials = React.lazy(() => import('./pages/admin/Testimonials'))
 const AdminTestimonialsForm = React.lazy(() => import('./pages/admin/TestimonialsForm'));
 const AdminSubscriptions = React.lazy(() => import('./pages/admin/Subscriptions'));
 const AdminSubscriptionsForm = React.lazy(() => import('./pages/admin/SubscriptionsForm'));
-import AdminLogin from '@/pages/admin/Login';
-import AdminRegister from '@/pages/admin/Register';
+const AdminLogin = React.lazy(() => import('./pages/admin/Login'));
 
 function Router() {
   return (
@@ -63,7 +62,6 @@ function Router() {
 
           {/* Admin routes */}
           <Route path="/admin/login" component={AdminLogin} />
-          <Route path="/admin/register" component={AdminRegister} />
           <Route path="/admin/dashboard">
             <ProtectedRoute component={AdminDashboard} />
           </Route>
