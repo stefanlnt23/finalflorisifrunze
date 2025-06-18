@@ -1,12 +1,12 @@
-import { IStorage } from './storage';
+import { IStorage } from './storage.js';
 import {
   User, Service, PortfolioItem, BlogPost, Inquiry, Appointment, Testimonial,
   mapUserToSchema, mapServiceToSchema, mapPortfolioItemToSchema, mapBlogPostToSchema,
   mapInquiryToSchema, mapAppointmentToSchema, mapTestimonialToSchema
-} from './mongodb';
-import { InsertUser, InsertService, InsertPortfolioItem, InsertBlogPost, InsertInquiry, InsertAppointment, InsertTestimonial } from '@shared/schema';
+} from './mongodb.js';
+import { InsertUser, InsertService, InsertPortfolioItem, InsertBlogPost, InsertInquiry, InsertAppointment, InsertTestimonial } from '../shared/schema.js';
 import mongoose from 'mongoose';
-import { log } from './vite';
+import { log } from './vite.js';
 import * as crypto from 'crypto';
 import { Db, ObjectId } from 'mongodb';
 import { Collection } from 'mongodb';
@@ -127,7 +127,8 @@ export class MongoDBStorage implements IStorage {
       let password = insertUser.password;
       if (!password.startsWith('$2b$')) {
         // Password is not hashed, hash it now
-        const hashedPassword = await import('./auth').then(auth => auth.hashPassword(insertUser.password));
+        const auth = await import('./auth.js');
+        const hashedPassword = await auth.hashPassword(insertUser.password);
         password = hashedPassword;
       }
 
@@ -148,7 +149,8 @@ export class MongoDBStorage implements IStorage {
       // If password is being updated, hash it
       const updatedData = { ...userData };
       if (updatedData.password) {
-        updatedData.password = await import('./auth').then(auth => auth.hashPassword(updatedData.password as string));
+        const auth = await import('./auth.js');
+        updatedData.password = await auth.hashPassword(updatedData.password as string);
       }
 
       const updatedUser = await User.findByIdAndUpdate(

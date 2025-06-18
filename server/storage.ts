@@ -10,7 +10,7 @@ import {
   type FeatureCard,
   type Subscription,
   type InsertSubscription,
-} from "@shared/schema";
+} from "../shared/schema.js";
 
 // Storage interface for all CRUD operations
 export interface IStorage {
@@ -719,7 +719,7 @@ export class MemStorage implements IStorage {
 }
 
 // Import MongoDB storage
-import { MongoDBStorage } from './mongodb-storage';
+import { MongoDBStorage } from './mongodb-storage.js';
 
 // Use MongoDB storage for production
 export const storage = new MongoDBStorage();

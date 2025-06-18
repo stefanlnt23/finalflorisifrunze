@@ -1,9 +1,9 @@
 import type { Express, Request, Response, NextFunction } from "express";
 import { createServer, type Server } from "http";
 import mongoose from "mongoose";
-import { storage } from "./storage";
-import { comparePasswords, hashPassword } from "./auth";
-import { generateToken, verifyToken, extractTokenFromHeader, JWTPayload } from "./jwt";
+import { storage } from "./storage.js";
+import { comparePasswords, hashPassword } from "./auth.js";
+import { generateToken, verifyToken, extractTokenFromHeader, JWTPayload } from "./jwt.js";
 import { z } from "zod";
 import {
   insertServiceSchema,
@@ -12,7 +12,7 @@ import {
   insertInquirySchema,
   insertAppointmentSchema,
   insertTestimonialSchema,
-} from "@shared/schema";
+} from "../shared/schema.js";
 
 // Extend Request interface to include user data
 declare global {

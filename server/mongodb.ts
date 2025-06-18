@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
-import { log } from './vite';
+import { log } from './logger';
 
-const DATABASE_URL = process.env.DATABASE_URL || 'mongodb+srv://stefanlenta:MABCkbbCfNeUOo1M@cluster0.3ibgvtn.mongodb.net/garden_services_db';
+const DATABASE_URL = process.env.MONGODB_URI || process.env.DATABASE_URL || '';
 
 // Initialize MongoDB connection
 export async function connectToMongoDB() {
