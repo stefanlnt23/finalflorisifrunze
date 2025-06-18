@@ -1,8 +1,5 @@
 
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist/public",
-  "framework": "vite",
   "functions": {
     "api/index.ts": {
       "runtime": "@vercel/node"
@@ -10,6 +7,28 @@
   },
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/index" },
-    { "src": "/(.*)", "dest": "/index.html" }
+    { "src": "/(.*)", "dest": "/$1" }
+  ],
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist/public",
+  "headers": [
+    {
+      "source": "/assets/(.*\\.js)",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/javascript"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*\\.css)",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/css"
+        }
+      ]
+    }
   ]
 }
