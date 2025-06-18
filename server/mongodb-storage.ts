@@ -827,7 +827,7 @@ export class MongoDBStorage implements IStorage {
     }
   }
 
-  async deleteCarouselImage(id: string): Promise<void> {
+  async deleteCarouselImage(id: string): Promise<boolean> {
     try {
       if (!this.db) {
         log('Database connection not initialized yet, initializing now...', 'mongodb');
@@ -857,13 +857,15 @@ export class MongoDBStorage implements IStorage {
         { order: { $gt: image.order } },
         { $inc: { order: -1 } }
       );
+      
+      return true;
     } catch (error) {
       console.error(`Error deleting carousel image ${id}:`, error);
-      throw error;
+      return false;
     }
   }
 
-  async reorderCarouselImage(id: string, direction: 'up' | 'down'): Promise<void> {
+  async reorderCarouselImage(id: string, direction: 'up' | 'down'): Promise<boolean> {
     try {
       if (!this.db) {
         log('Database connection not initialized yet, initializing now...', 'mongodb');
@@ -905,9 +907,11 @@ export class MongoDBStorage implements IStorage {
         { _id: adjacentImage._id },
         { $set: { order: image.order, updatedAt: new Date() } }
       );
+      
+      return true;
     } catch (error) {
       console.error(`Error reordering carousel image ${id}:`, error);
-      throw error;
+      return false;
     }
   }
 

@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt, { SignOptions } from 'jsonwebtoken';
 import { User } from '@shared/schema';
 
 // JWT secret - in production this should be a strong, randomly generated secret
@@ -22,7 +22,7 @@ export function generateToken(user: User): string {
 
   return jwt.sign(payload, JWT_SECRET, {
     expiresIn: JWT_EXPIRES_IN,
-  });
+  } as SignOptions);
 }
 
 export function verifyToken(token: string): JWTPayload | null {

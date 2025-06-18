@@ -22,36 +22,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { insertServiceSchema } from "@shared/schema";
+import { insertServiceSchema, type InsertService } from "@shared/schema";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { Plus, Trash2 } from "lucide-react";
 
-// Extend the schema with validation and make optional fields required for form
-const formSchema = z.object({
-  name: z.string().min(1, "Service name is required"),
-  description: z.string().min(1, "Description is required"),
-  shortDesc: z.string().min(10, "Short description must be at least 10 characters"),
-  price: z.string().min(1, "Price is required"),
-  imageUrl: z.string().optional(),
-  featured: z.boolean().default(false),
-  
-  // Extended fields
-  duration: z.string().optional(),
-  coverage: z.string().optional(),
-  benefits: z.array(z.string()).optional(),
-  includes: z.array(z.string()).optional(),
-  faqs: z.array(
-    z.object({
-      question: z.string(),
-      answer: z.string()
-    })
-  ).optional(),
-  recommendedFrequency: z.string().optional(),
-  seasonalAvailability: z.array(z.string()).optional(),
-  galleryImages: z.array(z.string()).optional()
-});
-
-type FormValues = z.infer<typeof formSchema>;
+// Use the schema from shared/schema.ts directly
+const formSchema = insertServiceSchema;
+type FormValues = InsertService;
 
 export default function AdminServicesForm() {
   const { id } = useParams();
@@ -125,19 +102,19 @@ export default function AdminServicesForm() {
   
   // Field arrays for dynamic fields
   const { fields: benefitFields, append: appendBenefit, remove: removeBenefit } = 
-    useFieldArray({ control: form.control, name: "benefits" as const });
+    useFieldArray({ control: form.control, name: "benefits" });
     
   const { fields: includeFields, append: appendInclude, remove: removeInclude } = 
-    useFieldArray({ control: form.control, name: "includes" as const });
+    useFieldArray({ control: form.control, name: "includes" });
     
   const { fields: faqFields, append: appendFaq, remove: removeFaq } = 
-    useFieldArray({ control: form.control, name: "faqs" as const });
+    useFieldArray({ control: form.control, name: "faqs" });
     
   const { fields: seasonFields, append: appendSeason, remove: removeSeason } = 
-    useFieldArray({ control: form.control, name: "seasonalAvailability" as const });
+    useFieldArray({ control: form.control, name: "seasonalAvailability" });
     
   const { fields: galleryFields, append: appendGallery, remove: removeGallery } = 
-    useFieldArray({ control: form.control, name: "galleryImages" as const });
+    useFieldArray({ control: form.control, name: "galleryImages" });
 
   // Update form values when service data is loaded
   useEffect(() => {
@@ -342,7 +319,7 @@ export default function AdminServicesForm() {
                         <FormItem>
                           <FormLabel>Main Image URL</FormLabel>
                           <FormControl>
-                            <Input placeholder="https://example.com/image.jpg" {...field} />
+                            <Input placeholder="https://example.com/image.jpg" {...field} value={field.value || ""} />
                           </FormControl>
                           <FormDescription>
                             The main image representing the service
@@ -365,7 +342,7 @@ export default function AdminServicesForm() {
                           </div>
                           <FormControl>
                             <Switch
-                              checked={field.value}
+                              checked={field.value || false}
                               onCheckedChange={field.onChange}
                             />
                           </FormControl>
@@ -383,7 +360,7 @@ export default function AdminServicesForm() {
                         <FormItem>
                           <FormLabel>Service Duration</FormLabel>
                           <FormControl>
-                            <Input placeholder="e.g. 1-2 hours, 3-5 days" {...field} />
+                            <Input placeholder="e.g. 1-2 hours, 3-5 days" {...field} value={field.value || ""} />
                           </FormControl>
                           <FormDescription>
                             How long does this service typically take to complete?
@@ -400,7 +377,7 @@ export default function AdminServicesForm() {
                         <FormItem>
                           <FormLabel>Coverage Area</FormLabel>
                           <FormControl>
-                            <Input placeholder="e.g. Up to 500 sq ft" {...field} />
+                            <Input placeholder="e.g. Up to 500 sq ft" {...field} value={field.value || ""} />
                           </FormControl>
                           <FormDescription>
                             What area does this service typically cover?
@@ -417,7 +394,7 @@ export default function AdminServicesForm() {
                         <FormItem>
                           <FormLabel>Recommended Frequency</FormLabel>
                           <FormControl>
-                            <Input placeholder="e.g. Weekly, Monthly, Seasonally" {...field} />
+                            <Input placeholder="e.g. Weekly, Monthly, Seasonally" {...field} value={field.value || ""} />
                           </FormControl>
                           <FormDescription>
                             How often should this service be performed?
