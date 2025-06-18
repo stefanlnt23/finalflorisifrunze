@@ -6,11 +6,17 @@ import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 export default defineConfig({
   base: '/', // Use absolute paths for production
   plugins: [
-    react(),
-    runtimeErrorOverlay(),
+    react({
+      babel: {
+        parserOpts: {
+          plugins: ['decorators-legacy', 'classProperties']
+        }
+      }
+    }),
     ...(process.env.NODE_ENV !== "production" &&
     process.env.REPL_ID !== undefined
       ? [
+          runtimeErrorOverlay(),
           await import("@replit/vite-plugin-cartographer").then((m) =>
             m.cartographer(),
           ),
@@ -28,13 +34,45 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
+    sourcemap: false,
+    minify: 'terser',
     rollupOptions: {
       output: {
         format: 'es',
         entryFileNames: 'assets/[name]-[hash].js',
         chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]'
+        assetFileNames: 'assets/[name]-[hash].[ext]',
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          router: ['wouter'],
+          ui: ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu']
+        }
+      },
+      onwarn(warning, warn) {
+        // Ignore certain warnings
+        if (warning.code === 'MODULE_LEVEL_DIRECTIVE') {
+          return;
+        }
+        warn(warning);
       }
     }
   },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
+  esbuild: {
+    jsx: 'automatic',
+    jsxDev: false,
+    tsconfigRaw: {
+      compilerOptions: {
+        useDefineForClassFields: true
+      }
+    }
+  }
 });

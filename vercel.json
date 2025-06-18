@@ -2,31 +2,28 @@
 {
   "functions": {
     "api/index.ts": {
-      "runtime": "@vercel/node"
+      "maxDuration": 10
     }
   },
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/index" },
-    { "src": "/(.*)", "dest": "/$1" }
-  ],
-  "buildCommand": "npm run build",
+  "buildCommand": "bash scripts/build-for-vercel.sh",
   "outputDirectory": "dist/public",
-  "headers": [
+  "rewrites": [
     {
-      "source": "/assets/(.*\\.js)",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "application/javascript"
-        }
-      ]
+      "source": "/api/(.*)",
+      "destination": "/api"
     },
     {
-      "source": "/assets/(.*\\.css)",
+      "source": "/((?!api|assets).*)",
+      "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/assets/(.*)",
       "headers": [
         {
-          "key": "Content-Type",
-          "value": "text/css"
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
         }
       ]
     }

@@ -12,13 +12,10 @@ yarn-error.log*
 .vscode
 .replit
 client/src
-server
-shared
 scripts
 examples
 attached_assets
 *.md
-tsconfig.json
 tsconfig.server.json
 tailwind.config.ts
 postcss.config.js

@@ -199,9 +199,13 @@ export default function SubscriptionsForm() {
   };
 
   return (
-    <Card>
-      <CardContent className="pt-6">
-        <Form {...form}>
+    <AdminLayout 
+      title={isEditing ? "Edit Subscription Plan" : "Create Subscription Plan"}
+      description={isEditing ? "Update subscription plan details" : "Create a new subscription plan"}
+    >
+      <Card>
+        <CardContent className="pt-6">
+          <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="space-y-4">
               <FormField
@@ -390,5 +394,6 @@ export default function SubscriptionsForm() {
         </Form>
       </CardContent>
     </Card>
+    </AdminLayout>
   );
 }
