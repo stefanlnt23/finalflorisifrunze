@@ -20,7 +20,6 @@ attached_assets
 *.md
 tsconfig.json
 tsconfig.server.json
-vite.config.ts
 tailwind.config.ts
 postcss.config.js
 components.json
