@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
 import MainLayout from "@/components/layouts/MainLayout";
@@ -49,7 +49,7 @@ export default function Subscriptions() {
           features: Array.isArray(sub.features) ? sub.features : [],
           price: sub.price || "0 RON",
           isPopular: Boolean(sub.isPopular),
-          displayOrder: parseInt(sub.displayOrder || 0)
+          displayOrder: parseInt(sub.displayOrder || "0")
         })) as Subscription[];
       } catch (err) {
         console.error("Error fetching subscriptions:", err);
@@ -65,9 +65,9 @@ export default function Subscriptions() {
   console.log("Rendered subscriptions:", subscriptions);
 
   // For entry animations
-  const [isLoaded, setIsLoaded] = React.useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Trigger animation after component mounts
     const timer = setTimeout(() => {
       setIsLoaded(true);
@@ -101,13 +101,13 @@ export default function Subscriptions() {
               {subscriptions.map((subscription) => (
                 <Card 
                   key={subscription.id} 
-                  className={`bg-white rounded-2xl overflow-hidden flex flex-col transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 subscription-card subscription-level-${subscription.displayOrder} ${subscription.displayOrder >= 3 ? 'lg:col-span-2 xl:col-span-1' : ''}`}
+                  className={`bg-white rounded-2xl overflow-hidden flex flex-col transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 subscription-card subscription-level-${subscription.displayOrder || 0} ${(subscription.displayOrder || 0) >= 3 ? 'lg:col-span-2 xl:col-span-1' : ''}`}
                   style={{ 
                     boxShadow: `0 10px 30px -5px ${subscription.color || '#4CAF50'}30`,
-                    borderWidth: subscription.displayOrder > 1 ? '3px' : '1px',
-                    borderColor: subscription.displayOrder === 4 ? `${subscription.color}` : 
-                               subscription.displayOrder === 3 ? `${subscription.color}80` : 'rgb(229, 231, 235)',
-                    zIndex: subscription.displayOrder,
+                    borderWidth: (subscription.displayOrder || 0) > 1 ? '3px' : '1px',
+                    borderColor: (subscription.displayOrder || 0) === 4 ? `${subscription.color}` : 
+                               (subscription.displayOrder || 0) === 3 ? `${subscription.color}80` : 'rgb(229, 231, 235)',
+                    zIndex: subscription.displayOrder || 0,
                     maxHeight: '650px'
                   }}
                 >
@@ -123,7 +123,7 @@ export default function Subscriptions() {
                   )}
 
                   {/* Premium tier effects */}
-                  {subscription.displayOrder >= 3 && (
+                  {(subscription.displayOrder || 0) >= 3 && (
                     <div className="absolute top-0 left-0 w-full h-3 z-10" style={{ 
                       background: `linear-gradient(90deg, transparent, ${subscription.color}, transparent)`,
                       animation: 'shimmer 2s infinite linear'
@@ -205,7 +205,7 @@ export default function Subscriptions() {
                               >
                                 ✓
                               </span>
-                              <span className="flex-grow">{typeof feature === 'object' && feature.name ? feature.name + ':' : feature}</span>
+                              <span className="flex-grow">{typeof feature === 'object' && feature.name ? feature.name + ':' : String(feature)}</span>
                             </span>
                             {typeof feature === 'object' && feature.value && (
                               <span 
@@ -226,23 +226,23 @@ export default function Subscriptions() {
                     <Link href="/contact" className="w-full">
                       <Button 
                         className={`w-full py-3 font-bold text-lg text-center relative overflow-hidden transition-all group hover:shadow-xl rounded-xl ${
-                          subscription.displayOrder >= 3 ? 'subscription-premium-button' : ''
+                          (subscription.displayOrder || 0) >= 3 ? 'subscription-premium-button' : ''
                         }`}
                         style={{ 
                           backgroundColor: subscription.color || '#4CAF50',
                           color: '#FFFFFF',
-                          boxShadow: subscription.displayOrder >= 3 ? `0 8px 20px -4px ${subscription.color}70` : 'none'
+                          boxShadow: (subscription.displayOrder || 0) >= 3 ? `0 8px 20px -4px ${subscription.color}70` : 'none'
                         }}
                       >
                         <span className="relative z-10 group-hover:scale-110 inline-block transition-transform duration-300">
-                          {subscription.displayOrder >= 3 ? 'Alege Planul Premium!' : 'Discută Cu Noi!'}
+                          {(subscription.displayOrder || 0) >= 3 ? 'Alege Planul Premium!' : 'Discută Cu Noi!'}
                         </span>
                         <span 
                           className={`absolute inset-0 w-full h-full scale-0 rounded-xl transition-transform duration-300 group-hover:scale-100 ${
-                            subscription.displayOrder >= 3 ? 'opacity-40 bg-white' : 'opacity-30 bg-white'
+                            (subscription.displayOrder || 0) >= 3 ? 'opacity-40 bg-white' : 'opacity-30 bg-white'
                           }`}
                         ></span>
-                        {subscription.displayOrder === 4 && (
+                        {(subscription.displayOrder || 0) === 4 && (
                           <span className="absolute -inset-1 bg-gradient-to-r from-transparent via-white to-transparent opacity-30 blur-sm animate-pulse"></span>
                         )}
                       </Button>
@@ -270,7 +270,7 @@ export default function Subscriptions() {
                 <thead className="bg-gray-50">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Caracteristică</th>
-                    {subscriptions.sort((a, b) => a.displayOrder - b.displayOrder).map((sub) => (
+                    {subscriptions.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0)).map((sub) => (
                       <th 
                         key={sub.id} 
                         className="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider"
@@ -284,7 +284,7 @@ export default function Subscriptions() {
                 <tbody className="bg-white divide-y divide-gray-200">
                   <tr>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Preț</td>
-                    {subscriptions.sort((a, b) => a.displayOrder - b.displayOrder).map((sub) => (
+                    {subscriptions.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0)).map((sub) => (
                       <td key={`${sub.id}-price`} className="px-6 py-4 whitespace-nowrap text-sm text-center font-medium" style={{ color: sub.color }}>
                         {sub.price}
                       </td>
@@ -299,7 +299,7 @@ export default function Subscriptions() {
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                         {featureName}
                       </td>
-                      {subscriptions.sort((a, b) => a.displayOrder - b.displayOrder).map((sub) => {
+                      {subscriptions.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0)).map((sub) => {
                         const feature = sub.features.find(f => 
                           (typeof f === 'object' && f.name === featureName) || f === featureName
                         );

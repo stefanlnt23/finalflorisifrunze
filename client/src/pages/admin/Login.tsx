@@ -8,13 +8,14 @@ import { useToast } from '@/hooks/use-toast';
 import { useLocation } from 'wouter';
 
 export default function AdminLogin() {
-  const { login, error, isAuthenticated } = useAuth();
+  const { login, error, isAuthenticated, loading } = useAuth();
   const { toast } = useToast();
   const [, navigate] = useLocation();
 
   // Login state
-  const [email, setEmail] = useState('admin@admin.com');
-  const [password, setPassword] = useState('admin123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Redirect if already authenticated
   useEffect(() => {
@@ -25,6 +26,16 @@ export default function AdminLogin() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!email || !password) {
+      toast({
+        title: 'Error',
+        description: 'Please enter both email and password.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
     try {
       await login(email, password);
     } catch (err) {
@@ -33,8 +44,21 @@ export default function AdminLogin() {
         description: 'Failed to login. Please check your credentials.',
         variant: 'destructive',
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-2 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -60,7 +84,9 @@ export default function AdminLogin() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
                 required
+                disabled={isSubmitting}
               />
             </div>
             <div className="space-y-2">
@@ -70,16 +96,15 @@ export default function AdminLogin() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password"
                 required
+                disabled={isSubmitting}
               />
-            </div>
-            <div className="mt-2 text-sm text-gray-500">
-              Default credentials: admin@admin.com / admin123
             </div>
           </CardContent>
           <CardFooter>
-            <Button type="submit" className="w-full">
-              Sign in
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
+              {isSubmitting ? 'Signing in...' : 'Sign in'}
             </Button>
           </CardFooter>
         </form>

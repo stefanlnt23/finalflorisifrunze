@@ -2,6 +2,7 @@ import type { Express, Request, Response, NextFunction } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { comparePasswords, hashPassword } from "./auth";
+import { generateToken, verifyToken, extractTokenFromHeader, JWTPayload } from "./jwt";
 import { z } from "zod";
 import {
   insertServiceSchema,
@@ -12,11 +13,54 @@ import {
   insertTestimonialSchema,
 } from "@shared/schema";
 
-// Authentication middleware - simplified for development
+// Extend Request interface to include user data
+declare global {
+  namespace Express {
+    interface Request {
+      user?: JWTPayload;
+    }
+  }
+}
+
+// Authentication middleware - now properly validates JWT tokens
 function authenticateAdmin(req: Request, res: Response, next: NextFunction) {
-  // For now, we'll allow all requests through for simplicity
-  // In a production environment, you would implement proper authentication
-  next();
+  try {
+    const token = extractTokenFromHeader(req.headers.authorization);
+    
+    if (!token) {
+      return res.status(401).json({ 
+        message: "Access denied. No token provided.",
+        requiresAuth: true 
+      });
+    }
+
+    const decoded = verifyToken(token);
+    
+    if (!decoded) {
+      return res.status(401).json({ 
+        message: "Access denied. Invalid token.",
+        requiresAuth: true 
+      });
+    }
+
+    // Check if user has admin role
+    if (decoded.role !== 'admin') {
+      return res.status(403).json({ 
+        message: "Access denied. Admin privileges required.",
+        requiresAuth: true 
+      });
+    }
+
+    // Add user info to request object
+    req.user = decoded;
+    next();
+  } catch (error) {
+    console.error("Authentication middleware error:", error);
+    res.status(401).json({ 
+      message: "Access denied. Authentication failed.",
+      requiresAuth: true 
+    });
+  }
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -306,8 +350,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(401).json({ message: "Invalid credentials" });
       }
 
-      // Generate a simple token (in a real app you'd use JWT with proper signing)
-      const token = Buffer.from(`${user.id}:${Date.now()}`).toString('base64');
+      // Generate JWT token
+      const token = generateToken(user);
       console.log(`Login successful for user: ${user.username}`);
 
       res.json({
@@ -369,22 +413,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Validate session endpoint
   app.get("/api/admin/validate-session", async (req, res) => {
     try {
-      // In a real application, you would validate the token properly
-      // For now, we'll just check if the user exists
-      if (!req.headers.authorization) {
+      const token = extractTokenFromHeader(req.headers.authorization);
+      
+      if (!token) {
         return res.json({ valid: false });
       }
 
-      // Check if there's a bearer token
-      const authHeader = req.headers.authorization.split(' ')[1]; // Bearer TOKEN
-
-      if (!authHeader) {
+      const decoded = verifyToken(token);
+      
+      if (!decoded) {
         return res.json({ valid: false });
       }
 
-      // In a real app, you would decode and verify the token
-      // For now, we'll return valid: true if a token is present
-      res.json({ valid: true });
+      // Check if user has admin role
+      if (decoded.role !== 'admin') {
+        return res.json({ valid: false });
+      }
+
+      res.json({ 
+        valid: true,
+        user: {
+          id: decoded.userId,
+          email: decoded.email,
+          role: decoded.role
+        }
+      });
     } catch (error) {
       console.error("Error validating session:", error);
       res.json({ valid: false });

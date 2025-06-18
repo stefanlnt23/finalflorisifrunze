@@ -7,6 +7,23 @@
   --foreground: 20 14.3% 4.1%;
   --muted: 60 4.8% 95.9%;
   --muted-foreground: 25 5.3% 44.7%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 20 14.3% 4.1%;
+  --card: 0 0% 100%;
+  --card-foreground: 20 14.3% 4.1%;
+  --border: 20 5.9% 90%;
+  --input: 20 5.9% 90%;
+  --primary: 207 90% 54%;
+  --primary-foreground: 211 100% 99%;
+  --secondary: 60 4.8% 95.9%;
+  --secondary-foreground: 24 9.8% 10%;
+  --accent: 60 4.8% 95.9%;
+  --accent-foreground: 24 9.8% 10%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 60 9.1% 97.8%;
+  --ring: 20 14.3% 4.1%;
+  --radius: 0.5rem;
+}
 
 /* Image Lightbox Effect */
 .image-lightbox {
@@ -53,24 +70,6 @@
   transform: translate(-50%, -50%) scale(1);
 }
 
-  --popover: 0 0% 100%;
-  --popover-foreground: 20 14.3% 4.1%;
-  --card: 0 0% 100%;
-  --card-foreground: 20 14.3% 4.1%;
-  --border: 20 5.9% 90%;
-  --input: 20 5.9% 90%;
-  --primary: 207 90% 54%;
-  --primary-foreground: 211 100% 99%;
-  --secondary: 60 4.8% 95.9%;
-  --secondary-foreground: 24 9.8% 10%;
-  --accent: 60 4.8% 95.9%;
-  --accent-foreground: 24 9.8% 10%;
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 60 9.1% 97.8%;
-  --ring: 20 14.3% 4.1%;
-  --radius: 0.5rem;
-}
-
 .dark {
   --background: 240 10% 3.9%;
   --foreground: 0 0% 98%;
@@ -100,6 +99,9 @@
   }
 
   body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+}
 
 /* Subscription animations */
 @keyframes shimmer {
@@ -160,10 +162,6 @@
   animation-delay: 0.4s;
 }
 
-    @apply font-sans antialiased bg-background text-foreground;
-  }
-}
-
 /* Custom clip path for slant design */
 .clip-path-slant {
   clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%);
@@ -207,6 +205,8 @@
 
 @keyframes grow {
   0% { transform: scaleX(0); opacity: 0; }
+  100% { transform: scaleX(1); opacity: 1; }
+}
 
 /* Subscription Card Animations and Effects */
 .subscription-card {
@@ -341,9 +341,6 @@
 
 .subscription-level-4:hover::after {
   opacity: 0.4;
-}
-
-  100% { transform: scaleX(1); opacity: 1; }
 }
 
 @keyframes slide-up {
@@ -777,7 +774,8 @@
   bottom: -6px;
   width: 0;
   height: 2px;
-  background-color: #16a34a;  transform: translateX(-50%);
+  background-color: #16a34a;
+  transform: translateX(-50%);
   transition: width 0.3s ease;
 }
 

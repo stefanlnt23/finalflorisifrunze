@@ -123,12 +123,17 @@ export class MongoDBStorage implements IStorage {
 
   async createUser(insertUser: InsertUser): Promise<any> {
     try {
-      // Use the password hashing utility
-      const hashedPassword = await import('./auth').then(auth => auth.hashPassword(insertUser.password));
+      // Check if password is already hashed (starts with $2b$ for bcrypt)
+      let password = insertUser.password;
+      if (!password.startsWith('$2b$')) {
+        // Password is not hashed, hash it now
+        const hashedPassword = await import('./auth').then(auth => auth.hashPassword(insertUser.password));
+        password = hashedPassword;
+      }
 
       const newUser = new User({
         ...insertUser,
-        password: hashedPassword
+        password: password
       });
       const savedUser = await newUser.save();
       return mapUserToSchema(savedUser);
@@ -1363,71 +1368,6 @@ export class MongoDBStorage implements IStorage {
     }
   }
 
-  async updateSubscription(id: string, subscription: Partial<InsertSubscription>): Promise<Subscription | null> {
-    try {
-      if (!this.db) {
-        log('Database connection not initialized yet, initializing now...', 'mongodb');
-        await this.initDb();
-        if (!this.db) {
-          log('Could not initialize database connection', 'mongodb');
-          return null;
-        }
-      }
-      const collections = await this.db.listCollections({ name: 'subscriptions' }).toArray();
-      if (collections.length === 0) {
-        await this.db.createCollection('subscriptions');
-        log('Created subscriptions collection', 'mongodb');
-      }
-      const updatedAt = new Date();
-
-      await this.db.collection("subscriptions").updateOne(
-        { _id: new ObjectId(id) },
-        { $set: { ...subscription, updatedAt } }
-      );
-
-      const updatedSubscription = await this.db.collection("subscriptions").findOne({ _id: new ObjectId(id) });
-
-      if (!updatedSubscription) return null;
-
-      return {
-        id: updatedSubscription._id.toString(),
-        name: updatedSubscription.name,
-        description: updatedSubscription.description || null,
-        color: updatedSubscription.color || "#FFFFFF",
-        features: updatedSubscription.features || [],
-        price: updatedSubscription.price,
-        isPopular: updatedSubscription.isPopular || false,
-        displayOrder: updatedSubscription.displayOrder || 0,
-        imageUrl: updatedSubscription.imageUrl || null
-      };
-    } catch (error) {
-      console.error(`Error updating subscription with ID ${id}:`, error);
-      return null;
-    }
-  }
-
-  async deleteSubscription(id: string): Promise<boolean> {
-    try {
-      if (!this.db) {
-        log('Database connection not initialized yet, initializing now...', 'mongodb');
-        await this.initDb();
-        if (!this.db) {
-          log('Could not initialize database connection', 'mongodb');
-          return false;
-        }
-      }
-      const collections = await this.db.listCollections({ name: 'subscriptions' }).toArray();
-      if (collections.length === 0) {
-        await this.db.createCollection('subscriptions');
-        log('Created subscriptions collection', 'mongodb');
-      }
-      const result = await this.db.collection("subscriptions").deleteOne({ _id: new ObjectId(id) });
-      return result.deletedCount === 1;
-    } catch (error) {
-      console.error(`Error deleting subscription with ID ${id}:`, error);
-      return false;
-    }
-  }
 
   private async getCollection(collectionName: string): Promise<Collection> {
     if (!this.db) {

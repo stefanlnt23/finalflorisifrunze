@@ -46,8 +46,7 @@ export default function AdminTestimonialsForm() {
     queryKey: ['/api/admin/testimonials', id],
     queryFn: async () => {
       if (!id) return null;
-      const response = await apiRequest("GET", `/api/admin/testimonials/${id}`);
-      const data = await response.json();
+      const data = await apiRequest("GET", `/api/admin/testimonials/${id}`);
       console.log('Fetched testimonial data:', data);
       return data;
     },
@@ -89,8 +88,7 @@ export default function AdminTestimonialsForm() {
   // Create mutation
   const createMutation = useMutation({
     mutationFn: async (values: FormValues) => {
-      const response = await apiRequest("POST", "/api/admin/testimonials", values);
-      const data = await response.json();
+      const data = await apiRequest("POST", "/api/admin/testimonials", values);
       if (!data.success) {
         throw new Error(data.message || "Failed to create testimonial");
       }
@@ -118,8 +116,7 @@ export default function AdminTestimonialsForm() {
   // Update mutation
   const updateMutation = useMutation({
     mutationFn: async (values: FormValues) => {
-      const response = await apiRequest("PUT", `/api/admin/testimonials/${id}`, values);
-      const data = await response.json();
+      const data = await apiRequest("PUT", `/api/admin/testimonials/${id}`, values);
       if (!data.success) {
         throw new Error(data.message || "Failed to update testimonial");
       }

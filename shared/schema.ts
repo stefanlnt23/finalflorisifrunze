@@ -289,22 +289,6 @@ export interface FeatureCard {
   order: number;
 }
 
-// Subscriptions
-export interface Subscription {
-  id: string | number;
-  name: string;
-  description: string;
-  imageUrl?: string;
-  color: string;
-  features: Array<{
-    name: string;
-    value: string;
-  }>;
-  price: string;
-  isPopular: boolean;
-  displayOrder: number;
-}
-
 // Base schema for subscriptions
 const subscriptionBaseSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -323,7 +307,6 @@ const subscriptionBaseSchema = z.object({
 
 // Export the schema for use in validation
 export const insertSubscriptionSchema = subscriptionBaseSchema;
-export type InsertSubscription = z.infer<typeof insertSubscriptionSchema>;
 
 // Export types
 export type InsertUser = z.infer<typeof insertUserSchema>;
@@ -333,8 +316,10 @@ export type InsertService = z.infer<typeof insertServiceSchema>;
 export type Service = typeof services.$inferSelect;
 
 export type InsertSubscription = z.infer<typeof insertSubscriptionSchema>;
-export type Subscription = {
-  id: string;
+
+// Subscription interface
+export interface Subscription {
+  id: string | number;
   name: string;
   description?: string;
   imageUrl?: string | null;
@@ -344,7 +329,7 @@ export type Subscription = {
   price: string;
   isPopular?: boolean;
   displayOrder?: number;
-};
+}
 
 export type InsertPortfolioItem = z.infer<typeof insertPortfolioItemSchema>;
 // Custom type for PortfolioItem that supports both string and number IDs

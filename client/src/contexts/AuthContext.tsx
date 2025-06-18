@@ -26,21 +26,41 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [, navigate] = useLocation();
 
   // Check for existing session on load
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch (err) {
-        console.error('Error parsing stored user data:', err);
-        localStorage.removeItem('user');
+    const validateSession = async () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          const response = await fetch('/api/admin/validate-session', {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          
+          const data = await response.json();
+          
+          if (data.valid && data.user) {
+            setUser(data.user);
+          } else {
+            // Invalid token, remove it
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+          }
+        } catch (err) {
+          console.error('Error validating session:', err);
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+        }
       }
-    }
+      setLoading(false);
+    };
+
+    validateSession();
   }, []);
 
   const login = async (email: string, password: string) => {
@@ -48,34 +68,37 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setLoading(true);
       setError(null);
 
-      // Hard-coded admin credentials for simplicity
-      if (email === 'admin@admin.com' && password === 'admin123') {
-        const adminUser = {
-          id: '1',
-          username: 'admin',
-          name: 'Admin User',
-          email: 'admin@admin.com',
-          role: 'admin'
-        };
+      const response = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-        // Store in local storage
-        localStorage.setItem('user', JSON.stringify(adminUser));
-        setUser(adminUser);
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        // Store token and user data
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        setUser(data.user);
 
         // Navigate to admin dashboard
         navigate('/admin/dashboard');
       } else {
-        setError('Invalid email or password');
+        setError(data.message || 'Login failed');
       }
     } catch (error) {
       console.error('Login error:', error);
-      setError('An unexpected error occurred. Please try again.');
+      setError('Network error. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
   const logout = () => {
+    localStorage.removeItem('token');
     localStorage.removeItem('user');
     setUser(null);
     navigate('/admin/login');

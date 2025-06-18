@@ -26,10 +26,29 @@ import { insertServiceSchema } from "@shared/schema";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { Plus, Trash2 } from "lucide-react";
 
-// Extend the schema with validation
-const formSchema = insertServiceSchema.extend({
+// Extend the schema with validation and make optional fields required for form
+const formSchema = z.object({
+  name: z.string().min(1, "Service name is required"),
+  description: z.string().min(1, "Description is required"),
   shortDesc: z.string().min(10, "Short description must be at least 10 characters"),
-  // Add any additional validation here
+  price: z.string().min(1, "Price is required"),
+  imageUrl: z.string().optional(),
+  featured: z.boolean().default(false),
+  
+  // Extended fields
+  duration: z.string().optional(),
+  coverage: z.string().optional(),
+  benefits: z.array(z.string()).optional(),
+  includes: z.array(z.string()).optional(),
+  faqs: z.array(
+    z.object({
+      question: z.string(),
+      answer: z.string()
+    })
+  ).optional(),
+  recommendedFrequency: z.string().optional(),
+  seasonalAvailability: z.array(z.string()).optional(),
+  galleryImages: z.array(z.string()).optional()
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -49,8 +68,7 @@ export default function AdminServicesForm() {
         return null;
       }
       console.log(`Fetching service with ID: ${id}`);
-      const response = await apiRequest("GET", `/api/admin/services/${id}`);
-      const responseData = await response.json();
+      const responseData = await apiRequest("GET", `/api/admin/services/${id}`);
       console.log("Service data loaded:", JSON.stringify(responseData, null, 2));
       
       if (!responseData.service) {
@@ -107,19 +125,19 @@ export default function AdminServicesForm() {
   
   // Field arrays for dynamic fields
   const { fields: benefitFields, append: appendBenefit, remove: removeBenefit } = 
-    useFieldArray({ control: form.control, name: "benefits" });
+    useFieldArray({ control: form.control, name: "benefits" as const });
     
   const { fields: includeFields, append: appendInclude, remove: removeInclude } = 
-    useFieldArray({ control: form.control, name: "includes" });
+    useFieldArray({ control: form.control, name: "includes" as const });
     
   const { fields: faqFields, append: appendFaq, remove: removeFaq } = 
-    useFieldArray({ control: form.control, name: "faqs" });
+    useFieldArray({ control: form.control, name: "faqs" as const });
     
   const { fields: seasonFields, append: appendSeason, remove: removeSeason } = 
-    useFieldArray({ control: form.control, name: "seasonalAvailability" });
+    useFieldArray({ control: form.control, name: "seasonalAvailability" as const });
     
   const { fields: galleryFields, append: appendGallery, remove: removeGallery } = 
-    useFieldArray({ control: form.control, name: "galleryImages" });
+    useFieldArray({ control: form.control, name: "galleryImages" as const });
 
   // Update form values when service data is loaded
   useEffect(() => {
@@ -139,7 +157,7 @@ export default function AdminServicesForm() {
         shortDesc: service.shortDesc || "",
         price: service.price || "",
         imageUrl: service.imageUrl || "",
-        featured: !!service.featured,
+        featured: Boolean(service.featured),
         
         // New fields
         duration: service.duration || "",
