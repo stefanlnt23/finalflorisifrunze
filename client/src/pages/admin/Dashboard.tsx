@@ -61,11 +61,11 @@ export default function AdminDashboard() {
   const inquiries = inquiriesData?.inquiries || [];
 
   // Recent data
-  const recentAppointments = [...appointments].sort((a, b) => 
+  const recentAppointments = [...appointments].sort((a: any, b: any) => 
     new Date(b.date).getTime() - new Date(a.date).getTime()
   ).slice(0, 5);
 
-  const recentInquiries = [...inquiries].sort((a, b) => 
+  const recentInquiries = [...inquiries].sort((a: any, b: any) => 
     new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   ).slice(0, 5);
 
@@ -121,7 +121,7 @@ export default function AdminDashboard() {
           </CardHeader>
           <CardContent>
             <div className="flex items-baseline">
-              <p className="text-2xl font-bold">{inquiries.filter(i => i.status === 'new').length}</p>
+              <p className="text-2xl font-bold">{inquiries.filter((i: any) => i.status === 'new').length}</p>
               <div className="ml-2 flex items-center text-blue-600 text-xs font-medium">
                 <i className="fas fa-envelope mr-1"></i> 
                 <span>Unread</span>
@@ -136,7 +136,7 @@ export default function AdminDashboard() {
           </CardHeader>
           <CardContent>
             <div className="flex items-baseline">
-              <p className="text-2xl font-bold">{appointments.filter(a => a.status === 'completed').length}</p>
+              <p className="text-2xl font-bold">{appointments.filter((a: any) => a.status === 'completed').length}</p>
               <div className="ml-2 flex items-center text-green-600 text-xs font-medium">
                 <i className="fas fa-check-circle mr-1"></i> 
                 <span>Done</span>

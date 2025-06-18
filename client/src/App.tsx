@@ -142,9 +142,7 @@ function Router() {
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <Router />
-      </AuthProvider>
+      <Router />
     </QueryClientProvider>
   );
 }

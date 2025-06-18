@@ -75,8 +75,17 @@ export class ApiClient {
   }
 }
 
-// Create a default instance
-export const apiClient = new ApiClient();
+// Create a default instance with the correct base URL
+const getBaseUrl = () => {
+  if (typeof window !== 'undefined') {
+    // Client-side: use the current origin for API calls
+    return window.location.origin;
+  }
+  // Server-side: fallback
+  return '';
+};
+
+export const apiClient = new ApiClient(getBaseUrl());
 
 // Helper function for public API calls (no auth required)
 export const publicApi = {
