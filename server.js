@@ -1,6 +1,6 @@
 
-const { spawn } = require('child_process');
-const path = require('path');
+import { spawn } from 'child_process';
+import path from 'path';
 
 // Log with timestamp
 function log(message) {
@@ -11,7 +11,7 @@ function log(message) {
 function startServer() {
   log('Starting server...');
   
-  const server = spawn('node', ['dist/server/index.js'], {
+  const server = spawn('node', ['dist/index.js'], {
     stdio: 'inherit',
     env: { ...process.env, NODE_ENV: 'production' }
   });

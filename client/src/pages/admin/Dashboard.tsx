@@ -173,7 +173,7 @@ export default function AdminDashboard() {
                         {appointment.name}
                       </p>
                       <p className="text-sm text-gray-500">
-                        {new Date(appointment.date).toLocaleDateString()} - {services.find(s => s.id === appointment.serviceId)?.name || 'Service'}
+                        {new Date(appointment.date).toLocaleDateString()} - {services.find((s: any) => s.id === appointment.serviceId)?.name || 'Service'}
                       </p>
                     </div>
                     <div className="inline-flex items-center text-sm font-medium text-blue-600">
