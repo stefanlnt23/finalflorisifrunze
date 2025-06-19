@@ -26,6 +26,8 @@ export function ServicesCarousel() {
   const [autoPlay, setAutoPlay] = useState(true);
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
+  // Add state to track if this is the initial render
+  const [isInitialRender, setIsInitialRender] = useState(true);
   
   // Refs after state
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -33,11 +35,24 @@ export function ServicesCarousel() {
   
   // Custom hooks
   const isMobile = useIsMobile();
+  
+  // Set isInitialRender to false after the first render
+  useEffect(() => {
+    // Use a timeout to ensure the animation plays on the first render
+    const timer = setTimeout(() => {
+      setIsInitialRender(false);
+    }, 1000);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   // Query
   const { data: servicesData, isLoading } = useQuery<ServicesData>({
     queryKey: ['/api/services'],
     refetchOnWindowFocus: false,
+    staleTime: 300000, // Keep data fresh for 5 minutes
+    gcTime: 600000, // Cache data for 10 minutes
+    refetchOnMount: false // Don't refetch when component mounts if data exists
   });
 
   const services = servicesData?.services || [];

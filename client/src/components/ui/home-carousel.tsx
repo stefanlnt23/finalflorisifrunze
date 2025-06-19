@@ -19,16 +19,31 @@ interface CarouselData {
 export function HomeCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
+  // Add state to track if this is the initial render
+  const [isInitialRender, setIsInitialRender] = useState(true);
   
   // Initialize Embla carousel
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
     loop: true,
     align: "center"
   });
+  
+  // Set isInitialRender to false after the first render
+  useEffect(() => {
+    // Use a timeout to ensure the animation plays on the first render
+    const timer = setTimeout(() => {
+      setIsInitialRender(false);
+    }, 1000);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   const { data: carouselData, isLoading } = useQuery<CarouselData>({
     queryKey: ['/api/carousel-images'],
     refetchOnWindowFocus: false,
+    staleTime: 300000, // Keep data fresh for 5 minutes
+    gcTime: 600000, // Cache data for 10 minutes
+    refetchOnMount: false // Don't refetch when component mounts if data exists
   });
 
   const images: CarouselImage[] = carouselData?.images || [];

@@ -47,17 +47,25 @@ export default function Home() {
   // State for the testimonial carousel
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
+  // Add state to track if this is the initial render
+  const [isInitialRender, setIsInitialRender] = useState(true);
 
   // Get services data
   const { data: servicesData, isLoading: isLoadingServices } = useQuery({
     queryKey: ['/api/services'],
     refetchOnWindowFocus: false,
+    staleTime: 300000, // Keep data fresh for 5 minutes
+    gcTime: 600000, // Cache data for 10 minutes
+    refetchOnMount: false // Don't refetch when component mounts if data exists
   });
 
   // Get testimonials data
   const { data: testimonialsData, isLoading: isLoadingTestimonials } = useQuery({
     queryKey: ['/api/testimonials'],
     refetchOnWindowFocus: false,
+    staleTime: 300000, // Keep data fresh for 5 minutes
+    gcTime: 600000, // Cache data for 10 minutes
+    refetchOnMount: false // Don't refetch when component mounts if data exists
   });
 
   // Feature services (limit to 3)
@@ -70,6 +78,9 @@ export default function Home() {
   const { data: featureCardsData } = useQuery({
     queryKey: ['/api/feature-cards'],
     refetchOnWindowFocus: false,
+    staleTime: 300000, // Keep data fresh for 5 minutes
+    gcTime: 600000, // Cache data for 10 minutes
+    refetchOnMount: false // Don't refetch when component mounts if data exists
   });
 
   // Feature cards with fallback to defaults if none exist
@@ -97,6 +108,16 @@ export default function Home() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+  
+  // Set isInitialRender to false after the first render
+  useEffect(() => {
+    // Use a timeout to ensure the animation plays on the first render
+    const timer = setTimeout(() => {
+      setIsInitialRender(false);
+    }, 1000);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <MainLayout>
@@ -113,19 +134,19 @@ export default function Home() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="md:w-1/2 mb-10 md:mb-0 md:pr-8">
-              <span className="inline-block px-4 py-1 rounded-full bg-green-100 text-green-600 text-sm font-medium mb-6 animate-fadeIn">
+              <span className={`inline-block px-4 py-1 rounded-full bg-green-100 text-green-600 text-sm font-medium mb-6 ${isInitialRender ? 'animate-fadeIn' : ''}`}>
                 Servicii Profesionale de Grădinărit
               </span>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight text-gray-900 animate-slideUp">
+              <h1 className={`text-4xl md:text-5xl font-bold mb-6 leading-tight text-gray-900 ${isInitialRender ? 'animate-slideUp' : ''}`}>
                 Gradina ta pasunea noastra... <span className="text-green-600 relative">
                   Paradis
                   <span className="absolute bottom-0 left-0 w-full h-2 bg-green-200 -z-10"></span>
                 </span>
               </h1>
-              <p className="text-lg mb-8 text-gray-700 max-w-lg animate-fadeIn animation-delay-300">
+              <p className={`text-lg mb-8 text-gray-700 max-w-lg ${isInitialRender ? 'animate-fadeIn animation-delay-300' : ''}`}>
                 Servicii profesionale de grădinărit pentru a face grădina ta frumoasă, sustenabilă și înfloritoare pe tot parcursul anului. Echipa noastră de experți îți transformă visele despre grădină în realitate.
               </p>
-              <div className="flex flex-wrap gap-4 animate-slideUp animation-delay-500">
+              <div className={`flex flex-wrap gap-4 ${isInitialRender ? 'animate-slideUp animation-delay-500' : ''}`}>
                 <Link href="/contact">
                   <Button className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
                     Obține o Ofertă Gratuită
@@ -137,7 +158,7 @@ export default function Home() {
                   </Button>
                 </Link>
               </div>
-              <div className="mt-8 flex items-center text-gray-600 animate-fadeIn animation-delay-700">
+              <div className={`mt-8 flex items-center text-gray-600 ${isInitialRender ? 'animate-fadeIn animation-delay-700' : ''}`}>
                 <span className="flex items-center mr-6">
                   <i className="fas fa-check-circle text-green-500 mr-2"></i>
                   Echipă cu Experiență
@@ -148,7 +169,7 @@ export default function Home() {
                 </span>
               </div>
             </div>
-            <div className="md:w-1/2 animate-slideIn">
+            <div className={`md:w-1/2 ${isInitialRender ? 'animate-slideIn' : ''}`}>
               <div className="shadow-2xl rounded-lg overflow-hidden border-8 border-white transform transition-all hover:rotate-1 hover:scale-105">
                 <HomeCarousel />
               </div>
@@ -164,7 +185,7 @@ export default function Home() {
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center w-full">
-            <h2 className="text-4xl font-bold text-white mb-4 animate-pulse">Transformă Grădina Ta</h2>
+            <h2 className={`text-4xl font-bold text-white mb-4 ${isInitialRender ? 'animate-pulse' : ''}`}>Transformă Grădina Ta</h2>
             <p className="text-xl text-white max-w-2xl mx-auto mb-6">
               Servicii profesionale pentru a face grădina ta să strălucească în fiecare anotimp
             </p>
@@ -185,17 +206,17 @@ export default function Home() {
             <span className="inline-block px-4 py-1 rounded-full bg-green-100 text-green-600 text-sm font-medium mb-4 hover-float">
               Servicii de Experți
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 animate-fadeIn">
+            <h2 className={`text-3xl md:text-4xl font-bold mb-4 text-gray-900 ${isInitialRender ? 'animate-fadeIn' : ''}`}>
               Serviciile Noastre
             </h2>
-            <div className="w-24 h-1 bg-green-500 mx-auto mb-6 animate-grow"></div>
+            <div className={`w-24 h-1 bg-green-500 mx-auto mb-6 ${isInitialRender ? 'animate-grow' : ''}`}></div>
             <p className="text-gray-600 text-lg">
               Oferim servicii complete de grădinărit și amenajare peisagistică pentru a menține spațiul tău exterior frumos și sănătos în toate anotimpurile.
             </p>
           </div>
 
           {/* Services Carousel */}
-          <div className="px-4 md:px-8 lg:px-12 animate-slideUp animation-delay-300">
+          <div className={`px-4 md:px-8 lg:px-12 ${isInitialRender ? 'animate-slideUp animation-delay-300' : ''}`}>
             <div className="overflow-visible">
               <p className="text-sm text-gray-500 text-center mb-2 md:hidden">
                 ← Swipe pentru a vedea mai multe servicii →
@@ -204,7 +225,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="text-center mt-12 animate-bounce animation-delay-500">
+          <div className={`text-center mt-12 ${isInitialRender ? 'animate-bounce animation-delay-500' : ''}`}>
             <Link href="/services">
               <Button className="bg-green-600 hover:bg-green-700 transform transition-all hover:scale-105">
                 Vezi Toate Serviciile
@@ -218,7 +239,7 @@ export default function Home() {
       <section className="relative py-24 flex items-center justify-center overflow-hidden bg-design-pattern">
         <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 opacity-90"></div>
         <div className="container mx-auto px-6 relative z-10 text-center">
-          <h2 className="text-4xl font-bold text-white mb-6 animate-glow">Design Peisagistic Inspirațional</h2>
+          <h2 className={`text-4xl font-bold text-white mb-6 ${isInitialRender ? 'animate-glow' : ''}`}>Design Peisagistic Inspirațional</h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
             Creăm spații exterioare captivante, transformate cu artă și funcționalitate
           </p>
@@ -245,8 +266,8 @@ export default function Home() {
             {featureCards.map((card, index) => (
               <div 
                 key={card.id} 
-                className="relative group overflow-hidden rounded-xl border-2 border-green-100 shadow-md hover:shadow-xl transition-all duration-300 h-80 stagger-animate"
-                style={{ animationDelay: `${index * 150}ms` }}
+                className={`relative group overflow-hidden rounded-xl border-2 border-green-100 shadow-md hover:shadow-xl transition-all duration-300 h-80 ${isInitialRender ? 'stagger-animate' : ''}`}
+                style={{ animationDelay: isInitialRender ? `${index * 150}ms` : '0ms' }}
               >
                 <div className="absolute inset-0 bg-cover bg-center transform transition-transform group-hover:scale-110" 
                   style={{ backgroundImage: `url(${card.imageUrl})` }}>

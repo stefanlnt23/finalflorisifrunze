@@ -2,20 +2,34 @@
 import MainLayout from "@/components/layouts/MainLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronRight, Leaf, Clock, CheckCircle2 } from "lucide-react";
 
 export default function Services() {
+  // Add state to track if this is the initial render
+  const [isInitialRender, setIsInitialRender] = useState(true);
+  
   const { data, isLoading, error } = useQuery({
     queryKey: ['/api/services'],
     refetchOnWindowFocus: false,
-    staleTime: 60000, // Keep data fresh for 1 minute
-    cacheTime: 300000, // Cache data for 5 minutes
+    staleTime: 300000, // Keep data fresh for 5 minutes
+    gcTime: 600000, // Cache data for 10 minutes
     refetchOnMount: false // Don't refetch when component mounts if data exists
   });
 
   const services = data?.services || [];
+  
+  // Set isInitialRender to false after the first render
+  useEffect(() => {
+    // Use a timeout to ensure the animation plays on the first render
+    const timer = setTimeout(() => {
+      setIsInitialRender(false);
+    }, 1000);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <MainLayout>
@@ -151,7 +165,7 @@ export default function Services() {
                 </div>
               ) : (
                 services.map((service, index) => (
-                  <Card key={service.id} className={`group overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-500 bg-white rounded-xl ${history.state?.from === 'serviceDetail' ? '' : 'animate-fadeInUp'}`} style={{ animationDelay: history.state?.from === 'serviceDetail' ? '0ms' : `${index * 150}ms` }}>
+                  <Card key={service.id} className={`group overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-500 bg-white rounded-xl ${isInitialRender ? 'animate-fadeInUp' : ''}`} style={{ animationDelay: isInitialRender ? `${index * 150}ms` : '0ms' }}>
                     {service.imageUrl ? (
                       <div className="relative w-full h-64 overflow-hidden">
                         <img 
