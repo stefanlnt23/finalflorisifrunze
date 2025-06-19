@@ -1,10 +1,11 @@
 import React, { Suspense } from "react";
-import { Route, Switch } from "wouter";
+import { Route, Switch, useLocation } from "wouter";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
+import { useScrollRestoration } from "./hooks/use-scroll-restoration";
 
 // Public Pages
 import Home from "./pages/Home";
@@ -42,6 +43,9 @@ const AdminSubscriptionsForm = React.lazy(() => import('./pages/admin/Subscripti
 const AdminLogin = React.lazy(() => import('./pages/admin/Login'));
 
 function Router() {
+  // Use the scroll restoration hook
+  useScrollRestoration();
+  
   return (
     <AuthProvider>
       <Suspense fallback={<div className="min-h-screen grid place-items-center">Loading...</div>}>

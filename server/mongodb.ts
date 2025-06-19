@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { log } from './logger';
+import { log } from './logger.js';
 
 const DATABASE_URL = process.env.MONGODB_URI || process.env.DATABASE_URL || '';
 
@@ -27,7 +27,7 @@ async function ensureAdminUser() {
       log("No users found, creating default admin user...", "mongodb");
 
       // Import auth for password hashing
-      const auth = await import('./auth');
+      const auth = await import('./auth.js');
       const hashedPassword = await auth.hashPassword('password123');
 
       // Create admin user

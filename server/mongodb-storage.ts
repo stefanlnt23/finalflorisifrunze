@@ -6,7 +6,7 @@ import {
 } from './mongodb.js';
 import { InsertUser, InsertService, InsertPortfolioItem, InsertBlogPost, InsertInquiry, InsertAppointment, InsertTestimonial } from '../shared/schema.js';
 import mongoose from 'mongoose';
-import { log } from './vite.js';
+import { log } from './logger.js';
 import * as crypto from 'crypto';
 import { Db, ObjectId } from 'mongodb';
 import { Collection } from 'mongodb';

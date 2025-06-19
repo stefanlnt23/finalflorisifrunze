@@ -1,9 +1,9 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import express from 'express';
-import { registerRoutes } from '../server/routes';
-import { connectToMongoDB } from '../server/mongodb';
-import { storage } from '../server/storage';
-import { MongoDBStorage } from '../server/mongodb-storage';
+import { registerRoutes } from '../server/routes.js';
+import { connectToMongoDB } from '../server/mongodb.js';
+import { storage } from '../server/storage.js';
+import { MongoDBStorage } from '../server/mongodb-storage.js';
 
 let app: express.Application | null = null;
 

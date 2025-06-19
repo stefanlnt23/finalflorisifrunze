@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { X } from "lucide-react";
+import { CachedImage } from "./cached-image";
 
 interface ImageLightboxProps {
   image: string;
@@ -24,7 +25,7 @@ export function ImageLightbox({ image, alt }: ImageLightboxProps) {
             </svg>
           </div>
         </div>
-        <img 
+        <CachedImage 
           src={image} 
           alt={alt} 
           className="w-full h-auto rounded-lg"
@@ -40,7 +41,7 @@ export function ImageLightbox({ image, alt }: ImageLightboxProps) {
             <X className="h-6 w-6" />
           </button>
           <div className="w-full h-auto">
-            <img
+            <CachedImage
               src={image}
               alt={alt}
               className="w-full h-auto max-h-[85vh] object-contain"

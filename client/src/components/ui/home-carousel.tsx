@@ -3,12 +3,17 @@ import { useState, useEffect, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { CachedImage } from "./cached-image";
 
 interface CarouselImage {
   id: string;
   imageUrl: string;
   alt: string;
   order: number;
+}
+
+interface CarouselData {
+  images: CarouselImage[];
 }
 
 export function HomeCarousel() {
@@ -21,7 +26,7 @@ export function HomeCarousel() {
     align: "center"
   });
 
-  const { data: carouselData, isLoading } = useQuery({
+  const { data: carouselData, isLoading } = useQuery<CarouselData>({
     queryKey: ['/api/carousel-images'],
     refetchOnWindowFocus: false,
   });
@@ -103,7 +108,7 @@ export function HomeCarousel() {
           {finalImages.map((image) => (
             <div key={image.id} className="flex-[0_0_100%] min-w-0">
               <div className="relative aspect-[16/9] overflow-hidden">
-                <img
+                <CachedImage
                   src={image.imageUrl}
                   alt={image.alt || "Carousel image"}
                   className="w-full h-full object-cover"

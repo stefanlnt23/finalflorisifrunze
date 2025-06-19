@@ -6,6 +6,19 @@ import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { CachedImage } from "./cached-image";
+
+interface Service {
+  id: string;
+  name: string;
+  description: string;
+  price: string;
+  imageUrl?: string;
+}
+
+interface ServicesData {
+  services: Service[];
+}
 
 export function ServicesCarousel() {
   // Keep all useState calls at the top to maintain order
@@ -22,7 +35,7 @@ export function ServicesCarousel() {
   const isMobile = useIsMobile();
 
   // Query
-  const { data: servicesData, isLoading } = useQuery({
+  const { data: servicesData, isLoading } = useQuery<ServicesData>({
     queryKey: ['/api/services'],
     refetchOnWindowFocus: false,
   });
@@ -128,12 +141,12 @@ export function ServicesCarousel() {
   if (services.length <= 3) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {services.map((service) => (
+        {services.map((service: Service) => (
           <Card key={service.id} className="service-card-inner h-full overflow-hidden border-green-100 hover:border-green-300 shadow-sm hover:shadow-md">
             <CardContent className="p-6 flex flex-col items-center text-center space-y-4 h-full">
               {service.imageUrl ? (
                 <div className="w-full h-48 overflow-hidden rounded-lg mb-4 service-image-container">
-                  <img 
+                  <CachedImage 
                     src={service.imageUrl} 
                     alt={service.name} 
                     className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
@@ -213,7 +226,7 @@ export function ServicesCarousel() {
                 <CardContent className="p-6 flex flex-col items-center text-center space-y-4 h-full">
                   {service.imageUrl ? (
                     <div className="w-full h-48 overflow-hidden rounded-lg mb-4 service-image-container">
-                      <img 
+                      <CachedImage 
                         src={service.imageUrl} 
                         alt={service.name} 
                         className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"

@@ -1,5 +1,5 @@
 import jwt, { SignOptions } from 'jsonwebtoken';
-import { User } from '@shared/schema';
+import { User } from '../shared/schema.js';
 
 // JWT secret - in production this should be a strong, randomly generated secret
 const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-this-in-production';

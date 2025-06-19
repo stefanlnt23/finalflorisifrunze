@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Fixes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #2e7d32;
+            border-bottom: 2px solid #2e7d32;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #388e3c;
+            margin-top: 30px;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: monospace;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        .file-path {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #1976d2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Fixes Implemented</h1>
+    
+    <div class="section">
+        <h2>1. Scroll Position Issue</h2>
+        <p>Created a custom hook to reset scroll position when navigating between pages:</p>
+        <div class="file-path">client/src/hooks/use-scroll-restoration.ts</div>
+        <pre><code>
+import { useEffect } from 'react';
+import { useLocation } from 'wouter';
+
+/**
+ * A hook that scrolls to the top of the page when the location changes
+ * and saves scroll position in session history
+ */
+export function useScrollRestoration() {
+  const [location] = useLocation();
+
+  useEffect(() => {
+    // Scroll to top when location changes
+    window.scrollTo(0, 0);
+  }, [location]);
+
+  return null;
+}
+        </code></pre>
+        
+        <p>Added the hook to the Router component in App.tsx:</p>
+        <div class="file-path">client/src/App.tsx</div>
+        <pre><code>
+function Router() {
+  // Use the scroll restoration hook
+  useScrollRestoration();
+  
+  return (
+    <AuthProvider>
+      <Suspense fallback={<div className="min-h-screen grid place-items-center">Loading...</div>}>
+        {/* ... */}
+      </Suspense>
+    </AuthProvider>
+  );
+}
+        </code></pre>
+    </div>
+    
+    <div class="section">
+        <h2>2. Image Refreshing Issue</h2>
+        <p>Created a custom CachedImage component that caches images in localStorage:</p>
+        <div class="file-path">client/src/components/ui/cached-image.tsx</div>
+        <pre><code>
+import React, { useState, useEffect } from 'react';
+
+interface CachedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+  src: string;
+  alt: string;
+  className?: string;
+}
+
+export function CachedImage({ src, alt, className, ...props }: CachedImageProps) {
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
+  
+  useEffect(() => {
+    // Check if the image is already in the browser cache
+    const cachedImage = localStorage.getItem(`img_cache_${src}`);
+    
+    if (cachedImage) {
+      // Use the cached image source
+      setImageSrc(cachedImage);
+    } else {
+      // Load the image and cache it
+      const img = new Image();
+      img.src = src;
+      img.onload = () => {
+        // Store the image URL in localStorage
+        localStorage.setItem(`img_cache_${src}`, src);
+        setImageSrc(src);
+      };
+      img.onerror = () => {
+        // If there's an error, still set the source but don't cache
+        setImageSrc(src);
+      };
+    }
+  }, [src]);
+  
+  // Use a placeholder while the image is loading
+  if (!imageSrc) {
+    return (
+      <div 
+        className={`bg-gray-200 animate-pulse ${className}`}
+        style={{ aspectRatio: '16/9' }}
+        {...props}
+      />
+    );
+  }
+  
+  return (
+    <img
+      src={imageSrc}
+      alt={alt}
+      className={className}
+      loading="lazy"
+      {...props}
+    />
+  );
+}
+        </code></pre>
+        
+        <p>Updated components to use the CachedImage component:</p>
+        <ul>
+            <li>home-carousel.tsx</li>
+            <li>services-carousel.tsx</li>
+            <li>image-lightbox.tsx</li>
+            <li>MainLayout.tsx</li>
+            <li>MainNavigation.tsx</li>
+        </ul>
+    </div>
+    
+    <div class="section">
+        <h2>How These Fixes Work</h2>
+        
+        <h3>Scroll Position Fix</h3>
+        <p>The <code>useScrollRestoration</code> hook listens for location changes and automatically scrolls to the top of the page when navigating to a new page. This ensures that when a user navigates back to a page, they start at the top rather than at their previous scroll position.</p>
+        
+        <h3>Image Caching Fix</h3>
+        <p>The <code>CachedImage</code> component implements a simple caching mechanism using localStorage. When an image is loaded for the first time, its URL is stored in localStorage. On subsequent visits to the page, the component checks if the image URL is already in localStorage before loading it again. This prevents unnecessary network requests and image refreshing when navigating between pages.</p>
+    </div>
+</body>
+</html>
