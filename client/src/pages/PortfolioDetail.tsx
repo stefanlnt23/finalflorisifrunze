@@ -595,9 +595,9 @@ export default function PortfolioDetail() {
                                 {currentState === "before" ? "ÎNAINTE" : "DUPĂ"}
                               </div>
 
-                              {/* Auto-cycle indicator */}
+                              {/* Interactive indicator */}
                               <div className="absolute bottom-6 right-6 bg-black/50 backdrop-blur-sm text-white px-3 py-1 rounded-lg text-xs font-medium">
-                                {autoPlayTimers[index] ? "Auto ▶" : "Pauzat ⏸"}
+                                Click pentru comutare
                               </div>
                             </div>
 
