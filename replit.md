@@ -117,14 +117,15 @@ The application is architected to support both MongoDB (currently active) and Po
 
 ## Recent Changes
 
-### June 21, 2025 - Brand Logo and Navigation Updates
+### June 21, 2025 - Brand Logo, Navigation, and Contact Updates
 - **Complete Logo Replacement**: Created and deployed new "Flori si Frunze" SVG logo with gardening design elements
 - **Logo Assets**: Added enhanced `logo.svg` (240x70px) and `logo-mobile.svg` (180x55px) with larger, more visible elements
 - **Consistent Branding**: Updated all logo instances across header, navigation, and footer components
 - **Design Elements**: Features green color scheme with gardening icons and Romanian subtitle
 - **Mobile Logo Fix**: Resolved duplicate logo issue on mobile devices by hiding header logo on small screens
 - **Navigation Improvements**: Enhanced responsive navigation with better spacing, centered layout, and improved hover states
-- **Impact**: Professional, cohesive branding with optimal visibility across all devices
+- **Contact Information**: Added official contact number +40 742 650 670 to contact page and WhatsApp button
+- **Impact**: Professional, cohesive branding with optimal visibility and complete contact information across all devices
 
 ### June 21, 2025 - Image Caching Optimization
 - **Critical Fix**: Resolved major image caching issues affecting carousel performance

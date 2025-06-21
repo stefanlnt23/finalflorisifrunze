@@ -51,7 +51,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
       <Footer />
       
       {/* WhatsApp Button */}
-      <WhatsAppButton phoneNumber="0742650670" />
+      <WhatsAppButton phoneNumber="+40742650670" />
     </div>
   );
 }

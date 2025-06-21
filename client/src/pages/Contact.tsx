@@ -277,10 +277,13 @@ export default function Contact() {
                         <div>
                           <h3 className="text-lg font-semibold mb-2">Numere de Telefon</h3>
                           <p className="text-gray-600 mb-2">
-                            <span className="font-medium">Birou Principal:</span> (123) 456-7890
+                            <span className="font-medium">Contact Principal:</span> 
+                            <a href="tel:+40742650670" className="text-green-600 hover:text-green-700 ml-1">
+                              +40 742 650 670
+                            </a>
                           </p>
-                          <p className="text-gray-600">
-                            <span className="font-medium">Suport Clienți:</span> (123) 456-7891
+                          <p className="text-gray-600 text-sm">
+                            Disponibil: Luni - Vineri, 08:00 - 18:00
                           </p>
                         </div>
                       </div>
