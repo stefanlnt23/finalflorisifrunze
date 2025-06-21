@@ -55,13 +55,12 @@ export default function Contact() {
   function onSubmit(data: ContactFormValues) {
     setIsSubmitting(true);
 
-    // Convert serviceId to number if present
-    const serviceId = data.serviceId ? parseInt(data.serviceId, 10) : null;
+    // Keep serviceId as string or null - backend will handle conversion
+    const serviceId = data.serviceId && data.serviceId !== "" ? data.serviceId : null;
 
     apiRequest("POST", "/api/contact", {
         ...data,
-        serviceId,
-        status: "new" // Set initial status of inquiry
+        serviceId
       })
       .then(response => {
         console.log("Inquiry submitted successfully:", response);

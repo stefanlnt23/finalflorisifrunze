@@ -39,6 +39,13 @@ const appointmentSchema = z.object({
   }, {
     message: "Programarea trebuie să fie cu cel puțin o zi în avans",
   }),
+  // Address fields
+  buildingName: z.string().optional(),
+  streetName: z.string().min(1, "Numele străzii este obligatoriu"),
+  houseNumber: z.string().min(1, "Numărul casei/proprietății este obligatoriu"),
+  city: z.string().min(1, "Orașul este obligatoriu"),
+  county: z.string().min(1, "Județul este obligatoriu"),
+  postalCode: z.string().min(1, "Codul poștal este obligatoriu"),
   notes: z.string().optional(),
 });
 
@@ -70,6 +77,12 @@ export default function Appointment() {
       email: "",
       phone: "",
       serviceId: preselectedService || "",
+      buildingName: "",
+      streetName: "",
+      houseNumber: "",
+      city: "",
+      county: "",
+      postalCode: "",
       notes: "",
     },
   });
@@ -300,6 +313,101 @@ export default function Appointment() {
                           </FormItem>
                         )}
                       />
+                      
+                      {/* Address Section */}
+                      <div className="space-y-4">
+                        <h3 className="text-lg font-medium text-gray-900 border-b pb-2">
+                          Adresa pentru Serviciu
+                        </h3>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <FormField
+                            control={form.control}
+                            name="buildingName"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Nume Clădire (Opțional)</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Numele clădirii" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          
+                          <FormField
+                            control={form.control}
+                            name="streetName"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Numele Străzii *</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Numele străzii" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          
+                          <FormField
+                            control={form.control}
+                            name="houseNumber"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Numărul Casei *</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Nr. casei/proprietății" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <FormField
+                            control={form.control}
+                            name="city"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Orașul *</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Orașul" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          
+                          <FormField
+                            control={form.control}
+                            name="county"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Județul *</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Județul/Regiunea" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          
+                          <FormField
+                            control={form.control}
+                            name="postalCode"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Codul Poștal *</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Codul poștal" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      </div>
                       
                       <FormField
                         control={form.control}

@@ -213,7 +213,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         email: z.string().email("Please enter a valid email address"),
         phone: z.string().optional(),
         message: z.string().min(10, "Message must be at least 10 characters"),
-        serviceId: z.string().optional(), // Changed to string for MongoDB IDs
+        serviceId: z.union([z.string(), z.number(), z.null()]).optional().transform((val) => {
+          if (val === null || val === undefined || val === "") return undefined;
+          return String(val);
+        }),
       });
 
       const validated = contactSchema.safeParse(req.body);
