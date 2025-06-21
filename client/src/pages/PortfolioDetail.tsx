@@ -18,6 +18,11 @@ import {
   Share2,
   Eye,
   ChevronLeft,
+  Leaf,
+  Flower2,
+  TreePine,
+  Sprout,
+  Sun,
   ChevronRight,
 } from "lucide-react";
 
@@ -506,21 +511,71 @@ export default function PortfolioDetail() {
           </div>
         </div>
       </div>
+      {/* Floating White Garden Elements */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div className="absolute top-10 left-10 text-white/20 animate-bounce" style={{ animationDelay: '0s', animationDuration: '3s' }}>
+          <Leaf size={24} />
+        </div>
+        <div className="absolute top-32 right-20 text-white/20 animate-pulse" style={{ animationDelay: '1s', animationDuration: '2s' }}>
+          <Flower2 size={20} />
+        </div>
+        <div className="absolute bottom-40 left-16 text-white/20 animate-bounce" style={{ animationDelay: '2s', animationDuration: '4s' }}>
+          <TreePine size={28} />
+        </div>
+        <div className="absolute top-60 left-1/3 text-white/20 animate-pulse" style={{ animationDelay: '0.5s', animationDuration: '3s' }}>
+          <Sprout size={16} />
+        </div>
+        <div className="absolute bottom-20 right-32 text-white/20 animate-bounce" style={{ animationDelay: '1.5s', animationDuration: '2.5s' }}>
+          <Sun size={22} />
+        </div>
+        <div className="absolute top-80 right-10 text-white/20 animate-pulse" style={{ animationDelay: '3s', animationDuration: '3.5s' }}>
+          <Leaf size={18} />
+        </div>
+      </div>
+
       {/* Main Content */}
-      <div className="bg-gradient-to-br from-green-900 via-green-800 to-emerald-900">
+      <div className="bg-gradient-to-br from-green-900 via-green-800 to-emerald-900 relative z-10">
         {/* Before & After Transformations - Reading Experience */}
         {portfolioItem.images && portfolioItem.images.length > 0 && (
           <section className="py-16 bg-transparent">
             <div className="container mx-auto px-4">
               <div className="max-w-5xl mx-auto">
-                <div className="text-center mb-16">
-                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+                <div className="text-center mb-16 relative">
+                  {/* White decorative elements around title */}
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 flex items-center gap-4">
+                    <div className="text-white/30 animate-pulse">
+                      <Leaf size={20} />
+                    </div>
+                    <div className="text-white/30 animate-bounce" style={{ animationDelay: '0.5s' }}>
+                      <Flower2 size={16} />
+                    </div>
+                    <div className="text-white/30 animate-pulse" style={{ animationDelay: '1s' }}>
+                      <Sprout size={18} />
+                    </div>
+                  </div>
+                  
+                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 relative z-10">
                     Transformarea Completă
                   </h2>
                   <p className="text-xl text-white/80 max-w-3xl mx-auto leading-relaxed">
                     Urmăriți povestea transformării acestui spațiu, de la primul pas până la rezultatul final
                   </p>
-                  <div className="w-24 h-1 bg-gradient-to-r from-green-400 to-emerald-400 mx-auto mt-6 rounded-full"></div>
+                  <div className="w-24 h-1 bg-gradient-to-r from-white/40 to-white/60 mx-auto mt-6 rounded-full"></div>
+                  
+                  {/* White garden border decoration */}
+                  <div className="flex justify-center items-center gap-2 mt-4">
+                    <div className="text-white/40 animate-pulse">
+                      <TreePine size={14} />
+                    </div>
+                    <div className="w-8 h-px bg-white/30"></div>
+                    <div className="text-white/40 animate-bounce" style={{ animationDelay: '0.3s' }}>
+                      <Sun size={16} />
+                    </div>
+                    <div className="w-8 h-px bg-white/30"></div>
+                    <div className="text-white/40 animate-pulse" style={{ animationDelay: '0.6s' }}>
+                      <TreePine size={14} />
+                    </div>
+                  </div>
                 </div>
 
                 <div className="space-y-20">
@@ -535,17 +590,33 @@ export default function PortfolioDetail() {
                         className="bg-white/5 backdrop-blur-sm rounded-3xl border border-white/10 shadow-2xl overflow-hidden"
                       >
                         {/* Header */}
-                        <div className="px-8 pt-8 pb-4">
+                        <div className="px-8 pt-8 pb-4 relative">
+                          {/* White decorative corner elements */}
+                          <div className="absolute top-4 right-8 text-white/20 animate-pulse">
+                            <Leaf size={16} />
+                          </div>
+                          <div className="absolute top-6 right-12 text-white/20 animate-bounce" style={{ animationDelay: '0.5s' }}>
+                            <Sprout size={12} />
+                          </div>
+                          
                           <div className="flex items-center gap-4 mb-4">
-                            <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
+                            <div className="w-12 h-12 bg-gradient-to-br from-white/20 to-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg border border-white/30">
                               <span className="text-white font-bold text-xl">
                                 {index + 1}
                               </span>
                             </div>
-                            <div>
+                            <div className="flex-1">
                               <h3 className="text-2xl md:text-3xl font-bold text-white leading-tight">
                                 {image.caption || `Transformarea spațiului ${index + 1}`}
                               </h3>
+                              {/* White garden accent line */}
+                              <div className="flex items-center gap-2 mt-2">
+                                <div className="w-8 h-px bg-white/40"></div>
+                                <div className="text-white/50 animate-pulse">
+                                  <Flower2 size={12} />
+                                </div>
+                                <div className="w-8 h-px bg-white/40"></div>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -637,17 +708,48 @@ export default function PortfolioDetail() {
 
                           {/* Description */}
                           {image.richDescription && (
-                            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
-                              <h4 className="text-xl font-bold text-white/95 mb-4 flex items-center gap-3">
-                                <div className="w-6 h-6 bg-green-500/80 rounded-full flex items-center justify-center">
-                                  <span className="text-white text-sm">ℹ</span>
+                            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 relative overflow-hidden">
+                              {/* White decorative background elements */}
+                              <div className="absolute top-4 right-4 text-white/10 animate-pulse">
+                                <TreePine size={24} />
+                              </div>
+                              <div className="absolute bottom-4 left-4 text-white/10 animate-bounce" style={{ animationDelay: '1s' }}>
+                                <Sun size={20} />
+                              </div>
+                              
+                              <h4 className="text-xl font-bold text-white/95 mb-4 flex items-center gap-3 relative z-10">
+                                <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
+                                  <Flower2 className="text-white" size={16} />
                                 </div>
                                 Povestea acestei transformări
+                                
+                                {/* White decorative trail */}
+                                <div className="flex items-center gap-1 ml-2">
+                                  <div className="w-2 h-2 bg-white/40 rounded-full"></div>
+                                  <div className="w-1 h-1 bg-white/30 rounded-full"></div>
+                                  <div className="w-1 h-1 bg-white/20 rounded-full"></div>
+                                </div>
                               </h4>
-                              <div className="prose prose-invert max-w-none">
+                              
+                              <div className="prose prose-invert max-w-none relative z-10">
                                 <p className="text-base text-white/80 leading-relaxed whitespace-pre-line">
                                   {image.richDescription}
                                 </p>
+                              </div>
+                              
+                              {/* White garden border at bottom */}
+                              <div className="flex justify-center items-center gap-3 mt-6 pt-4 border-t border-white/20">
+                                <div className="text-white/30 animate-pulse">
+                                  <Leaf size={14} />
+                                </div>
+                                <div className="w-12 h-px bg-white/30"></div>
+                                <div className="text-white/30 animate-bounce" style={{ animationDelay: '0.5s' }}>
+                                  <Sprout size={12} />
+                                </div>
+                                <div className="w-12 h-px bg-white/30"></div>
+                                <div className="text-white/30 animate-pulse" style={{ animationDelay: '1s' }}>
+                                  <Leaf size={14} />
+                                </div>
                               </div>
                             </div>
                           )}
