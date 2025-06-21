@@ -52,11 +52,13 @@
   width: 100% !important;
   height: 100% !important;
   min-height: inherit;
+  cursor: pointer;
 }
 
 .transformation-image-container .cursor-pointer {
   width: 100% !important;
   height: 100% !important;
+  cursor: pointer;
 }
 
 .transformation-image-container img {
@@ -64,6 +66,7 @@
   height: 100% !important;
   object-fit: cover !important;
   transition: all 0.7s ease !important;
+  cursor: pointer;
 }
 
 /* Carousel Performance Optimizations */

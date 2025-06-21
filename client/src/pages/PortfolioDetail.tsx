@@ -612,16 +612,11 @@ export default function PortfolioDetail() {
                                 onMouseEnter={() => handleMouseEnter(index)}
                                 onMouseLeave={() => handleMouseLeave(index)}
                               >
-                                <div className="aspect-[4/3] overflow-hidden rounded-3xl shadow-2xl bg-white relative cursor-pointer transformation-image-container">
+                                <div className="aspect-[4/3] overflow-hidden rounded-3xl shadow-2xl bg-white relative transformation-image-container">
                                   <ImageLightbox
                                     image={currentImage}
                                     alt={`${currentState === "before" ? "Before" : "After"} ${image.caption || `Transformation ${index + 1}`}`}
                                   />
-
-                                  {/* Overlay gradient */}
-                                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                  
-
                                 </div>
 
 
