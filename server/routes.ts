@@ -1613,7 +1613,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.delete("/api/admin/subscriptions/:id", authenticateAdmin, async (req, res) => {
     try {
       const { id } = req.params;
+      console.log(`=== DELETE SUBSCRIPTION DEBUG ===`);
       console.log(`Attempting to delete subscription with ID: ${id}`);
+      console.log(`ID type: ${typeof id}, length: ${id.length}`);
+      
+      // Check if subscription exists first
+      console.log(`Checking if subscription exists...`);
+      const existingSubscription = await storage.getSubscription(id);
+      console.log(`Existing subscription check result:`, existingSubscription ? {
+        id: existingSubscription.id,
+        name: existingSubscription.name
+      } : 'NOT FOUND');
+      
+      // Get all subscriptions to see what IDs exist
+      const allSubscriptions = await storage.getSubscriptions();
+      console.log(`All existing subscription IDs:`, allSubscriptions.map(s => ({ id: s.id, name: s.name })));
       
       const deleteResult = await storage.deleteSubscription(id);
       console.log(`Delete operation result: ${deleteResult}`);
@@ -1634,7 +1648,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Endpoint to create sample subscriptions on demand
   app.post("/api/admin/create-sample-subscriptions", requireAdmin, async (req, res) => {
     try {
-      console.log("Creating sample subscriptions on demand");
+      console.log("=== CREATING SAMPLE SUBSCRIPTIONS ON DEMAND ===");
+      console.log("Request origin:", req.get('origin'));
+      console.log("Request referer:", req.get('referer'));
+      console.log("User agent:", req.get('user-agent'));
+      console.log("Request body:", JSON.stringify(req.body, null, 2));
       
       const sampleData = [
         {

@@ -122,24 +122,7 @@ export default function AdminSubscriptions() {
         });
       }
 
-      // If we have no subscriptions, try to create sample data
-      if (subscriptionsData.length === 0) {
-        console.log("No subscriptions found, attempting to create samples...");
-        try {
-          const createResponse = await apiRequest('POST', '/api/admin/create-sample-subscriptions');
-          console.log("Create sample response:", createResponse);
-          
-          const refreshedResponse = await apiRequest('GET', '/api/admin/subscriptions');
-          if (Array.isArray(refreshedResponse)) {
-            subscriptionsData = refreshedResponse;
-          } else if (refreshedResponse && refreshedResponse.subscriptions) {
-            subscriptionsData = refreshedResponse.subscriptions;
-          }
-          console.log(`Created ${subscriptionsData.length} sample subscriptions`);
-        } catch (createError) {
-          console.error("Error creating sample subscriptions:", createError);
-        }
-      }
+      // No automatic sample creation - let users manage their own data
 
       return subscriptionsData;
     } catch (err) {

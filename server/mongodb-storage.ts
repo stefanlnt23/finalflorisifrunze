@@ -1326,9 +1326,12 @@ export class MongoDBStorage implements IStorage {
 
   async deleteSubscription(id: string): Promise<boolean> {
     try {
-      console.log(`[MongoDB] Starting delete operation for subscription ID: ${id}`);
+      console.log(`=== [MongoDB] DELETE SUBSCRIPTION OPERATION ===`);
+      console.log(`[MongoDB] Target ID: "${id}"`);
+      console.log(`[MongoDB] ID type: ${typeof id}, length: ${id.length}`);
       
       if (!this.db) {
+        console.log(`[MongoDB] Database not initialized, initializing...`);
         await this.initDb();
         if (!this.db) {
           console.error(`[MongoDB] Failed to initialize database connection`);
@@ -1339,18 +1342,74 @@ export class MongoDBStorage implements IStorage {
       const collection = this.db.collection("subscriptions");
       const { ObjectId } = require('mongodb');
       
-      // Try both string and ObjectId formats
+      // First, let's see what documents exist in the collection
+      console.log(`[MongoDB] Listing all documents in subscriptions collection:`);
+      const allDocs = await collection.find({}).toArray();
+      allDocs.forEach((doc, index) => {
+        console.log(`[MongoDB] Document ${index + 1}: _id="${doc._id}" (type: ${typeof doc._id}), name="${doc.name}"`);
+      });
+      
+      // Check if ID is valid ObjectId format
+      const isValidObjectId = ObjectId.isValid(id);
+      console.log(`[MongoDB] Is "${id}" a valid ObjectId format? ${isValidObjectId}`);
+      
       let query;
-      if (ObjectId.isValid(id)) {
+      let queryDescription;
+      
+      if (isValidObjectId) {
         query = { _id: new ObjectId(id) };
+        queryDescription = `ObjectId("${id}")`;
       } else {
         query = { _id: id };
+        queryDescription = `string "${id}"`;
+      }
+      
+      console.log(`[MongoDB] Using query: ${queryDescription}`);
+      console.log(`[MongoDB] Query object:`, JSON.stringify(query, null, 2));
+      
+      // First try to find the document to confirm it exists
+      console.log(`[MongoDB] Searching for document with query...`);
+      const foundDoc = await collection.findOne(query);
+      console.log(`[MongoDB] Found document:`, foundDoc ? {
+        _id: foundDoc._id,
+        name: foundDoc.name
+      } : 'NOT FOUND');
+      
+      if (!foundDoc) {
+        console.log(`[MongoDB] Document not found, trying alternative queries...`);
+        
+        // Try as string if we tried ObjectId
+        if (isValidObjectId) {
+          console.log(`[MongoDB] Trying string query...`);
+          const stringQuery = { _id: id };
+          const foundByString = await collection.findOne(stringQuery);
+          console.log(`[MongoDB] Found by string query:`, foundByString ? 'YES' : 'NO');
+        }
+        
+        // Try as ObjectId if we tried string
+        if (!isValidObjectId) {
+          try {
+            console.log(`[MongoDB] Trying ObjectId query...`);
+            const objQuery = { _id: new ObjectId(id) };
+            const foundByObj = await collection.findOne(objQuery);
+            console.log(`[MongoDB] Found by ObjectId query:`, foundByObj ? 'YES' : 'NO');
+          } catch (err) {
+            console.log(`[MongoDB] Cannot convert to ObjectId:`, err.message);
+          }
+        }
       }
 
       const result = await collection.deleteOne(query);
-      console.log(`[MongoDB] Delete result:`, { acknowledged: result.acknowledged, deletedCount: result.deletedCount });
+      console.log(`[MongoDB] Delete operation completed`);
+      console.log(`[MongoDB] Delete result:`, { 
+        acknowledged: result.acknowledged, 
+        deletedCount: result.deletedCount 
+      });
       
-      return result.deletedCount > 0;
+      const success = result.deletedCount > 0;
+      console.log(`[MongoDB] Delete operation success: ${success}`);
+      
+      return success;
     } catch (error) {
       console.error(`[MongoDB] Error deleting subscription ${id}:`, error);
       return false;
