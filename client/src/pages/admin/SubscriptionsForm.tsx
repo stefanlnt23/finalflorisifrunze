@@ -3,7 +3,7 @@ import { useParams, useLocation } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,7 +22,6 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import AdminLayout from "@/components/layouts/AdminLayout";
 import { X } from "lucide-react";
-import { apiRequest, queryClient } from "@/lib/queryClient";
 
 // Form schema
 const formSchema = z.object({
@@ -48,7 +47,7 @@ export default function SubscriptionsForm() {
   const [_, setLocation] = useLocation();
   const params = useParams();
   const isEditing = Boolean(params.id);
-
+  const queryClient = useQueryClient();
   const [newFeature, setNewFeature] = useState("");
 
   // Form setup
@@ -70,20 +69,11 @@ export default function SubscriptionsForm() {
   const { data: subscriptionData, isLoading } = useQuery({
     queryKey: [`/api/admin/subscriptions/${params.id}`],
     queryFn: async () => {
-      if (!params.id) {
-        console.log("No ID provided for subscription fetch");
-        return null;
+      const response = await fetch(`/api/admin/subscriptions/${params.id}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch subscription');
       }
-      console.log(`Fetching subscription with ID: ${params.id}`);
-      const responseData = await apiRequest("GET", `/api/admin/subscriptions/${params.id}`);
-      console.log("Subscription data loaded:", JSON.stringify(responseData, null, 2));
-      
-      if (!responseData?.subscription) {
-        console.error("Subscription data is missing in the response");
-        throw new Error("Subscription data not found in response");
-      }
-      
-      return responseData.subscription;
+      return response.json();
     },
     enabled: isEditing,
     retry: 1
@@ -91,17 +81,17 @@ export default function SubscriptionsForm() {
 
   // Update form values when subscription data is loaded
   useEffect(() => {
-    if (subscriptionData && isEditing) {
-      console.log("Setting form values with subscription data:", subscriptionData);
+    if (subscriptionData?.subscription && isEditing) {
+      const subscription = subscriptionData.subscription;
       form.reset({
-        name: subscriptionData.name || "",
-        description: subscriptionData.description || "",
-        imageUrl: subscriptionData.imageUrl || "",
-        color: subscriptionData.color || "#FFFFFF",
-        price: subscriptionData.price || "",
-        features: subscriptionData.features || [],
-        isPopular: subscriptionData.isPopular || false,
-        displayOrder: subscriptionData.displayOrder || 0,
+        name: subscription.name,
+        description: subscription.description || "",
+        imageUrl: subscription.imageUrl || "",
+        color: subscription.color || "#FFFFFF",
+        price: subscription.price,
+        features: subscription.features || [],
+        isPopular: subscription.isPopular || false,
+        displayOrder: subscription.displayOrder || 0,
       });
     }
   }, [subscriptionData, form, isEditing]);
@@ -130,7 +120,20 @@ export default function SubscriptionsForm() {
   // Create mutation
   const createMutation = useMutation({
     mutationFn: async (data: FormValues) => {
-      return await apiRequest("POST", "/api/admin/subscriptions", data);
+      const response = await fetch("/api/admin/subscriptions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to create subscription");
+      }
+
+      return response.json();
     },
     onSuccess: () => {
       toast({
@@ -153,7 +156,20 @@ export default function SubscriptionsForm() {
   // Update mutation
   const updateMutation = useMutation({
     mutationFn: async (data: FormValues) => {
-      return await apiRequest("PUT", `/api/admin/subscriptions/${params.id}`, data);
+      const response = await fetch(`/api/admin/subscriptions/${params.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to update subscription");
+      }
+
+      return response.json();
     },
     onSuccess: () => {
       toast({

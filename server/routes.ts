@@ -1509,18 +1509,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/admin/subscriptions/:id", authenticateAdmin, async (req, res) => {
+  app.get("/api/admin/subscriptions/:id", requireAdmin, async (req, res) => {
     try {
       const { id } = req.params;
-      console.log(`Admin requesting subscription with ID: ${id}`);
       const subscription = await storage.getSubscription(id);
 
       if (!subscription) {
-        console.log(`Subscription with ID ${id} not found in database`);
         return res.status(404).json({ message: "Subscription not found" });
       }
 
-      console.log(`Successfully found subscription: ${subscription.name}`);
       res.json({ subscription });
     } catch (error) {
       console.error(`Error fetching subscription ${req.params.id}:`, error);
