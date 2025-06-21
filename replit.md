@@ -117,6 +117,12 @@ The application is architected to support both MongoDB (currently active) and Po
 
 ## Recent Changes
 
+### June 21, 2025 - Domain Configuration Fix
+- **WWW Redirect Setup**: Added Express middleware to handle www.florisifrunze.com requests for Replit deployment
+- **SEO Optimization**: Configured 301 permanent redirect from www subdomain to main domain
+- **User Experience**: Both florisifrunze.com and www.florisifrunze.com now work seamlessly
+- **Impact**: Improved domain accessibility and professional URL handling
+
 ### June 21, 2025 - Portfolio Details Page Complete Redesign with White Elements
 - **Unified Green Background**: Extended hero section's green gradient background throughout entire page for consistent visual theme
 - **Reading Experience Layout**: Transformed from compact cards to expansive article-style layout for immersive storytelling

@@ -12,6 +12,17 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// WWW redirect middleware for Replit deployment
+app.use((req, res, next) => {
+  const host = req.get('host');
+  if (host && host.startsWith('www.')) {
+    const newHost = host.slice(4); // Remove 'www.'
+    const protocol = req.get('x-forwarded-proto') || 'http';
+    return res.redirect(301, `${protocol}://${newHost}${req.originalUrl}`);
+  }
+  next();
+});
+
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
