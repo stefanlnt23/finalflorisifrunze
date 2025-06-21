@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { ImageLightbox } from "@/components/ui/image-lightbox";
-import { ArrowLeft, Calendar, MapPin, Clock, Star, Heart, Share2, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, Calendar, MapPin, Clock, Star, Quote, Heart, Share2, Eye, ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function PortfolioDetail() {
   const { id } = useParams();
@@ -78,6 +78,12 @@ export default function PortfolioDetail() {
 
   const service = serviceData?.service;
 
+  // Update view count when the page loads
+  useEffect(() => {
+    // In a real application, you would update the view count here
+    // This would typically be an API call to increment the view count
+  }, [id]);
+
   // Get all images (main + gallery)
   const allImages = [
     ...(portfolioItem?.imageUrl ? [portfolioItem.imageUrl] : []),
@@ -138,324 +144,198 @@ export default function PortfolioDetail() {
 
   return (
     <MainLayout>
-      {/* Dynamic Hero Section - Magazine Style */}
-      <div className="relative min-h-screen overflow-hidden">
-        {/* Dynamic Background Based on Project ID */}
-        <div className={`absolute inset-0 ${
-          portfolioItem.id.slice(-1) === '0' || portfolioItem.id.slice(-1) === '5' 
-            ? 'bg-gradient-to-br from-emerald-900 via-green-800 to-teal-900'
-            : portfolioItem.id.slice(-1) === '1' || portfolioItem.id.slice(-1) === '6'
-            ? 'bg-gradient-to-tr from-slate-900 via-green-900 to-emerald-800' 
-            : portfolioItem.id.slice(-1) === '2' || portfolioItem.id.slice(-1) === '7'
-            ? 'bg-gradient-to-bl from-green-950 via-emerald-900 to-teal-800'
-            : portfolioItem.id.slice(-1) === '3' || portfolioItem.id.slice(-1) === '8'
-            ? 'bg-gradient-to-tl from-green-900 via-green-800 to-emerald-900'
-            : 'bg-gradient-to-r from-green-900 via-emerald-800 to-teal-900'
-        }`}></div>
-        
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0">
-          <div className={`absolute ${
-            portfolioItem.id.slice(-1) === '0' ? 'top-10 left-10' : 
-            portfolioItem.id.slice(-1) === '1' ? 'top-20 right-20' :
-            portfolioItem.id.slice(-1) === '2' ? 'bottom-20 left-20' :
-            'top-1/3 right-1/4'
-          } w-72 h-72 bg-emerald-400/10 rounded-full blur-3xl animate-pulse`}></div>
-          <div className={`absolute ${
-            portfolioItem.id.slice(-1) === '0' ? 'bottom-20 right-10' : 
-            portfolioItem.id.slice(-1) === '1' ? 'bottom-10 left-10' :
-            portfolioItem.id.slice(-1) === '2' ? 'top-10 right-10' :
-            'bottom-1/4 left-1/3'
-          } w-48 h-48 bg-green-300/10 rounded-full blur-2xl animate-pulse delay-1000`}></div>
-        </div>
+      {/* Hero Section with Gradient Background */}
+      <div className="relative bg-gradient-to-br from-green-900 via-green-800 to-emerald-900 overflow-hidden">
+        {/* Background Overlay */}
+        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/5 to-transparent opacity-30"></div>
 
         {/* Navigation */}
-        <div className="relative z-10 pt-6 pb-4">
+        <div className="relative z-10 pt-8 pb-6">
           <div className="container mx-auto px-4">
-            <div className="flex justify-between items-center">
-              <Button
-                variant="ghost"
-                onClick={() => window.history.back()}
-                className="text-white hover:bg-white/10 backdrop-blur-sm border border-white/20"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Portofoliu
-              </Button>
-              
-              <div className="flex space-x-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-white hover:bg-white/10 backdrop-blur-sm border border-white/20"
-                  onClick={() => setIsLiked(!isLiked)}
-                >
-                  <Heart className={`w-4 h-4 ${isLiked ? 'fill-current text-red-400' : ''}`} />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-white hover:bg-white/10 backdrop-blur-sm border border-white/20"
-                  onClick={() => navigator.share?.({ title: portfolioItem.title, url: window.location.href })}
-                >
-                  <Share2 className="w-4 h-4" />
-                </Button>
-              </div>
-            </div>
+            <Button
+              variant="outline"
+              onClick={() => window.history.back()}
+              className="bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Înapoi la Portofoliu
+            </Button>
           </div>
         </div>
 
-        {/* Dynamic Layout Based on Project */}
-        <div className="relative z-10 py-12 pb-20">
+        {/* Hero Content with Two-Column Layout */}
+        <div className="relative z-10 py-16 pb-24">
           <div className="container mx-auto px-4">
-            {/* Project Header */}
-            <div className={`text-center mb-16 ${
-              portfolioItem.id.slice(-1) % 2 === 0 ? 'max-w-4xl mx-auto' : 'max-w-5xl mx-auto'
-            }`}>
-              {service && (
-                <div className="inline-flex items-center px-4 py-2 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-sm mb-6">
-                  <div className="w-2 h-2 bg-emerald-400 rounded-full mr-2 animate-pulse"></div>
-                  {service.name}
-                </div>
-              )}
-              
-              <h1 className={`font-bold leading-tight text-white mb-6 ${
-                portfolioItem.id.slice(-1) % 3 === 0 ? 'text-5xl lg:text-7xl' :
-                portfolioItem.id.slice(-1) % 3 === 1 ? 'text-4xl lg:text-6xl' :
-                'text-3xl lg:text-5xl'
-              }`}>
-                {portfolioItem.title}
-              </h1>
-            </div>
-
-            {/* Dynamic Content Layout */}
-            {portfolioItem.id.slice(-1) % 3 === 0 ? (
-              // Layout Style 1: Image First, Text Below
-              <div className="space-y-16">
-                {/* Large Featured Image */}
-                {allImages.length > 0 && (
-                  <div className="relative max-w-6xl mx-auto">
-                    <div className="relative group">
-                      <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/20 to-green-400/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-                      <div className="relative bg-white/10 backdrop-blur-sm rounded-3xl p-4 border border-white/20">
-                        <div className="w-full h-[500px] object-cover rounded-2xl overflow-hidden">
-                          <ImageLightbox
-                            image={allImages[currentImageIndex]}
-                            alt={portfolioItem.title}
-                          />
-                        </div>
-                        
-                        {/* Image Info Overlay */}
-                        <div className="absolute bottom-8 left-8 right-8">
-                          <div className="bg-black/60 backdrop-blur-md rounded-xl p-4 border border-white/20">
-                            <div className="flex justify-between items-center text-white">
-                              <div>
-                                <p className="text-sm opacity-80">Imagine {currentImageIndex + 1} din {allImages.length}</p>
-                                <p className="font-medium">Galeria Proiectului</p>
-                              </div>
-                              {allImages.length > 1 && (
-                                <div className="flex space-x-2">
-                                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-white hover:bg-white/20" onClick={prevImage}>
-                                    <ChevronLeft className="h-4 w-4" />
-                                  </Button>
-                                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-white hover:bg-white/20" onClick={nextImage}>
-                                    <ChevronRight className="h-4 w-4" />
-                                  </Button>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+            <div className="max-w-7xl mx-auto">
+              {/* Hero Title */}
+              <div className="text-center text-white mb-12">
+                {portfolioItem.featured && (
+                  <Badge className="bg-yellow-500/20 text-yellow-300 border-yellow-400/30 mb-4">
+                    <Star className="w-3 h-3 mr-1" />
+                    Proiect Destacat
+                  </Badge>
                 )}
-
-                {/* Project Content in Cards */}
-                <div className="grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-                  <div className="lg:col-span-2 space-y-8">
-                    <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
-                      <h2 className="text-2xl font-bold text-white mb-6">Despre Proiect</h2>
-                      <p className="text-white/90 leading-relaxed text-lg">
-                        {truncateText(portfolioItem.description, 'description', 30)}
-                        {isMobile && portfolioItem.description.split(' ').length > 30 && (
-                          <button
-                            onClick={() => toggleSection('description')}
-                            className="text-emerald-400 hover:text-emerald-300 ml-2 underline"
-                          >
-                            {expandedSections['description'] ? 'mai puțin' : 'mai mult'}
-                          </button>
-                        )}
-                      </p>
-                    </div>
-
-                    {portfolioItem.challenges && (
-                      <div className="bg-amber-500/10 backdrop-blur-sm rounded-2xl p-8 border border-amber-400/20">
-                        <h3 className="text-xl font-semibold text-amber-300 mb-4">Provocări Întâmpinate</h3>
-                        <p className="text-white/80 leading-relaxed">
-                          {truncateText(portfolioItem.challenges, 'challenges', 25)}
-                          {isMobile && portfolioItem.challenges.split(' ').length > 25 && (
-                            <button
-                              onClick={() => toggleSection('challenges')}
-                              className="text-amber-400 hover:text-amber-300 ml-2 underline"
-                            >
-                              {expandedSections['challenges'] ? 'mai puțin' : 'mai mult'}
-                            </button>
-                          )}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="space-y-6">
-                    <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-                      <h3 className="text-lg font-semibold text-emerald-300 mb-4">Detalii Proiect</h3>
-                      <div className="space-y-4">
-                        <div className="flex items-center space-x-3">
-                          <Calendar className="h-5 w-5 text-emerald-400" />
-                          <div>
-                            <p className="text-xs text-white/60 uppercase tracking-wide">Finalizat</p>
-                            <p className="text-white font-medium">{format(new Date(portfolioItem.completedAt || portfolioItem.createdAt), "MMMM yyyy")}</p>
-                          </div>
-                        </div>
-                        <div className="flex items-center space-x-3">
-                          <MapPin className="h-5 w-5 text-emerald-400" />
-                          <div>
-                            <p className="text-xs text-white/60 uppercase tracking-wide">Locație</p>
-                            <p className="text-white font-medium">{portfolioItem.location || "România"}</p>
-                          </div>
-                        </div>
-                        <div className="flex items-center space-x-3">
-                          <Clock className="h-5 w-5 text-emerald-400" />
-                          <div>
-                            <p className="text-xs text-white/60 uppercase tracking-wide">Durată</p>
-                            <p className="text-white font-medium">{portfolioItem.duration || "2-4 săptămâni"}</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <Button
-                      size="lg"
-                      className="w-full bg-white text-green-900 hover:bg-green-50 shadow-xl"
-                      onClick={() => (window.location.href = "/appointment")}
-                    >
-                      Programează Întâlnire
-                    </Button>
-                  </div>
-                </div>
+                <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+                  {portfolioItem.title}
+                </h1>
               </div>
-            ) : portfolioItem.id.slice(-1) % 3 === 1 ? (
-              // Layout Style 2: Split Screen
-              <div className="grid lg:grid-cols-2 gap-16 max-w-7xl mx-auto items-start">
-                {/* Left: Project Info */}
-                <div className="space-y-8">
+
+              <div className="grid lg:grid-cols-2 gap-16 items-start mb-12">
+                {/* Left Column - Project Description */}
+                <div className="space-y-6">
                   <div>
-                    <h2 className="text-3xl font-bold text-white mb-6">Transformarea Completă</h2>
-                    <p className="text-xl text-white/90 leading-relaxed mb-8">
-                      {truncateText(portfolioItem.description, 'description', 25)}
-                      {isMobile && portfolioItem.description.split(' ').length > 25 && (
+                    {service && (
+                      <Badge variant="outline" className="text-base px-3 py-1 bg-white/20 text-white border-white/30 mb-4">
+                        {service.name}
+                      </Badge>
+                    )}
+                    <h2 className="text-3xl font-bold text-white mb-4">
+                      Detalii Proiect
+                    </h2>
+                    <div className="text-xl text-white/90 leading-relaxed">
+                      <p>{truncateText(portfolioItem.description, 'description')}</p>
+                      {isMobile && portfolioItem.description.split(' ').length > 10 && (
                         <button
                           onClick={() => toggleSection('description')}
-                          className="text-emerald-400 hover:text-emerald-300 ml-2 underline"
+                          className="text-white/70 hover:text-white underline text-sm mt-2 block"
                         >
-                          {expandedSections['description'] ? 'mai puțin' : 'mai mult'}
+                          {expandedSections['description'] ? 'Arată mai puțin' : 'Citește mai mult'}
                         </button>
                       )}
-                    </p>
-                  </div>
-
-                  {/* Stats Grid */}
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-                      <Calendar className="h-6 w-6 text-emerald-400 mb-2" />
-                      <p className="text-white/60 text-sm">Finalizat în</p>
-                      <p className="text-white font-bold">{format(new Date(portfolioItem.completedAt || portfolioItem.createdAt), "MMM yyyy")}</p>
-                    </div>
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-                      <MapPin className="h-6 w-6 text-emerald-400 mb-2" />
-                      <p className="text-white/60 text-sm">Locație</p>
-                      <p className="text-white font-bold">{portfolioItem.location || "România"}</p>
-                    </div>
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-                      <Clock className="h-6 w-6 text-emerald-400 mb-2" />
-                      <p className="text-white/60 text-sm">Durată</p>
-                      <p className="text-white font-bold">{portfolioItem.duration || "2-4 săpt"}</p>
-                    </div>
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-                      <Star className="h-6 w-6 text-yellow-400 mb-2" />
-                      <p className="text-white/60 text-sm">Tip</p>
-                      <p className="text-white font-bold">Premium</p>
                     </div>
                   </div>
-
-                  {portfolioItem.solution && (
-                    <div className="bg-emerald-500/10 backdrop-blur-sm rounded-xl p-6 border border-emerald-400/20">
-                      <h3 className="text-xl font-semibold text-emerald-300 mb-4">Soluția Implementată</h3>
-                      <p className="text-white/80 leading-relaxed">
-                        {truncateText(portfolioItem.solution, 'solution', 20)}
-                        {isMobile && portfolioItem.solution.split(' ').length > 20 && (
+                  
+                  {portfolioItem.challenges && (
+                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                      <h3 className="text-xl font-semibold text-white mb-3">Provocări</h3>
+                      <div className="text-white/80">
+                        <p>{truncateText(portfolioItem.challenges, 'challenges')}</p>
+                        {isMobile && portfolioItem.challenges.split(' ').length > 10 && (
                           <button
-                            onClick={() => toggleSection('solution')}
-                            className="text-emerald-400 hover:text-emerald-300 ml-2 underline"
+                            onClick={() => toggleSection('challenges')}
+                            className="text-white/60 hover:text-white underline text-sm mt-2 block"
                           >
-                            {expandedSections['solution'] ? 'mai puțin' : 'mai mult'}
+                            {expandedSections['challenges'] ? 'Arată mai puțin' : 'Citește mai mult'}
                           </button>
                         )}
-                      </p>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {portfolioItem.solution && (
+                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                      <h3 className="text-xl font-semibold text-white mb-3">Soluția</h3>
+                      <div className="text-white/80">
+                        <p>{truncateText(portfolioItem.solution, 'solution')}</p>
+                        {isMobile && portfolioItem.solution.split(' ').length > 10 && (
+                          <button
+                            onClick={() => toggleSection('solution')}
+                            className="text-white/60 hover:text-white underline text-sm mt-2 block"
+                          >
+                            {expandedSections['solution'] ? 'Arată mai puțin' : 'Citește mai mult'}
+                          </button>
+                        )}
+                      </div>
                     </div>
                   )}
 
-                  <div className="flex space-x-4">
+                  {/* Action Buttons */}
+                  <div className="flex flex-wrap gap-4 pt-4">
                     <Button
                       size="lg"
-                      className="bg-white text-green-900 hover:bg-green-50"
+                      className="bg-white text-green-900 hover:bg-green-50 shadow-xl"
                       onClick={() => (window.location.href = "/appointment")}
                     >
                       Programează Întâlnire
                     </Button>
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      className="bg-[#124a27] border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
+                      onClick={() => setIsLiked(!isLiked)}
+                    >
+                      <Heart className={`w-4 h-4 mr-2 ${isLiked ? 'fill-current text-red-400' : ''}`} />
+                      {isLiked ? 'Îmi place' : 'Apreciază'}
+                    </Button>
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      className="bg-[#134c29] border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
+                      onClick={() => navigator.share?.({ title: portfolioItem.title, url: window.location.href })}
+                    >
+                      <Share2 className="w-4 h-4 mr-2" />
+                      Distribuie
+                    </Button>
                   </div>
                 </div>
 
-                {/* Right: Image Gallery */}
+                {/* Right Column - Photo Gallery */}
                 {allImages.length > 0 && (
                   <div className="space-y-6">
-                    <div className="relative">
-                      <div className="aspect-[3/4] overflow-hidden rounded-2xl shadow-2xl">
-                        <ImageLightbox
-                          image={allImages[currentImageIndex]}
-                          alt={portfolioItem.title}
-                        />
-                      </div>
-                      
-                      {allImages.length > 1 && (
-                        <div className="absolute bottom-4 left-4 right-4">
-                          <div className="bg-black/50 backdrop-blur-sm rounded-lg p-3 flex justify-between items-center">
-                            <span className="text-white text-sm">{currentImageIndex + 1} / {allImages.length}</span>
-                            <div className="flex space-x-2">
-                              <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-white hover:bg-white/20" onClick={prevImage}>
-                                <ChevronLeft className="h-4 w-4" />
-                              </Button>
-                              <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-white hover:bg-white/20" onClick={nextImage}>
-                                <ChevronRight className="h-4 w-4" />
-                              </Button>
-                            </div>
-                          </div>
-                        </div>
-                      )}
+                    <div>
+                      <h2 className="text-3xl font-bold text-white mb-3">
+                        Galeria Proiectului
+                      </h2>
+                      <p className="text-xl text-white/80">
+                        Descoperiți transformarea pas cu pas
+                      </p>
                     </div>
 
-                    {/* Thumbnail Strip */}
+                    {/* Main Image Display */}
+                    <div className="relative">
+                      <div className="aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl">
+                        <ImageLightbox
+                          image={allImages[currentImageIndex]}
+                          alt={`Project image ${currentImageIndex + 1}`}
+                        />
+                      </div>
+
+                      {/* Navigation Arrows */}
+                      {allImages.length > 1 && (
+                        <>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/90 backdrop-blur-sm"
+                            onClick={prevImage}
+                          >
+                            <ChevronLeft className="w-6 h-6" />
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/90 backdrop-blur-sm"
+                            onClick={nextImage}
+                          >
+                            <ChevronRight className="w-6 h-6" />
+                          </Button>
+                        </>
+                      )}
+
+                      {/* Image Counter */}
+                      <div className="absolute bottom-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm backdrop-blur-sm">
+                        {currentImageIndex + 1} / {allImages.length}
+                      </div>
+                    </div>
+
+                    {/* Thumbnail Navigation */}
                     {allImages.length > 1 && (
-                      <div className="grid grid-cols-4 gap-2">
-                        {allImages.slice(0, 4).map((img, index) => (
+                      <div className="flex gap-2 overflow-x-auto pb-2">
+                        {allImages.map((image: string, index: number) => (
                           <button
                             key={index}
                             onClick={() => setCurrentImageIndex(index)}
-                            className={`aspect-square rounded-lg overflow-hidden transition-all ${
-                              currentImageIndex === index ? 'ring-2 ring-emerald-400' : 'hover:ring-1 hover:ring-white/40'
+                            className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all cursor-pointer ${
+                              currentImageIndex === index
+                                ? 'border-white scale-105'
+                                : 'border-white/30 hover:border-white/60'
                             }`}
                           >
-                            <img src={img} alt="" className="w-full h-full object-cover" />
+                            <ImageLightbox
+                              image={image}
+                              alt={`Thumbnail ${index + 1}`}
+                            />
                           </button>
                         ))}
                       </div>
@@ -463,98 +343,186 @@ export default function PortfolioDetail() {
                   </div>
                 )}
               </div>
-            ) : (
-              // Layout Style 3: Mosaic Layout
-              <div className="space-y-12 max-w-6xl mx-auto">
-                {/* Alternating Content Blocks */}
-                <div className="grid lg:grid-cols-3 gap-8">
-                  <div className="lg:col-span-2">
-                    {allImages.length > 0 && (
-                      <div className="relative group">
-                        <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-emerald-400/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
-                        <div className="relative bg-white/5 backdrop-blur-sm rounded-2xl p-3 border border-white/20">
-                          <div className="w-full h-[350px] object-cover rounded-xl overflow-hidden">
-                            <ImageLightbox
-                              image={allImages[currentImageIndex]}
-                              alt={portfolioItem.title}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  
-                  <div className="space-y-6">
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-                      <h2 className="text-2xl font-bold text-white mb-4">Proiectul</h2>
-                      <p className="text-white/80 leading-relaxed">
-                        {truncateText(portfolioItem.description, 'description', 20)}
-                        {isMobile && portfolioItem.description.split(' ').length > 20 && (
-                          <button
-                            onClick={() => toggleSection('description')}
-                            className="text-emerald-400 hover:text-emerald-300 ml-2 underline"
-                          >
-                            {expandedSections['description'] ? 'mai puțin' : 'mai mult'}
-                          </button>
-                        )}
-                      </p>
-                    </div>
 
-                    <div className="grid grid-cols-1 gap-3">
-                      <div className="bg-white/5 backdrop-blur-sm rounded-lg p-4 border border-white/10 flex items-center space-x-3">
-                        <Calendar className="h-5 w-5 text-emerald-400" />
-                        <div>
-                          <p className="text-white/60 text-xs">Data finalizării</p>
-                          <p className="text-white font-medium">{format(new Date(portfolioItem.completedAt || portfolioItem.createdAt), "MMM yyyy")}</p>
-                        </div>
-                      </div>
-                      <div className="bg-white/5 backdrop-blur-sm rounded-lg p-4 border border-white/10 flex items-center space-x-3">
-                        <MapPin className="h-5 w-5 text-emerald-400" />
-                        <div>
-                          <p className="text-white/60 text-xs">Locația</p>
-                          <p className="text-white font-medium">{portfolioItem.location || "România"}</p>
-                        </div>
-                      </div>
-                    </div>
+              {/* Project Stats - Centered Below */}
+              <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow bg-white/10 backdrop-blur-sm border-white/20">
+                  <CardContent className="p-6 text-center">
+                    <MapPin className="w-8 h-8 text-white mx-auto mb-3" />
+                    <h3 className="text-lg font-bold mb-2 text-white">Locație</h3>
+                    <p className="text-white/80">{portfolioItem.location || "Nespecificat"}</p>
+                  </CardContent>
+                </Card>
 
-                    <Button
-                      className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
-                      onClick={() => (window.location.href = "/appointment")}
-                    >
-                      Solicită Ofertă
-                    </Button>
-                  </div>
-                </div>
+                <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow bg-white/10 backdrop-blur-sm border-white/20">
+                  <CardContent className="p-6 text-center">
+                    <Clock className="w-8 h-8 text-white mx-auto mb-3" />
+                    <h3 className="text-lg font-bold mb-2 text-white">Durată</h3>
+                    <p className="text-white/80">{portfolioItem.projectDuration || "Nespecificat"}</p>
+                  </CardContent>
+                </Card>
 
-                {/* Image Navigation */}
-                {allImages.length > 1 && (
-                  <div className="flex justify-center space-x-4">
-                    <Button variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20" onClick={prevImage}>
-                      <ChevronLeft className="h-4 w-4 mr-2" />
-                      Anterioară
-                    </Button>
-                    <div className="flex items-center space-x-2">
-                      {allImages.slice(0, 5).map((_, index) => (
-                        <button
-                          key={index}
-                          onClick={() => setCurrentImageIndex(index)}
-                          className={`w-3 h-3 rounded-full transition-all ${
-                            currentImageIndex === index ? 'bg-white' : 'bg-white/40'
-                          }`}
-                        />
-                      ))}
-                    </div>
-                    <Button variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20" onClick={nextImage}>
-                      Următoarea
-                      <ChevronRight className="h-4 w-4 ml-2" />
-                    </Button>
-                  </div>
-                )}
+                <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow bg-white/10 backdrop-blur-sm border-white/20">
+                  <CardContent className="p-6 text-center">
+                    <Eye className="w-8 h-8 text-white mx-auto mb-3" />
+                    <h3 className="text-lg font-bold mb-2 text-white">Complexitate</h3>
+                    <p className="text-white/80">
+                      {portfolioItem.difficultyLevel || "Standard"}
+                    </p>
+                  </CardContent>
+                </Card>
               </div>
-            )}
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Main Content */}
+      <div className="bg-white">
+
+
+        {/* Before & After Transformations */}
+        {portfolioItem.images && portfolioItem.images.length > 0 && (
+          <section className="py-12 bg-gray-50">
+            <div className="container mx-auto px-4">
+              <div className="max-w-6xl mx-auto">
+                <div className="text-center mb-10">
+                  <h2 className="text-3xl font-bold text-gray-900 mb-3">
+                    Transformările Realizate
+                  </h2>
+                  <p className="text-lg text-gray-600">
+                    Vedere înainte și după pentru fiecare etapă
+                  </p>
+                </div>
+
+                <div className="space-y-10">
+                  {portfolioItem.images.map((image: any, index: number) => (
+                    <div key={index} className="bg-white rounded-3xl shadow-xl overflow-hidden">
+                      <div className="p-8">
+                        <h3 className="text-xl font-bold text-center mb-6 text-gray-900">
+                          {image.caption || `Transformarea ${index + 1}`}
+                        </h3>
+
+                        {/* Before-After Comparison */}
+                        <div className="grid lg:grid-cols-2 gap-6 mb-6">
+                          <div className="space-y-4">
+                            <div className="flex items-center gap-3 mb-4">
+                              <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                                <span className="text-red-600 font-bold">Î</span>
+                              </div>
+                              <h4 className="text-xl font-semibold text-gray-900">
+                                Înainte de Transformare
+                              </h4>
+                            </div>
+                            <div className="aspect-square overflow-hidden rounded-xl shadow-lg">
+                              <img
+                                src={image.before}
+                                alt={`Before ${image.caption || `Transformation ${index + 1}`}`}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="space-y-4">
+                            <div className="flex items-center gap-3 mb-4">
+                              <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                <span className="text-green-600 font-bold">D</span>
+                              </div>
+                              <h4 className="text-xl font-semibold text-gray-900">
+                                După Transformare
+                              </h4>
+                            </div>
+                            <div className="aspect-square overflow-hidden rounded-xl shadow-lg">
+                              <img
+                                src={image.after}
+                                alt={`After ${image.caption || `Transformation ${index + 1}`}`}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Description */}
+                        {image.richDescription && (
+                          <div className="bg-green-50 rounded-xl p-8 border border-green-100">
+                            <h4 className="text-xl font-bold mb-4 text-gray-900">
+                              Despre Această Transformare
+                            </h4>
+                            <p className="text-lg text-gray-800 leading-relaxed whitespace-pre-line">
+                              {image.richDescription}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Client Testimonial */}
+        {portfolioItem.clientTestimonial?.clientName &&
+          portfolioItem.clientTestimonial?.displayPermission && (
+            <section className="py-12">
+              <div className="container mx-auto px-4">
+                <div className="max-w-4xl mx-auto">
+                  <div className="text-center mb-8">
+                    <h2 className="text-3xl font-bold text-gray-900 mb-3">
+                      Feedback de la Client
+                    </h2>
+                  </div>
+
+                  <Card className="border-0 shadow-xl bg-gradient-to-br from-green-50 to-emerald-50">
+                    <CardContent className="p-12 text-center relative">
+                      <Quote className="w-16 h-16 text-green-200 mx-auto mb-8" />
+                      <blockquote className="text-2xl font-medium text-gray-800 mb-8 italic leading-relaxed">
+                        "{portfolioItem.clientTestimonial.comment}"
+                      </blockquote>
+                      <div className="text-xl font-semibold text-green-700">
+                        — {portfolioItem.clientTestimonial.clientName}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            </section>
+          )}
+
+        {/* Call to Action */}
+        <section className="py-12 bg-gradient-to-br from-green-600 to-emerald-700">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="text-3xl font-bold text-white mb-3">
+                Vrei o Transformare Similară?
+              </h2>
+              <p className="text-xl text-green-100 mb-8 leading-relaxed">
+                Contactează-ne pentru a discuta despre proiectul tău. Oferim consultanță gratuită și planuri personalizate pentru fiecare spațiu.
+              </p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <Button
+                  size="lg"
+                  className="bg-white text-green-700 hover:bg-green-50 shadow-xl px-8 py-4 text-lg"
+                  onClick={() => (window.location.href = "/appointment")}
+                >
+                  Programează Consultația Gratuită
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm px-8 py-4 text-lg"
+                  onClick={() => (window.location.href = "/contact")}
+                >
+                  Contactează-ne
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+
     </MainLayout>
   );
 }
