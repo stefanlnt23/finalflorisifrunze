@@ -135,6 +135,9 @@ function Router() {
           <Route path="/admin/subscriptions/:id/edit">
             <ProtectedRoute component={AdminSubscriptionsForm} />
           </Route>
+          <Route path="/admin/subscriptions/:id">
+            <ProtectedRoute component={AdminSubscriptionsForm} />
+          </Route>
           <Route component={NotFound} />
         </Switch>
       </Suspense>

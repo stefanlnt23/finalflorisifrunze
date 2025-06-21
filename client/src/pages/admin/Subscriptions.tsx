@@ -260,7 +260,7 @@ export default function AdminSubscriptions() {
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => setLocation(`/admin/subscriptions/${subscription.id}`)}
+                            onClick={() => setLocation(`/admin/subscriptions/${subscription.id}/edit`)}
                           >
                             <i className="fas fa-edit mr-1"></i> Edit
                           </Button>
