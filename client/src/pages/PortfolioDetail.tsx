@@ -32,6 +32,7 @@ export default function PortfolioDetail() {
   const [beforeAfterStates, setBeforeAfterStates] = useState<{
     [key: number]: "before" | "after";
   }>({});
+  const [isHovered, setIsHovered] = useState<{ [key: number]: boolean }>({});
 
   // Check if device is mobile
   useEffect(() => {
@@ -94,12 +95,46 @@ export default function PortfolioDetail() {
   useEffect(() => {
     if (portfolioItem?.images) {
       const initialStates: { [key: number]: "before" | "after" } = {};
+      const initialHoverStates: { [key: number]: boolean } = {};
       portfolioItem.images.forEach((_: any, index: number) => {
         initialStates[index] = "before";
+        initialHoverStates[index] = false;
       });
       setBeforeAfterStates(initialStates);
+      setIsHovered(initialHoverStates);
     }
   }, [portfolioItem]);
+
+  // Auto-cycle through before/after states
+  useEffect(() => {
+    if (!portfolioItem?.images) return;
+
+    const intervals: { [key: number]: NodeJS.Timeout } = {};
+
+    portfolioItem.images.forEach((_: any, index: number) => {
+      intervals[index] = setInterval(() => {
+        if (!isHovered[index]) {
+          setBeforeAfterStates((prev) => ({
+            ...prev,
+            [index]: prev[index] === "before" ? "after" : "before",
+          }));
+        }
+      }, 3000); // Change every 3 seconds
+    });
+
+    return () => {
+      Object.values(intervals).forEach(clearInterval);
+    };
+  }, [portfolioItem?.images, isHovered]);
+
+  // Handle hover state for pausing auto-cycle
+  const handleMouseEnter = (index: number) => {
+    setIsHovered((prev) => ({ ...prev, [index]: true }));
+  };
+
+  const handleMouseLeave = (index: number) => {
+    setIsHovered((prev) => ({ ...prev, [index]: false }));
+  };
 
   // Fetch service details if serviceId exists
   const { data: serviceData } = useQuery({
@@ -572,44 +607,84 @@ export default function PortfolioDetail() {
 
                             {/* Right Column - Interactive Image */}
                             <div className="relative">
-                              <div className="relative group">
-                                <div className="aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl bg-white">
+                              <div 
+                                className="relative group cursor-pointer"
+                                onMouseEnter={() => handleMouseEnter(index)}
+                                onMouseLeave={() => handleMouseLeave(index)}
+                                onClick={() => toggleBeforeAfter(index)}
+                              >
+                                <div className="aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl bg-white relative">
                                   <img
                                     src={currentImage}
                                     alt={`${currentState === "before" ? "Before" : "After"} ${image.caption || `Transformation ${index + 1}`}`}
-                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                    className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
                                   />
 
                                   {/* Overlay gradient */}
-                                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                  
+                                  {/* Auto-cycle indicator */}
+                                  {!isHovered[index] && (
+                                    <div className="absolute top-4 left-4 bg-blue-500/80 text-white px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm">
+                                      Auto ▶
+                                    </div>
+                                  )}
+                                  
+                                  {/* Pause indicator */}
+                                  {isHovered[index] && (
+                                    <div className="absolute top-4 left-4 bg-yellow-500/80 text-white px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm">
+                                      Pauzat ⏸
+                                    </div>
+                                  )}
                                 </div>
 
-                                {/* Toggle Button */}
-                                <Button
-                                  onClick={() => toggleBeforeAfter(index)}
-                                  className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur-sm hover:bg-white text-gray-900 shadow-xl border border-white/50 px-6 py-3 rounded-full font-medium"
-                                >
-                                  <span className="mr-2">Arată</span>
-                                  <span
-                                    className={`font-bold ${currentState === "before" ? "text-green-600" : "text-red-600"}`}
+                                {/* Large Central Toggle Button */}
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                  <Button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      toggleBeforeAfter(index);
+                                    }}
+                                    size="lg"
+                                    className="bg-white/95 backdrop-blur-sm hover:bg-white text-gray-900 shadow-2xl border-2 border-white/80 px-8 py-4 rounded-2xl font-bold text-lg transform hover:scale-105 transition-all duration-300 opacity-0 group-hover:opacity-100"
                                   >
-                                    {currentState === "before"
-                                      ? "După"
-                                      : "Înainte"}
+                                    <span className="mr-3 text-xl">👁️</span>
+                                    <span>Arată</span>
+                                    <span
+                                      className={`ml-2 font-black text-xl ${currentState === "before" ? "text-green-600" : "text-red-600"}`}
+                                    >
+                                      {currentState === "before" ? "DUPĂ" : "ÎNAINTE"}
+                                    </span>
+                                  </Button>
+                                </div>
+
+                                {/* Bottom Toggle Button (Always Visible) */}
+                                <Button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    toggleBeforeAfter(index);
+                                  }}
+                                  size="lg"
+                                  className="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-white/95 backdrop-blur-sm hover:bg-white text-gray-900 shadow-2xl border-2 border-white/80 px-8 py-4 rounded-2xl font-bold text-base hover:scale-105 transition-all duration-300"
+                                >
+                                  <span className="mr-2 text-lg">🔄</span>
+                                  <span>Comută la</span>
+                                  <span
+                                    className={`ml-2 font-black ${currentState === "before" ? "text-green-600" : "text-red-600"}`}
+                                  >
+                                    {currentState === "before" ? "DUPĂ" : "ÎNAINTE"}
                                   </span>
                                 </Button>
 
-                                {/* Corner Label */}
+                                {/* Enhanced Corner Label */}
                                 <div
-                                  className={`absolute top-4 right-4 px-3 py-1 rounded-full text-sm font-medium shadow-lg ${
+                                  className={`absolute top-6 right-6 px-4 py-2 rounded-xl text-base font-bold shadow-2xl backdrop-blur-sm border-2 ${
                                     currentState === "before"
-                                      ? "bg-red-500 text-white"
-                                      : "bg-green-500 text-white"
-                                  }`}
+                                      ? "bg-red-500/90 text-white border-red-300"
+                                      : "bg-green-500/90 text-white border-green-300"
+                                  } transform hover:scale-105 transition-all duration-300`}
                                 >
-                                  {currentState === "before"
-                                    ? "Înainte"
-                                    : "După"}
+                                  {currentState === "before" ? "📍 ÎNAINTE" : "✨ DUPĂ"}
                                 </div>
                               </div>
                             </div>

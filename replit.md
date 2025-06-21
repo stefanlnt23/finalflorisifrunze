@@ -117,6 +117,15 @@ The application is architected to support both MongoDB (currently active) and Po
 
 ## Recent Changes
 
+### June 21, 2025 - Before/After Section Enhancement
+- **Enhanced Button Visibility**: Significantly enlarged before/after toggle buttons with improved design
+- **Automatic Cycling**: Added 3-second auto-cycling between before/after states for dynamic presentation
+- **Hover Pause Control**: Auto-cycling pauses when user hovers over transformation images
+- **Visual Indicators**: Added clear "Auto ▶" and "Pauzat ⏸" status indicators
+- **Multiple Interaction Methods**: Users can click anywhere on image or use dedicated control buttons
+- **Improved Accessibility**: Larger buttons with emojis and better contrast for easier interaction
+- **Impact**: More engaging portfolio experience with automatic showcasing that respects user control
+
 ### June 21, 2025 - Portfolio Filter Removal
 - **Simplified Portfolio Navigation**: Removed service filter buttons from portfolio page
 - **Direct Content Access**: Portfolio projects now display immediately without filtering interface
