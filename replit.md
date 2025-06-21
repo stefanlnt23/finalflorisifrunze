@@ -125,7 +125,9 @@ The application is architected to support both MongoDB (currently active) and Po
 - **Enhanced Transformations**: Larger, more readable transformation descriptions with improved styling
 - **User Engagement**: Added interactive features like heart button and share functionality
 - **Responsive Design**: Optimized spacing and layout for all device sizes
-- **Impact**: Transformed basic portfolio layout into engaging, magazine-style presentation without tabs
+- **Two-Column Integration**: Moved project details and gallery into green hero background, eliminating duplicate sections
+- **Image Enlargement**: Added click-to-enlarge functionality for all gallery images with modal viewing
+- **Impact**: Transformed basic portfolio layout into engaging, magazine-style presentation without tabs, with efficient space usage
 
 ### June 21, 2025 - Brand Logo, Navigation, and Contact Updates
 - **Complete Logo Replacement**: Created and deployed new "Flori si Frunze" SVG logo with gardening design elements
