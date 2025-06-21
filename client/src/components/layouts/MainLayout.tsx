@@ -3,7 +3,7 @@ import Footer from "@/components/sections/Footer";
 import { Button } from "@/components/ui/button";
 import MainNavigation from "@/components/navigation/MainNavigation";
 import { WhatsAppButton } from "@/components/ui/whatsapp-button";
-import { CachedImage } from "@/components/ui/cached-image";
+import logo from "@/assets/logo.svg";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -17,15 +17,12 @@ export default function MainLayout({ children }: MainLayoutProps) {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center">
-              <Link href="/" className="flex items-center space-x-2">
-                <CachedImage 
-                  src="https://i.imgur.com/LG8LKFU.png" 
+              <Link href="/" className="flex items-center">
+                <img 
+                  src={logo} 
                   alt="Flori si Frunze Logo" 
                   className="h-16 w-auto"
                 />
-                <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-green-700">
-                  Flori si Frunze
-                </span>
               </Link>
             </div>
 

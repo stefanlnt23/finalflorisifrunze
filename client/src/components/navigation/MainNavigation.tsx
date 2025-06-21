@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
-import { CachedImage } from "@/components/ui/cached-image";
+import logoMobile from "@/assets/logo-mobile.svg";
 
 export default function MainNavigation() {
   const [location] = useLocation();
@@ -53,8 +53,8 @@ export default function MainNavigation() {
       {/* Mobile Logo and Navigation Button */}
       <div className="md:hidden flex items-center space-x-4">
         <Link href="/" className="flex items-center">
-          <CachedImage 
-            src="https://i.imgur.com/LG8LKFU.png" 
+          <img 
+            src={logoMobile} 
             alt="Flori si Frunze Logo" 
             className="h-12 w-auto"
           />

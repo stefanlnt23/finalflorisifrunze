@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import logo from "@/assets/logo.svg";
 
 export default function Footer() {
   const quickLinks = [
@@ -28,15 +29,12 @@ export default function Footer() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           <div>
-            <div className="flex items-center space-x-2 mb-6">
+            <div className="flex items-center mb-6">
                 <img 
-                  src="https://i.imgur.com/LG8LKFU.png" 
+                  src={logo} 
                   alt="Flori si Frunze Logo" 
                   className="h-16 w-auto"
                 />
-                <span className="text-xl font-bold text-white">
-                  Flori si Frunze
-                </span>
               </div>
             <p className="text-gray-400 mb-6">
               Transformăm spațiile exterioare în grădini frumoase și sustenabile din 2010.
