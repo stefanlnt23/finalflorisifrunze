@@ -82,33 +82,6 @@ export default function Services() {
       {/* Main Services Section */}
       <div className="py-20 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Benefits Banner */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            <div className="bg-green-50 rounded-xl p-6 shadow-md transform transition-all hover:shadow-xl hover:-translate-y-1 flex flex-col items-center text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                <Leaf className="h-8 w-8 text-green-600" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">Materiale Ecologice</h3>
-              <p className="text-gray-600">Folosim materiale și tehnici prietenoase cu mediul pentru toate proiectele noastre.</p>
-            </div>
-            
-            <div className="bg-green-50 rounded-xl p-6 shadow-md transform transition-all hover:shadow-xl hover:-translate-y-1 flex flex-col items-center text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                <Clock className="h-8 w-8 text-green-600" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">Servicii Prompte</h3>
-              <p className="text-gray-600">Respectăm timpul tău și oferim servicii prompte, la momentul convenit.</p>
-            </div>
-            
-            <div className="bg-green-50 rounded-xl p-6 shadow-md transform transition-all hover:shadow-xl hover:-translate-y-1 flex flex-col items-center text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                <CheckCircle2 className="h-8 w-8 text-green-600" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">Calitate Garantată</h3>
-              <p className="text-gray-600">Garantăm calitatea muncii noastre și oferim servicii de întreținere de lungă durată.</p>
-            </div>
-          </div>
-
           {/* Services Heading */}
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
@@ -216,6 +189,33 @@ export default function Services() {
               )}
             </div>
           )}
+
+          {/* Benefits Section - Moved to Bottom */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-20">
+            <div className="bg-green-50 rounded-xl p-6 shadow-md transform transition-all hover:shadow-xl hover:-translate-y-1 flex flex-col items-center text-center">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                <Leaf className="h-8 w-8 text-green-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">Materiale Ecologice</h3>
+              <p className="text-gray-600">Folosim materiale și tehnici prietenoase cu mediul pentru toate proiectele noastre.</p>
+            </div>
+            
+            <div className="bg-green-50 rounded-xl p-6 shadow-md transform transition-all hover:shadow-xl hover:-translate-y-1 flex flex-col items-center text-center">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                <Clock className="h-8 w-8 text-green-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">Servicii Prompte</h3>
+              <p className="text-gray-600">Respectăm timpul tău și oferim servicii prompte, la momentul convenit.</p>
+            </div>
+            
+            <div className="bg-green-50 rounded-xl p-6 shadow-md transform transition-all hover:shadow-xl hover:-translate-y-1 flex flex-col items-center text-center">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                <CheckCircle2 className="h-8 w-8 text-green-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">Calitate Garantată</h3>
+              <p className="text-gray-600">Garantăm calitatea muncii noastre și oferim servicii de întreținere de lungă durată.</p>
+            </div>
+          </div>
         </div>
       </div>
 
