@@ -89,8 +89,7 @@ export default function AdminBlogPostForm() {
     queryFn: async () => {
       if (!id) return null;
       console.log(`Fetching blog post with ID: ${id}`);
-      const response = await apiRequest("GET", `/api/blog/${id}`);
-      const data = await response.json();
+      const data = await apiRequest("GET", `/api/blog/${id}`);
       console.log("Retrieved blog post data:", data);
       return data;
     },
@@ -98,6 +97,11 @@ export default function AdminBlogPostForm() {
   });
 
   const blogPost = data?.blogPost;
+  
+  // Debug logging for blog post data
+  console.log("Raw blog query data:", data);
+  console.log("Extracted blog post:", blogPost);
+  console.log("Is editing:", isEditing);
 
   // Form setup
   const form = useForm<FormValues>({
