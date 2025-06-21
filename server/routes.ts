@@ -1387,15 +1387,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Public endpoint to get subscriptions
   app.get("/api/subscriptions", async (req, res) => {
     try {
-      console.log("API: Fetching subscriptions");
+
       
       // Ensure we get proper data
       let subscriptions = await storage.getSubscriptions();
-      console.log(`API: Found ${subscriptions.length} subscriptions to return`);
+
       
       // If no subscriptions found, create and insert sample data immediately
       if (!subscriptions || subscriptions.length === 0) {
-        console.log("API: No subscriptions found in database. Creating sample data...");
+
         
         const sampleData = [
           {
@@ -1457,31 +1457,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
           if (mongoose.connection.readyState === 1 && mongoose.connection.db) {
             await mongoose.connection.db.collection('subscriptions').deleteMany({});
             await mongoose.connection.db.collection('subscriptions').insertMany(sampleData);
-            console.log("API: Created sample subscriptions directly in MongoDB");
+
             
             // Get the newly created subscriptions from storage
             subscriptions = await storage.getSubscriptions();
-            console.log(`API: Now have ${subscriptions.length} subscriptions after direct insert`);
-          } else {
-            console.error("API: MongoDB connection not ready, cannot create sample data");
+
           }
         } catch (dbError) {
-          console.error("API: Error recreating subscription data:", dbError);
+          // Silently handle error
         }
       }
       
-      // Log one subscription for debugging
-      if (subscriptions.length > 0) {
-        console.log("API: First subscription example:", JSON.stringify(subscriptions[0]));
-      }
-      
       // Always send the response with the current subscriptions array
-      console.log(`API: Sending response with ${subscriptions.length} subscriptions`);
       return res.json({ subscriptions });
       
     } catch (error) {
-      console.error("Error fetching subscriptions:", error);
-      res.status(500).json({ message: "Failed to fetch subscriptions", error: String(error) });
+      res.status(500).json({ message: "Failed to fetch subscriptions" });
     }
   });
 
