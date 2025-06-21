@@ -65,7 +65,7 @@ export function PhotoAlbum({
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <div className="aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-2xl shadow-2xl bg-white/5 relative group">
+        <div className="aspect-[4/3] md:aspect-[16/9] lg:aspect-[3/2] overflow-hidden rounded-2xl shadow-2xl bg-white/5 relative group">
           <ImageLightbox
             image={images[currentIndex]}
             alt={`Gallery image ${currentIndex + 1}`}

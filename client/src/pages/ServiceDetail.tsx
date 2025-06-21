@@ -107,7 +107,7 @@ export default function ServiceDetail() {
     ...landscapeDesignImages,
     ...(service.galleryImages || []),
     ...(service.imageUrl ? [service.imageUrl] : [])
-  ];
+  ].filter(image => image && image.trim() !== '');
 
   // Determine if we have additional data beyond the basic fields
   const hasDetailedInfo = !!service.duration || !!service.coverage || 
