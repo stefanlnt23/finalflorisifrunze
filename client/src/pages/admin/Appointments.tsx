@@ -155,8 +155,7 @@ export default function AdminAppointments() {
   // Handle status update
   const handleStatusUpdate = async (id: string | number, status: string) => {
     try {
-      const response = await apiRequest("PUT", `/api/admin/appointments/${id}`, { status });
-      const data = await response.json();
+      const data = await apiRequest("PUT", `/api/admin/appointments/${id}`, { status });
       
       if (data.success) {
         toast({
