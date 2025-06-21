@@ -109,31 +109,24 @@ export default function AdminAppointmentsForm() {
         const formattedTime = format(appointmentDate, "HH:mm");
         setTimeValue(formattedTime);
         
-        const formData = {
-          name: appointment.name || "",
-          email: appointment.email || "",
-          phone: appointment.phone || "",
-          buildingName: appointment.buildingName || "",
-          streetName: appointment.streetName || "",
-          houseNumber: appointment.houseNumber || "",
-          city: appointment.city || "",
-          county: appointment.county || "",
-          postalCode: appointment.postalCode || "",
-          serviceId: appointment.serviceId ? appointment.serviceId.toString() : "",
-          date: appointmentDate,
-          time: formattedTime,
-          priority: appointment.priority || "Normal",
-          notes: appointment.notes || "",
-          status: appointment.status || "Scheduled"
-        };
+        // Set form values individually to ensure proper population
+        form.setValue("name", appointment.name || "");
+        form.setValue("email", appointment.email || "");
+        form.setValue("phone", appointment.phone || "");
+        form.setValue("buildingName", appointment.buildingName || "");
+        form.setValue("streetName", appointment.streetName || "");
+        form.setValue("houseNumber", appointment.houseNumber || "");
+        form.setValue("city", appointment.city || "");
+        form.setValue("county", appointment.county || "");
+        form.setValue("postalCode", appointment.postalCode || "");
+        form.setValue("serviceId", appointment.serviceId ? appointment.serviceId.toString() : "");
+        form.setValue("date", appointmentDate);
+        form.setValue("time", formattedTime);
+        form.setValue("priority", appointment.priority || "Normal");
+        form.setValue("notes", appointment.notes || "");
+        form.setValue("status", appointment.status || "Scheduled");
         
-        console.log("Setting form data:", formData);
-        
-        // Use setTimeout to ensure form is ready
-        setTimeout(() => {
-          form.reset(formData);
-          console.log("Form reset complete");
-        }, 100);
+        console.log("Form values set individually");
         
       } catch (error) {
         console.error("Error populating appointment form:", error);
