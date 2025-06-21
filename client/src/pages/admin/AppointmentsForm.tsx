@@ -49,8 +49,7 @@ export default function AdminAppointmentsForm() {
     queryKey: ['/api/services'],
     queryFn: async () => {
       const response = await apiRequest("GET", "/api/services");
-      const data = await response.json();
-      return data;
+      return response;
     },
   });
 

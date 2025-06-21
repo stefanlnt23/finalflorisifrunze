@@ -82,7 +82,7 @@ export default function AdminInquiries() {
   const updateInquiryMutation = useMutation({
     mutationFn: async ({ id, status }: { id: string | number, status: string }) => {
       const response = await apiRequest("PUT", `/api/admin/inquiries/${id}`, { status });
-      return response.json();
+      return response;
     },
     onSuccess: () => {
       toast({
