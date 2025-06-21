@@ -813,7 +813,7 @@ export default function PortfolioDetail() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm px-8 py-4 text-lg"
+                  className="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border hover:text-accent-foreground h-11 rounded-md border-white/30 text-white hover:bg-white/10 backdrop-blur-sm px-8 py-4 text-lg bg-[#111827]"
                   onClick={() => (window.location.href = "/contact")}
                 >
                   Contactează-ne
