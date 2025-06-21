@@ -103,33 +103,40 @@ export default function AdminAppointmentsForm() {
   useEffect(() => {
     if (appointment && isEditing) {
       console.log("Populating appointment form with data:", appointment);
+      console.log("Current form values before population:", form.getValues());
       
       try {
         const appointmentDate = new Date(appointment.date);
         const formattedTime = format(appointmentDate, "HH:mm");
         setTimeValue(formattedTime);
         
-        // Set form values individually to ensure proper population
-        form.setValue("name", appointment.name || "");
-        form.setValue("email", appointment.email || "");
-        form.setValue("phone", appointment.phone || "");
-        form.setValue("buildingName", appointment.buildingName || "");
-        form.setValue("streetName", appointment.streetName || "");
-        form.setValue("houseNumber", appointment.houseNumber || "");
-        form.setValue("city", appointment.city || "");
-        form.setValue("county", appointment.county || "");
-        form.setValue("postalCode", appointment.postalCode || "");
-        form.setValue("serviceId", appointment.serviceId ? appointment.serviceId.toString() : "");
-        form.setValue("date", appointmentDate);
-        form.setValue("time", formattedTime);
-        form.setValue("priority", appointment.priority || "Normal");
-        form.setValue("notes", appointment.notes || "");
-        form.setValue("status", appointment.status || "Scheduled");
+        // Use form.reset with all values at once for better reliability
+        const formData = {
+          name: appointment.name || "",
+          email: appointment.email || "",
+          phone: appointment.phone || "",
+          buildingName: appointment.buildingName || "",
+          streetName: appointment.streetName || "",
+          houseNumber: appointment.houseNumber || "",
+          city: appointment.city || "",
+          county: appointment.county || "",
+          postalCode: appointment.postalCode || "",
+          serviceId: appointment.serviceId ? appointment.serviceId.toString() : "",
+          date: appointmentDate,
+          time: formattedTime,
+          priority: appointment.priority || "Normal",
+          notes: appointment.notes || "",
+          status: appointment.status || "Scheduled"
+        };
         
-        console.log("Form values set individually");
+        console.log("Form data to populate:", formData);
+        form.reset(formData);
+        
+        console.log("Form values after population:", form.getValues());
         
       } catch (error) {
         console.error("Error populating appointment form:", error);
+        console.error("Appointment data that caused error:", appointment);
       }
     }
   }, [appointment, form, isEditing]);
