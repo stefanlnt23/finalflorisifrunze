@@ -1247,18 +1247,25 @@ export class MongoDBStorage implements IStorage {
         if (!this.db) return null;
       }
 
+      console.log(`MongoDB: Fetching subscription with id ${id}`);
+      
       const { ObjectId } = require('mongodb');
       let objectId;
       try {
         objectId = new ObjectId(id);
+        console.log(`MongoDB: Converted ID to ObjectId: ${objectId}`);
       } catch (error) {
-        console.error(`Invalid ObjectId: ${id}`);
+        console.error(`MongoDB: Invalid ObjectId: ${id}`, error);
         return null;
       }
 
       const subscription = await this.db.collection("subscriptions").findOne({ _id: objectId });
+      console.log(`MongoDB: Query result for subscription ${id}:`, subscription ? "Found" : "Not found");
 
-      if (!subscription) return null;
+      if (!subscription) {
+        console.log(`MongoDB: Subscription with id ${id} not found`);
+        return null;
+      }
 
       return {
         id: subscription._id.toString(),
