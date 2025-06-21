@@ -508,21 +508,21 @@ export default function PortfolioDetail() {
       </div>
       {/* Main Content */}
       <div className="bg-gradient-to-br from-green-900 via-green-800 to-emerald-900">
-        {/* Before & After Transformations - Redesigned */}
+        {/* Before & After Transformations - Compact Design */}
         {portfolioItem.images && portfolioItem.images.length > 0 && (
-          <section className="py-16 bg-transparent">
+          <section className="py-12 bg-transparent">
             <div className="container mx-auto px-4">
-              <div className="max-w-6xl mx-auto">
-                <div className="text-center mb-12">
-                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              <div className="max-w-4xl mx-auto">
+                <div className="text-center mb-8">
+                  <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
                     Transformarea Completă
                   </h2>
-                  <p className="text-lg text-white/80 max-w-2xl mx-auto leading-relaxed">
-                    Despre această transformare
+                  <p className="text-base text-white/70 max-w-xl mx-auto">
+                    Vezi cum am transformat acest spațiu
                   </p>
                 </div>
 
-                <div className="space-y-24">
+                <div className="space-y-8">
                   {portfolioItem.images.map((image: any, index: number) => {
                     const currentState = beforeAfterStates[index] || "before";
                     const currentImage =
@@ -531,104 +531,47 @@ export default function PortfolioDetail() {
                     return (
                       <div
                         key={index}
-                        className={`bg-gradient-to-br ${getGreenShade(index)} rounded-3xl shadow-2xl overflow-hidden`}
+                        className="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 shadow-lg overflow-hidden"
                       >
-                        <div className="p-8 lg:p-12 bg-[#2a6242]">
-                          <div className="grid lg:grid-cols-2 gap-12 items-center">
-                            {/* Left Column - Description */}
-                            <div className="space-y-6">
-                              <div className="flex items-center gap-4 mb-6">
-                                <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center shadow-lg">
-                                  <span className="text-white font-bold text-lg">
-                                    {index + 1}
-                                  </span>
-                                </div>
-                                <h3 className="text-2xl lg:text-3xl font-bold text-gray-900">
-                                  {image.caption ||
-                                    `Transformarea ${index + 1}`}
-                                </h3>
-                              </div>
-
-                              {image.richDescription && (
-                                <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 lg:p-8 border border-green-200/50 shadow-lg">
-                                  <h4 className="text-xl font-bold mb-4 text-gray-900 flex items-center gap-2">
-                                    <div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center">
-                                      <span className="text-white text-xs">
-                                        ℹ
-                                      </span>
-                                    </div>
-                                    Despre Această Transformare
-                                  </h4>
-                                  <p className="text-lg text-gray-800 leading-relaxed whitespace-pre-line">
-                                    {image.richDescription}
-                                  </p>
-                                </div>
-                              )}
-
-                              {/* Current View Indicator */}
-                              <div className="flex items-center gap-4 mt-4">
-                                <div
-                                  className={`flex items-center gap-2 px-4 py-2 rounded-full border-2 transition-all ${
-                                    currentState === "before"
-                                      ? "bg-red-100 border-red-300 text-red-700"
-                                      : "bg-gray-100 border-gray-300 text-gray-600"
-                                  }`}
-                                >
-                                  <div
-                                    className={`w-3 h-3 rounded-full ${
-                                      currentState === "before"
-                                        ? "bg-red-500"
-                                        : "bg-gray-400"
-                                    }`}
-                                  ></div>
-                                  <span className="font-medium whitespace-nowrap">Înainte</span>
-                                </div>
-
-                                <div
-                                  className={`flex items-center gap-2 px-4 py-2 rounded-full border-2 transition-all ${
-                                    currentState === "after"
-                                      ? "bg-green-100 border-green-300 text-green-700"
-                                      : "bg-gray-100 border-gray-300 text-gray-600"
-                                  }`}
-                                >
-                                  <div
-                                    className={`w-3 h-3 rounded-full ${
-                                      currentState === "after"
-                                        ? "bg-green-500"
-                                        : "bg-gray-400"
-                                    }`}
-                                  ></div>
-                                  <span className="font-medium whitespace-nowrap">După</span>
-                                </div>
-                              </div>
+                        <div className="p-6">
+                          {/* Header with number and title */}
+                          <div className="flex items-center gap-3 mb-4">
+                            <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
+                              <span className="text-white font-bold text-sm">
+                                {index + 1}
+                              </span>
                             </div>
+                            <h3 className="text-lg font-semibold text-white">
+                              {image.caption || `Transformarea spațiului ${index + 1}`}
+                            </h3>
+                          </div>
 
-                            {/* Right Column - Interactive Image */}
+                          <div className="grid md:grid-cols-2 gap-6 items-start">
+                            {/* Left - Image */}
                             <div className="relative">
                               <div 
-                                className="relative group"
+                                className="relative group cursor-pointer"
                                 onMouseEnter={() => handleMouseEnter(index)}
                                 onMouseLeave={() => handleMouseLeave(index)}
+                                onClick={() => toggleBeforeAfter(index)}
                               >
-                                <div className="aspect-[4/3] overflow-hidden rounded-3xl shadow-2xl bg-white relative transformation-image-container">
+                                <div className="aspect-[4/3] overflow-hidden rounded-xl shadow-lg bg-white/5 relative">
                                   <ImageLightbox
                                     image={currentImage}
                                     alt={`${currentState === "before" ? "Before" : "After"} ${image.caption || `Transformation ${index + 1}`}`}
                                   />
                                 </div>
 
-
-
-                                {/* Bottom Toggle Button (Always Visible) */}
+                                {/* Toggle Button */}
                                 <Button
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     toggleBeforeAfter(index);
                                   }}
-                                  size="lg"
-                                  className="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-white/95 backdrop-blur-sm hover:bg-white text-gray-900 shadow-xl px-6 py-3 rounded-xl font-semibold text-sm hover:scale-105 transition-all duration-300 z-10"
+                                  size="sm"
+                                  className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm hover:bg-white text-gray-900 shadow-md px-3 py-1 rounded-lg font-medium text-xs hover:scale-105 transition-all duration-200 z-10"
                                 >
-                                  <span className="mr-1">Comută la</span>
+                                  <span>Vezi</span>
                                   <span
                                     className={`ml-1 font-bold ${currentState === "before" ? "text-green-600" : "text-red-600"}`}
                                   >
@@ -636,18 +579,68 @@ export default function PortfolioDetail() {
                                   </span>
                                 </Button>
 
-                                {/* Corner Label */}
+                                {/* State Badge */}
                                 <div
-                                  className={`absolute top-6 right-6 px-3 py-1 rounded-lg text-sm font-semibold shadow-lg backdrop-blur-sm ${
+                                  className={`absolute top-3 right-3 px-2 py-1 rounded-md text-xs font-medium backdrop-blur-sm ${
                                     currentState === "before"
-                                      ? "bg-red-500/90 text-white"
-                                      : "bg-green-500/90 text-white"
-                                  } transition-all duration-300`}
+                                      ? "bg-red-500/80 text-white"
+                                      : "bg-green-500/80 text-white"
+                                  } transition-all duration-200`}
                                 >
                                   {currentState === "before" ? "ÎNAINTE" : "DUPĂ"}
                                 </div>
                               </div>
+
+                              {/* State Indicators */}
+                              <div className="flex items-center justify-center gap-3 mt-3">
+                                <div
+                                  className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium transition-all ${
+                                    currentState === "before"
+                                      ? "bg-red-500/20 text-red-300 border border-red-500/30"
+                                      : "bg-white/10 text-white/60 border border-white/20"
+                                  }`}
+                                >
+                                  <div
+                                    className={`w-2 h-2 rounded-full ${
+                                      currentState === "before" ? "bg-red-400" : "bg-white/40"
+                                    }`}
+                                  ></div>
+                                  <span>Înainte</span>
+                                </div>
+
+                                <div
+                                  className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium transition-all ${
+                                    currentState === "after"
+                                      ? "bg-green-500/20 text-green-300 border border-green-500/30"
+                                      : "bg-white/10 text-white/60 border border-white/20"
+                                  }`}
+                                >
+                                  <div
+                                    className={`w-2 h-2 rounded-full ${
+                                      currentState === "after" ? "bg-green-400" : "bg-white/40"
+                                    }`}
+                                  ></div>
+                                  <span>După</span>
+                                </div>
+                              </div>
                             </div>
+
+                            {/* Right - Description */}
+                            {image.richDescription && (
+                              <div className="space-y-3">
+                                <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
+                                  <h4 className="text-sm font-semibold text-white/90 mb-2 flex items-center gap-2">
+                                    <div className="w-4 h-4 bg-green-500/80 rounded-full flex items-center justify-center">
+                                      <span className="text-white text-xs">ℹ</span>
+                                    </div>
+                                    Despre transformare
+                                  </h4>
+                                  <p className="text-sm text-white/70 leading-relaxed whitespace-pre-line">
+                                    {image.richDescription}
+                                  </p>
+                                </div>
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
