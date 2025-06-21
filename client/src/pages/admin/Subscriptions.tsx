@@ -155,9 +155,13 @@ export default function AdminSubscriptions() {
   // Delete mutation
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      return await apiRequest('DELETE', `/api/admin/subscriptions/${id}`);
+      console.log("Making DELETE request for subscription ID:", id);
+      const response = await apiRequest('DELETE', `/api/admin/subscriptions/${id}`);
+      console.log("DELETE response:", response);
+      return response;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log("Delete mutation successful:", data);
       toast({
         title: "Subscription Deleted",
         description: "The subscription has been successfully deleted",
@@ -166,6 +170,7 @@ export default function AdminSubscriptions() {
       queryClient.invalidateQueries({ queryKey: ['/api/subscriptions'] });
     },
     onError: (error: any) => {
+      console.error("Delete mutation error:", error);
       toast({
         title: "Error",
         description: error.message || "Failed to delete the subscription",
@@ -176,8 +181,12 @@ export default function AdminSubscriptions() {
 
   // Handle delete
   const handleDelete = (id: string, name: string) => {
+    console.log("Delete button clicked for subscription:", { id, name });
     if (window.confirm(`Are you sure you want to delete the subscription "${name}"?`)) {
+      console.log("User confirmed deletion, making API call...");
       deleteMutation.mutate(id);
+    } else {
+      console.log("User cancelled deletion");
     }
   };
 
