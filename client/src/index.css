@@ -42,18 +42,16 @@
 
 /* Carousel Performance Optimizations */
 .services-carousel {
-  contain: layout style paint;
+  position: relative;
 }
 
 .service-card-inner {
-  contain: layout style;
   will-change: auto;
   transform: translateZ(0);
   backface-visibility: hidden;
 }
 
 .service-image-container {
-  contain: layout style paint;
   overflow: hidden;
   position: relative;
 }
@@ -69,13 +67,11 @@
 }
 
 .carousel-container {
-  contain: strict;
   overflow: hidden;
 }
 
 /* Prevent image reload during animations */
 .service-card {
-  contain: layout style;
   transform: translateZ(0);
   will-change: auto;
 }
