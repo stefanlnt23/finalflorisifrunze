@@ -208,120 +208,140 @@ export default function PortfolioDetail() {
 
       {/* Main Content */}
       <div className="bg-white">
-        {/* Project Gallery */}
-        {allImages.length > 0 && (
-          <section className="py-12 bg-gray-50">
-            <div className="container mx-auto px-4">
-              <div className="max-w-6xl mx-auto">
-                <div className="text-center mb-8">
-                  <h2 className="text-3xl font-bold text-gray-900 mb-3">
-                    Galeria Proiectului
-                  </h2>
-                  <p className="text-lg text-gray-600">
-                    Descoperiți transformarea pas cu pas
-                  </p>
-                </div>
-
-                {/* Main Image Display */}
-                <div className="relative mb-8">
-                  <div className="aspect-[16/9] overflow-hidden rounded-2xl shadow-2xl">
-                    <img
-                      src={allImages[currentImageIndex]}
-                      alt={`Project image ${currentImageIndex + 1}`}
-                      className="w-full h-full object-cover"
-                    />
+        {/* Project Overview & Gallery */}
+        <section className="py-12 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <div className="max-w-7xl mx-auto">
+              <div className="grid lg:grid-cols-2 gap-12 items-start mb-12">
+                {/* Left Column - Project Description */}
+                <div className="space-y-6">
+                  <div>
+                    {service && (
+                      <Badge variant="outline" className="text-base px-3 py-1 bg-green-50 text-green-800 border-green-200 mb-4">
+                        {service.name}
+                      </Badge>
+                    )}
+                    <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                      Detalii Proiect
+                    </h2>
+                    <p className="text-lg text-gray-600 leading-relaxed">
+                      {portfolioItem.description}
+                    </p>
                   </div>
-
-                  {/* Navigation Arrows */}
-                  {allImages.length > 1 && (
-                    <>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/90 backdrop-blur-sm"
-                        onClick={prevImage}
-                      >
-                        <ChevronLeft className="w-6 h-6" />
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/90 backdrop-blur-sm"
-                        onClick={nextImage}
-                      >
-                        <ChevronRight className="w-6 h-6" />
-                      </Button>
-                    </>
+                  
+                  {portfolioItem.challenges && (
+                    <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                      <h3 className="text-xl font-semibold text-gray-900 mb-3">Provocări</h3>
+                      <p className="text-gray-600">{portfolioItem.challenges}</p>
+                    </div>
                   )}
-
-                  {/* Image Counter */}
-                  <div className="absolute bottom-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm backdrop-blur-sm">
-                    {currentImageIndex + 1} / {allImages.length}
-                  </div>
+                  
+                  {portfolioItem.solution && (
+                    <div className="bg-green-50 rounded-xl p-6 border border-green-100">
+                      <h3 className="text-xl font-semibold text-gray-900 mb-3">Soluția</h3>
+                      <p className="text-gray-700">{portfolioItem.solution}</p>
+                    </div>
+                  )}
                 </div>
 
-                {/* Thumbnail Navigation */}
-                {allImages.length > 1 && (
-                  <div className="flex justify-center gap-2 overflow-x-auto pb-4">
-                    {allImages.map((image: string, index: number) => (
-                      <button
-                        key={index}
-                        onClick={() => setCurrentImageIndex(index)}
-                        className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${
-                          currentImageIndex === index
-                            ? 'border-green-500 scale-105'
-                            : 'border-transparent hover:border-green-300'
-                        }`}
-                      >
+                {/* Right Column - Photo Gallery */}
+                {allImages.length > 0 && (
+                  <div className="space-y-6">
+                    <div>
+                      <h2 className="text-3xl font-bold text-gray-900 mb-3">
+                        Galeria Proiectului
+                      </h2>
+                      <p className="text-lg text-gray-600">
+                        Descoperiți transformarea pas cu pas
+                      </p>
+                    </div>
+
+                    {/* Main Image Display */}
+                    <div className="relative">
+                      <div className="aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl">
                         <img
-                          src={image}
-                          alt={`Thumbnail ${index + 1}`}
+                          src={allImages[currentImageIndex]}
+                          alt={`Project image ${currentImageIndex + 1}`}
                           className="w-full h-full object-cover"
                         />
-                      </button>
-                    ))}
+                      </div>
+
+                      {/* Navigation Arrows */}
+                      {allImages.length > 1 && (
+                        <>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/90 backdrop-blur-sm"
+                            onClick={prevImage}
+                          >
+                            <ChevronLeft className="w-6 h-6" />
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/90 backdrop-blur-sm"
+                            onClick={nextImage}
+                          >
+                            <ChevronRight className="w-6 h-6" />
+                          </Button>
+                        </>
+                      )}
+
+                      {/* Image Counter */}
+                      <div className="absolute bottom-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm backdrop-blur-sm">
+                        {currentImageIndex + 1} / {allImages.length}
+                      </div>
+                    </div>
+
+                    {/* Thumbnail Navigation */}
+                    {allImages.length > 1 && (
+                      <div className="flex gap-2 overflow-x-auto pb-2">
+                        {allImages.map((image: string, index: number) => (
+                          <button
+                            key={index}
+                            onClick={() => setCurrentImageIndex(index)}
+                            className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${
+                              currentImageIndex === index
+                                ? 'border-green-500 scale-105'
+                                : 'border-transparent hover:border-green-300'
+                            }`}
+                          >
+                            <img
+                              src={image}
+                              alt={`Thumbnail ${index + 1}`}
+                              className="w-full h-full object-cover"
+                            />
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
-            </div>
-          </section>
-        )}
 
-        {/* Project Details */}
-        <section className="py-10">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto">
-              {/* Service Badge */}
-              {service && (
-                <div className="text-center mb-8">
-                  <Badge variant="outline" className="text-base px-3 py-1 bg-green-50 text-green-800 border-green-200">
-                    {service.name}
-                  </Badge>
-                </div>
-              )}
-
-              {/* Project Stats */}
-              <div className="grid md:grid-cols-3 gap-6 mb-10">
+              {/* Project Stats - Centered Below */}
+              <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
                 <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
-                  <CardContent className="p-8 text-center">
-                    <MapPin className="w-8 h-8 text-green-600 mx-auto mb-4" />
-                    <h3 className="text-xl font-bold mb-2">Locație</h3>
+                  <CardContent className="p-6 text-center">
+                    <MapPin className="w-8 h-8 text-green-600 mx-auto mb-3" />
+                    <h3 className="text-lg font-bold mb-2">Locație</h3>
                     <p className="text-gray-600">{portfolioItem.location || "Nespecificat"}</p>
                   </CardContent>
                 </Card>
 
                 <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
-                  <CardContent className="p-8 text-center">
-                    <Clock className="w-8 h-8 text-green-600 mx-auto mb-4" />
-                    <h3 className="text-xl font-bold mb-2">Durată</h3>
+                  <CardContent className="p-6 text-center">
+                    <Clock className="w-8 h-8 text-green-600 mx-auto mb-3" />
+                    <h3 className="text-lg font-bold mb-2">Durată</h3>
                     <p className="text-gray-600">{portfolioItem.projectDuration || "Nespecificat"}</p>
                   </CardContent>
                 </Card>
 
                 <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
-                  <CardContent className="p-8 text-center">
-                    <Eye className="w-8 h-8 text-green-600 mx-auto mb-4" />
-                    <h3 className="text-xl font-bold mb-2">Complexitate</h3>
+                  <CardContent className="p-6 text-center">
+                    <Eye className="w-8 h-8 text-green-600 mx-auto mb-3" />
+                    <h3 className="text-lg font-bold mb-2">Complexitate</h3>
                     <p className="text-gray-600">
                       {portfolioItem.difficultyLevel || "Standard"}
                     </p>
