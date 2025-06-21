@@ -76,6 +76,11 @@ export default function AdminAppointmentsForm() {
   });
 
   const appointment = data?.appointment;
+  
+  // Debug logging for appointment data
+  console.log("Raw query data:", data);
+  console.log("Extracted appointment:", appointment);
+  console.log("Is editing:", isEditing);
 
   // Form setup
   const form = useForm<FormValues>({
@@ -101,13 +106,18 @@ export default function AdminAppointmentsForm() {
 
   // Update form values when appointment data is loaded
   useEffect(() => {
+    console.log("useEffect triggered - appointment:", appointment, "isEditing:", isEditing);
+    
     if (appointment && isEditing) {
+      console.log("=== FORM POPULATION START ===");
       console.log("Populating appointment form with data:", appointment);
       console.log("Current form values before population:", form.getValues());
       
       try {
         const appointmentDate = new Date(appointment.date);
+        console.log("Parsed appointment date:", appointmentDate);
         const formattedTime = format(appointmentDate, "HH:mm");
+        console.log("Formatted time:", formattedTime);
         setTimeValue(formattedTime);
         
         // Use form.reset with all values at once for better reliability
@@ -132,12 +142,19 @@ export default function AdminAppointmentsForm() {
         console.log("Form data to populate:", formData);
         form.reset(formData);
         
-        console.log("Form values after population:", form.getValues());
+        // Give it a moment and check if the form was populated
+        setTimeout(() => {
+          console.log("Form values after population (delayed check):", form.getValues());
+        }, 100);
+        
+        console.log("=== FORM POPULATION END ===");
         
       } catch (error) {
         console.error("Error populating appointment form:", error);
         console.error("Appointment data that caused error:", appointment);
       }
+    } else {
+      console.log("Skipping form population - appointment:", !!appointment, "isEditing:", isEditing);
     }
   }, [appointment, form, isEditing]);
 
