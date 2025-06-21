@@ -117,12 +117,14 @@ The application is architected to support both MongoDB (currently active) and Po
 
 ## Recent Changes
 
-### June 21, 2025 - Brand Logo Update
+### June 21, 2025 - Brand Logo and Navigation Updates
 - **Complete Logo Replacement**: Created and deployed new "Flori si Frunze" SVG logo with gardening design elements
-- **Logo Assets**: Added `logo.svg` and `logo-mobile.svg` with flowers, leaves, and vine decorations
+- **Logo Assets**: Added enhanced `logo.svg` (240x70px) and `logo-mobile.svg` (180x55px) with larger, more visible elements
 - **Consistent Branding**: Updated all logo instances across header, navigation, and footer components
 - **Design Elements**: Features green color scheme with gardening icons and Romanian subtitle
-- **Impact**: Professional, cohesive branding throughout the website replacing old placeholder logo
+- **Mobile Logo Fix**: Resolved duplicate logo issue on mobile devices by hiding header logo on small screens
+- **Navigation Improvements**: Enhanced responsive navigation with better spacing, centered layout, and improved hover states
+- **Impact**: Professional, cohesive branding with optimal visibility across all devices
 
 ### June 21, 2025 - Image Caching Optimization
 - **Critical Fix**: Resolved major image caching issues affecting carousel performance

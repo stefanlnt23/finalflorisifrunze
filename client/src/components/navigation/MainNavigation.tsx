@@ -34,15 +34,15 @@ export default function MainNavigation() {
   return (
     <>
       {/* Desktop Navigation */}
-      <nav className="hidden md:flex space-x-8">
+      <nav className="hidden md:flex items-center justify-center space-x-6 lg:space-x-8">
         {navLinks.map((link) => (
           <Link
             key={link.path}
             href={link.path}
-            className={`font-medium ${
+            className={`font-medium text-sm lg:text-base whitespace-nowrap px-2 py-1 rounded-md transition-colors ${
               location === link.path
-                ? "text-gray-900"
-                : "text-gray-500 hover:text-gray-900"
+                ? "text-gray-900 bg-gray-100"
+                : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
             }`}
           >
             {link.label}

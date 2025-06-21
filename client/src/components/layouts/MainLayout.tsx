@@ -16,23 +16,26 @@ export default function MainLayout({ children }: MainLayoutProps) {
       <header className="bg-white shadow-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
-            <div className="hidden md:flex items-center">
+            {/* Logo - Hidden on mobile, shown on desktop */}
+            <div className="hidden md:flex items-center flex-shrink-0">
               <Link href="/" className="flex items-center">
                 <img 
                   src={logo} 
                   alt="Flori si Frunze Logo" 
-                  className="h-20 md:h-24 w-auto"
+                  className="h-16 lg:h-20 w-auto"
                 />
               </Link>
             </div>
 
-            {/* Navigation Component */}
-            <MainNavigation />
+            {/* Navigation Component - Takes center space on desktop */}
+            <div className="flex-1 md:flex md:justify-center md:px-8">
+              <MainNavigation />
+            </div>
 
-            {/* Call to Action */}
-            <div className="hidden md:block">
+            {/* Call to Action - Right side on desktop */}
+            <div className="hidden md:flex items-center flex-shrink-0">
               <Link href="/appointment">
-                <Button className="bg-green-600 hover:bg-green-700 text-white">
+                <Button className="bg-green-600 hover:bg-green-700 text-white whitespace-nowrap">
                   Programează o Întâlnire
                 </Button>
               </Link>
