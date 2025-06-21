@@ -1158,7 +1158,7 @@ export class MongoDBStorage implements IStorage {
                   // Check if feature already contains ": Included" pattern
                   if (feature.includes(': Included')) {
                     const [name] = feature.split(': Included');
-                    return { name: name.trim(), value: "Included" };
+                    return { name: name.trim(), value: "Inclus" };
                   } else {
                     return { name: feature, value: "Inclus" };
                   }

@@ -33,11 +33,18 @@ async function cleanupSubscriptionFeatures() {
             if (cleanName.includes(': Included')) {
               cleanName = cleanName.split(': Included')[0].trim();
               needsUpdate = true;
-              console.log(`  Cleaning: "${feature.name}" -> "${cleanName}"`);
+              console.log(`  Cleaning name: "${feature.name}" -> "${cleanName}"`);
             }
+            
+            // Always standardize value to Romanian "Inclus"
+            if (feature.value !== 'Inclus') {
+              needsUpdate = true;
+              console.log(`  Standardizing value: "${feature.value}" -> "Inclus"`);
+            }
+            
             return {
               name: cleanName,
-              value: feature.value || 'Inclus'
+              value: 'Inclus'  // Always use Romanian
             };
           } else if (typeof feature === 'string') {
             // Clean string features too

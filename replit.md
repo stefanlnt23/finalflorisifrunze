@@ -117,6 +117,12 @@ The application is architected to support both MongoDB (currently active) and Po
 
 ## Recent Changes
 
+### June 21, 2025 - Subscription Feature Language Standardization
+- **Language Consistency**: Standardized all subscription feature values to "Inclus" (Romanian) replacing mixed "Included" (English) text
+- **Database Cleanup**: Removed duplicate "Included:" text from feature names across all subscriptions
+- **Data Transformation**: Updated server logic to ensure all new subscriptions use consistent Romanian language
+- **Impact**: Professional Romanian-only subscription display with clean feature names and consistent value formatting
+
 ### June 21, 2025 - Browser Cache Busting Implementation
 - **Server Cache Headers**: Added aggressive cache prevention headers to all API routes preventing browser caching
 - **Development Cache Busting**: Implemented timestamp and random parameter injection for all API requests during development
