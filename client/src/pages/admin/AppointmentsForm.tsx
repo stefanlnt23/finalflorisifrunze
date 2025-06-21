@@ -61,11 +61,18 @@ export default function AdminAppointmentsForm() {
     queryKey: ['/api/admin/appointments', id],
     queryFn: async () => {
       if (!id) return null;
+      console.log(`Fetching appointment with ID: ${id}`);
       const response = await apiRequest("GET", `/api/admin/appointments/${id}`);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch appointment: ${response.status}`);
+      }
       const data = await response.json();
+      console.log("Appointment API response:", data);
       return data;
     },
     enabled: isEditing,
+    staleTime: 0,
+    refetchOnWindowFocus: false
   });
 
   const appointment = data?.appointment;
@@ -95,27 +102,36 @@ export default function AdminAppointmentsForm() {
   // Update form values when appointment data is loaded
   useEffect(() => {
     if (appointment) {
-      const appointmentDate = new Date(appointment.date);
-      const formattedTime = format(appointmentDate, "HH:mm");
-      setTimeValue(formattedTime);
+      console.log("Populating appointment form with data:", appointment);
       
-      form.reset({
-        name: appointment.name,
-        email: appointment.email,
-        phone: appointment.phone,
-        buildingName: appointment.buildingName || "",
-        streetName: appointment.streetName,
-        houseNumber: appointment.houseNumber,
-        city: appointment.city,
-        county: appointment.county,
-        postalCode: appointment.postalCode,
-        serviceId: appointment.serviceId.toString(),
-        date: appointmentDate,
-        time: formattedTime,
-        priority: appointment.priority,
-        notes: appointment.notes || "",
-        status: appointment.status
-      });
+      try {
+        const appointmentDate = new Date(appointment.date);
+        const formattedTime = format(appointmentDate, "HH:mm");
+        setTimeValue(formattedTime);
+        
+        const formData = {
+          name: appointment.name || "",
+          email: appointment.email || "",
+          phone: appointment.phone || "",
+          buildingName: appointment.buildingName || "",
+          streetName: appointment.streetName || "",
+          houseNumber: appointment.houseNumber || "",
+          city: appointment.city || "",
+          county: appointment.county || "",
+          postalCode: appointment.postalCode || "",
+          serviceId: appointment.serviceId ? appointment.serviceId.toString() : "",
+          date: appointmentDate,
+          time: formattedTime,
+          priority: appointment.priority || "Normal",
+          notes: appointment.notes || "",
+          status: appointment.status || "Scheduled"
+        };
+        
+        console.log("Setting form data:", formData);
+        form.reset(formData);
+      } catch (error) {
+        console.error("Error populating appointment form:", error);
+      }
     }
   }, [appointment, form]);
 
