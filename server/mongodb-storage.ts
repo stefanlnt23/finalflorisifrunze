@@ -1154,22 +1154,41 @@ export class MongoDBStorage implements IStorage {
               // Check the type of first feature to determine transformation
               if (typeof sub.features[0] === 'string') {
                 // String array - convert to name/value objects
-                transformedFeatures = sub.features.map(feature => ({
-                  name: feature,
-                  value: "Inclus"
-                }));
+                transformedFeatures = sub.features.map(feature => {
+                  // Check if feature already contains ": Included" pattern
+                  if (feature.includes(': Included')) {
+                    const [name] = feature.split(': Included');
+                    return { name: name.trim(), value: "Included" };
+                  } else {
+                    return { name: feature, value: "Inclus" };
+                  }
+                });
               } else if (typeof sub.features[0] === 'object') {
                 // Object array - normalize to name/value format
                 transformedFeatures = sub.features.map(feature => {
                   if (feature.name && feature.value) {
-                    return { name: feature.name, value: feature.value }; // Already correct format
+                    // Clean up the name if it contains ": Included" pattern
+                    let cleanName = feature.name;
+                    if (cleanName.includes(': Included')) {
+                      cleanName = cleanName.split(': Included')[0].trim();
+                    }
+                    return { name: cleanName, value: feature.value };
                   } else if (feature.name) {
-                    return { name: feature.name, value: "Inclus" }; // Has name but no value
+                    // Clean up the name if it contains ": Included" pattern
+                    let cleanName = feature.name;
+                    if (cleanName.includes(': Included')) {
+                      cleanName = cleanName.split(': Included')[0].trim();
+                    }
+                    return { name: cleanName, value: "Inclus" };
                   } else {
                     // Try to extract name/value from object
                     const keys = Object.keys(feature);
                     if (keys.length > 0) {
-                      return { name: keys[0], value: feature[keys[0]] || "Inclus" };
+                      let cleanName = keys[0];
+                      if (cleanName.includes(': Included')) {
+                        cleanName = cleanName.split(': Included')[0].trim();
+                      }
+                      return { name: cleanName, value: feature[keys[0]] || "Inclus" };
                     } else {
                       return { name: "Feature", value: "Inclus" }; // Fallback
                     }
