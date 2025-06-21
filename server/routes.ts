@@ -260,7 +260,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         phone: z
           .string()
           .min(10, "Phone number must be at least 10 characters"),
-        serviceId: z.union([z.string(), z.number()]),
+        serviceId: z.union([z.string(), z.number()]).transform((val) => String(val)),
         date: z.string().refine((val: string) => !isNaN(Date.parse(val)), {
           message: "Invalid date format",
         }),

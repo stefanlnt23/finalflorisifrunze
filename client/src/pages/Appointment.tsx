@@ -25,9 +25,7 @@ const appointmentSchema = z.object({
   name: z.string().min(2, "Numele trebuie să aibă cel puțin 2 caractere"),
   email: z.string().email("Vă rugăm să introduceți o adresă de email validă"),
   phone: z.string().min(10, "Numărul de telefon trebuie să aibă cel puțin 10 caractere"),
-  serviceId: z.string().refine(val => !isNaN(parseInt(val)), {
-    message: "Vă rugăm să selectați un serviciu"
-  }),
+  serviceId: z.string().min(1, "Vă rugăm să selectați un serviciu"),
   date: z.date({
     required_error: "Vă rugăm să selectați o dată",
   }).refine(date => {
@@ -94,7 +92,7 @@ export default function Appointment() {
       // Convert form data to API format
       const appointmentData = {
         ...values,
-        serviceId: parseInt(values.serviceId),
+        serviceId: values.serviceId, // Keep as string ObjectId
         date: format(values.date, "yyyy-MM-dd'T'HH:mm:ss") // API expects ISO format
       };
       
