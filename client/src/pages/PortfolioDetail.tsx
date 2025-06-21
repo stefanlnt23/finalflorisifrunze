@@ -621,40 +621,10 @@ export default function PortfolioDetail() {
                                   {/* Overlay gradient */}
                                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                   
-                                  {/* Auto-cycle indicator */}
-                                  {!isHovered[index] && (
-                                    <div className="absolute top-4 left-4 bg-blue-500/80 text-white px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm">
-                                      Auto ▶
-                                    </div>
-                                  )}
-                                  
-                                  {/* Pause indicator */}
-                                  {isHovered[index] && (
-                                    <div className="absolute top-4 left-4 bg-yellow-500/80 text-white px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm">
-                                      Pauzat ⏸
-                                    </div>
-                                  )}
+
                                 </div>
 
-                                {/* Large Central Toggle Button */}
-                                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                                  <Button
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      toggleBeforeAfter(index);
-                                    }}
-                                    size="lg"
-                                    className="bg-white/95 backdrop-blur-sm hover:bg-white text-gray-900 shadow-2xl border-2 border-white/80 px-8 py-4 rounded-2xl font-bold text-lg transform hover:scale-105 transition-all duration-300 opacity-0 group-hover:opacity-100 pointer-events-auto"
-                                  >
-                                    <span className="mr-3 text-xl">👁️</span>
-                                    <span>Arată</span>
-                                    <span
-                                      className={`ml-2 font-black text-xl ${currentState === "before" ? "text-green-600" : "text-red-600"}`}
-                                    >
-                                      {currentState === "before" ? "DUPĂ" : "ÎNAINTE"}
-                                    </span>
-                                  </Button>
-                                </div>
+
 
                                 {/* Bottom Toggle Button (Always Visible) */}
                                 <Button
