@@ -97,14 +97,7 @@ export default function ServiceDetail() {
   }
 
   // Create enhanced gallery with attached landscape design images and service gallery
-  const landscapeDesignImages = [
-    "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?q=80&w=2070&auto=format&fit=crop", // Aerial view landscape design
-    "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?q=80&w=2070&auto=format&fit=crop", // Garden pathway design
-    "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?q=80&w=2070&auto=format&fit=crop"  // Mountain landscape view
-  ];
-  
   const enhancedGallery = [
-    ...landscapeDesignImages,
     ...(service.galleryImages || []),
     ...(service.imageUrl ? [service.imageUrl] : [])
   ].filter(image => image && image.trim() !== '');

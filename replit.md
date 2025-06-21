@@ -117,6 +117,14 @@ The application is architected to support both MongoDB (currently active) and Po
 
 ## Recent Changes
 
+### June 21, 2025 - Gallery Image Issue Fix
+- **Removed Hardcoded Images**: Eliminated problematic hardcoded Unsplash URLs from ServiceDetail component
+- **Authentic Gallery Content**: Services now display only their own database images and main imageUrl
+- **Broken URL Resolution**: Fixed issue where broken Unsplash URL was appearing in all service galleries
+- **PhotoAlbum Validation**: Enhanced with robust image validation that filters out non-loading URLs
+- **Improved Height**: Increased PhotoAlbum dimensions with better responsive aspect ratios
+- **Impact**: Each service now shows unique, working images with no empty thumbnails or broken URLs
+
 ### June 21, 2025 - Security Audit and Console Log Removal
 - **Production Security**: Removed all console.log statements from subscription endpoints to prevent sensitive data exposure
 - **Error Handling**: Replaced detailed error messages with generic responses in public API endpoints
