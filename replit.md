@@ -117,6 +117,14 @@ The application is architected to support both MongoDB (currently active) and Po
 
 ## Recent Changes
 
+### June 21, 2025 - Appointment Form Optimization
+- **Simplified User Experience**: Removed postal code requirement from appointment booking form
+- **Smart Default Values**: Automatically provides default postal code "000000" to maintain backend compatibility
+- **Reduced Form Complexity**: Users now have fewer required fields to complete appointments
+- **Seamless Integration**: Changes maintain full API compatibility without requiring backend modifications
+- **Mobile-First Approach**: Streamlined form works better on all device sizes
+- **Impact**: Faster appointment booking process with improved user experience and reduced form abandonment
+
 ### June 21, 2025 - Portfolio Details Page Complete Redesign
 - **Modern Hero Section**: Replaced full-screen layout with optimized height hero section featuring gradient background
 - **Enhanced Typography**: Improved title and description sizing for better readability and visual hierarchy

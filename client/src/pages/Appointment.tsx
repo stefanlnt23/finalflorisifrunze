@@ -43,7 +43,7 @@ const appointmentSchema = z.object({
   houseNumber: z.string().min(1, "Numărul casei/proprietății este obligatoriu"),
   city: z.string().min(1, "Orașul este obligatoriu"),
   county: z.string().min(1, "Județul este obligatoriu"),
-  postalCode: z.string().min(1, "Codul poștal este obligatoriu"),
+  postalCode: z.string().optional().default("000000"),
   notes: z.string().optional(),
 });
 
@@ -80,7 +80,7 @@ export default function Appointment() {
       houseNumber: "",
       city: "",
       county: "",
-      postalCode: "",
+      postalCode: "000000",
       notes: "",
     },
   });
@@ -391,19 +391,7 @@ export default function Appointment() {
                             )}
                           />
                           
-                          <FormField
-                            control={form.control}
-                            name="postalCode"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Codul Poștal *</FormLabel>
-                                <FormControl>
-                                  <Input placeholder="Codul poștal" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
+
                         </div>
                       </div>
                       
