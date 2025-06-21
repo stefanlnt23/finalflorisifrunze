@@ -125,8 +125,10 @@ The application is architected to support both MongoDB (currently active) and Po
 - **Enhanced Client Testimonials**: Reduced text sizes (lg/base instead of 2xl/xl) and integrated with green theme using backdrop blur
 - **Better Typography Hierarchy**: Simplified section titles and removed redundant "double title" issues
 - **Improved Image Sizing**: Optimized transformation images to 4:3 aspect ratio for better visual balance
-- **Card-Based Layout**: Transformed overwhelming wide sections into elegant, compact cards with backdrop blur effects
-- **Impact**: Cleaner, more professional portfolio presentation with consistent green branding, dramatically reduced visual noise, and improved readability
+- **Reading Experience Layout**: Transformed from compact cards to expansive article-style layout for immersive storytelling
+- **Large Cinematic Images**: Wide aspect ratios (16:9 mobile, 21:9 desktop) for dramatic visual impact
+- **Enhanced Spacing**: Generous padding and margins throughout for comfortable reading experience
+- **Impact**: Magazine-style portfolio presentation with cinematic visuals, storytelling approach, and comfortable reading flow
 
 ### June 21, 2025 - Subscription Cards Layout Optimization  
 - **Limited Card Display**: Restricted subscription cards to maximum 3 per row instead of 4 for better visual hierarchy
