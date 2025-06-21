@@ -1,0 +1,97 @@
+index-DKJnYSg0.js:2 
+ DELETE https://florisifrunze.com/api/admin/subscriptions/682865a… 404 (Not Found)
+Cc	@	index-DKJnYSg0.js:2
+mutationFn	@	Subscriptions-OOm8b5Hq.js:1
+fn	@	index-DKJnYSg0.js:2
+v	@	index-DKJnYSg0.js:2
+start	@	index-DKJnYSg0.js:2
+execute	@	index-DKJnYSg0.js:2
+await in execute		
+mutate	@	useMutation-yOV5Qkaw.js:1
+(anonymous)	@	useMutation-yOV5Qkaw.js:1
+h	@	Subscriptions-OOm8b5Hq.js:1
+onClick	@	Subscriptions-OOm8b5Hq.js:1
+xc	@	vendor-DYoYXtmL.js:29
+Nc	@	vendor-DYoYXtmL.js:29
+zc	@	vendor-DYoYXtmL.js:29
+ui	@	vendor-DYoYXtmL.js:29
+Ws	@	vendor-DYoYXtmL.js:29
+(anonymous)	@	vendor-DYoYXtmL.js:29
+Eo	@	vendor-DYoYXtmL.js:32
+ms	@	vendor-DYoYXtmL.js:29
+Rl	@	vendor-DYoYXtmL.js:29
+Gu	@	vendor-DYoYXtmL.js:29
+Wc	@	vendor-DYoYXtmL.js:29
+index-DKJnYSg0.js:2 Response status: 404 
+index-DKJnYSg0.js:2 API Error Response: {"message":"Subscription not found or could not be deleted"}
+Cc	@	index-DKJnYSg0.js:2
+await in Cc		
+mutationFn	@	Subscriptions-OOm8b5Hq.js:1
+fn	@	index-DKJnYSg0.js:2
+v	@	index-DKJnYSg0.js:2
+start	@	index-DKJnYSg0.js:2
+execute	@	index-DKJnYSg0.js:2
+await in execute		
+mutate	@	useMutation-yOV5Qkaw.js:1
+(anonymous)	@	useMutation-yOV5Qkaw.js:1
+h	@	Subscriptions-OOm8b5Hq.js:1
+onClick	@	Subscriptions-OOm8b5Hq.js:1
+xc	@	vendor-DYoYXtmL.js:29
+Nc	@	vendor-DYoYXtmL.js:29
+zc	@	vendor-DYoYXtmL.js:29
+ui	@	vendor-DYoYXtmL.js:29
+Ws	@	vendor-DYoYXtmL.js:29
+(anonymous)	@	vendor-DYoYXtmL.js:29
+Eo	@	vendor-DYoYXtmL.js:32
+ms	@	vendor-DYoYXtmL.js:29
+Rl	@	vendor-DYoYXtmL.js:29
+Gu	@	vendor-DYoYXtmL.js:29
+Wc	@	vendor-DYoYXtmL.js:29
+index-DKJnYSg0.js:2 API Request Error: Error: Subscription not found or could not be deleted
+    at Cc (index-DKJnYSg0.js:2:39712)
+    at async Object.mutationFn (Subscriptions-OOm8b5Hq.js:1:3169)
+Cc	@	index-DKJnYSg0.js:2
+await in Cc		
+mutationFn	@	Subscriptions-OOm8b5Hq.js:1
+fn	@	index-DKJnYSg0.js:2
+v	@	index-DKJnYSg0.js:2
+start	@	index-DKJnYSg0.js:2
+execute	@	index-DKJnYSg0.js:2
+await in execute		
+mutate	@	useMutation-yOV5Qkaw.js:1
+(anonymous)	@	useMutation-yOV5Qkaw.js:1
+h	@	Subscriptions-OOm8b5Hq.js:1
+onClick	@	Subscriptions-OOm8b5Hq.js:1
+xc	@	vendor-DYoYXtmL.js:29
+Nc	@	vendor-DYoYXtmL.js:29
+zc	@	vendor-DYoYXtmL.js:29
+ui	@	vendor-DYoYXtmL.js:29
+Ws	@	vendor-DYoYXtmL.js:29
+(anonymous)	@	vendor-DYoYXtmL.js:29
+Eo	@	vendor-DYoYXtmL.js:32
+ms	@	vendor-DYoYXtmL.js:29
+Rl	@	vendor-DYoYXtmL.js:29
+Gu	@	vendor-DYoYXtmL.js:29
+Wc	@	vendor-DYoYXtmL.js:29
+Subscriptions-OOm8b5Hq.js:1 Delete mutation error: Error: Subscription not found or could not be deleted
+    at Cc (index-DKJnYSg0.js:2:39712)
+    at async Object.mutationFn (Subscriptions-OOm8b5Hq.js:1:3169)
+onError	@	Subscriptions-OOm8b5Hq.js:1
+execute	@	index-DKJnYSg0.js:2
+await in execute		
+mutate	@	useMutation-yOV5Qkaw.js:1
+(anonymous)	@	useMutation-yOV5Qkaw.js:1
+h	@	Subscriptions-OOm8b5Hq.js:1
+onClick	@	Subscriptions-OOm8b5Hq.js:1
+xc	@	vendor-DYoYXtmL.js:29
+Nc	@	vendor-DYoYXtmL.js:29
+zc	@	vendor-DYoYXtmL.js:29
+ui	@	vendor-DYoYXtmL.js:29
+Ws	@	vendor-DYoYXtmL.js:29
+(anonymous)	@	vendor-DYoYXtmL.js:29
+Eo	@	vendor-DYoYXtmL.js:32
+ms	@	vendor-DYoYXtmL.js:29
+Rl	@	vendor-DYoYXtmL.js:29
+Gu	@	vendor-DYoYXtmL.js:29
+Wc	@	vendor-DYoYXtmL.js:29
+
