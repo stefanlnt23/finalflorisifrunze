@@ -16,7 +16,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
       <header className="bg-white shadow-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
-            <div className="flex items-center">
+            <div className="hidden md:flex items-center">
               <Link href="/" className="flex items-center">
                 <img 
                   src={logo} 
