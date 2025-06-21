@@ -67,10 +67,31 @@ export default function SubscriptionsForm() {
   });
 
   // Fetch subscription data if editing
-  const { data: subscriptionData, isLoading } = useQuery({
+  const { data: subscriptionData, isLoading, error } = useQuery({
     queryKey: [`/api/admin/subscriptions/${params.id}`],
-    queryFn: () => apiRequest('GET', `/api/admin/subscriptions/${params.id}`),
-    enabled: isEditing,
+    queryFn: async () => {
+      console.log(`Fetching subscription data for ID: ${params.id}`);
+      console.log(`Edit mode enabled: ${isEditing}`);
+      
+      // Check if token exists
+      const token = localStorage.getItem('token');
+      console.log(`Auth token available: ${!!token}`);
+      
+      if (!token) {
+        console.error('No authentication token found');
+        throw new Error('Authentication required');
+      }
+      
+      try {
+        const result = await apiRequest('GET', `/api/admin/subscriptions/${params.id}`);
+        console.log('Subscription fetch result:', result);
+        return result;
+      } catch (error) {
+        console.error('Subscription fetch error:', error);
+        throw error;
+      }
+    },
+    enabled: isEditing && !!params.id,
     retry: 1
   });
 

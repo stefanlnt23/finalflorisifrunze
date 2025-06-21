@@ -1536,13 +1536,59 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/admin/subscriptions/:id", authenticateAdmin, async (req, res) => {
     try {
       const { id } = req.params;
+      console.log(`=== FETCHING SINGLE SUBSCRIPTION DEBUG ===`);
+      console.log(`Requested subscription ID: ${id}`);
+      console.log(`ID type: ${typeof id}, length: ${id.length}`);
+      
+      // Test if ObjectId is valid
+      const { ObjectId } = require('mongodb');
+      let isValidObjectId = false;
+      try {
+        new ObjectId(id);
+        isValidObjectId = true;
+        console.log(`ObjectId validation: VALID`);
+      } catch (err) {
+        console.log(`ObjectId validation: INVALID - ${err.message}`);
+      }
+      
       const subscription = await storage.getSubscription(id);
+      console.log(`Raw subscription from storage:`, subscription);
+      console.log(`Storage method returned null: ${subscription === null}`);
 
       if (!subscription) {
+        console.log(`Subscription not found for ID: ${id}`);
+        console.log(`ObjectId was valid: ${isValidObjectId}`);
         return res.status(404).json({ message: "Subscription not found" });
       }
 
-      res.json({ subscription });
+      // Transform features to proper format for the form
+      let transformedFeatures = [];
+      if (subscription.features && Array.isArray(subscription.features)) {
+        transformedFeatures = subscription.features.map((feature: any) => {
+          if (typeof feature === 'string') {
+            // Split "name: value" format
+            const parts = feature.split(':');
+            return {
+              name: parts[0]?.trim() || feature,
+              value: parts[1]?.trim() || "Inclus"
+            };
+          } else if (feature && typeof feature === 'object') {
+            return {
+              name: feature.name || "Feature",
+              value: feature.value || "Inclus"
+            };
+          }
+          return { name: String(feature), value: "Inclus" };
+        });
+      }
+
+      const formattedSubscription = {
+        ...subscription,
+        features: transformedFeatures
+      };
+
+      console.log(`Formatted subscription for form:`, formattedSubscription);
+      res.json({ subscription: formattedSubscription });
     } catch (error) {
       console.error(`Error fetching subscription ${req.params.id}:`, error);
       res.status(500).json({ message: "Failed to fetch subscription" });
