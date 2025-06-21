@@ -197,23 +197,27 @@ export default function Subscriptions() {
                           key={index} 
                           className={`${subscription.features.length > 6 ? 'py-2 px-3' : 'py-3 px-4'} border border-gray-100 rounded-lg transition-all hover:bg-gray-50 hover:shadow-sm`}
                         >
-                          <div className={`flex justify-between items-start group ${subscription.features.length > 6 ? 'text-xs' : 'text-sm'}`}>
-                            <span className="text-gray-700 group-hover:font-medium transition-all flex items-start">
+                          <div className={`flex flex-col space-y-1 group ${subscription.features.length > 6 ? 'text-xs' : 'text-sm'}`}>
+                            <div className="flex items-start">
                               <span 
-                                className={`${subscription.features.length > 6 ? 'w-4 h-4 min-w-4 text-xs mr-2' : 'w-6 h-6 min-w-6 text-xs mr-3'} rounded-full flex-shrink-0 flex items-center justify-center text-white mt-0.5`}
+                                className={`${subscription.features.length > 6 ? 'w-3 h-3 min-w-3 text-xs mr-2' : 'w-6 h-6 min-w-6 text-xs mr-3'} rounded-full flex-shrink-0 flex items-center justify-center text-white mt-0.5`}
                                 style={{ backgroundColor: subscription.color || '#4CAF50' }}
                               >
                                 ✓
                               </span>
-                              <span className="flex-grow leading-tight">{typeof feature === 'object' && feature.name ? feature.name + ':' : String(feature)}</span>
-                            </span>
-                            {typeof feature === 'object' && feature.value && (
-                              <span 
-                                className="text-gray-900 font-bold group-hover:text-green-600 transition-all ml-2 flex-shrink-0 text-right leading-tight"
-                                style={{ color: subscription.color || '#4CAF50' }}
-                              >
-                                {feature.value}
+                              <span className="text-gray-700 group-hover:font-medium transition-all leading-tight flex-grow">
+                                {typeof feature === 'object' && feature.name ? feature.name + ':' : String(feature)}
                               </span>
+                            </div>
+                            {typeof feature === 'object' && feature.value && (
+                              <div className={`${subscription.features.length > 6 ? 'ml-5' : 'ml-9'}`}>
+                                <span 
+                                  className="text-gray-900 font-bold group-hover:text-green-600 transition-all leading-tight"
+                                  style={{ color: subscription.color || '#4CAF50' }}
+                                >
+                                  {feature.value}
+                                </span>
+                              </div>
                             )}
                           </div>
                         </div>
