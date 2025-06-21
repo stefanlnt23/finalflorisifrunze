@@ -14,13 +14,25 @@ export default function PortfolioDetail() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   const [expandedSections, setExpandedSections] = useState<{[key: string]: boolean}>({});
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check if device is mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Helper function to truncate text for mobile with read more
   const truncateText = (text: string, sectionKey: string, wordLimit: number = 10) => {
     const words = text.split(' ');
     const isExpanded = expandedSections[sectionKey];
     
-    if (words.length <= wordLimit || isExpanded) {
+    if (!isMobile || words.length <= wordLimit || isExpanded) {
       return text;
     }
     
@@ -182,18 +194,15 @@ export default function PortfolioDetail() {
                       Detalii Proiect
                     </h2>
                     <div className="text-xl text-white/90 leading-relaxed">
-                      <div className="md:hidden">
-                        <p>{truncateText(portfolioItem.description, 'description')}</p>
-                        {portfolioItem.description.split(' ').length > 10 && (
-                          <button
-                            onClick={() => toggleSection('description')}
-                            className="text-white/70 hover:text-white underline text-sm mt-2"
-                          >
-                            {expandedSections['description'] ? 'Arată mai puțin' : 'Citește mai mult'}
-                          </button>
-                        )}
-                      </div>
-                      <p className="hidden md:block">{portfolioItem.description}</p>
+                      <p>{truncateText(portfolioItem.description, 'description')}</p>
+                      {isMobile && portfolioItem.description.split(' ').length > 10 && (
+                        <button
+                          onClick={() => toggleSection('description')}
+                          className="text-white/70 hover:text-white underline text-sm mt-2 block"
+                        >
+                          {expandedSections['description'] ? 'Arată mai puțin' : 'Citește mai mult'}
+                        </button>
+                      )}
                     </div>
                   </div>
                   
@@ -201,18 +210,15 @@ export default function PortfolioDetail() {
                     <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
                       <h3 className="text-xl font-semibold text-white mb-3">Provocări</h3>
                       <div className="text-white/80">
-                        <div className="md:hidden">
-                          <p>{truncateText(portfolioItem.challenges, 'challenges')}</p>
-                          {portfolioItem.challenges.split(' ').length > 10 && (
-                            <button
-                              onClick={() => toggleSection('challenges')}
-                              className="text-white/60 hover:text-white underline text-sm mt-2"
-                            >
-                              {expandedSections['challenges'] ? 'Arată mai puțin' : 'Citește mai mult'}
-                            </button>
-                          )}
-                        </div>
-                        <p className="hidden md:block">{portfolioItem.challenges}</p>
+                        <p>{truncateText(portfolioItem.challenges, 'challenges')}</p>
+                        {isMobile && portfolioItem.challenges.split(' ').length > 10 && (
+                          <button
+                            onClick={() => toggleSection('challenges')}
+                            className="text-white/60 hover:text-white underline text-sm mt-2 block"
+                          >
+                            {expandedSections['challenges'] ? 'Arată mai puțin' : 'Citește mai mult'}
+                          </button>
+                        )}
                       </div>
                     </div>
                   )}
@@ -221,18 +227,15 @@ export default function PortfolioDetail() {
                     <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
                       <h3 className="text-xl font-semibold text-white mb-3">Soluția</h3>
                       <div className="text-white/80">
-                        <div className="md:hidden">
-                          <p>{truncateText(portfolioItem.solution, 'solution')}</p>
-                          {portfolioItem.solution.split(' ').length > 10 && (
-                            <button
-                              onClick={() => toggleSection('solution')}
-                              className="text-white/60 hover:text-white underline text-sm mt-2"
-                            >
-                              {expandedSections['solution'] ? 'Arată mai puțin' : 'Citește mai mult'}
-                            </button>
-                          )}
-                        </div>
-                        <p className="hidden md:block">{portfolioItem.solution}</p>
+                        <p>{truncateText(portfolioItem.solution, 'solution')}</p>
+                        {isMobile && portfolioItem.solution.split(' ').length > 10 && (
+                          <button
+                            onClick={() => toggleSection('solution')}
+                            className="text-white/60 hover:text-white underline text-sm mt-2 block"
+                          >
+                            {expandedSections['solution'] ? 'Arată mai puțin' : 'Citește mai mult'}
+                          </button>
+                        )}
                       </div>
                     </div>
                   )}
