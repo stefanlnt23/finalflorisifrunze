@@ -1,0 +1,51 @@
+Looking at your images, I can see you're dealing with DNS records for the domain florisifrunze.com. The first image shows a "Not Found" error when trying to access https://www.florisifrunze.com, while the second shows the site working at florisifrunze.com (without www), and the third shows your DNS configuration.
+The reason florisifrunze.com works but www.florisifrunze.com doesn't is because of how your DNS records are set up:
+What's working:
+
+You have an A record for the root domain (@ pointing to 34.111.179.208)
+You have an A record for www pointing to the same IP (34.111.179.208)
+
+The likely issue:
+Even though your DNS appears correctly configured, the problem is probably at the web server level, not the DNS level. Your web server (at IP 34.111.179.208) is likely configured to only respond to requests for florisifrunze.com but not www.florisifrunze.com.
+To fix this, you need to:
+
+Configure your web server to handle both domains
+Or set up a redirect from www.florisifrunze.com to florisifrunze.com
+Or use a CNAME record instead of an A record for www (point www to florisifrunze.com)
+
+The most common solution is to configure your web server (Apache, Nginx, etc.) to accept both hostnames or redirect one to the other. This is a server configuration issue rather than a DNS issue.RetrySwhat you reccomandEditI recommend Option 1: Configure your web server to handle both domains. This is the most professional and user-friendly approach.
+Here's what you should do based on your web server:
+If you're using Apache:
+Add this to your virtual host configuration:
+apache<VirtualHost *:80>
+    ServerName florisifrunze.com
+    ServerAlias www.florisifrunze.com
+    DocumentRoot /path/to/your/website
+</VirtualHost>
+If you're using Nginx:
+nginxserver {
+    listen 80;
+    server_name florisifrunze.com www.florisifrunze.com;
+    root /path/to/your/website;
+    # ... rest of your config
+}
+If you're using a hosting service (like cPanel, Vercel, Netlify):
+Look for domain settings and add www.florisifrunze.com as an alias or additional domain.
+Why this approach is best:
+
+✅ Both URLs work seamlessly
+✅ No redirect delay
+✅ Better for SEO
+✅ Users can access your site either way
+
+Alternative (if you can't modify server config):
+Change your DNS record from:
+
+A record: www → 34.111.179.208
+
+To:
+
+CNAME record: www → florisifrunze.com
+
+This might help if your hosting provider automatically handles the www subdomain when it's a CNAME.
+Which web server or hosting service are you using? I can give you more specific
