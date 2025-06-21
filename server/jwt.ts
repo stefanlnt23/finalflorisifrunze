@@ -3,7 +3,7 @@ import { User } from '../shared/schema.js';
 
 // JWT secret - in production this should be a strong, randomly generated secret
 const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-this-in-production';
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '24h';
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d'; // Extended to 7 days for better UX
 
 export interface JWTPayload {
   userId: string;

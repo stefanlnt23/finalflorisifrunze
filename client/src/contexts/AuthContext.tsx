@@ -46,6 +46,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           
           if (data.valid && data.user) {
             setUser(data.user);
+            
+            // If a new token was provided (auto-refresh), update it
+            if (data.newToken) {
+              localStorage.setItem('token', data.newToken);
+            }
           } else {
             // Invalid token, remove it
             localStorage.removeItem('token');

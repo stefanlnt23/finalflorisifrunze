@@ -43,6 +43,53 @@ export async function apiRequest(method: string, url: string, data?: any) {
 
     console.log(`Response status: ${response.status} ${response.statusText}`);
 
+    // If we get a 401 (unauthorized) and we have a token, try to refresh it
+    if (response.status === 401 && token) {
+      console.log('Attempting token refresh due to 401 error');
+      
+      try {
+        const refreshResponse = await fetch('/api/admin/refresh-token', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (refreshResponse.ok) {
+          const refreshData = await refreshResponse.json();
+          if (refreshData.success && refreshData.token) {
+            // Update the stored token
+            localStorage.setItem('token', refreshData.token);
+            
+            // Retry the original request with the new token
+            const retryHeaders = { ...headers };
+            retryHeaders['Authorization'] = `Bearer ${refreshData.token}`;
+            
+            const retryResponse = await fetch(url, {
+              method,
+              headers: retryHeaders,
+              body: data ? JSON.stringify(data) : undefined,
+            });
+            
+            if (retryResponse.ok) {
+              const contentType = retryResponse.headers.get('content-type');
+              if (contentType && contentType.includes('application/json')) {
+                return await retryResponse.json();
+              }
+              return await retryResponse.text();
+            }
+          }
+        }
+      } catch (refreshError) {
+        console.error('Token refresh failed:', refreshError);
+        // Clear invalid token and redirect to login
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/admin/login';
+      }
+    }
+
     if (!response.ok) {
       const errorText = await response.text();
       console.error(`API Error Response: ${errorText}`);

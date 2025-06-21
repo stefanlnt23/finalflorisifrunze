@@ -464,7 +464,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Validate session endpoint
+  // Validate session endpoint with auto-refresh
   app.get("/api/admin/validate-session", async (req, res) => {
     try {
       const token = extractTokenFromHeader(req.headers.authorization);
@@ -479,22 +479,78 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.json({ valid: false });
       }
 
-      // Check if user has admin role
-      if (decoded.role !== 'admin') {
+      // Get user from database to ensure they still exist
+      const user = await storage.getUser(decoded.userId);
+      
+      if (!user || user.role !== 'admin') {
         return res.json({ valid: false });
+      }
+
+      // Check if token is close to expiring (within 1 hour) and generate new one
+      const now = Math.floor(Date.now() / 1000);
+      const timeUntilExpiry = decoded.exp ? decoded.exp - now : 0;
+      
+      let newToken = null;
+      if (timeUntilExpiry < 3600) { // Less than 1 hour remaining
+        newToken = generateToken(user);
       }
 
       res.json({ 
         valid: true,
         user: {
-          id: decoded.userId,
-          email: decoded.email,
-          role: decoded.role
-        }
+          id: user.id,
+          username: user.username,
+          name: user.name,
+          email: user.email,
+          role: user.role
+        },
+        ...(newToken && { newToken })
       });
     } catch (error) {
       console.error("Error validating session:", error);
       res.json({ valid: false });
+    }
+  });
+
+  // Token refresh endpoint
+  app.post("/api/admin/refresh-token", async (req, res) => {
+    try {
+      const token = extractTokenFromHeader(req.headers.authorization);
+      
+      if (!token) {
+        return res.status(401).json({ message: "No token provided" });
+      }
+
+      const decoded = verifyToken(token);
+      
+      if (!decoded) {
+        return res.status(401).json({ message: "Invalid token" });
+      }
+
+      // Get user from database
+      const user = await storage.getUser(decoded.userId);
+      
+      if (!user || user.role !== 'admin') {
+        return res.status(401).json({ message: "User not found or not admin" });
+      }
+
+      // Generate new token
+      const newToken = generateToken(user);
+
+      res.json({ 
+        success: true,
+        token: newToken,
+        user: {
+          id: user.id,
+          username: user.username,
+          name: user.name,
+          email: user.email,
+          role: user.role
+        }
+      });
+    } catch (error) {
+      console.error("Token refresh error:", error);
+      res.status(500).json({ message: "Failed to refresh token" });
     }
   });
 
