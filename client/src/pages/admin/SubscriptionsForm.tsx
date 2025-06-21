@@ -78,12 +78,12 @@ export default function SubscriptionsForm() {
       const responseData = await apiRequest("GET", `/api/admin/subscriptions/${params.id}`);
       console.log("Subscription data loaded:", JSON.stringify(responseData, null, 2));
       
-      if (!responseData) {
+      if (!responseData?.subscription) {
         console.error("Subscription data is missing in the response");
         throw new Error("Subscription data not found in response");
       }
       
-      return responseData;
+      return responseData.subscription;
     },
     enabled: isEditing,
     retry: 1
