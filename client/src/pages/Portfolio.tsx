@@ -10,7 +10,6 @@ import { format } from "date-fns";
 
 export default function Portfolio() {
   const [, setLocation] = useLocation();
-  const [selectedService, setSelectedService] = useState<string | null>(null);
   
   // Fetch all portfolio items
   const { data, isLoading, error } = useQuery({
@@ -25,7 +24,7 @@ export default function Portfolio() {
     refetchOnWindowFocus: false
   });
   
-  // Fetch all services for filtering
+  // Fetch all services for service name display
   const { data: servicesData } = useQuery({
     queryKey: ['/api/services'],
     queryFn: async () => {
@@ -41,13 +40,8 @@ export default function Portfolio() {
   const services = servicesData?.services || [];
   const portfolioItems = data?.portfolioItems || [];
   
-  // Filter items based on selected service
-  const filteredItems = selectedService 
-    ? portfolioItems.filter((item: any) => item.serviceId === selectedService)
-    : portfolioItems;
-    
   // Only show published items
-  const publishedItems = filteredItems.filter((item: any) => item.status === 'Published');
+  const publishedItems = portfolioItems.filter((item: any) => item.status === 'Published');
   
   // Get service name for display
   const getServiceName = (serviceId: string) => {
@@ -66,29 +60,7 @@ export default function Portfolio() {
             </p>
           </div>
           
-          {/* Service Filter */}
-          <div className="mb-12">
-            <div className="flex flex-wrap justify-center gap-2">
-              <Button 
-                variant={selectedService === null ? "default" : "outline"}
-                className={selectedService === null ? "bg-green-600 hover:bg-green-700" : ""}
-                onClick={() => setSelectedService(null)}
-              >
-                Toate Proiectele
-              </Button>
-              
-              {services.map((service: any) => (
-                <Button 
-                  key={service.id}
-                  variant={selectedService === service.id ? "default" : "outline"}
-                  className={selectedService === service.id ? "bg-green-600 hover:bg-green-700" : ""}
-                  onClick={() => setSelectedService(service.id)}
-                >
-                  {service.name}
-                </Button>
-              ))}
-            </div>
-          </div>
+
           
           {/* Portfolio Grid */}
           {isLoading ? (

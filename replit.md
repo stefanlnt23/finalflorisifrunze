@@ -117,6 +117,13 @@ The application is architected to support both MongoDB (currently active) and Po
 
 ## Recent Changes
 
+### June 21, 2025 - Portfolio Filter Removal
+- **Simplified Portfolio Navigation**: Removed service filter buttons from portfolio page
+- **Direct Content Access**: Portfolio projects now display immediately without filtering interface
+- **Cleaner Design**: Eliminated clutter from "Toate Proiectele" and service category buttons
+- **Streamlined Experience**: Users can browse all completed projects without navigation complexity
+- **Impact**: More direct portfolio viewing experience with immediate access to all project showcases
+
 ### June 21, 2025 - Services Page Layout Optimization
 - **Improved Content Priority**: Moved services to top of page, benefits section moved to bottom
 - **Better User Flow**: Services now appear immediately after hero section for faster discovery
