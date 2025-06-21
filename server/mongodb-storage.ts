@@ -1329,7 +1329,6 @@ export class MongoDBStorage implements IStorage {
       console.log(`[MongoDB] Starting delete operation for subscription ID: ${id}`);
       
       if (!this.db) {
-        console.log(`[MongoDB] Database not initialized, initializing now...`);
         await this.initDb();
         if (!this.db) {
           console.error(`[MongoDB] Failed to initialize database connection`);
@@ -1337,66 +1336,23 @@ export class MongoDBStorage implements IStorage {
         }
       }
 
-      const { ObjectId } = require('mongodb');
-      let objectId;
-      
-      // Validate and convert ObjectId
-      try {
-        objectId = new ObjectId(id);
-        console.log(`[MongoDB] Successfully converted ID ${id} to ObjectId: ${objectId}`);
-      } catch (error) {
-        console.error(`[MongoDB] Invalid ObjectId format: ${id}`, error);
-        return false;
-      }
-
-      // Get the collection
       const collection = this.db.collection("subscriptions");
-      console.log(`[MongoDB] Using collection: subscriptions`);
-
-      // First, check if the subscription exists
-      const existingSubscription = await collection.findOne({ _id: objectId });
-      console.log(`[MongoDB] Subscription exists before delete:`, existingSubscription ? 'YES' : 'NO');
+      const { ObjectId } = require('mongodb');
       
-      if (existingSubscription) {
-        console.log(`[MongoDB] Found subscription to delete: "${existingSubscription.name}" (ID: ${existingSubscription._id})`);
+      // Try both string and ObjectId formats
+      let query;
+      if (ObjectId.isValid(id)) {
+        query = { _id: new ObjectId(id) };
       } else {
-        console.log(`[MongoDB] Subscription with ID ${id} not found in database`);
-        
-        // List some existing subscriptions for debugging
-        const allSubs = await collection.find({}, { projection: { _id: 1, name: 1 } }).limit(5).toArray();
-        console.log(`[MongoDB] Sample existing subscription IDs:`, allSubs.map(s => ({ id: s._id.toString(), name: s.name })));
-        
-        return false;
+        query = { _id: id };
       }
 
-      // Perform the delete operation
-      console.log(`[MongoDB] Executing delete operation...`);
-      const result = await collection.deleteOne({ _id: objectId });
+      const result = await collection.deleteOne(query);
+      console.log(`[MongoDB] Delete result:`, { acknowledged: result.acknowledged, deletedCount: result.deletedCount });
       
-      console.log(`[MongoDB] Delete operation completed:`, {
-        acknowledged: result.acknowledged,
-        deletedCount: result.deletedCount
-      });
-
-      if (result.deletedCount > 0) {
-        // Verify deletion
-        const stillExists = await collection.findOne({ _id: objectId });
-        console.log(`[MongoDB] Verification - subscription still exists:`, stillExists ? 'YES' : 'NO');
-        
-        if (!stillExists) {
-          console.log(`[MongoDB] ✅ Subscription successfully deleted`);
-          return true;
-        } else {
-          console.error(`[MongoDB] ❌ Delete operation reported success but subscription still exists`);
-          return false;
-        }
-      } else {
-        console.error(`[MongoDB] ❌ Delete operation failed - no documents were deleted`);
-        return false;
-      }
-
+      return result.deletedCount > 0;
     } catch (error) {
-      console.error(`[MongoDB] Exception during delete operation for ${id}:`, error);
+      console.error(`[MongoDB] Error deleting subscription ${id}:`, error);
       return false;
     }
   }
