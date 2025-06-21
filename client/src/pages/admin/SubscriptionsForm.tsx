@@ -21,6 +21,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import AdminLayout from "@/components/layouts/AdminLayout";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 import { X } from "lucide-react";
 
 // Form schema
@@ -68,13 +69,7 @@ export default function SubscriptionsForm() {
   // Fetch subscription data if editing
   const { data: subscriptionData, isLoading } = useQuery({
     queryKey: [`/api/admin/subscriptions/${params.id}`],
-    queryFn: async () => {
-      const response = await fetch(`/api/admin/subscriptions/${params.id}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch subscription');
-      }
-      return response.json();
-    },
+    queryFn: () => apiRequest('GET', `/api/admin/subscriptions/${params.id}`),
     enabled: isEditing,
     retry: 1
   });
@@ -120,20 +115,7 @@ export default function SubscriptionsForm() {
   // Create mutation
   const createMutation = useMutation({
     mutationFn: async (data: FormValues) => {
-      const response = await fetch("/api/admin/subscriptions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to create subscription");
-      }
-
-      return response.json();
+      return await apiRequest('POST', '/api/admin/subscriptions', data);
     },
     onSuccess: () => {
       toast({
@@ -156,20 +138,7 @@ export default function SubscriptionsForm() {
   // Update mutation
   const updateMutation = useMutation({
     mutationFn: async (data: FormValues) => {
-      const response = await fetch(`/api/admin/subscriptions/${params.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to update subscription");
-      }
-
-      return response.json();
+      return await apiRequest('PUT', `/api/admin/subscriptions/${params.id}`, data);
     },
     onSuccess: () => {
       toast({

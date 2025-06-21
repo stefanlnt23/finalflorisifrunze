@@ -117,11 +117,13 @@ The application is architected to support both MongoDB (currently active) and Po
 
 ## Recent Changes
 
-### June 21, 2025 - Subscription Auto-Recreation Fix
+### June 21, 2025 - Subscription Auto-Recreation Fix and Authentication Repair
 - **Removed Auto Data Creation**: Eliminated code in `/api/subscriptions` endpoint that automatically recreated sample subscription data when database was empty
+- **Fixed Admin Page Auto-Creation**: Removed automatic sample subscription creation from admin subscriptions page that triggered when database was empty
+- **Authentication Fix**: Replaced direct `fetch` calls with authenticated `apiRequest` function in subscription form for proper JWT token handling
 - **Database Control**: Users can now delete all subscriptions from MongoDB without them reappearing on page refresh
 - **Clean Slate Management**: Empty subscription database now returns empty array instead of generating sample data
-- **Impact**: Complete control over subscription data - deletions from MongoDB are now permanent until manually recreated
+- **Impact**: Complete control over subscription data with working create/update/delete operations - deletions from MongoDB are now permanent until manually recreated
 
 ### June 21, 2025 - Gallery Image Issue Fix
 - **Removed Hardcoded Images**: Eliminated problematic hardcoded Unsplash URLs from ServiceDetail component
