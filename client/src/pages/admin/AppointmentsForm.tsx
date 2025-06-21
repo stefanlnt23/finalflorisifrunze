@@ -62,11 +62,7 @@ export default function AdminAppointmentsForm() {
     queryFn: async () => {
       if (!id) return null;
       console.log(`Fetching appointment with ID: ${id}`);
-      const response = await apiRequest("GET", `/api/admin/appointments/${id}`);
-      if (!response.ok) {
-        throw new Error(`Failed to fetch appointment: ${response.status}`);
-      }
-      const data = await response.json();
+      const data = await apiRequest("GET", `/api/admin/appointments/${id}`);
       console.log("Appointment API response:", data);
       return data;
     },
