@@ -154,18 +154,7 @@ export default function AdminAppointmentsForm() {
         date: combinedDate
       };
       
-      const response = await apiRequest("POST", "/api/admin/appointments", appointmentData);
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Failed to create appointment: ${errorText}`);
-      }
-      
-      let data;
-      try {
-        data = await response.json();
-      } catch (error) {
-        throw new Error("Failed to parse server response");
-      }
+      const data = await apiRequest("POST", "/api/admin/appointments", appointmentData);
       
       if (!data.success) {
         throw new Error(data.message || "Failed to create appointment");
@@ -202,18 +191,7 @@ export default function AdminAppointmentsForm() {
         date: combinedDate
       };
       
-      const response = await apiRequest("PUT", `/api/admin/appointments/${id}`, appointmentData);
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Failed to update appointment: ${errorText}`);
-      }
-      
-      let data;
-      try {
-        data = await response.json();
-      } catch (error) {
-        throw new Error("Failed to parse server response");
-      }
+      const data = await apiRequest("PUT", `/api/admin/appointments/${id}`, appointmentData);
       
       if (!data.success) {
         throw new Error(data.message || "Failed to update appointment");
