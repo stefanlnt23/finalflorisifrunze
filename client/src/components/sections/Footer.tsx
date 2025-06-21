@@ -33,7 +33,7 @@ export default function Footer() {
                 <img 
                   src={logo} 
                   alt="Flori si Frunze Logo" 
-                  className="h-16 w-auto"
+                  className="h-20 md:h-24 w-auto"
                 />
               </div>
             <p className="text-gray-400 mb-6">

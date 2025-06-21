@@ -56,7 +56,7 @@ export default function MainNavigation() {
           <img 
             src={logoMobile} 
             alt="Flori si Frunze Logo" 
-            className="h-12 w-auto"
+            className="h-16 w-auto"
           />
         </Link>
         <button

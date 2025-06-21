@@ -21,7 +21,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
                 <img 
                   src={logo} 
                   alt="Flori si Frunze Logo" 
-                  className="h-16 w-auto"
+                  className="h-20 md:h-24 w-auto"
                 />
               </Link>
             </div>
