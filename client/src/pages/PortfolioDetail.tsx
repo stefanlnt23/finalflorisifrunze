@@ -511,20 +511,20 @@ export default function PortfolioDetail() {
       <div className="bg-white">
         {/* Before & After Transformations - Redesigned */}
         {portfolioItem.images && portfolioItem.images.length > 0 && (
-          <section className="py-16">
+          <section className="py-32 bg-gradient-to-br from-slate-50 to-green-50/30">
             <div className="container mx-auto px-4">
-              <div className="max-w-7xl mx-auto">
-                <div className="text-center mb-12">
-                  <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                    Transformările Realizate
+              <div className="max-w-8xl mx-auto">
+                <div className="text-center mb-20">
+                  <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+                    Transformările Spectaculoase
                   </h2>
-                  <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                  <p className="text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
                     Descoperiți cum am transformat fiecare spațiu, pas cu pas
                   </p>
-                  <div className="w-24 h-1 bg-gradient-to-r from-green-600 to-emerald-600 mx-auto mt-6 rounded-full"></div>
+                  <div className="w-32 h-2 bg-gradient-to-r from-green-600 to-emerald-600 mx-auto mt-8 rounded-full"></div>
                 </div>
 
-                <div className="space-y-16">
+                <div className="space-y-24">
                   {portfolioItem.images.map((image: any, index: number) => {
                     const currentState = beforeAfterStates[index] || "before";
                     const currentImage =
@@ -608,16 +608,14 @@ export default function PortfolioDetail() {
                             {/* Right Column - Interactive Image */}
                             <div className="relative">
                               <div 
-                                className="relative group cursor-pointer"
+                                className="relative group"
                                 onMouseEnter={() => handleMouseEnter(index)}
                                 onMouseLeave={() => handleMouseLeave(index)}
-                                onClick={() => toggleBeforeAfter(index)}
                               >
-                                <div className="aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl bg-white relative">
-                                  <img
-                                    src={currentImage}
+                                <div className="aspect-[4/3] overflow-hidden rounded-3xl shadow-2xl bg-white relative cursor-pointer transformation-image-container">
+                                  <ImageLightbox
+                                    image={currentImage}
                                     alt={`${currentState === "before" ? "Before" : "After"} ${image.caption || `Transformation ${index + 1}`}`}
-                                    className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
                                   />
 
                                   {/* Overlay gradient */}
@@ -639,14 +637,14 @@ export default function PortfolioDetail() {
                                 </div>
 
                                 {/* Large Central Toggle Button */}
-                                <div className="absolute inset-0 flex items-center justify-center">
+                                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                                   <Button
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       toggleBeforeAfter(index);
                                     }}
                                     size="lg"
-                                    className="bg-white/95 backdrop-blur-sm hover:bg-white text-gray-900 shadow-2xl border-2 border-white/80 px-8 py-4 rounded-2xl font-bold text-lg transform hover:scale-105 transition-all duration-300 opacity-0 group-hover:opacity-100"
+                                    className="bg-white/95 backdrop-blur-sm hover:bg-white text-gray-900 shadow-2xl border-2 border-white/80 px-8 py-4 rounded-2xl font-bold text-lg transform hover:scale-105 transition-all duration-300 opacity-0 group-hover:opacity-100 pointer-events-auto"
                                   >
                                     <span className="mr-3 text-xl">👁️</span>
                                     <span>Arată</span>
@@ -665,7 +663,7 @@ export default function PortfolioDetail() {
                                     toggleBeforeAfter(index);
                                   }}
                                   size="lg"
-                                  className="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-white/95 backdrop-blur-sm hover:bg-white text-gray-900 shadow-2xl border-2 border-white/80 px-8 py-4 rounded-2xl font-bold text-base hover:scale-105 transition-all duration-300"
+                                  className="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-white/95 backdrop-blur-sm hover:bg-white text-gray-900 shadow-2xl border-2 border-white/80 px-8 py-4 rounded-2xl font-bold text-base hover:scale-105 transition-all duration-300 z-10"
                                 >
                                   <span className="mr-2 text-lg">🔄</span>
                                   <span>Comută la</span>

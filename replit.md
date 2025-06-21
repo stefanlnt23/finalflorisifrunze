@@ -124,7 +124,9 @@ The application is architected to support both MongoDB (currently active) and Po
 - **Visual Indicators**: Added clear "Auto ▶" and "Pauzat ⏸" status indicators
 - **Multiple Interaction Methods**: Users can click anywhere on image or use dedicated control buttons
 - **Improved Accessibility**: Larger buttons with emojis and better contrast for easier interaction
-- **Impact**: More engaging portfolio experience with automatic showcasing that respects user control
+- **Click-to-Enlarge**: Added ImageLightbox functionality for viewing transformation images in full-screen modal
+- **Larger Section Size**: Significantly increased section padding, image heights (500px min), and overall visual prominence
+- **Impact**: More engaging portfolio experience with automatic showcasing, full-size viewing, and dramatically increased visual impact
 
 ### June 21, 2025 - Portfolio Filter Removal
 - **Simplified Portfolio Navigation**: Removed service filter buttons from portfolio page
