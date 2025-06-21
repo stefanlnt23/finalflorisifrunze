@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import MainLayout from "@/components/layouts/MainLayout";
@@ -7,9 +7,12 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { ImageLightbox } from "@/components/ui/image-lightbox";
+import { ArrowLeft, Calendar, MapPin, Clock, Star, Quote, Heart, Share2, Eye, ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function PortfolioDetail() {
   const { id } = useParams();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isLiked, setIsLiked] = useState(false);
 
   // Fetch portfolio item details
   const { data, isLoading, error } = useQuery({
@@ -48,6 +51,21 @@ export default function PortfolioDetail() {
     // In a real application, you would update the view count here
     // This would typically be an API call to increment the view count
   }, [id]);
+
+  // Get all images (main + gallery)
+  const allImages = [
+    ...(portfolioItem?.imageUrl ? [portfolioItem.imageUrl] : []),
+    ...(portfolioItem?.images?.map((img: any) => img.before).filter(Boolean) || []),
+    ...(portfolioItem?.images?.map((img: any) => img.after).filter(Boolean) || [])
+  ];
+
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % allImages.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
+  };
 
   if (isLoading) {
     return (
@@ -94,170 +112,303 @@ export default function PortfolioDetail() {
 
   return (
     <MainLayout>
-      <div className="py-10 bg-gradient-to-b from-green-50 to-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            {/* Navigation */}
-            <div className="mb-8">
-              <Button
-                variant="outline"
-                onClick={() => window.history.back()}
-                className="mb-6"
-              >
-                <i className="fas fa-arrow-left mr-2"></i> Back to Portfolio
-              </Button>
-            </div>
+      {/* Hero Section with Gradient Background */}
+      <div className="relative min-h-screen bg-gradient-to-br from-green-900 via-green-800 to-emerald-900 overflow-hidden">
+        {/* Background Overlay */}
+        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/5 to-transparent opacity-30"></div>
 
-            {/* Hero Section with Main Image */}
-            <div className="mb-12">
-              {portfolioItem.imageUrl && (
-                <div className="rounded-xl overflow-hidden shadow-xl mb-6">
-                  <ImageLightbox
-                    image={portfolioItem.imageUrl}
-                    alt={portfolioItem.title}
-                  />
-                </div>
-              )}
+        {/* Navigation */}
+        <div className="relative z-10 pt-8 pb-6">
+          <div className="container mx-auto px-4">
+            <Button
+              variant="outline"
+              onClick={() => window.history.back()}
+              className="bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Înapoi la Portofoliu
+            </Button>
+          </div>
+        </div>
 
-              <h1 className="text-4xl font-bold text-gray-900 mb-4">
-                {portfolioItem.title}
-              </h1>
-
-              <div className="flex flex-wrap items-center gap-3 mb-6">
+        {/* Hero Content */}
+        <div className="relative z-10 flex items-center min-h-[80vh] -mt-20">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <div className="mb-8">
                 {portfolioItem.featured && (
-                  <Badge className="bg-yellow-100 text-yellow-800 border-yellow-300">
-                    Featured Project
+                  <Badge className="bg-yellow-500/20 text-yellow-300 border-yellow-400/30 mb-4">
+                    <Star className="w-3 h-3 mr-1" />
+                    Proiect Destacat
                   </Badge>
                 )}
+                <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+                  {portfolioItem.title}
+                </h1>
+                <p className="text-xl md:text-2xl text-green-100 mb-8 leading-relaxed max-w-3xl mx-auto">
+                  {portfolioItem.description}
+                </p>
+              </div>
 
-                {service && (
-                  <Badge
-                    variant="outline"
-                    className="bg-blue-50 text-blue-800 border-blue-200"
-                  >
-                    {service.name}
-                  </Badge>
+              {/* Project Meta */}
+              <div className="flex flex-wrap justify-center gap-6 mb-12 text-white/90">
+                {portfolioItem.location && (
+                  <div className="flex items-center gap-2">
+                    <MapPin className="w-5 h-5 text-green-300" />
+                    <span>{portfolioItem.location}</span>
+                  </div>
                 )}
-
-                {portfolioItem.difficultyLevel && (
-                  <Badge
-                    variant="outline"
-                    className={`
-                    ${portfolioItem.difficultyLevel === "Easy" ? "bg-green-50 text-green-800 border-green-200" : ""}
-                    ${portfolioItem.difficultyLevel === "Moderate" ? "bg-orange-50 text-orange-800 border-orange-200" : ""}
-                    ${portfolioItem.difficultyLevel === "Complex" ? "bg-red-50 text-red-800 border-red-200" : ""}
-                  `}
-                  >
-                    {portfolioItem.difficultyLevel} Complexity
-                  </Badge>
+                {portfolioItem.projectDuration && (
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-5 h-5 text-green-300" />
+                    <span>{portfolioItem.projectDuration}</span>
+                  </div>
                 )}
-
                 {portfolioItem.date && (
-                  <div className="text-sm text-gray-500">
-                    Completed on{" "}
-                    {format(new Date(portfolioItem.date), "MMMM d, yyyy")}
+                  <div className="flex items-center gap-2">
+                    <Calendar className="w-5 h-5 text-green-300" />
+                    <span>{format(new Date(portfolioItem.date), "MMMM yyyy")}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-wrap justify-center gap-4 mb-12">
+                <Button
+                  size="lg"
+                  className="bg-white text-green-900 hover:bg-green-50 shadow-xl"
+                  onClick={() => (window.location.href = "/appointment")}
+                >
+                  Programează Întâlnire
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
+                  onClick={() => setIsLiked(!isLiked)}
+                >
+                  <Heart className={`w-4 h-4 mr-2 ${isLiked ? 'fill-current text-red-400' : ''}`} />
+                  {isLiked ? 'Îmi place' : 'Apreciază'}
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
+                  onClick={() => navigator.share?.({ title: portfolioItem.title, url: window.location.href })}
+                >
+                  <Share2 className="w-4 h-4 mr-2" />
+                  Distribuie
+                </Button>
+              </div>
+
+              {/* Scroll Indicator */}
+              <div className="animate-bounce">
+                <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
+                  <div className="w-1 h-3 bg-white/60 rounded-full mt-2"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="bg-white">
+        {/* Project Gallery */}
+        {allImages.length > 0 && (
+          <section className="py-20 bg-gray-50">
+            <div className="container mx-auto px-4">
+              <div className="max-w-6xl mx-auto">
+                <div className="text-center mb-16">
+                  <h2 className="text-4xl font-bold text-gray-900 mb-4">
+                    Galeria Proiectului
+                  </h2>
+                  <p className="text-xl text-gray-600">
+                    Descoperiți transformarea pas cu pas
+                  </p>
+                </div>
+
+                {/* Main Image Display */}
+                <div className="relative mb-8">
+                  <div className="aspect-[16/9] overflow-hidden rounded-2xl shadow-2xl">
+                    <img
+                      src={allImages[currentImageIndex]}
+                      alt={`Project image ${currentImageIndex + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+
+                  {/* Navigation Arrows */}
+                  {allImages.length > 1 && (
+                    <>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/90 backdrop-blur-sm"
+                        onClick={prevImage}
+                      >
+                        <ChevronLeft className="w-6 h-6" />
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/90 backdrop-blur-sm"
+                        onClick={nextImage}
+                      >
+                        <ChevronRight className="w-6 h-6" />
+                      </Button>
+                    </>
+                  )}
+
+                  {/* Image Counter */}
+                  <div className="absolute bottom-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm backdrop-blur-sm">
+                    {currentImageIndex + 1} / {allImages.length}
+                  </div>
+                </div>
+
+                {/* Thumbnail Navigation */}
+                {allImages.length > 1 && (
+                  <div className="flex justify-center gap-2 overflow-x-auto pb-4">
+                    {allImages.map((image: string, index: number) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentImageIndex(index)}
+                        className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${
+                          currentImageIndex === index
+                            ? 'border-green-500 scale-105'
+                            : 'border-transparent hover:border-green-300'
+                        }`}
+                      >
+                        <img
+                          src={image}
+                          alt={`Thumbnail ${index + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                      </button>
+                    ))}
                   </div>
                 )}
               </div>
             </div>
+          </section>
+        )}
 
-            {/* Project Details Cards */}
-            <div className="grid md:grid-cols-3 gap-6 mb-12">
-              <Card>
-                <CardContent className="p-6">
-                  <h3 className="text-lg font-bold mb-2">Locație</h3>
-                  <p>{portfolioItem.location || "Nespecificat"}</p>
-                </CardContent>
-              </Card>
+        {/* Project Details */}
+        <section className="py-20">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              {/* Service Badge */}
+              {service && (
+                <div className="text-center mb-12">
+                  <Badge variant="outline" className="text-lg px-4 py-2 bg-green-50 text-green-800 border-green-200">
+                    {service.name}
+                  </Badge>
+                </div>
+              )}
 
-              <Card>
-                <CardContent className="p-6">
-                  <h3 className="text-lg font-bold mb-2">Durată</h3>
-                  <p>{portfolioItem.projectDuration || "Nespecificat"}</p>
-                </CardContent>
-              </Card>
+              {/* Project Stats */}
+              <div className="grid md:grid-cols-3 gap-8 mb-16">
+                <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+                  <CardContent className="p-8 text-center">
+                    <MapPin className="w-8 h-8 text-green-600 mx-auto mb-4" />
+                    <h3 className="text-xl font-bold mb-2">Locație</h3>
+                    <p className="text-gray-600">{portfolioItem.location || "Nespecificat"}</p>
+                  </CardContent>
+                </Card>
 
-              <Card>
-                <CardContent className="p-6">
-                  <h3 className="text-lg font-bold mb-2">Tip de Serviciu</h3>
-                  <p>{service?.name || "Proiect General"}</p>
-                </CardContent>
-              </Card>
-            </div>
+                <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+                  <CardContent className="p-8 text-center">
+                    <Clock className="w-8 h-8 text-green-600 mx-auto mb-4" />
+                    <h3 className="text-xl font-bold mb-2">Durată</h3>
+                    <p className="text-gray-600">{portfolioItem.projectDuration || "Nespecificat"}</p>
+                  </CardContent>
+                </Card>
 
-            {/* Project Description */}
-            <div className="mb-16">
-              <div className="prose prose-green max-w-none">
-                <h2 className="text-2xl font-bold mb-4">
-                  Despre Acest Proiect
-                </h2>
-                <p className="whitespace-pre-line">
-                  {portfolioItem.description}
-                </p>
+                <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+                  <CardContent className="p-8 text-center">
+                    <Eye className="w-8 h-8 text-green-600 mx-auto mb-4" />
+                    <h3 className="text-xl font-bold mb-2">Complexitate</h3>
+                    <p className="text-gray-600">
+                      {portfolioItem.difficultyLevel || "Standard"}
+                    </p>
+                  </CardContent>
+                </Card>
               </div>
             </div>
+          </div>
+        </section>
 
-            {/* Before & After Transformations - Integrated into a continuous flow */}
-            {portfolioItem.images && portfolioItem.images.length > 0 && (
-              <div className="mb-16">
-                <h2 className="text-2xl font-bold mb-6">Galeria Proiectului</h2>
-                <div className="space-y-16">
-                  {portfolioItem.images.map((image, index) => (
-                    <div
-                      key={index}
-                      className="border border-green-100 rounded-xl overflow-hidden shadow-md"
-                    >
-                      <div className="bg-green-50 px-6 py-4 border-b border-green-100">
-                        <h3 className="text-xl font-semibold text-gray-800">
-                          {image.caption || `Transformation ${index + 1}`}
+        {/* Before & After Transformations */}
+        {portfolioItem.images && portfolioItem.images.length > 0 && (
+          <section className="py-20 bg-gray-50">
+            <div className="container mx-auto px-4">
+              <div className="max-w-6xl mx-auto">
+                <div className="text-center mb-16">
+                  <h2 className="text-4xl font-bold text-gray-900 mb-4">
+                    Transformările Realizate
+                  </h2>
+                  <p className="text-xl text-gray-600">
+                    Vedere înainte și după pentru fiecare etapă
+                  </p>
+                </div>
+
+                <div className="space-y-20">
+                  {portfolioItem.images.map((image: any, index: number) => (
+                    <div key={index} className="bg-white rounded-3xl shadow-xl overflow-hidden">
+                      <div className="p-8">
+                        <h3 className="text-2xl font-bold text-center mb-12 text-gray-900">
+                          {image.caption || `Transformarea ${index + 1}`}
                         </h3>
-                      </div>
 
-                      {/* Before-After comparison in a more integrated way */}
-                      <div className="p-6">
-                        <div className="grid md:grid-cols-2 gap-6 mb-6">
-                          <div>
-                            <h4 className="text-lg font-medium mb-3 flex items-center">
-                              <span className="w-8 h-8 inline-flex items-center justify-center bg-gray-200 rounded-full mr-2 text-gray-600 text-sm">
-                                B
-                              </span>
-                              Inainte de Transformare
-                            </h4>
-                            <div className="overflow-hidden rounded-lg border border-gray-200">
-                              <ImageLightbox
-                                image={image.before}
+                        {/* Before-After Comparison */}
+                        <div className="grid lg:grid-cols-2 gap-8 mb-8">
+                          <div className="space-y-4">
+                            <div className="flex items-center gap-3 mb-4">
+                              <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                                <span className="text-red-600 font-bold">Î</span>
+                              </div>
+                              <h4 className="text-xl font-semibold text-gray-900">
+                                Înainte de Transformare
+                              </h4>
+                            </div>
+                            <div className="aspect-square overflow-hidden rounded-xl shadow-lg">
+                              <img
+                                src={image.before}
                                 alt={`Before ${image.caption || `Transformation ${index + 1}`}`}
+                                className="w-full h-full object-cover"
                               />
                             </div>
                           </div>
 
-                          <div>
-                            <h4 className="text-lg font-medium mb-3 flex items-center">
-                              <span className="w-8 h-8 inline-flex items-center justify-center bg-green-100 rounded-full mr-2 text-green-600 text-sm">
-                                A
-                              </span>
-                              După Transformare
-                            </h4>
-                            <div className="overflow-hidden rounded-lg border border-gray-200">
-                              <ImageLightbox
-                                image={image.after}
+                          <div className="space-y-4">
+                            <div className="flex items-center gap-3 mb-4">
+                              <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                <span className="text-green-600 font-bold">D</span>
+                              </div>
+                              <h4 className="text-xl font-semibold text-gray-900">
+                                După Transformare
+                              </h4>
+                            </div>
+                            <div className="aspect-square overflow-hidden rounded-xl shadow-lg">
+                              <img
+                                src={image.after}
                                 alt={`After ${image.caption || `Transformation ${index + 1}`}`}
+                                className="w-full h-full object-cover"
                               />
                             </div>
                           </div>
                         </div>
 
-                        {/* Rich text description */}
+                        {/* Description */}
                         {image.richDescription && (
-                          <div className="mt-4 bg-green-50 rounded-lg p-4 border border-green-100">
-                            <h4 className="text-lg font-medium mb-2">
-                              Despre Aceasta Transformare
+                          <div className="bg-green-50 rounded-xl p-6 border border-green-100">
+                            <h4 className="text-lg font-semibold mb-3 text-gray-900">
+                              Despre Această Transformare
                             </h4>
-                            <div className="prose prose-sm prose-green max-w-none">
-                              <p className="whitespace-pre-line">
-                                {image.richDescription}
-                              </p>
-                            </div>
+                            <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+                              {image.richDescription}
+                            </p>
                           </div>
                         )}
                       </div>
@@ -265,53 +416,68 @@ export default function PortfolioDetail() {
                   ))}
                 </div>
               </div>
-            )}
+            </div>
+          </section>
+        )}
 
-            {/* Call to Action */}
-            <div className="bg-gradient-to-br from-green-50 to-green-100 p-8 rounded-xl border border-green-200 text-center shadow-md mb-16">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                Te inspiră acest proiect?
+        {/* Client Testimonial */}
+        {portfolioItem.clientTestimonial?.clientName &&
+          portfolioItem.clientTestimonial?.displayPermission && (
+            <section className="py-20">
+              <div className="container mx-auto px-4">
+                <div className="max-w-4xl mx-auto">
+                  <div className="text-center mb-16">
+                    <h2 className="text-4xl font-bold text-gray-900 mb-4">
+                      Feedback de la Client
+                    </h2>
+                  </div>
+
+                  <Card className="border-0 shadow-xl bg-gradient-to-br from-green-50 to-emerald-50">
+                    <CardContent className="p-12 text-center relative">
+                      <Quote className="w-16 h-16 text-green-200 mx-auto mb-8" />
+                      <blockquote className="text-2xl font-medium text-gray-800 mb-8 italic leading-relaxed">
+                        "{portfolioItem.clientTestimonial.comment}"
+                      </blockquote>
+                      <div className="text-xl font-semibold text-green-700">
+                        — {portfolioItem.clientTestimonial.clientName}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            </section>
+          )}
+
+        {/* Call to Action */}
+        <section className="py-20 bg-gradient-to-br from-green-600 to-emerald-700">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="text-4xl font-bold text-white mb-4">
+                Vrei o Transformare Similară?
               </h2>
-              <p className="text-lg text-gray-700 mb-6">
-                Lasă-ne să transformăm grădina sau spațiul tău exterior cu
-                serviciile noastre profesionale.
+              <p className="text-xl text-green-100 mb-8 leading-relaxed">
+                Contactează-ne pentru a discuta despre proiectul tău. Oferim consultanță gratuită și planuri personalizate pentru fiecare spațiu.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <Button
-                  className="bg-green-600 hover:bg-green-700 shadow-sm"
+                  size="lg"
+                  className="bg-white text-green-700 hover:bg-green-50 shadow-xl px-8 py-4 text-lg"
                   onClick={() => (window.location.href = "/appointment")}
                 >
-                  Programează o Întâlnire
+                  Programează Consultația Gratuită
                 </Button>
                 <Button
+                  size="lg"
                   variant="outline"
+                  className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm px-8 py-4 text-lg"
                   onClick={() => (window.location.href = "/contact")}
                 >
                   Contactează-ne
                 </Button>
               </div>
             </div>
-
-            {/* Client Testimonial - Now at the bottom */}
-            {portfolioItem.clientTestimonial?.clientName &&
-              portfolioItem.clientTestimonial?.displayPermission && (
-                <div className="mb-16">
-                  <h2 className="text-2xl font-bold mb-6">Client Feedback</h2>
-                  <div className="bg-green-50 p-8 rounded-xl border border-green-100 relative">
-                    <div className="text-5xl text-green-500 opacity-20 absolute top-4 left-4">
-                      "
-                    </div>
-                    <blockquote className="text-xl italic text-gray-700 mb-6 relative z-10">
-                      {portfolioItem.clientTestimonial.comment}
-                    </blockquote>
-                    <div className="font-semibold text-right">
-                      — {portfolioItem.clientTestimonial.clientName}
-                    </div>
-                  </div>
-                </div>
-              )}
           </div>
-        </div>
+        </section>
       </div>
     </MainLayout>
   );
