@@ -79,7 +79,7 @@ export default function Subscriptions() {
   return (
     <MainLayout>
       <div className={`container mx-auto px-4 py-12 transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-[1400px] mx-auto">
           <h1 className="text-3xl md:text-4xl font-bold text-center mb-12">
             Variante de abonament de întreținere:
           </h1>
@@ -97,18 +97,18 @@ export default function Subscriptions() {
               <p>Nu există planuri de abonament disponibile momentan.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-6 subscription-grid">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 subscription-grid max-w-7xl mx-auto">
               {subscriptions.map((subscription) => (
                 <Card 
                   key={subscription.id} 
-                  className={`bg-white rounded-2xl overflow-hidden flex flex-col transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 subscription-card subscription-level-${subscription.displayOrder || 0} ${(subscription.displayOrder || 0) >= 3 ? 'lg:col-span-2 xl:col-span-1' : ''}`}
+                  className={`bg-white rounded-2xl overflow-hidden flex flex-col transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 subscription-card subscription-level-${subscription.displayOrder || 0}`}
                   style={{ 
                     boxShadow: `0 10px 30px -5px ${subscription.color || '#4CAF50'}30`,
                     borderWidth: (subscription.displayOrder || 0) > 1 ? '3px' : '1px',
                     borderColor: (subscription.displayOrder || 0) === 4 ? `${subscription.color}` : 
                                (subscription.displayOrder || 0) === 3 ? `${subscription.color}80` : 'rgb(229, 231, 235)',
                     zIndex: subscription.displayOrder || 0,
-                    maxHeight: '650px'
+                    minHeight: '700px'
                   }}
                 >
                   {/* Popular badge & premium effect */}
@@ -190,12 +190,12 @@ export default function Subscriptions() {
                   </div>
 
                   {/* Features list */}
-                  <CardContent className="flex-grow p-5 bg-white relative">
-                    <div className="space-y-2">
+                  <CardContent className="flex-grow p-6 bg-white relative">
+                    <div className={`grid gap-3 ${subscription.features.length > 6 ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'}`}>
                       {Array.isArray(subscription.features) && subscription.features.map((feature, index) => (
                         <div 
                           key={index} 
-                          className="py-2 border-b border-gray-100 last:border-0 transition-colors hover:bg-gray-50 rounded-lg px-4"
+                          className="py-3 px-4 border border-gray-100 rounded-lg transition-all hover:bg-gray-50 hover:shadow-sm"
                         >
                           <div className="flex justify-between items-start text-sm group">
                             <span className="text-gray-700 group-hover:font-medium transition-all flex items-start">
@@ -205,11 +205,11 @@ export default function Subscriptions() {
                               >
                                 ✓
                               </span>
-                              <span className="flex-grow">{typeof feature === 'object' && feature.name ? feature.name + ':' : String(feature)}</span>
+                              <span className="flex-grow leading-relaxed">{typeof feature === 'object' && feature.name ? feature.name + ':' : String(feature)}</span>
                             </span>
                             {typeof feature === 'object' && feature.value && (
                               <span 
-                                className="text-gray-900 font-bold group-hover:text-green-600 transition-all ml-5 flex-shrink-0"
+                                className="text-gray-900 font-bold group-hover:text-green-600 transition-all ml-3 flex-shrink-0 text-right"
                                 style={{ color: subscription.color || '#4CAF50' }}
                               >
                                 {feature.value}
