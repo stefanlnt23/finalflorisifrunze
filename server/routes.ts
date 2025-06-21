@@ -1541,7 +1541,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log(`ID type: ${typeof id}, length: ${id.length}`);
       
       // Test if ObjectId is valid
-      const { ObjectId } = require('mongodb');
+      const { ObjectId } = await import('mongodb');
       let isValidObjectId = false;
       try {
         new ObjectId(id);

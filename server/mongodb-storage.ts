@@ -1247,7 +1247,6 @@ export class MongoDBStorage implements IStorage {
         if (!this.db) return null;
       }
 
-      const { ObjectId } = require('mongodb');
       let objectId;
       try {
         objectId = new ObjectId(id);
@@ -1284,7 +1283,6 @@ export class MongoDBStorage implements IStorage {
         if (!this.db) return null;
       }
 
-      const { ObjectId } = require('mongodb');
       let objectId;
       try {
         objectId = new ObjectId(id);
@@ -1340,7 +1338,6 @@ export class MongoDBStorage implements IStorage {
       }
 
       const collection = this.db.collection("subscriptions");
-      const { ObjectId } = require('mongodb');
       
       // First, let's see what documents exist in the collection
       console.log(`[MongoDB] Listing all documents in subscriptions collection:`);
