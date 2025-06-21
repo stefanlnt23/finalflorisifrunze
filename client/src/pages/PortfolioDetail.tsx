@@ -113,7 +113,7 @@ export default function PortfolioDetail() {
   return (
     <MainLayout>
       {/* Hero Section with Gradient Background */}
-      <div className="relative min-h-screen bg-gradient-to-br from-green-900 via-green-800 to-emerald-900 overflow-hidden">
+      <div className="relative bg-gradient-to-br from-green-900 via-green-800 to-emerald-900 overflow-hidden">
         {/* Background Overlay */}
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/5 to-transparent opacity-30"></div>
@@ -133,7 +133,7 @@ export default function PortfolioDetail() {
         </div>
 
         {/* Hero Content */}
-        <div className="relative z-10 flex items-center min-h-[80vh] -mt-20">
+        <div className="relative z-10 py-16 pb-24">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               <div className="mb-8">
@@ -143,16 +143,16 @@ export default function PortfolioDetail() {
                     Proiect Destacat
                   </Badge>
                 )}
-                <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+                <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
                   {portfolioItem.title}
                 </h1>
-                <p className="text-xl md:text-2xl text-green-100 mb-8 leading-relaxed max-w-3xl mx-auto">
+                <p className="text-lg md:text-xl text-green-100 mb-8 leading-relaxed max-w-3xl mx-auto">
                   {portfolioItem.description}
                 </p>
               </div>
 
               {/* Project Meta */}
-              <div className="flex flex-wrap justify-center gap-6 mb-12 text-white/90">
+              <div className="flex flex-wrap justify-center gap-6 mb-8 text-white/90">
                 {portfolioItem.location && (
                   <div className="flex items-center gap-2">
                     <MapPin className="w-5 h-5 text-green-300" />
@@ -174,7 +174,7 @@ export default function PortfolioDetail() {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-wrap justify-center gap-4 mb-12">
+              <div className="flex flex-wrap justify-center gap-4">
                 <Button
                   size="lg"
                   className="bg-white text-green-900 hover:bg-green-50 shadow-xl"
@@ -201,13 +201,6 @@ export default function PortfolioDetail() {
                   Distribuie
                 </Button>
               </div>
-
-              {/* Scroll Indicator */}
-              <div className="animate-bounce">
-                <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
-                  <div className="w-1 h-3 bg-white/60 rounded-full mt-2"></div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -217,14 +210,14 @@ export default function PortfolioDetail() {
       <div className="bg-white">
         {/* Project Gallery */}
         {allImages.length > 0 && (
-          <section className="py-20 bg-gray-50">
+          <section className="py-12 bg-gray-50">
             <div className="container mx-auto px-4">
               <div className="max-w-6xl mx-auto">
-                <div className="text-center mb-16">
-                  <h2 className="text-4xl font-bold text-gray-900 mb-4">
+                <div className="text-center mb-8">
+                  <h2 className="text-3xl font-bold text-gray-900 mb-3">
                     Galeria Proiectului
                   </h2>
-                  <p className="text-xl text-gray-600">
+                  <p className="text-lg text-gray-600">
                     Descoperiți transformarea pas cu pas
                   </p>
                 </div>
@@ -295,20 +288,20 @@ export default function PortfolioDetail() {
         )}
 
         {/* Project Details */}
-        <section className="py-20">
+        <section className="py-10">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               {/* Service Badge */}
               {service && (
-                <div className="text-center mb-12">
-                  <Badge variant="outline" className="text-lg px-4 py-2 bg-green-50 text-green-800 border-green-200">
+                <div className="text-center mb-8">
+                  <Badge variant="outline" className="text-base px-3 py-1 bg-green-50 text-green-800 border-green-200">
                     {service.name}
                   </Badge>
                 </div>
               )}
 
               {/* Project Stats */}
-              <div className="grid md:grid-cols-3 gap-8 mb-16">
+              <div className="grid md:grid-cols-3 gap-6 mb-10">
                 <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
                   <CardContent className="p-8 text-center">
                     <MapPin className="w-8 h-8 text-green-600 mx-auto mb-4" />
@@ -341,28 +334,28 @@ export default function PortfolioDetail() {
 
         {/* Before & After Transformations */}
         {portfolioItem.images && portfolioItem.images.length > 0 && (
-          <section className="py-20 bg-gray-50">
+          <section className="py-12 bg-gray-50">
             <div className="container mx-auto px-4">
               <div className="max-w-6xl mx-auto">
-                <div className="text-center mb-16">
-                  <h2 className="text-4xl font-bold text-gray-900 mb-4">
+                <div className="text-center mb-10">
+                  <h2 className="text-3xl font-bold text-gray-900 mb-3">
                     Transformările Realizate
                   </h2>
-                  <p className="text-xl text-gray-600">
+                  <p className="text-lg text-gray-600">
                     Vedere înainte și după pentru fiecare etapă
                   </p>
                 </div>
 
-                <div className="space-y-20">
+                <div className="space-y-10">
                   {portfolioItem.images.map((image: any, index: number) => (
                     <div key={index} className="bg-white rounded-3xl shadow-xl overflow-hidden">
                       <div className="p-8">
-                        <h3 className="text-2xl font-bold text-center mb-12 text-gray-900">
+                        <h3 className="text-xl font-bold text-center mb-6 text-gray-900">
                           {image.caption || `Transformarea ${index + 1}`}
                         </h3>
 
                         {/* Before-After Comparison */}
-                        <div className="grid lg:grid-cols-2 gap-8 mb-8">
+                        <div className="grid lg:grid-cols-2 gap-6 mb-6">
                           <div className="space-y-4">
                             <div className="flex items-center gap-3 mb-4">
                               <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
@@ -402,11 +395,11 @@ export default function PortfolioDetail() {
 
                         {/* Description */}
                         {image.richDescription && (
-                          <div className="bg-green-50 rounded-xl p-6 border border-green-100">
-                            <h4 className="text-lg font-semibold mb-3 text-gray-900">
+                          <div className="bg-green-50 rounded-xl p-8 border border-green-100">
+                            <h4 className="text-xl font-bold mb-4 text-gray-900">
                               Despre Această Transformare
                             </h4>
-                            <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+                            <p className="text-lg text-gray-800 leading-relaxed whitespace-pre-line">
                               {image.richDescription}
                             </p>
                           </div>
@@ -423,11 +416,11 @@ export default function PortfolioDetail() {
         {/* Client Testimonial */}
         {portfolioItem.clientTestimonial?.clientName &&
           portfolioItem.clientTestimonial?.displayPermission && (
-            <section className="py-20">
+            <section className="py-12">
               <div className="container mx-auto px-4">
                 <div className="max-w-4xl mx-auto">
-                  <div className="text-center mb-16">
-                    <h2 className="text-4xl font-bold text-gray-900 mb-4">
+                  <div className="text-center mb-8">
+                    <h2 className="text-3xl font-bold text-gray-900 mb-3">
                       Feedback de la Client
                     </h2>
                   </div>
@@ -449,10 +442,10 @@ export default function PortfolioDetail() {
           )}
 
         {/* Call to Action */}
-        <section className="py-20 bg-gradient-to-br from-green-600 to-emerald-700">
+        <section className="py-12 bg-gradient-to-br from-green-600 to-emerald-700">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-4xl font-bold text-white mb-4">
+              <h2 className="text-3xl font-bold text-white mb-3">
                 Vrei o Transformare Similară?
               </h2>
               <p className="text-xl text-green-100 mb-8 leading-relaxed">
