@@ -191,25 +191,25 @@ export default function Subscriptions() {
 
                   {/* Features list */}
                   <CardContent className="flex-grow p-6 bg-white relative">
-                    <div className={`grid gap-3 ${subscription.features.length > 6 ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'}`}>
+                    <div className={`grid ${subscription.features.length > 6 ? 'grid-cols-1 md:grid-cols-2 gap-2' : 'grid-cols-1 gap-3'}`}>
                       {Array.isArray(subscription.features) && subscription.features.map((feature, index) => (
                         <div 
                           key={index} 
-                          className="py-3 px-4 border border-gray-100 rounded-lg transition-all hover:bg-gray-50 hover:shadow-sm"
+                          className={`${subscription.features.length > 6 ? 'py-2 px-3' : 'py-3 px-4'} border border-gray-100 rounded-lg transition-all hover:bg-gray-50 hover:shadow-sm`}
                         >
-                          <div className="flex justify-between items-start text-sm group">
+                          <div className={`flex justify-between items-start group ${subscription.features.length > 6 ? 'text-xs' : 'text-sm'}`}>
                             <span className="text-gray-700 group-hover:font-medium transition-all flex items-start">
                               <span 
-                                className="w-6 h-6 min-w-6 rounded-full mr-3 flex-shrink-0 flex items-center justify-center text-white text-xs mt-0.5"
+                                className={`${subscription.features.length > 6 ? 'w-4 h-4 min-w-4 text-xs mr-2' : 'w-6 h-6 min-w-6 text-xs mr-3'} rounded-full flex-shrink-0 flex items-center justify-center text-white mt-0.5`}
                                 style={{ backgroundColor: subscription.color || '#4CAF50' }}
                               >
                                 ✓
                               </span>
-                              <span className="flex-grow leading-relaxed">{typeof feature === 'object' && feature.name ? feature.name + ':' : String(feature)}</span>
+                              <span className="flex-grow leading-tight">{typeof feature === 'object' && feature.name ? feature.name + ':' : String(feature)}</span>
                             </span>
                             {typeof feature === 'object' && feature.value && (
                               <span 
-                                className="text-gray-900 font-bold group-hover:text-green-600 transition-all ml-3 flex-shrink-0 text-right"
+                                className="text-gray-900 font-bold group-hover:text-green-600 transition-all ml-2 flex-shrink-0 text-right leading-tight"
                                 style={{ color: subscription.color || '#4CAF50' }}
                               >
                                 {feature.value}
