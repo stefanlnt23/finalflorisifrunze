@@ -13,7 +13,6 @@ export default function PortfolioDetail() {
   const { id } = useParams();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   // Fetch portfolio item details
   const { data, isLoading, error } = useQuery({
@@ -150,7 +149,7 @@ export default function PortfolioDetail() {
                 </h1>
               </div>
 
-              <div className="grid lg:grid-cols-2 gap-12 items-start mb-12">
+              <div className="grid lg:grid-cols-2 gap-16 items-start mb-12">
                 {/* Left Column - Project Description */}
                 <div className="space-y-6">
                   <div>
@@ -159,10 +158,10 @@ export default function PortfolioDetail() {
                         {service.name}
                       </Badge>
                     )}
-                    <h2 className="text-2xl font-bold text-white mb-4">
+                    <h2 className="text-3xl font-bold text-white mb-4">
                       Detalii Proiect
                     </h2>
-                    <p className="text-lg text-white/90 leading-relaxed">
+                    <p className="text-xl text-white/90 leading-relaxed">
                       {portfolioItem.description}
                     </p>
                   </div>
@@ -215,22 +214,20 @@ export default function PortfolioDetail() {
                 {allImages.length > 0 && (
                   <div className="space-y-6">
                     <div>
-                      <h2 className="text-2xl font-bold text-white mb-3">
+                      <h2 className="text-3xl font-bold text-white mb-3">
                         Galeria Proiectului
                       </h2>
-                      <p className="text-lg text-white/80">
+                      <p className="text-xl text-white/80">
                         Descoperiți transformarea pas cu pas
                       </p>
                     </div>
 
                     {/* Main Image Display */}
                     <div className="relative">
-                      <div className="aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl cursor-pointer"
-                           onClick={() => setSelectedImage(allImages[currentImageIndex])}>
-                        <img
-                          src={allImages[currentImageIndex]}
+                      <div className="aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl">
+                        <ImageLightbox
+                          image={allImages[currentImageIndex]}
                           alt={`Project image ${currentImageIndex + 1}`}
-                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                         />
                       </div>
 
@@ -275,14 +272,9 @@ export default function PortfolioDetail() {
                                 : 'border-white/30 hover:border-white/60'
                             }`}
                           >
-                            <img
-                              src={image}
+                            <ImageLightbox
+                              image={image}
                               alt={`Thumbnail ${index + 1}`}
-                              className="w-full h-full object-cover"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setSelectedImage(image);
-                              }}
                             />
                           </button>
                         ))}
@@ -470,13 +462,7 @@ export default function PortfolioDetail() {
         </section>
       </div>
 
-      {/* Image Enlargement Modal */}
-      {selectedImage && (
-        <ImageLightbox
-          image={selectedImage}
-          alt="Portfolio image enlarged view"
-        />
-      )}
+
     </MainLayout>
   );
 }
