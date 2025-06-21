@@ -120,30 +120,7 @@ export default function ServiceDetail() {
 
   return (
     <MainLayout>
-      {/* Photo Album Gallery Section - Prominently at Top */}
-      <div className="py-8 bg-gradient-to-b from-green-50 to-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                Galerie {service.name}
-              </h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Descoperiți transformările spectaculoase realizate prin serviciile noastre de {service.name.toLowerCase()}
-              </p>
-            </div>
-            
-            {/* Photo Album Component */}
-            <PhotoAlbum 
-              images={enhancedGallery}
-              autoRotate={true}
-              rotationInterval={5000}
-              showCounter={true}
-              className="mb-12"
-            />
-          </div>
-        </div>
-      </div>
+
 
       {/* Hero section */}
       <div className="py-12 bg-white">
@@ -211,19 +188,16 @@ export default function ServiceDetail() {
           <div className="max-w-6xl mx-auto">
             {/* Overview Section */}
             <div className="grid md:grid-cols-2 gap-12 items-start mb-16">
-              {service.imageUrl && (
-                <div className="rounded-lg overflow-hidden shadow-lg cursor-pointer relative group" 
-                     onClick={() => setSelectedImage(service.imageUrl)}>
-                  <img 
-                    src={service.imageUrl} 
-                    alt={service.name} 
-                    className="w-full h-auto transition-transform duration-300 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 flex items-center justify-center transition-all duration-300 opacity-0 group-hover:opacity-100">
-                    <ZoomIn className="text-white w-12 h-12" />
-                  </div>
-                </div>
-              )}
+              {/* Photo Album Gallery replacing single image */}
+              <div className="space-y-4">
+                <PhotoAlbum 
+                  images={enhancedGallery}
+                  autoRotate={true}
+                  rotationInterval={5000}
+                  showCounter={true}
+                  className="rounded-lg overflow-hidden"
+                />
+              </div>
               <div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">Despre Acest Serviciu</h2>
                 <div className="prose prose-green max-w-none mb-6">
@@ -342,8 +316,7 @@ export default function ServiceDetail() {
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {portfolioItems.map((item) => (
                 <Card key={item.id} className="overflow-hidden hover:shadow-lg transition-all">
-                  <div className="aspect-square overflow-hidden cursor-pointer relative group"
-                       onClick={() => setSelectedImage(item.imageUrl)}>
+                  <div className="aspect-square overflow-hidden cursor-pointer relative group">
                     <img 
                       src={item.imageUrl} 
                       alt={item.title}
