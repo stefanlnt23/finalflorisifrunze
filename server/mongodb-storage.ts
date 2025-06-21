@@ -1335,15 +1335,33 @@ export class MongoDBStorage implements IStorage {
       let objectId;
       try {
         objectId = new ObjectId(id);
+        console.log(`[MongoDB] Converted ID ${id} to ObjectId: ${objectId}`);
       } catch (error) {
-        console.error(`Invalid ObjectId: ${id}`);
+        console.error(`[MongoDB] Invalid ObjectId: ${id}`, error);
         return false;
       }
 
+      // First, check if the subscription exists
+      const existingSubscription = await this.db.collection("subscriptions").findOne({ _id: objectId });
+      console.log(`[MongoDB] Subscription exists before delete:`, existingSubscription ? 'YES' : 'NO');
+      
+      if (existingSubscription) {
+        console.log(`[MongoDB] Found subscription to delete: ${existingSubscription.name}`);
+      }
+
       const result = await this.db.collection("subscriptions").deleteOne({ _id: objectId });
+      console.log(`[MongoDB] Delete operation result:`, {
+        acknowledged: result.acknowledged,
+        deletedCount: result.deletedCount
+      });
+
+      // Verify deletion
+      const stillExists = await this.db.collection("subscriptions").findOne({ _id: objectId });
+      console.log(`[MongoDB] Subscription still exists after delete:`, stillExists ? 'YES' : 'NO');
+
       return result.deletedCount > 0;
     } catch (error) {
-      console.error(`Error deleting subscription ${id}:`, error);
+      console.error(`[MongoDB] Error deleting subscription ${id}:`, error);
       return false;
     }
   }

@@ -1589,8 +1589,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.delete("/api/admin/subscriptions/:id", requireAdmin, async (req, res) => {
     try {
       const { id } = req.params;
-      await storage.deleteSubscription(id);
-      res.json({ success: true });
+      console.log(`Attempting to delete subscription with ID: ${id}`);
+      
+      const deleteResult = await storage.deleteSubscription(id);
+      console.log(`Delete operation result: ${deleteResult}`);
+      
+      if (deleteResult) {
+        console.log(`Successfully deleted subscription ${id}`);
+        res.json({ success: true });
+      } else {
+        console.log(`Failed to delete subscription ${id} - subscription not found or delete failed`);
+        res.status(404).json({ message: "Subscription not found or could not be deleted" });
+      }
     } catch (error) {
       console.error(`Error deleting subscription ${req.params.id}:`, error);
       res.status(500).json({ message: "Failed to delete subscription" });
