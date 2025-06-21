@@ -243,7 +243,7 @@ export default function Services() {
               </div>
               <div className="md:w-1/2 bg-green-100 flex items-center justify-center p-8 md:p-0">
                 <img 
-                  src="https://media.istockphoto.com/id/150684324/photo/senior-woman-trimming-flowers.jpg?s=2048x2048&w=is&k=20&c=I8wi3h97np58YRsx8an6-qqs_KID33Wm14wAB9BXILg=" 
+                  src="https://thumbor.unica.ro/unsafe/726x484/smart/filters:format(webp):contrast(8):quality(75)/https://www.elle.ro/wp-content/uploads/2024/02/6cfe1c7bcaf4ebff9829c228cc8cd40e.jpg" 
                   alt="Personalized gardening services" 
                   className="rounded-lg md:rounded-none shadow-lg md:shadow-none max-h-72 md:max-h-full object-cover"
                 />
