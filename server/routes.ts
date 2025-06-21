@@ -65,6 +65,17 @@ function authenticateAdmin(req: Request, res: Response, next: NextFunction) {
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Add cache control middleware to prevent aggressive caching
+  app.use((req, res, next) => {
+    // Prevent caching for all API routes and static content
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    res.setHeader('ETag', `"${Date.now()}-${Math.random()}"`);
+    res.setHeader('Last-Modified', new Date().toUTCString());
+    next();
+  });
+
   // API Status route
   app.get("/api/status", (req, res) => {
     res.json({

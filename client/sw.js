@@ -1,7 +1,8 @@
-// Service Worker for aggressive image and resource caching
-const CACHE_NAME = 'green-garden-cache-v1';
-const IMAGE_CACHE_NAME = 'green-garden-images-v1';
-const API_CACHE_NAME = 'green-garden-api-v1';
+// Service Worker with proper cache versioning
+const CACHE_VERSION = Date.now(); // Dynamic versioning
+const CACHE_NAME = `green-garden-cache-v${CACHE_VERSION}`;
+const IMAGE_CACHE_NAME = `green-garden-images-v${CACHE_VERSION}`;
+const API_CACHE_NAME = `green-garden-api-v${CACHE_VERSION}`;
 
 // Resources to cache immediately
 const STATIC_RESOURCES = [

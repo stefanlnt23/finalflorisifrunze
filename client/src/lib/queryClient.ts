@@ -141,9 +141,19 @@ export const getQueryFn: <T>(options: {
       headers['Authorization'] = `Bearer ${token}`;
     }
 
-    const res = await fetch(queryKey[0] as string, {
+    // Add cache busting parameters in development
+    const url = queryKey[0] as string;
+    const finalUrl = import.meta.env.DEV 
+      ? `${url}${url.includes('?') ? '&' : '?'}_t=${Date.now()}&_r=${Math.random()}`
+      : url;
+
+    const res = await fetch(finalUrl, {
       credentials: "include",
       headers,
+      // Disable caching in development
+      ...(import.meta.env.DEV && {
+        cache: 'no-cache'
+      })
     });
 
     if (unauthorizedBehavior === "returnNull" && res.status === 401) {

@@ -117,6 +117,14 @@ The application is architected to support both MongoDB (currently active) and Po
 
 ## Recent Changes
 
+### June 21, 2025 - Browser Cache Busting Implementation
+- **Server Cache Headers**: Added aggressive cache prevention headers to all API routes preventing browser caching
+- **Development Cache Busting**: Implemented timestamp and random parameter injection for all API requests during development
+- **Service Worker Control**: Disabled service worker registration in development mode to prevent caching conflicts
+- **Query Client Updates**: Enhanced React Query with cache-busting parameters and no-cache fetch options
+- **Dynamic Versioning**: Service worker now uses timestamp-based versioning for proper cache invalidation
+- **Impact**: Changes to website content now appear immediately in browsers without requiring cache clearing or new browsers
+
 ### June 21, 2025 - Subscription CRUD Operations Complete Fix
 - **MongoDB Import Resolution**: Fixed all `require()` statements causing edit functionality to fail by converting to proper ES6 imports using statically imported ObjectId
 - **Individual Subscription Fetching**: Admin endpoint now successfully retrieves and transforms subscription data for edit forms
