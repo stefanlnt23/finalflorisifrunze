@@ -117,6 +117,12 @@ The application is architected to support both MongoDB (currently active) and Po
 
 ## Recent Changes
 
+### June 21, 2025 - Service Worker MIME Type Fix
+- **MIME Type Configuration**: Fixed Service Worker registration by serving sw.js with correct application/javascript content type
+- **Browser Security**: Resolved browser rejection of Service Worker due to incorrect text/html MIME type
+- **Caching Optimization**: Service Worker now properly handles image and API response caching
+- **Impact**: Enhanced performance through working Service Worker functionality
+
 ### June 21, 2025 - Domain Configuration Fix
 - **WWW Redirect Setup**: Added Express middleware to handle www.florisifrunze.com requests for Replit deployment
 - **SEO Optimization**: Configured 301 permanent redirect from www subdomain to main domain

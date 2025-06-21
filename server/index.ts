@@ -23,6 +23,13 @@ app.use((req, res, next) => {
   next();
 });
 
+// Service Worker MIME type fix
+app.get('/sw.js', (req, res) => {
+  res.setHeader('Content-Type', 'application/javascript');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.sendFile('sw.js', { root: './client' });
+});
+
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
