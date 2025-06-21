@@ -40,6 +40,55 @@
   transform: scale(1.05);
 }
 
+/* Carousel Performance Optimizations */
+.services-carousel {
+  contain: layout style paint;
+}
+
+.service-card-inner {
+  contain: layout style;
+  will-change: auto;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.service-image-container {
+  contain: layout style paint;
+  overflow: hidden;
+  position: relative;
+}
+
+.service-image-container img {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  image-rendering: optimizeQuality;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+}
+
+.carousel-container {
+  contain: strict;
+  overflow: hidden;
+}
+
+/* Prevent image reload during animations */
+.service-card {
+  contain: layout style;
+  transform: translateZ(0);
+  will-change: auto;
+}
+
+.service-card img {
+  pointer-events: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+}
+
 .image-lightbox::after {
   content: '';
   position: absolute;

@@ -162,11 +162,17 @@ export function ServicesCarousel() {
           <Card key={service.id} className="service-card-inner h-full overflow-hidden border-green-100 hover:border-green-300 shadow-sm hover:shadow-md">
             <CardContent className="p-6 flex flex-col items-center text-center space-y-4 h-full">
               {service.imageUrl ? (
-                <div className="w-full h-48 overflow-hidden rounded-lg mb-4 service-image-container">
+                <div className="w-full h-48 overflow-hidden rounded-lg mb-4 service-image-container" style={{ willChange: 'auto' }}>
                   <CachedImage 
                     src={service.imageUrl} 
                     alt={service.name} 
-                    className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
+                    className="w-full h-full object-cover hover:scale-110"
+                    priority={false}
+                    style={{ 
+                      transition: 'transform 0.3s ease-out',
+                      willChange: 'transform',
+                      backfaceVisibility: 'hidden'
+                    }}
                   />
                 </div>
               ) : (
@@ -227,26 +233,37 @@ export function ServicesCarousel() {
         onTouchEnd={handleTouchEnd}
       >
         <div 
-          className="flex transition-transform duration-700 ease-in-out"
+          className="flex"
           style={{ 
-            transform: `translateX(-${currentIndex * (100 / visibleCount)}%)` 
+            transform: `translate3d(-${currentIndex * (100 / visibleCount)}%, 0, 0)`,
+            transition: 'transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            willChange: 'transform'
           }}
         >
           {duplicatedServices.map((service, index) => (
             <div 
               key={`${service.id}-${index}`}
-              className={`min-w-full sm:min-w-[50%] md:min-w-[33.333%] px-3 md:px-4 py-4 transition-all duration-500 service-card ${
-                index === currentIndex ? 'service-card-active' : ''
-              }`}
+              className="min-w-full sm:min-w-[50%] md:min-w-[33.333%] px-3 md:px-4 py-4 service-card"
+              style={{
+                willChange: 'auto',
+                transform: 'translateZ(0)', // Force hardware acceleration
+                backfaceVisibility: 'hidden'
+              }}
             >
               <Card className="service-card-inner h-full overflow-hidden border-green-100 hover:border-green-300 shadow-sm hover:shadow-md">
                 <CardContent className="p-6 flex flex-col items-center text-center space-y-4 h-full">
                   {service.imageUrl ? (
-                    <div className="w-full h-48 overflow-hidden rounded-lg mb-4 service-image-container">
+                    <div className="w-full h-48 overflow-hidden rounded-lg mb-4 service-image-container" style={{ willChange: 'auto' }}>
                       <CachedImage 
                         src={service.imageUrl} 
                         alt={service.name} 
-                        className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
+                        className="w-full h-full object-cover hover:scale-110"
+                        priority={index < 3}
+                        style={{ 
+                          transition: 'transform 0.3s ease-out',
+                          willChange: 'transform',
+                          backfaceVisibility: 'hidden'
+                        }}
                       />
                     </div>
                   ) : (
