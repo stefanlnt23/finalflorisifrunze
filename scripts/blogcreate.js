@@ -60,9 +60,13 @@ class BlogPublisher {
         password,
       });
 
-      this.token = response.data.token;
-      console.log("Authentication successful");
-      return true;
+      if (response.data && response.data.token) {
+        this.token = response.data.token;
+        return true;
+      } else {
+        console.error("No token received in authentication response");
+        return false;
+      }
     } catch (error) {
       console.error(
         "Authentication failed:",
@@ -374,20 +378,26 @@ async function publishRomanianGardenBlog() {
   // Save the blog post as JSON file for reference
   BlogPublisher.saveBlogToFile(romanianGardenBlog, "romanian-garden-blog.json");
 
-  // Authenticate
-  const authenticated = await publisher.authenticate();
-  if (!authenticated) {
-    console.error("Failed to authenticate. Please check your credentials.");
-    return;
-  }
+  try {
+    // Authenticate first and wait for completion
+    const authenticated = await publisher.authenticate();
+    if (!authenticated) {
+      console.error("Failed to authenticate. Please check your credentials.");
+      return;
+    }
 
-  // Create the blog post
-  const result = await publisher.createBlogPost(romanianGardenBlog);
-  if (result) {
-    console.log("Romanian Garden Blog published successfully!");
-    console.log("Blog ID:", result.id);
-  } else {
-    console.error("Failed to publish the blog post.");
+    console.log("Authentication successful");
+
+    // Create the blog post
+    const result = await publisher.createBlogPost(romanianGardenBlog);
+    if (result) {
+      console.log("Romanian Garden Blog published successfully!");
+      console.log("Blog ID:", result.id);
+    } else {
+      console.error("Failed to publish the blog post.");
+    }
+  } catch (error) {
+    console.error("Error during blog publishing:", error.message);
   }
 }
 
