@@ -275,13 +275,10 @@ export default function Contact() {
                           </span>
                         </div>
                         <div>
-                          <h3 className="text-lg font-semibold mb-2">Numere de Telefon</h3>
-                          <p className="text-gray-600 mb-2">
-                            <span className="font-medium">Contact Principal:</span> 
-                            <a href="tel:+40742650670" className="text-green-600 hover:text-green-700 ml-1">
-                              +40 742 650 670
-                            </a>
-                          </p>
+                          <h3 className="text-lg font-semibold mb-3">Contact Telefonic</h3>
+                          <a href="tel:+40742650670" className="text-green-600 hover:text-green-700 text-xl font-semibold block mb-2">
+                            +40 742 650 670
+                          </a>
                           <p className="text-gray-600 text-sm">
                             Disponibil: Luni - Vineri, 08:00 - 18:00
                           </p>
@@ -299,16 +296,10 @@ export default function Contact() {
                           </span>
                         </div>
                         <div>
-                          <h3 className="text-lg font-semibold mb-2">Adrese de Email</h3>
-                          <p className="text-gray-600 mb-2">
-                            <span className="font-medium">Informații Generale:</span> info@florisifrunze.com
-                          </p>
-                          <p className="text-gray-600 mb-2">
-                            <span className="font-medium">Suport Clienți:</span> support@florisifrunze.com
-                          </p>
-                          <p className="text-gray-600">
-                            <span className="font-medium">Oportunități de Angajare:</span> careers@florisifrunze.com
-                          </p>
+                          <h3 className="text-lg font-semibold mb-3">Contact Email</h3>
+                          <a href="mailto:info@florisifrunze.com" className="text-green-600 hover:text-green-700 text-xl font-semibold block">
+                            info@florisifrunze.com
+                          </a>
                         </div>
                       </div>
                     </CardContent>
