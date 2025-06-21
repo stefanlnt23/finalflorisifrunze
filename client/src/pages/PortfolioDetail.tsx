@@ -13,6 +13,26 @@ export default function PortfolioDetail() {
   const { id } = useParams();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
+  const [expandedSections, setExpandedSections] = useState<{[key: string]: boolean}>({});
+
+  // Helper function to truncate text for mobile with read more
+  const truncateText = (text: string, sectionKey: string, wordLimit: number = 10) => {
+    const words = text.split(' ');
+    const isExpanded = expandedSections[sectionKey];
+    
+    if (words.length <= wordLimit || isExpanded) {
+      return text;
+    }
+    
+    return words.slice(0, wordLimit).join(' ') + '...';
+  };
+
+  const toggleSection = (sectionKey: string) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [sectionKey]: !prev[sectionKey]
+    }));
+  };
 
   // Fetch portfolio item details
   const { data, isLoading, error } = useQuery({
@@ -161,22 +181,59 @@ export default function PortfolioDetail() {
                     <h2 className="text-3xl font-bold text-white mb-4">
                       Detalii Proiect
                     </h2>
-                    <p className="text-xl text-white/90 leading-relaxed">
-                      {portfolioItem.description}
-                    </p>
+                    <div className="text-xl text-white/90 leading-relaxed">
+                      <div className="md:hidden">
+                        <p>{truncateText(portfolioItem.description, 'description')}</p>
+                        {portfolioItem.description.split(' ').length > 10 && (
+                          <button
+                            onClick={() => toggleSection('description')}
+                            className="text-white/70 hover:text-white underline text-sm mt-2"
+                          >
+                            {expandedSections['description'] ? 'Arată mai puțin' : 'Citește mai mult'}
+                          </button>
+                        )}
+                      </div>
+                      <p className="hidden md:block">{portfolioItem.description}</p>
+                    </div>
                   </div>
                   
                   {portfolioItem.challenges && (
                     <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
                       <h3 className="text-xl font-semibold text-white mb-3">Provocări</h3>
-                      <p className="text-white/80">{portfolioItem.challenges}</p>
+                      <div className="text-white/80">
+                        <div className="md:hidden">
+                          <p>{truncateText(portfolioItem.challenges, 'challenges')}</p>
+                          {portfolioItem.challenges.split(' ').length > 10 && (
+                            <button
+                              onClick={() => toggleSection('challenges')}
+                              className="text-white/60 hover:text-white underline text-sm mt-2"
+                            >
+                              {expandedSections['challenges'] ? 'Arată mai puțin' : 'Citește mai mult'}
+                            </button>
+                          )}
+                        </div>
+                        <p className="hidden md:block">{portfolioItem.challenges}</p>
+                      </div>
                     </div>
                   )}
                   
                   {portfolioItem.solution && (
                     <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
                       <h3 className="text-xl font-semibold text-white mb-3">Soluția</h3>
-                      <p className="text-white/80">{portfolioItem.solution}</p>
+                      <div className="text-white/80">
+                        <div className="md:hidden">
+                          <p>{truncateText(portfolioItem.solution, 'solution')}</p>
+                          {portfolioItem.solution.split(' ').length > 10 && (
+                            <button
+                              onClick={() => toggleSection('solution')}
+                              className="text-white/60 hover:text-white underline text-sm mt-2"
+                            >
+                              {expandedSections['solution'] ? 'Arată mai puțin' : 'Citește mai mult'}
+                            </button>
+                          )}
+                        </div>
+                        <p className="hidden md:block">{portfolioItem.solution}</p>
+                      </div>
                     </div>
                   )}
 
