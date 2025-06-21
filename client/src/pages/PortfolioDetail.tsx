@@ -506,7 +506,6 @@ export default function PortfolioDetail() {
           </div>
         </div>
       </div>
-
       {/* Main Content */}
       <div className="bg-gradient-to-br from-green-900 via-green-800 to-emerald-900">
         {/* Before & After Transformations - Redesigned */}
@@ -534,7 +533,7 @@ export default function PortfolioDetail() {
                         key={index}
                         className={`bg-gradient-to-br ${getGreenShade(index)} rounded-3xl shadow-2xl overflow-hidden`}
                       >
-                        <div className="p-8 lg:p-12">
+                        <div className="p-8 lg:p-12 bg-[#2a6242]">
                           <div className="grid lg:grid-cols-2 gap-12 items-center">
                             {/* Left Column - Description */}
                             <div className="space-y-6">
@@ -567,7 +566,7 @@ export default function PortfolioDetail() {
                               )}
 
                               {/* Current View Indicator */}
-                              <div className="flex items-center gap-4">
+                              <div className="flex items-center gap-4 mt-4">
                                 <div
                                   className={`flex items-center gap-2 px-4 py-2 rounded-full border-2 transition-all ${
                                     currentState === "before"
@@ -582,7 +581,7 @@ export default function PortfolioDetail() {
                                         : "bg-gray-400"
                                     }`}
                                   ></div>
-                                  <span className="font-medium">Înainte</span>
+                                  <span className="font-medium whitespace-nowrap">Înainte</span>
                                 </div>
 
                                 <div
@@ -599,7 +598,7 @@ export default function PortfolioDetail() {
                                         : "bg-gray-400"
                                     }`}
                                   ></div>
-                                  <span className="font-medium">După</span>
+                                  <span className="font-medium whitespace-nowrap">După</span>
                                 </div>
                               </div>
                             </div>
@@ -629,9 +628,9 @@ export default function PortfolioDetail() {
                                   size="lg"
                                   className="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-white/95 backdrop-blur-sm hover:bg-white text-gray-900 shadow-xl px-6 py-3 rounded-xl font-semibold text-sm hover:scale-105 transition-all duration-300 z-10"
                                 >
-                                  <span>Comută la</span>
+                                  <span className="mr-1">Comută la</span>
                                   <span
-                                    className={`ml-2 font-bold ${currentState === "before" ? "text-green-600" : "text-red-600"}`}
+                                    className={`ml-1 font-bold ${currentState === "before" ? "text-green-600" : "text-red-600"}`}
                                   >
                                     {currentState === "before" ? "DUPĂ" : "ÎNAINTE"}
                                   </span>
