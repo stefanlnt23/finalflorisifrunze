@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { CachedImage } from "./cached-image";
+import { CachedImage, preloadCriticalImages } from "./cached-image";
 
 interface CarouselImage {
   id: string;
@@ -41,12 +41,22 @@ export function HomeCarousel() {
   const { data: carouselData, isLoading } = useQuery<CarouselData>({
     queryKey: ['/api/carousel-images'],
     refetchOnWindowFocus: false,
-    staleTime: 300000, // Keep data fresh for 5 minutes
-    gcTime: 600000, // Cache data for 10 minutes
-    refetchOnMount: false // Don't refetch when component mounts if data exists
+    staleTime: Infinity, // Never refetch unless manually invalidated
+    gcTime: Infinity, // Keep in cache indefinitely
+    refetchOnMount: false, // Don't refetch when component mounts if data exists
+    refetchOnReconnect: false, // Don't refetch on network reconnect
+    retry: 1 // Only retry once on failure
   });
 
   const images: CarouselImage[] = carouselData?.images || [];
+
+  // Preload critical carousel images when data is available
+  useEffect(() => {
+    if (images.length > 0) {
+      const imageSrcs = images.map(img => img.imageUrl);
+      preloadCriticalImages(imageSrcs);
+    }
+  }, [images]);
 
   // Effect to update current slide index when emblaApi is available
   useEffect(() => {
@@ -120,13 +130,14 @@ export function HomeCarousel() {
     >
       <div className="overflow-hidden rounded-lg" ref={emblaRef}>
         <div className="flex">
-          {finalImages.map((image) => (
+          {finalImages.map((image, index) => (
             <div key={image.id} className="flex-[0_0_100%] min-w-0">
               <div className="relative aspect-[16/9] overflow-hidden">
                 <CachedImage
                   src={image.imageUrl}
                   alt={image.alt || "Carousel image"}
                   className="w-full h-full object-cover"
+                  priority={index === 0} // Load first image with priority
                 />
               </div>
             </div>

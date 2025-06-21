@@ -16,6 +16,11 @@ export default function FeaturesSection() {
   const { data: featureCardsData, isLoading } = useQuery({
     queryKey: ['/api/feature-cards'],
     refetchOnWindowFocus: false,
+    staleTime: Infinity, // Never refetch unless manually invalidated
+    gcTime: Infinity, // Keep in cache indefinitely
+    refetchOnMount: false, // Don't refetch when component mounts if data exists
+    refetchOnReconnect: false, // Don't refetch on network reconnect
+    retry: 1 // Only retry once on failure
   });
 
   const features: FeatureCard[] = featureCardsData?.cards || [];

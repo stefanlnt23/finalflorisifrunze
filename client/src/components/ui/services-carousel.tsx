@@ -50,9 +50,11 @@ export function ServicesCarousel() {
   const { data: servicesData, isLoading } = useQuery<ServicesData>({
     queryKey: ['/api/services'],
     refetchOnWindowFocus: false,
-    staleTime: 300000, // Keep data fresh for 5 minutes
-    gcTime: 600000, // Cache data for 10 minutes
-    refetchOnMount: false // Don't refetch when component mounts if data exists
+    staleTime: Infinity, // Never refetch unless manually invalidated
+    gcTime: Infinity, // Keep in cache indefinitely
+    refetchOnMount: false, // Don't refetch when component mounts if data exists
+    refetchOnReconnect: false, // Don't refetch on network reconnect
+    retry: 1 // Only retry once on failure
   });
 
   const services = servicesData?.services || [];

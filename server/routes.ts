@@ -78,6 +78,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Services API
   app.get("/api/services", async (req, res) => {
     try {
+      // Set aggressive caching headers for static content
+      res.set({
+        'Cache-Control': 'public, max-age=3600, s-maxage=7200', // 1 hour client, 2 hours CDN
+        'ETag': `"services-${Date.now()}"`,
+        'Last-Modified': new Date().toUTCString()
+      });
+      
       const services = await storage.getServices();
       res.json({ services });
     } catch (error) {
@@ -197,11 +204,54 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Testimonials API
   app.get("/api/testimonials", async (req, res) => {
     try {
+      // Set aggressive caching headers for static content
+      res.set({
+        'Cache-Control': 'public, max-age=3600, s-maxage=7200',
+        'ETag': `"testimonials-${Date.now()}"`,
+        'Last-Modified': new Date().toUTCString()
+      });
+      
       const testimonials = await storage.getTestimonials();
       res.json({ testimonials });
     } catch (error) {
       console.error("Error fetching testimonials:", error);
       res.status(500).json({ message: "Failed to fetch testimonials" });
+    }
+  });
+
+  // Carousel Images API (public)
+  app.get("/api/carousel-images", async (req, res) => {
+    try {
+      // Set aggressive caching headers for static content
+      res.set({
+        'Cache-Control': 'public, max-age=3600, s-maxage=7200',
+        'ETag': `"carousel-images-${Date.now()}"`,
+        'Last-Modified': new Date().toUTCString()
+      });
+      
+      const images = await storage.getCarouselImages();
+      res.json({ images });
+    } catch (error) {
+      console.error("Error fetching carousel images:", error);
+      res.status(500).json({ message: "Failed to fetch carousel images" });
+    }
+  });
+
+  // Feature Cards API (public)
+  app.get("/api/feature-cards", async (req, res) => {
+    try {
+      // Set aggressive caching headers for static content
+      res.set({
+        'Cache-Control': 'public, max-age=3600, s-maxage=7200',
+        'ETag': `"feature-cards-${Date.now()}"`,
+        'Last-Modified': new Date().toUTCString()
+      });
+      
+      const cards = await storage.getFeatureCards();
+      res.json({ cards });
+    } catch (error) {
+      console.error("Error fetching feature cards:", error);
+      res.status(500).json({ message: "Failed to fetch feature cards" });
     }
   });
 

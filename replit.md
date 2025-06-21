@@ -115,9 +115,31 @@ The application is architected to support both MongoDB (currently active) and Po
 - **Production**: MongoDB Atlas with optimized builds
 - **Security**: Environment-based JWT secrets and database credentials
 
+## Recent Changes
+
+### June 21, 2025 - Image Caching Optimization
+- **Critical Fix**: Resolved major image caching issues affecting carousel performance
+- **CachedImage Component**: Complete rewrite using browser-native caching instead of localStorage
+- **Performance Features**: Added Intersection Observer for lazy loading and priority loading for critical images
+- **Service Worker**: Implemented aggressive resource caching for images and API responses
+- **Resource Hints**: Added preconnect, dns-prefetch, and prefetch directives for faster loading
+- **Server Headers**: Enhanced API endpoints with proper cache control headers
+- **Impact**: Images now cache properly, eliminating reload issues on carousel/slider components
+
+### Components Updated
+- `client/src/components/ui/cached-image.tsx` - Complete rewrite
+- `client/src/components/ui/home-carousel.tsx` - Updated to use new caching
+- `client/src/components/ui/services-carousel.tsx` - Updated to use new caching
+- `client/src/components/sections/FeaturesSection.tsx` - Updated to use new caching
+- `server/routes.ts` - Added cache headers and new API endpoints
+- `client/sw.js` - New service worker for advanced caching
+- `client/index.html` - Added resource hints for performance
+- `client/src/main.tsx` - Service worker registration
+
 ## Changelog
 
 - June 21, 2025. Initial setup
+- June 21, 2025. Major image caching optimization implemented
 
 ## User Preferences
 
