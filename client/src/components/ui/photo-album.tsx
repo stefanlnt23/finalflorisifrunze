@@ -21,24 +21,55 @@ export function PhotoAlbum({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoRotating, setIsAutoRotating] = useState(autoRotate);
   const [isHovered, setIsHovered] = useState(false);
+  const [validImages, setValidImages] = useState<string[]>([]);
+
+  // Validate images and filter out invalid ones
+  useEffect(() => {
+    const validateImages = async () => {
+      const valid: string[] = [];
+      
+      for (const imageUrl of images) {
+        if (!imageUrl || imageUrl.trim() === '') continue;
+        
+        try {
+          const img = new Image();
+          await new Promise((resolve, reject) => {
+            img.onload = resolve;
+            img.onerror = reject;
+            img.src = imageUrl;
+          });
+          valid.push(imageUrl);
+        } catch (error) {
+          console.warn('Failed to load image:', imageUrl);
+        }
+      }
+      
+      setValidImages(valid);
+      if (currentIndex >= valid.length && valid.length > 0) {
+        setCurrentIndex(0);
+      }
+    };
+
+    validateImages();
+  }, [images, currentIndex]);
 
   // Auto-rotation effect
   useEffect(() => {
-    if (!isAutoRotating || images.length <= 1 || isHovered) return;
+    if (!isAutoRotating || validImages.length <= 1 || isHovered) return;
 
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % images.length);
+      setCurrentIndex((prev) => (prev + 1) % validImages.length);
     }, rotationInterval);
 
     return () => clearInterval(interval);
-  }, [isAutoRotating, images.length, isHovered, rotationInterval]);
+  }, [isAutoRotating, validImages.length, isHovered, rotationInterval]);
 
   const nextImage = () => {
-    setCurrentIndex((prev) => (prev + 1) % images.length);
+    setCurrentIndex((prev) => (prev + 1) % validImages.length);
   };
 
   const prevImage = () => {
-    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+    setCurrentIndex((prev) => (prev - 1 + validImages.length) % validImages.length);
   };
 
   const goToImage = (index: number) => {
@@ -67,14 +98,14 @@ export function PhotoAlbum({
       >
         <div className="aspect-[4/3] md:aspect-[16/9] lg:aspect-[3/2] overflow-hidden rounded-2xl shadow-2xl bg-white/5 relative group">
           <ImageLightbox
-            image={images[currentIndex]}
+            image={validImages[currentIndex]}
             alt={`Gallery image ${currentIndex + 1}`}
           />
           
           {/* Navigation Overlay */}
           <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             {/* Navigation Arrows */}
-            {images.length > 1 && (
+            {validImages.length > 1 && (
               <>
                 <Button
                   variant="outline"
@@ -108,7 +139,7 @@ export function PhotoAlbum({
             </Button>
 
             {/* Auto-rotation Toggle */}
-            {images.length > 1 && (
+            {validImages.length > 1 && (
               <Button
                 variant="outline"
                 size="sm"
@@ -122,18 +153,18 @@ export function PhotoAlbum({
           </div>
 
           {/* Image Counter */}
-          {showCounter && images.length > 1 && (
+          {showCounter && validImages.length > 1 && (
             <div className="absolute bottom-4 right-4 bg-black/70 text-white px-3 py-1 rounded-full text-sm backdrop-blur-sm">
-              {currentIndex + 1} / {images.length}
+              {currentIndex + 1} / {validImages.length}
             </div>
           )}
         </div>
       </div>
 
       {/* Thumbnail Navigation */}
-      {images.length > 1 && (
+      {validImages.length > 1 && (
         <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-          {images.map((image, index) => (
+          {validImages.map((image, index) => (
             <button
               key={index}
               onClick={() => goToImage(index)}
@@ -147,6 +178,14 @@ export function PhotoAlbum({
                 src={image}
                 alt={`Thumbnail ${index + 1}`}
                 className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.parentElement?.style.setProperty('display', 'none');
+                }}
+                onLoad={(e) => {
+                  e.currentTarget.style.display = 'block';
+                  e.currentTarget.parentElement?.style.setProperty('display', 'block');
+                }}
               />
             </button>
           ))}
