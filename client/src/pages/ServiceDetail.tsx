@@ -23,12 +23,11 @@ import {
   X,
   ZoomIn
 } from "lucide-react";
-import { Dialog, DialogContent, DialogClose } from "@/components/ui/dialog";
+import { PhotoAlbum } from "@/components/ui/photo-album";
 
 export default function ServiceDetail() {
   const { id } = useParams();
   const serviceId = id;
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const { data: serviceData, isLoading: serviceLoading, error: serviceError } = useQuery({
     queryKey: [`/api/services/${serviceId}`],
@@ -97,6 +96,19 @@ export default function ServiceDetail() {
     );
   }
 
+  // Create enhanced gallery with attached landscape design images and service gallery
+  const landscapeDesignImages = [
+    "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?q=80&w=2070&auto=format&fit=crop", // Aerial view landscape design
+    "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?q=80&w=2070&auto=format&fit=crop", // Garden pathway design
+    "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?q=80&w=2070&auto=format&fit=crop"  // Mountain landscape view
+  ];
+  
+  const enhancedGallery = [
+    ...landscapeDesignImages,
+    ...(service.galleryImages || []),
+    ...(service.imageUrl ? [service.imageUrl] : [])
+  ];
+
   // Determine if we have additional data beyond the basic fields
   const hasDetailedInfo = !!service.duration || !!service.coverage || 
     (service.benefits && service.benefits.length > 0) || 
@@ -108,8 +120,33 @@ export default function ServiceDetail() {
 
   return (
     <MainLayout>
+      {/* Photo Album Gallery Section - Prominently at Top */}
+      <div className="py-8 bg-gradient-to-b from-green-50 to-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                Galerie {service.name}
+              </h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                Descoperiți transformările spectaculoase realizate prin serviciile noastre de {service.name.toLowerCase()}
+              </p>
+            </div>
+            
+            {/* Photo Album Component */}
+            <PhotoAlbum 
+              images={enhancedGallery}
+              autoRotate={true}
+              rotationInterval={5000}
+              showCounter={true}
+              className="mb-12"
+            />
+          </div>
+        </div>
+      </div>
+
       {/* Hero section */}
-      <div className="py-16 bg-gradient-to-b from-green-50 to-white">
+      <div className="py-12 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-8">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
@@ -269,32 +306,7 @@ export default function ServiceDetail() {
               </div>
             )}
 
-            {/* Gallery Section */}
-            {service.galleryImages && service.galleryImages.length > 0 && (
-              <div className="mb-16">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                  Galerie {service.name}
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {service.galleryImages.map((image, index) => (
-                    <div 
-                      key={index} 
-                      className="rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all cursor-pointer relative group"
-                      onClick={() => setSelectedImage(image)}
-                    >
-                      <img 
-                        src={image} 
-                        alt={`${service.name} - Gallery image ${index + 1}`} 
-                        className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 flex items-center justify-center transition-all duration-300 opacity-0 group-hover:opacity-100">
-                        <ZoomIn className="text-white w-12 h-12" />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+
 
             {/* FAQs Section */}
             {service.faqs && service.faqs.length > 0 && (
@@ -381,25 +393,7 @@ export default function ServiceDetail() {
         </div>
       </section>
 
-      {/* Image Lightbox */}
-      <Dialog open={!!selectedImage} onOpenChange={(open) => !open && setSelectedImage(null)}>
-        <DialogContent className="max-w-5xl p-0 bg-transparent border-none shadow-none" closeButton={false}>
-          <div className="relative bg-black bg-opacity-90 rounded-lg overflow-hidden">
-            <DialogClose className="absolute top-4 right-4 z-50">
-              <Button variant="ghost" className="text-white hover:bg-white/20 rounded-full p-2 h-auto">
-                <X className="h-6 w-6" />
-              </Button>
-            </DialogClose>
-            <div className="flex justify-center items-center p-4 md:p-8">
-              <img 
-                src={selectedImage ?? ''} 
-                alt="Enlarged view" 
-                className="max-h-[80vh] object-contain"
-              />
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+
     </MainLayout>
   );
 }
