@@ -101,7 +101,7 @@ export default function AdminAppointmentsForm() {
 
   // Update form values when appointment data is loaded
   useEffect(() => {
-    if (appointment) {
+    if (appointment && isEditing) {
       console.log("Populating appointment form with data:", appointment);
       
       try {
@@ -128,12 +128,18 @@ export default function AdminAppointmentsForm() {
         };
         
         console.log("Setting form data:", formData);
-        form.reset(formData);
+        
+        // Use setTimeout to ensure form is ready
+        setTimeout(() => {
+          form.reset(formData);
+          console.log("Form reset complete");
+        }, 100);
+        
       } catch (error) {
         console.error("Error populating appointment form:", error);
       }
     }
-  }, [appointment, form]);
+  }, [appointment, form, isEditing]);
 
   // Create mutation
   const createMutation = useMutation({
@@ -149,7 +155,18 @@ export default function AdminAppointmentsForm() {
       };
       
       const response = await apiRequest("POST", "/api/admin/appointments", appointmentData);
-      const data = await response.json();
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to create appointment: ${errorText}`);
+      }
+      
+      let data;
+      try {
+        data = await response.json();
+      } catch (error) {
+        throw new Error("Failed to parse server response");
+      }
+      
       if (!data.success) {
         throw new Error(data.message || "Failed to create appointment");
       }
@@ -186,7 +203,18 @@ export default function AdminAppointmentsForm() {
       };
       
       const response = await apiRequest("PUT", `/api/admin/appointments/${id}`, appointmentData);
-      const data = await response.json();
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to update appointment: ${errorText}`);
+      }
+      
+      let data;
+      try {
+        data = await response.json();
+      } catch (error) {
+        throw new Error("Failed to parse server response");
+      }
+      
       if (!data.success) {
         throw new Error(data.message || "Failed to update appointment");
       }
