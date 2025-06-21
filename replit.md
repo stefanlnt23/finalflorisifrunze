@@ -117,6 +117,24 @@ The application is architected to support both MongoDB (currently active) and Po
 
 ## Recent Changes
 
+### June 21, 2025 - Portfolio Details Page Styling Improvements
+- **Unified Green Background**: Extended hero section's green gradient background throughout entire page for consistent visual theme
+- **Reduced Visual Clutter**: Removed excessive emojis and icons from transformation buttons and labels for cleaner design
+- **Simplified Toggle Controls**: Streamlined before/after toggle buttons with smaller, more professional styling
+- **Enhanced Client Testimonials**: Reduced text sizes (lg/base instead of 2xl/xl) and integrated with green theme using backdrop blur
+- **Better Typography Hierarchy**: Simplified section titles and removed redundant "double title" issues
+- **Improved Image Sizing**: Increased gallery image aspect ratios (5:4 mobile, 4:3 desktop, 3:2 large screens) for better visual impact
+- **Enhanced Layout Balance**: Improved grid spacing and column alignment between text and image sections
+- **Impact**: Cleaner, more professional portfolio presentation with consistent green branding and reduced visual noise
+
+### June 21, 2025 - Subscription Cards Layout Optimization  
+- **Limited Card Display**: Restricted subscription cards to maximum 3 per row instead of 4 for better visual hierarchy
+- **Enhanced Card Sizing**: Increased card dimensions and spacing for improved readability
+- **Smart Feature Layout**: Implemented 2-column layout for subscription features when 6+ items present
+- **Text Size Optimization**: Used smaller text (xs) and icons for dense feature lists to prevent overlapping
+- **Vertical Stacking**: Changed from horizontal to vertical layout for feature names/values to eliminate text collision
+- **Impact**: Better organized subscription presentation with no text overlapping and improved user experience
+
 ### June 21, 2025 - Before/After Section Enhancement
 - **Enhanced Button Visibility**: Significantly enlarged before/after toggle buttons with improved design
 - **Automatic Cycling**: Added 3-second auto-cycling between before/after states for dynamic presentation

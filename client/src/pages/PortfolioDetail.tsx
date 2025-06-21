@@ -508,20 +508,19 @@ export default function PortfolioDetail() {
       </div>
 
       {/* Main Content */}
-      <div className="bg-white">
+      <div className="bg-gradient-to-br from-green-900 via-green-800 to-emerald-900">
         {/* Before & After Transformations - Redesigned */}
         {portfolioItem.images && portfolioItem.images.length > 0 && (
-          <section className="py-32 bg-gradient-to-br from-slate-50 to-green-50/30">
+          <section className="py-16 bg-transparent">
             <div className="container mx-auto px-4">
-              <div className="max-w-8xl mx-auto">
-                <div className="text-center mb-20">
-                  <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-                    Transformările Spectaculoase
+              <div className="max-w-6xl mx-auto">
+                <div className="text-center mb-12">
+                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                    Transformarea Completă
                   </h2>
-                  <p className="text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                    Descoperiți cum am transformat fiecare spațiu, pas cu pas
+                  <p className="text-lg text-white/80 max-w-2xl mx-auto leading-relaxed">
+                    Despre această transformare
                   </p>
-                  <div className="w-32 h-2 bg-gradient-to-r from-green-600 to-emerald-600 mx-auto mt-8 rounded-full"></div>
                 </div>
 
                 <div className="space-y-24">
@@ -628,26 +627,25 @@ export default function PortfolioDetail() {
                                     toggleBeforeAfter(index);
                                   }}
                                   size="lg"
-                                  className="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-white/95 backdrop-blur-sm hover:bg-white text-gray-900 shadow-2xl border-2 border-white/80 px-8 py-4 rounded-2xl font-bold text-base hover:scale-105 transition-all duration-300 z-10"
+                                  className="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-white/95 backdrop-blur-sm hover:bg-white text-gray-900 shadow-xl px-6 py-3 rounded-xl font-semibold text-sm hover:scale-105 transition-all duration-300 z-10"
                                 >
-                                  <span className="mr-2 text-lg">🔄</span>
                                   <span>Comută la</span>
                                   <span
-                                    className={`ml-2 font-black ${currentState === "before" ? "text-green-600" : "text-red-600"}`}
+                                    className={`ml-2 font-bold ${currentState === "before" ? "text-green-600" : "text-red-600"}`}
                                   >
                                     {currentState === "before" ? "DUPĂ" : "ÎNAINTE"}
                                   </span>
                                 </Button>
 
-                                {/* Enhanced Corner Label */}
+                                {/* Corner Label */}
                                 <div
-                                  className={`absolute top-6 right-6 px-4 py-2 rounded-xl text-base font-bold shadow-2xl backdrop-blur-sm border-2 ${
+                                  className={`absolute top-6 right-6 px-3 py-1 rounded-lg text-sm font-semibold shadow-lg backdrop-blur-sm ${
                                     currentState === "before"
-                                      ? "bg-red-500/90 text-white border-red-300"
-                                      : "bg-green-500/90 text-white border-green-300"
-                                  } transform hover:scale-105 transition-all duration-300`}
+                                      ? "bg-red-500/90 text-white"
+                                      : "bg-green-500/90 text-white"
+                                  } transition-all duration-300`}
                                 >
-                                  {currentState === "before" ? "📍 ÎNAINTE" : "✨ DUPĂ"}
+                                  {currentState === "before" ? "ÎNAINTE" : "DUPĂ"}
                                 </div>
                               </div>
                             </div>
@@ -665,22 +663,21 @@ export default function PortfolioDetail() {
         {/* Client Testimonial */}
         {portfolioItem.clientTestimonial?.clientName &&
           portfolioItem.clientTestimonial?.displayPermission && (
-            <section className="py-12">
+            <section className="py-12 bg-transparent">
               <div className="container mx-auto px-4">
                 <div className="max-w-4xl mx-auto">
                   <div className="text-center mb-8">
-                    <h2 className="text-3xl font-bold text-gray-900 mb-3">
+                    <h2 className="text-2xl font-bold text-white mb-3">
                       Feedback de la Client
                     </h2>
                   </div>
 
-                  <Card className="border-0 shadow-xl bg-gradient-to-br from-green-50 to-emerald-50">
-                    <CardContent className="p-12 text-center relative">
-                      <Quote className="w-16 h-16 text-green-200 mx-auto mb-8" />
-                      <blockquote className="text-2xl font-medium text-gray-800 mb-8 italic leading-relaxed">
+                  <Card className="border-0 shadow-xl bg-white/10 backdrop-blur-sm border border-white/20">
+                    <CardContent className="p-8 text-center relative">
+                      <blockquote className="text-lg font-medium text-white/90 mb-6 italic leading-relaxed">
                         "{portfolioItem.clientTestimonial.comment}"
                       </blockquote>
-                      <div className="text-xl font-semibold text-green-700">
+                      <div className="text-base font-semibold text-white/80">
                         — {portfolioItem.clientTestimonial.clientName}
                       </div>
                     </CardContent>
