@@ -41,7 +41,7 @@ export default function AdminAppointmentsForm() {
   const { id } = useParams();
   const [location, setLocation] = useLocation();
   const { toast } = useToast();
-  const isEditing = !!id;
+  const isEditing = !!id && id !== "new";
   const [timeValue, setTimeValue] = useState<string>("12:00");
 
   // Fetch services for dropdown
