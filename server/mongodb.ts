@@ -6,6 +6,10 @@ const DATABASE_URL = process.env.MONGODB_URI || process.env.DATABASE_URL || '';
 // Initialize MongoDB connection
 export async function connectToMongoDB() {
   try {
+    log(`Attempting to connect to MongoDB with URL: ${DATABASE_URL ? 'URL provided' : 'No URL found'}`, 'mongodb');
+    if (!DATABASE_URL) {
+      throw new Error('MongoDB connection string not found in environment variables');
+    }
     await mongoose.connect(DATABASE_URL);
     log('Connected to MongoDB', 'mongodb');
 
