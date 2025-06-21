@@ -215,14 +215,24 @@ export class MongoDBStorage implements IStorage {
 
   async createService(insertService: InsertService): Promise<any> {
     try {
-      // Map the data correctly to match MongoDB schema
+      // Map the data correctly to match MongoDB schema, including all extended fields
       const serviceData = {
         name: insertService.name,
         description: insertService.description,
         shortDesc: insertService.shortDesc,
         price: insertService.price,
         imageUrl: insertService.imageUrl,
-        isFeatured: insertService.featured
+        isFeatured: insertService.featured,
+        
+        // Extended fields
+        duration: insertService.duration,
+        coverage: insertService.coverage,
+        benefits: insertService.benefits || [],
+        includes: insertService.includes || [],
+        faqs: insertService.faqs || [],
+        recommendedFrequency: insertService.recommendedFrequency,
+        seasonalAvailability: insertService.seasonalAvailability || [],
+        galleryImages: insertService.galleryImages || []
       };
 
       const newService = new Service(serviceData);
@@ -247,6 +257,16 @@ export class MongoDBStorage implements IStorage {
       if (serviceData.price) mappedData.price = serviceData.price;
       if (serviceData.imageUrl !== undefined) mappedData.imageUrl = serviceData.imageUrl;
       if (serviceData.featured !== undefined) mappedData.isFeatured = serviceData.featured;
+      
+      // Extended fields
+      if (serviceData.duration !== undefined) mappedData.duration = serviceData.duration;
+      if (serviceData.coverage !== undefined) mappedData.coverage = serviceData.coverage;
+      if (serviceData.benefits !== undefined) mappedData.benefits = serviceData.benefits;
+      if (serviceData.includes !== undefined) mappedData.includes = serviceData.includes;
+      if (serviceData.faqs !== undefined) mappedData.faqs = serviceData.faqs;
+      if (serviceData.recommendedFrequency !== undefined) mappedData.recommendedFrequency = serviceData.recommendedFrequency;
+      if (serviceData.seasonalAvailability !== undefined) mappedData.seasonalAvailability = serviceData.seasonalAvailability;
+      if (serviceData.galleryImages !== undefined) mappedData.galleryImages = serviceData.galleryImages;
 
       const updatedService = await Service.findByIdAndUpdate(
         id,
