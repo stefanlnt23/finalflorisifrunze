@@ -272,9 +272,9 @@ export default function PortfolioDetail() {
                 </h1>
               </div>
 
-              <div className="grid lg:grid-cols-2 gap-16 items-start mb-12">
+              <div className="grid lg:grid-cols-2 gap-12 xl:gap-16 items-start mb-12">
                 {/* Left Column - Project Description */}
-                <div className="space-y-6">
+                <div className="space-y-6 lg:pr-4">
                   <div>
                     {service && (
                       <Badge
@@ -392,7 +392,7 @@ export default function PortfolioDetail() {
 
                 {/* Right Column - Photo Gallery */}
                 {allImages.length > 0 && (
-                  <div className="space-y-6">
+                  <div className="space-y-6 lg:pl-4">
                     <div>
                       <h2 className="text-3xl font-bold text-white mb-3">
                         Galeria Proiectului
@@ -404,7 +404,7 @@ export default function PortfolioDetail() {
 
                     {/* Main Image Display */}
                     <div className="relative">
-                      <div className="aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl">
+                      <div className="aspect-[5/4] lg:aspect-[4/3] xl:aspect-[3/2] overflow-hidden rounded-2xl shadow-2xl">
                         <ImageLightbox
                           image={allImages[currentImageIndex]}
                           alt={`Project image ${currentImageIndex + 1}`}
