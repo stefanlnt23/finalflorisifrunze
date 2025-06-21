@@ -7,42 +7,71 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { ImageLightbox } from "@/components/ui/image-lightbox";
-import { ArrowLeft, Calendar, MapPin, Clock, Star, Quote, Heart, Share2, Eye, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  ArrowLeft,
+  Calendar,
+  MapPin,
+  Clock,
+  Star,
+  Quote,
+  Heart,
+  Share2,
+  Eye,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 
 export default function PortfolioDetail() {
   const { id } = useParams();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
-  const [expandedSections, setExpandedSections] = useState<{[key: string]: boolean}>({});
+  const [expandedSections, setExpandedSections] = useState<{
+    [key: string]: boolean;
+  }>({});
   const [isMobile, setIsMobile] = useState(false);
+  const [beforeAfterStates, setBeforeAfterStates] = useState<{
+    [key: number]: "before" | "after";
+  }>({});
 
   // Check if device is mobile
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   // Helper function to truncate text for mobile with read more
-  const truncateText = (text: string, sectionKey: string, wordLimit: number = 10) => {
-    const words = text.split(' ');
+  const truncateText = (
+    text: string,
+    sectionKey: string,
+    wordLimit: number = 10,
+  ) => {
+    const words = text.split(" ");
     const isExpanded = expandedSections[sectionKey];
-    
+
     if (!isMobile || words.length <= wordLimit || isExpanded) {
       return text;
     }
-    
-    return words.slice(0, wordLimit).join(' ') + '...';
+
+    return words.slice(0, wordLimit).join(" ") + "...";
   };
 
   const toggleSection = (sectionKey: string) => {
-    setExpandedSections(prev => ({
+    setExpandedSections((prev) => ({
       ...prev,
-      [sectionKey]: !prev[sectionKey]
+      [sectionKey]: !prev[sectionKey],
+    }));
+  };
+
+  // Toggle between before and after for a specific transformation
+  const toggleBeforeAfter = (index: number) => {
+    setBeforeAfterStates((prev) => ({
+      ...prev,
+      [index]: prev[index] === "before" ? "after" : "before",
     }));
   };
 
@@ -60,6 +89,17 @@ export default function PortfolioDetail() {
   });
 
   const portfolioItem = data?.portfolioItem;
+
+  // Initialize before/after states
+  useEffect(() => {
+    if (portfolioItem?.images) {
+      const initialStates: { [key: number]: "before" | "after" } = {};
+      portfolioItem.images.forEach((_: any, index: number) => {
+        initialStates[index] = "before";
+      });
+      setBeforeAfterStates(initialStates);
+    }
+  }, [portfolioItem]);
 
   // Fetch service details if serviceId exists
   const { data: serviceData } = useQuery({
@@ -87,8 +127,10 @@ export default function PortfolioDetail() {
   // Get all images (main + gallery)
   const allImages = [
     ...(portfolioItem?.imageUrl ? [portfolioItem.imageUrl] : []),
-    ...(portfolioItem?.images?.map((img: any) => img.before).filter(Boolean) || []),
-    ...(portfolioItem?.images?.map((img: any) => img.after).filter(Boolean) || [])
+    ...(portfolioItem?.images?.map((img: any) => img.before).filter(Boolean) ||
+      []),
+    ...(portfolioItem?.images?.map((img: any) => img.after).filter(Boolean) ||
+      []),
   ];
 
   const nextImage = () => {
@@ -96,7 +138,21 @@ export default function PortfolioDetail() {
   };
 
   const prevImage = () => {
-    setCurrentImageIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
+    setCurrentImageIndex(
+      (prev) => (prev - 1 + allImages.length) % allImages.length,
+    );
+  };
+
+  // Generate different green shades for each transformation
+  const getGreenShade = (index: number) => {
+    const shades = [
+      "from-emerald-50 to-green-100",
+      "from-green-50 to-emerald-100",
+      "from-teal-50 to-green-100",
+      "from-green-100 to-emerald-200",
+      "from-emerald-100 to-teal-100",
+    ];
+    return shades[index % shades.length];
   };
 
   if (isLoading) {
@@ -186,7 +242,10 @@ export default function PortfolioDetail() {
                 <div className="space-y-6">
                   <div>
                     {service && (
-                      <Badge variant="outline" className="text-base px-3 py-1 bg-white/20 text-white border-white/30 mb-4">
+                      <Badge
+                        variant="outline"
+                        className="text-base px-3 py-1 bg-white/20 text-white border-white/30 mb-4"
+                      >
                         {service.name}
                       </Badge>
                     )}
@@ -194,48 +253,67 @@ export default function PortfolioDetail() {
                       Detalii Proiect
                     </h2>
                     <div className="text-xl text-white/90 leading-relaxed">
-                      <p>{truncateText(portfolioItem.description, 'description')}</p>
-                      {isMobile && portfolioItem.description.split(' ').length > 10 && (
-                        <button
-                          onClick={() => toggleSection('description')}
-                          className="text-white/70 hover:text-white underline text-sm mt-2 block"
-                        >
-                          {expandedSections['description'] ? 'Arată mai puțin' : 'Citește mai mult'}
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                  
-                  {portfolioItem.challenges && (
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-                      <h3 className="text-xl font-semibold text-white mb-3">Provocări</h3>
-                      <div className="text-white/80">
-                        <p>{truncateText(portfolioItem.challenges, 'challenges')}</p>
-                        {isMobile && portfolioItem.challenges.split(' ').length > 10 && (
+                      <p>
+                        {truncateText(portfolioItem.description, "description")}
+                      </p>
+                      {isMobile &&
+                        portfolioItem.description.split(" ").length > 10 && (
                           <button
-                            onClick={() => toggleSection('challenges')}
-                            className="text-white/60 hover:text-white underline text-sm mt-2 block"
+                            onClick={() => toggleSection("description")}
+                            className="text-white/70 hover:text-white underline text-sm mt-2 block"
                           >
-                            {expandedSections['challenges'] ? 'Arată mai puțin' : 'Citește mai mult'}
+                            {expandedSections["description"]
+                              ? "Arată mai puțin"
+                              : "Citește mai mult"}
                           </button>
                         )}
+                    </div>
+                  </div>
+
+                  {portfolioItem.challenges && (
+                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                      <h3 className="text-xl font-semibold text-white mb-3">
+                        Provocări
+                      </h3>
+                      <div className="text-white/80">
+                        <p>
+                          {truncateText(portfolioItem.challenges, "challenges")}
+                        </p>
+                        {isMobile &&
+                          portfolioItem.challenges.split(" ").length > 10 && (
+                            <button
+                              onClick={() => toggleSection("challenges")}
+                              className="text-white/60 hover:text-white underline text-sm mt-2 block"
+                            >
+                              {expandedSections["challenges"]
+                                ? "Arată mai puțin"
+                                : "Citește mai mult"}
+                            </button>
+                          )}
                       </div>
                     </div>
                   )}
-                  
+
                   {portfolioItem.solution && (
                     <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-                      <h3 className="text-xl font-semibold text-white mb-3">Soluția</h3>
+                      <h3 className="text-xl font-semibold text-white mb-3">
+                        Soluția
+                      </h3>
                       <div className="text-white/80">
-                        <p>{truncateText(portfolioItem.solution, 'solution')}</p>
-                        {isMobile && portfolioItem.solution.split(' ').length > 10 && (
-                          <button
-                            onClick={() => toggleSection('solution')}
-                            className="text-white/60 hover:text-white underline text-sm mt-2 block"
-                          >
-                            {expandedSections['solution'] ? 'Arată mai puțin' : 'Citește mai mult'}
-                          </button>
-                        )}
+                        <p>
+                          {truncateText(portfolioItem.solution, "solution")}
+                        </p>
+                        {isMobile &&
+                          portfolioItem.solution.split(" ").length > 10 && (
+                            <button
+                              onClick={() => toggleSection("solution")}
+                              className="text-white/60 hover:text-white underline text-sm mt-2 block"
+                            >
+                              {expandedSections["solution"]
+                                ? "Arată mai puțin"
+                                : "Citește mai mult"}
+                            </button>
+                          )}
                       </div>
                     </div>
                   )}
@@ -255,14 +333,21 @@ export default function PortfolioDetail() {
                       className="bg-[#124a27] border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
                       onClick={() => setIsLiked(!isLiked)}
                     >
-                      <Heart className={`w-4 h-4 mr-2 ${isLiked ? 'fill-current text-red-400' : ''}`} />
-                      {isLiked ? 'Îmi place' : 'Apreciază'}
+                      <Heart
+                        className={`w-4 h-4 mr-2 ${isLiked ? "fill-current text-red-400" : ""}`}
+                      />
+                      {isLiked ? "Îmi place" : "Apreciază"}
                     </Button>
                     <Button
                       size="lg"
                       variant="outline"
                       className="bg-[#134c29] border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
-                      onClick={() => navigator.share?.({ title: portfolioItem.title, url: window.location.href })}
+                      onClick={() =>
+                        navigator.share?.({
+                          title: portfolioItem.title,
+                          url: window.location.href,
+                        })
+                      }
                     >
                       <Share2 className="w-4 h-4 mr-2" />
                       Distribuie
@@ -328,8 +413,8 @@ export default function PortfolioDetail() {
                             onClick={() => setCurrentImageIndex(index)}
                             className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all cursor-pointer ${
                               currentImageIndex === index
-                                ? 'border-white scale-105'
-                                : 'border-white/30 hover:border-white/60'
+                                ? "border-white scale-105"
+                                : "border-white/30 hover:border-white/60"
                             }`}
                           >
                             <ImageLightbox
@@ -349,23 +434,33 @@ export default function PortfolioDetail() {
                 <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow bg-white/10 backdrop-blur-sm border-white/20">
                   <CardContent className="p-6 text-center">
                     <MapPin className="w-8 h-8 text-white mx-auto mb-3" />
-                    <h3 className="text-lg font-bold mb-2 text-white">Locație</h3>
-                    <p className="text-white/80">{portfolioItem.location || "Nespecificat"}</p>
+                    <h3 className="text-lg font-bold mb-2 text-white">
+                      Locație
+                    </h3>
+                    <p className="text-white/80">
+                      {portfolioItem.location || "Nespecificat"}
+                    </p>
                   </CardContent>
                 </Card>
 
                 <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow bg-white/10 backdrop-blur-sm border-white/20">
                   <CardContent className="p-6 text-center">
                     <Clock className="w-8 h-8 text-white mx-auto mb-3" />
-                    <h3 className="text-lg font-bold mb-2 text-white">Durată</h3>
-                    <p className="text-white/80">{portfolioItem.projectDuration || "Nespecificat"}</p>
+                    <h3 className="text-lg font-bold mb-2 text-white">
+                      Durată
+                    </h3>
+                    <p className="text-white/80">
+                      {portfolioItem.projectDuration || "Nespecificat"}
+                    </p>
                   </CardContent>
                 </Card>
 
                 <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow bg-white/10 backdrop-blur-sm border-white/20">
                   <CardContent className="p-6 text-center">
                     <Eye className="w-8 h-8 text-white mx-auto mb-3" />
-                    <h3 className="text-lg font-bold mb-2 text-white">Complexitate</h3>
+                    <h3 className="text-lg font-bold mb-2 text-white">
+                      Complexitate
+                    </h3>
                     <p className="text-white/80">
                       {portfolioItem.difficultyLevel || "Standard"}
                     </p>
@@ -379,83 +474,150 @@ export default function PortfolioDetail() {
 
       {/* Main Content */}
       <div className="bg-white">
-
-
-        {/* Before & After Transformations */}
+        {/* Before & After Transformations - Redesigned */}
         {portfolioItem.images && portfolioItem.images.length > 0 && (
-          <section className="py-12 bg-gray-50">
+          <section className="py-16">
             <div className="container mx-auto px-4">
-              <div className="max-w-6xl mx-auto">
-                <div className="text-center mb-10">
-                  <h2 className="text-3xl font-bold text-gray-900 mb-3">
+              <div className="max-w-7xl mx-auto">
+                <div className="text-center mb-12">
+                  <h2 className="text-4xl font-bold text-gray-900 mb-4">
                     Transformările Realizate
                   </h2>
-                  <p className="text-lg text-gray-600">
-                    Vedere înainte și după pentru fiecare etapă
+                  <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                    Descoperiți cum am transformat fiecare spațiu, pas cu pas
                   </p>
+                  <div className="w-24 h-1 bg-gradient-to-r from-green-600 to-emerald-600 mx-auto mt-6 rounded-full"></div>
                 </div>
 
-                <div className="space-y-10">
-                  {portfolioItem.images.map((image: any, index: number) => (
-                    <div key={index} className="bg-white rounded-3xl shadow-xl overflow-hidden">
-                      <div className="p-8">
-                        <h3 className="text-xl font-bold text-center mb-6 text-gray-900">
-                          {image.caption || `Transformarea ${index + 1}`}
-                        </h3>
+                <div className="space-y-16">
+                  {portfolioItem.images.map((image: any, index: number) => {
+                    const currentState = beforeAfterStates[index] || "before";
+                    const currentImage =
+                      currentState === "before" ? image.before : image.after;
 
-                        {/* Before-After Comparison */}
-                        <div className="grid lg:grid-cols-2 gap-6 mb-6">
-                          <div className="space-y-4">
-                            <div className="flex items-center gap-3 mb-4">
-                              <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
-                                <span className="text-red-600 font-bold">Î</span>
+                    return (
+                      <div
+                        key={index}
+                        className={`bg-gradient-to-br ${getGreenShade(index)} rounded-3xl shadow-2xl overflow-hidden`}
+                      >
+                        <div className="p-8 lg:p-12">
+                          <div className="grid lg:grid-cols-2 gap-12 items-center">
+                            {/* Left Column - Description */}
+                            <div className="space-y-6">
+                              <div className="flex items-center gap-4 mb-6">
+                                <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center shadow-lg">
+                                  <span className="text-white font-bold text-lg">
+                                    {index + 1}
+                                  </span>
+                                </div>
+                                <h3 className="text-2xl lg:text-3xl font-bold text-gray-900">
+                                  {image.caption ||
+                                    `Transformarea ${index + 1}`}
+                                </h3>
                               </div>
-                              <h4 className="text-xl font-semibold text-gray-900">
-                                Înainte de Transformare
-                              </h4>
-                            </div>
-                            <div className="aspect-square overflow-hidden rounded-xl shadow-lg">
-                              <img
-                                src={image.before}
-                                alt={`Before ${image.caption || `Transformation ${index + 1}`}`}
-                                className="w-full h-full object-cover"
-                              />
-                            </div>
-                          </div>
 
-                          <div className="space-y-4">
-                            <div className="flex items-center gap-3 mb-4">
-                              <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                                <span className="text-green-600 font-bold">D</span>
+                              {image.richDescription && (
+                                <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 lg:p-8 border border-green-200/50 shadow-lg">
+                                  <h4 className="text-xl font-bold mb-4 text-gray-900 flex items-center gap-2">
+                                    <div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center">
+                                      <span className="text-white text-xs">
+                                        ℹ
+                                      </span>
+                                    </div>
+                                    Despre Această Transformare
+                                  </h4>
+                                  <p className="text-lg text-gray-800 leading-relaxed whitespace-pre-line">
+                                    {image.richDescription}
+                                  </p>
+                                </div>
+                              )}
+
+                              {/* Current View Indicator */}
+                              <div className="flex items-center gap-4">
+                                <div
+                                  className={`flex items-center gap-2 px-4 py-2 rounded-full border-2 transition-all ${
+                                    currentState === "before"
+                                      ? "bg-red-100 border-red-300 text-red-700"
+                                      : "bg-gray-100 border-gray-300 text-gray-600"
+                                  }`}
+                                >
+                                  <div
+                                    className={`w-3 h-3 rounded-full ${
+                                      currentState === "before"
+                                        ? "bg-red-500"
+                                        : "bg-gray-400"
+                                    }`}
+                                  ></div>
+                                  <span className="font-medium">Înainte</span>
+                                </div>
+
+                                <div
+                                  className={`flex items-center gap-2 px-4 py-2 rounded-full border-2 transition-all ${
+                                    currentState === "after"
+                                      ? "bg-green-100 border-green-300 text-green-700"
+                                      : "bg-gray-100 border-gray-300 text-gray-600"
+                                  }`}
+                                >
+                                  <div
+                                    className={`w-3 h-3 rounded-full ${
+                                      currentState === "after"
+                                        ? "bg-green-500"
+                                        : "bg-gray-400"
+                                    }`}
+                                  ></div>
+                                  <span className="font-medium">După</span>
+                                </div>
                               </div>
-                              <h4 className="text-xl font-semibold text-gray-900">
-                                După Transformare
-                              </h4>
                             </div>
-                            <div className="aspect-square overflow-hidden rounded-xl shadow-lg">
-                              <img
-                                src={image.after}
-                                alt={`After ${image.caption || `Transformation ${index + 1}`}`}
-                                className="w-full h-full object-cover"
-                              />
+
+                            {/* Right Column - Interactive Image */}
+                            <div className="relative">
+                              <div className="relative group">
+                                <div className="aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl bg-white">
+                                  <img
+                                    src={currentImage}
+                                    alt={`${currentState === "before" ? "Before" : "After"} ${image.caption || `Transformation ${index + 1}`}`}
+                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                  />
+
+                                  {/* Overlay gradient */}
+                                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                </div>
+
+                                {/* Toggle Button */}
+                                <Button
+                                  onClick={() => toggleBeforeAfter(index)}
+                                  className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur-sm hover:bg-white text-gray-900 shadow-xl border border-white/50 px-6 py-3 rounded-full font-medium"
+                                >
+                                  <span className="mr-2">Arată</span>
+                                  <span
+                                    className={`font-bold ${currentState === "before" ? "text-green-600" : "text-red-600"}`}
+                                  >
+                                    {currentState === "before"
+                                      ? "După"
+                                      : "Înainte"}
+                                  </span>
+                                </Button>
+
+                                {/* Corner Label */}
+                                <div
+                                  className={`absolute top-4 right-4 px-3 py-1 rounded-full text-sm font-medium shadow-lg ${
+                                    currentState === "before"
+                                      ? "bg-red-500 text-white"
+                                      : "bg-green-500 text-white"
+                                  }`}
+                                >
+                                  {currentState === "before"
+                                    ? "Înainte"
+                                    : "După"}
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
-
-                        {/* Description */}
-                        {image.richDescription && (
-                          <div className="bg-green-50 rounded-xl p-8 border border-green-100">
-                            <h4 className="text-xl font-bold mb-4 text-gray-900">
-                              Despre Această Transformare
-                            </h4>
-                            <p className="text-lg text-gray-800 leading-relaxed whitespace-pre-line">
-                              {image.richDescription}
-                            </p>
-                          </div>
-                        )}
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -498,7 +660,9 @@ export default function PortfolioDetail() {
                 Vrei o Transformare Similară?
               </h2>
               <p className="text-xl text-green-100 mb-8 leading-relaxed">
-                Contactează-ne pentru a discuta despre proiectul tău. Oferim consultanță gratuită și planuri personalizate pentru fiecare spațiu.
+                Contactează-ne pentru a discuta despre proiectul tău. Oferim
+                consultanță gratuită și planuri personalizate pentru fiecare
+                spațiu.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <Button
@@ -521,8 +685,6 @@ export default function PortfolioDetail() {
           </div>
         </section>
       </div>
-
-
     </MainLayout>
   );
 }
