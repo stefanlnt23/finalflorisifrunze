@@ -1477,7 +1477,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Admin Subscription Management
-  app.get("/api/admin/subscriptions", requireAdmin, async (req, res) => {
+  app.get("/api/admin/subscriptions", authenticateAdmin, async (req, res) => {
     try {
       console.log("Fetching admin subscriptions from database");
       const subscriptions = await storage.getSubscriptions();
@@ -1550,7 +1550,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/admin/subscriptions/:id", requireAdmin, async (req, res) => {
+  app.get("/api/admin/subscriptions/:id", authenticateAdmin, async (req, res) => {
     try {
       const { id } = req.params;
       const subscription = await storage.getSubscription(id);
@@ -1566,7 +1566,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/admin/subscriptions", requireAdmin, async (req, res) => {
+  app.post("/api/admin/subscriptions", authenticateAdmin, async (req, res) => {
     try {
       const { name, description, imageUrl, color, features, price, isPopular, displayOrder } = req.body;
 
@@ -1596,7 +1596,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put("/api/admin/subscriptions/:id", requireAdmin, async (req, res) => {
+  app.put("/api/admin/subscriptions/:id", authenticateAdmin, async (req, res) => {
     try {
       const { id } = req.params;
       const { name, description, imageUrl, color, features, price, isPopular, displayOrder } = req.body;
@@ -1627,7 +1627,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete("/api/admin/subscriptions/:id", requireAdmin, async (req, res) => {
+  app.delete("/api/admin/subscriptions/:id", authenticateAdmin, async (req, res) => {
     try {
       const { id } = req.params;
       console.log(`Attempting to delete subscription with ID: ${id}`);
