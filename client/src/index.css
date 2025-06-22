@@ -25,6 +25,15 @@
   --radius: 0.5rem;
 }
 
+/* Enhanced Text Shadow Utilities */
+.text-shadow-lg {
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.text-shadow-2xl {
+  text-shadow: 0 6px 12px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
 /* Image Lightbox Effect */
 .image-lightbox {
   cursor: pointer;

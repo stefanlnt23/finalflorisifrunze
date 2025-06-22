@@ -278,7 +278,7 @@ export function ServicesCarousel() {
                       <div className="absolute inset-0 bg-black/40 rounded-lg"></div>
                       {/* Overlaid title */}
                       <div className="absolute inset-0 flex items-center justify-center text-center p-4">
-                        <h3 className="text-xl font-semibold text-white drop-shadow-lg service-title">{service.name}</h3>
+                        <h3 className="text-2xl font-black text-white text-shadow-2xl drop-shadow-2xl service-title">{service.name}</h3>
                       </div>
                     </div>
                   ) : (
@@ -289,9 +289,9 @@ export function ServicesCarousel() {
                     </div>
                   )}
                   {!service.imageUrl && (
-                    <h3 className="text-xl font-semibold text-gray-900 service-title">{service.name}</h3>
+                    <h3 className="text-2xl font-black text-gray-900 service-title">{service.name}</h3>
                   )}
-                  <p className="text-gray-600 flex-grow service-description">
+                  <p className="text-gray-600 flex-grow service-description leading-loose text-base">
                     {service.description.length > 120
                       ? `${service.description.substring(0, 120)}...`
                       : service.description}
@@ -299,8 +299,8 @@ export function ServicesCarousel() {
                   <div className="w-full flex flex-col items-center mt-auto service-price-action">
                     <span className="text-green-600 font-semibold mb-3 service-price">{service.price}</span>
                     <Link href={`/services/${service.id}`}>
-                      <Button variant="outline" className="service-button border-green-600 text-green-600 hover:bg-green-50 hover:text-green-700 w-full transition-all duration-300">
-                        View Details
+                      <Button variant="outline" className="service-button border-green-600 text-green-600 hover:bg-green-50 hover:border-green-700 hover:text-green-700 hover:scale-105 hover:shadow-md w-full transition-all duration-300 transform active:scale-95">
+                        Află Mai Multe
                       </Button>
                     </Link>
                   </div>

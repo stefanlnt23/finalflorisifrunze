@@ -201,7 +201,7 @@ export default function Services() {
                         <div className="absolute inset-0 bg-black/40"></div>
                         {/* Overlaid title */}
                         <div className="absolute inset-0 flex items-center justify-center text-center p-4">
-                          <h3 className="text-2xl font-bold text-white drop-shadow-lg">
+                          <h3 className="text-3xl font-black text-white text-shadow-2xl drop-shadow-2xl">
                             {service.name}
                           </h3>
                         </div>
@@ -211,7 +211,7 @@ export default function Services() {
                         <Leaf className="h-24 w-24 text-green-300" />
                         {/* Overlaid title for fallback */}
                         <div className="absolute inset-0 flex items-center justify-center text-center p-4">
-                          <h3 className="text-2xl font-bold text-green-800">
+                          <h3 className="text-3xl font-black text-green-800 text-shadow-lg drop-shadow-lg">
                             {service.name}
                           </h3>
                         </div>
@@ -223,7 +223,7 @@ export default function Services() {
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="pt-0">
-                      <p className="text-gray-600 leading-relaxed">
+                      <p className="text-gray-600 leading-loose text-base">
                         {service.description.length > 150
                           ? `${service.description.substring(0, 150)}...`
                           : service.description}
@@ -233,15 +233,16 @@ export default function Services() {
                       <Link href={`/services/${service.id}`}>
                         <Button
                           variant="outline"
-                          className="border-green-600 text-green-600 hover:bg-green-50 group-hover:border-green-700 group-hover:text-green-700 transition-all"
+                          className="border-green-600 text-green-600 hover:bg-green-50 hover:border-green-700 hover:text-green-700 hover:scale-105 hover:shadow-md transition-all duration-300 transform active:scale-95"
                         >
                           Află Mai Multe
-                          <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                          <ChevronRight className="ml-1 h-4 w-4 transition-all duration-300 group-hover:translate-x-1 hover:translate-x-2" />
                         </Button>
                       </Link>
                       <Link href={`/appointment?service=${service.id}`}>
-                        <Button className="bg-green-600 hover:bg-green-700 shadow-md hover:shadow-lg transition-all">
-                          Programează
+                        <Button className="bg-green-600 hover:bg-green-700 hover:scale-105 shadow-md hover:shadow-xl transition-all duration-300 transform active:scale-95 relative overflow-hidden group">
+                          <span className="relative z-10">Programează</span>
+                          <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-green-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </Button>
                       </Link>
                     </CardFooter>
