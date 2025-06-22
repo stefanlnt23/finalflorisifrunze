@@ -153,62 +153,62 @@ export default function ServiceDetail() {
           </div>
         </div>
 
-        {/* Hero Content */}
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="max-w-4xl mx-auto text-center text-white">
+        {/* Hero Content - Desktop Optimized */}
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+          <div className="max-w-7xl mx-auto text-center text-white">
             {/* Badge */}
-            <div className="inline-flex items-center px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium mb-6">
-              <BadgeCheck className="w-4 h-4 mr-2" />
+            <div className="inline-flex items-center px-3 py-1 lg:px-4 lg:py-2 bg-white/20 backdrop-blur-sm rounded-full text-xs lg:text-sm font-medium mb-4 lg:mb-6">
+              <BadgeCheck className="w-3 h-3 lg:w-4 lg:h-4 mr-1 lg:mr-2" />
               Serviciu Premium cu Garanție
             </div>
 
-            {/* Main Title */}
-            <h1 className="text-5xl md:text-7xl font-black mb-6 leading-tight">
+            {/* Main Title - Scaled for Desktop */}
+            <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-4 lg:mb-6 leading-tight">
               {service.name}
             </h1>
 
-            {/* Subtitle */}
-            <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed text-green-50">
+            {/* Subtitle - Desktop Optimized */}
+            <p className="text-lg md:text-xl lg:text-2xl mb-6 lg:mb-8 max-w-5xl mx-auto leading-relaxed text-green-50">
               {service.shortDesc || service.description.substring(0, 150) + "..."}
             </p>
 
-            {/* Price with Appeal */}
-            <div className="flex items-center justify-center mb-10">
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-8 py-4 border border-white/20">
-                <p className="text-lg text-green-100 mb-1">Preț de la</p>
-                <p className="text-4xl font-bold text-white">{service.price}</p>
+            {/* Price with Appeal - Compact Desktop */}
+            <div className="flex items-center justify-center mb-6 lg:mb-8">
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-3 lg:px-8 lg:py-4 border border-white/20">
+                <p className="text-sm lg:text-lg text-green-100 mb-1">Preț de la</p>
+                <p className="text-2xl lg:text-3xl xl:text-4xl font-bold text-white">{service.price}</p>
               </div>
             </div>
 
-            {/* Primary CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+            {/* Primary CTA Buttons - Compact */}
+            <div className="flex flex-col sm:flex-row gap-3 lg:gap-4 justify-center items-center mb-8 lg:mb-10">
               <Link href={`/appointment?service=${service.id}`}>
-                <Button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-10 py-4 text-lg font-bold rounded-2xl shadow-2xl hover:shadow-orange-500/25 transform hover:scale-105 transition-all duration-300 border-2 border-orange-400">
-                  <Calendar className="w-5 h-5 mr-3" />
+                <Button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-8 py-3 lg:px-10 lg:py-4 text-base lg:text-lg font-bold rounded-2xl shadow-2xl hover:shadow-orange-500/25 transform hover:scale-105 transition-all duration-300 border-2 border-orange-400">
+                  <Calendar className="w-4 h-4 lg:w-5 lg:h-5 mr-2 lg:mr-3" />
                   Programează Evaluare GRATUITĂ
                 </Button>
               </Link>
               
               <a href="tel:+40742650670" className="inline-block">
-                <Button variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-green-700 px-8 py-4 text-lg font-semibold rounded-2xl backdrop-blur-sm">
-                  <Phone className="w-5 h-5 mr-3" />
+                <Button variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-green-700 px-6 py-3 lg:px-8 lg:py-4 text-base lg:text-lg font-semibold rounded-2xl backdrop-blur-sm">
+                  <Phone className="w-4 h-4 lg:w-5 lg:h-5 mr-2 lg:mr-3" />
                   Sună Acum: +40 742 650 670
                 </Button>
               </a>
             </div>
 
-            {/* Trust Indicators */}
-            <div className="flex flex-wrap justify-center items-center gap-8 text-green-100 text-sm">
+            {/* Trust Indicators - Compact */}
+            <div className="flex flex-wrap justify-center items-center gap-4 lg:gap-6 text-green-100 text-xs lg:text-sm">
               <div className="flex items-center">
-                <Shield className="w-5 h-5 mr-2" />
+                <Shield className="w-4 h-4 lg:w-5 lg:h-5 mr-1 lg:mr-2" />
                 Garanție 2 Ani
               </div>
               <div className="flex items-center">
-                <Users className="w-5 h-5 mr-2" />
+                <Users className="w-4 h-4 lg:w-5 lg:h-5 mr-1 lg:mr-2" />
                 500+ Clienți Mulțumiți
               </div>
               <div className="flex items-center">
-                <Trophy className="w-5 h-5 mr-2" />
+                <Trophy className="w-4 h-4 lg:w-5 lg:h-5 mr-1 lg:mr-2" />
                 10+ Ani Experiență
               </div>
             </div>
@@ -223,41 +223,41 @@ export default function ServiceDetail() {
         </div>
       </div>
 
-      {/* Service Highlights - Quick Stats */}
+      {/* Service Highlights - Desktop Optimized */}
       {hasDetailedInfo && (
-        <div className="py-16 bg-white">
+        <div className="py-8 lg:py-12 bg-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
               {service.duration && (
-                <div className="bg-gradient-to-br from-green-50 to-green-100 p-8 rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-                  <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
-                    <Timer className="h-8 w-8 text-white" />
+                <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 lg:p-6 rounded-2xl lg:rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                  <div className="w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-xl lg:rounded-2xl flex items-center justify-center mb-3 lg:mb-4 shadow-lg">
+                    <Timer className="h-6 w-6 lg:h-7 lg:w-7 text-white" />
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">Durată Serviciu</h3>
-                  <p className="text-green-700 font-semibold text-lg">{service.duration}</p>
-                  <p className="text-gray-600 mt-2 text-sm">Livrare rapidă și eficientă</p>
+                  <h3 className="text-lg lg:text-xl font-bold text-gray-900 mb-1 lg:mb-2">Durată Serviciu</h3>
+                  <p className="text-green-700 font-semibold text-base lg:text-lg">{service.duration}</p>
+                  <p className="text-gray-600 mt-1 lg:mt-2 text-xs lg:text-sm">Livrare rapidă și eficientă</p>
                 </div>
               )}
 
               {service.coverage && (
-                <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
-                    <Map className="h-8 w-8 text-white" />
+                <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 lg:p-6 rounded-2xl lg:rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                  <div className="w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl lg:rounded-2xl flex items-center justify-center mb-3 lg:mb-4 shadow-lg">
+                    <Map className="h-6 w-6 lg:h-7 lg:w-7 text-white" />
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">Acoperire</h3>
-                  <p className="text-blue-700 font-semibold text-lg">{service.coverage}</p>
-                  <p className="text-gray-600 mt-2 text-sm">Deservim întreaga zonă</p>
+                  <h3 className="text-lg lg:text-xl font-bold text-gray-900 mb-1 lg:mb-2">Acoperire</h3>
+                  <p className="text-blue-700 font-semibold text-base lg:text-lg">{service.coverage}</p>
+                  <p className="text-gray-600 mt-1 lg:mt-2 text-xs lg:text-sm">Deservim întreaga zonă</p>
                 </div>
               )}
 
               {service.recommendedFrequency && (
-                <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-8 rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
-                    <Calendar className="h-8 w-8 text-white" />
+                <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 lg:p-6 rounded-2xl lg:rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                  <div className="w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl lg:rounded-2xl flex items-center justify-center mb-3 lg:mb-4 shadow-lg">
+                    <Calendar className="h-6 w-6 lg:h-7 lg:w-7 text-white" />
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">Frecvență</h3>
-                  <p className="text-purple-700 font-semibold text-lg">{service.recommendedFrequency}</p>
-                  <p className="text-gray-600 mt-2 text-sm">Planificare optimă</p>
+                  <h3 className="text-lg lg:text-xl font-bold text-gray-900 mb-1 lg:mb-2">Frecvență</h3>
+                  <p className="text-purple-700 font-semibold text-base lg:text-lg">{service.recommendedFrequency}</p>
+                  <p className="text-gray-600 mt-1 lg:mt-2 text-xs lg:text-sm">Planificare optimă</p>
                 </div>
               )}
             </div>
@@ -265,27 +265,27 @@ export default function ServiceDetail() {
         </div>
       )}
 
-      {/* Benefits Section - Moved Higher Up */}
+      {/* Benefits Section - Desktop Optimized */}
       {service.benefits && service.benefits.length > 0 && (
-        <section className="py-20 bg-gradient-to-br from-green-50 to-emerald-50">
+        <section className="py-10 lg:py-16 bg-gradient-to-br from-green-50 to-emerald-50">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">
+            <div className="max-w-7xl mx-auto">
+              <div className="text-center mb-8 lg:mb-12">
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-gray-900 mb-3 lg:mb-4">
                   De Ce Să Alegi Serviciul Nostru?
                 </h2>
-                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                <p className="text-base lg:text-lg text-gray-600 max-w-4xl mx-auto">
                   Beneficiază de experiența noastră de peste 10 ani și transformă-ți grădina cu cea mai bună echipă din domeniu.
                 </p>
               </div>
 
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
                 {service.benefits.map((benefit: string, index: number) => (
-                  <div key={index} className="bg-white p-8 rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-green-100">
-                    <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
-                      <CheckCircle2 className="h-8 w-8 text-white" />
+                  <div key={index} className="bg-white p-4 lg:p-6 rounded-2xl lg:rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-green-100">
+                    <div className="w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-xl lg:rounded-2xl flex items-center justify-center mb-3 lg:mb-4 shadow-lg">
+                      <CheckCircle2 className="h-6 w-6 lg:h-7 lg:w-7 text-white" />
                     </div>
-                    <p className="text-gray-800 text-lg leading-relaxed font-medium">{benefit}</p>
+                    <p className="text-gray-800 text-sm lg:text-base leading-relaxed font-medium">{benefit}</p>
                   </div>
                 ))}
               </div>
@@ -294,61 +294,61 @@ export default function ServiceDetail() {
         </section>
       )}
 
-      {/* Main content section - Enhanced Overview */}
-      <section className="py-20 bg-white">
+      {/* Main content section - Desktop Optimized */}
+      <section className="py-10 lg:py-16 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto">
-            {/* Overview Section with Enhanced Gallery */}
-            <div className="grid lg:grid-cols-2 gap-16 items-start mb-20">
-              {/* Enhanced Photo Album Gallery */}
-              <div className="space-y-6">
-                <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-3xl shadow-lg">
+          <div className="max-w-7xl mx-auto">
+            {/* Overview Section with Enhanced Gallery - Better Desktop Layout */}
+            <div className="grid lg:grid-cols-5 gap-8 lg:gap-12 items-start mb-12 lg:mb-16">
+              {/* Enhanced Photo Album Gallery - Takes more space on desktop */}
+              <div className="lg:col-span-3 space-y-4 lg:space-y-6">
+                <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-3 lg:p-4 rounded-2xl lg:rounded-3xl shadow-lg">
                   <PhotoAlbum 
                     images={enhancedGallery}
                     autoRotate={true}
                     rotationInterval={5000}
                     showCounter={true}
-                    className="rounded-2xl overflow-hidden shadow-lg"
+                    className="rounded-xl lg:rounded-2xl overflow-hidden shadow-lg min-h-[300px] lg:min-h-[400px]"
                   />
                 </div>
                 
-                {/* Gallery Stats */}
-                <div className="grid grid-cols-3 gap-4 text-center">
-                  <div className="bg-green-50 p-4 rounded-2xl">
-                    <div className="text-2xl font-bold text-green-600">{enhancedGallery.length}</div>
-                    <div className="text-sm text-gray-600">Imagini</div>
+                {/* Gallery Stats - Compact for Desktop */}
+                <div className="grid grid-cols-3 gap-2 lg:gap-3 text-center">
+                  <div className="bg-green-50 p-2 lg:p-3 rounded-xl lg:rounded-2xl">
+                    <div className="text-lg lg:text-xl font-bold text-green-600">{enhancedGallery.length}</div>
+                    <div className="text-xs lg:text-sm text-gray-600">Imagini</div>
                   </div>
-                  <div className="bg-blue-50 p-4 rounded-2xl">
-                    <div className="text-2xl font-bold text-blue-600">10+</div>
-                    <div className="text-sm text-gray-600">Ani Exp.</div>
+                  <div className="bg-blue-50 p-2 lg:p-3 rounded-xl lg:rounded-2xl">
+                    <div className="text-lg lg:text-xl font-bold text-blue-600">10+</div>
+                    <div className="text-xs lg:text-sm text-gray-600">Ani Exp.</div>
                   </div>
-                  <div className="bg-purple-50 p-4 rounded-2xl">
-                    <div className="text-2xl font-bold text-purple-600">500+</div>
-                    <div className="text-sm text-gray-600">Proiecte</div>
+                  <div className="bg-purple-50 p-2 lg:p-3 rounded-xl lg:rounded-2xl">
+                    <div className="text-lg lg:text-xl font-bold text-purple-600">500+</div>
+                    <div className="text-xs lg:text-sm text-gray-600">Proiecte</div>
                   </div>
                 </div>
               </div>
 
-              <div className="space-y-8">
+              <div className="lg:col-span-2 space-y-4 lg:space-y-6">
                 <div>
-                  <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 lg:mb-4">
                     Despre Acest Serviciu
                   </h2>
-                  <div className="prose prose-green prose-lg max-w-none mb-8">
-                    <p className="text-gray-700 leading-relaxed text-lg">{service.description}</p>
+                  <div className="prose prose-green max-w-none mb-4 lg:mb-6">
+                    <p className="text-gray-700 leading-relaxed text-sm lg:text-base">{service.description}</p>
                   </div>
                 </div>
 
-                {/* Seasonal availability with enhanced design */}
+                {/* Seasonal availability - Compact */}
                 {service.seasonalAvailability && service.seasonalAvailability.length > 0 && (
-                  <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-2xl border border-green-200">
-                    <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                      <Calendar className="w-6 h-6 mr-3 text-green-600" />
+                  <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-3 lg:p-4 rounded-xl lg:rounded-2xl border border-green-200">
+                    <h3 className="text-base lg:text-lg font-bold text-gray-900 mb-2 lg:mb-3 flex items-center">
+                      <Calendar className="w-4 h-4 lg:w-5 lg:h-5 mr-2 text-green-600" />
                       Disponibilitate Sezonieră
                     </h3>
-                    <div className="flex flex-wrap gap-3">
+                    <div className="flex flex-wrap gap-2">
                       {service.seasonalAvailability.map((season: string, index: number) => (
-                        <span key={index} className="px-4 py-2 bg-white border-2 border-green-200 text-green-800 rounded-full text-sm font-medium shadow-sm">
+                        <span key={index} className="px-2 py-1 lg:px-3 lg:py-1 bg-white border border-green-200 text-green-800 rounded-full text-xs lg:text-sm font-medium shadow-sm">
                           {season}
                         </span>
                       ))}
@@ -356,20 +356,20 @@ export default function ServiceDetail() {
                   </div>
                 )}
 
-                {/* Enhanced CTA */}
-                <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-8 rounded-3xl border-2 border-orange-200">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Gata să Începi?</h3>
-                  <p className="text-gray-700 mb-6">Contactează-ne pentru o evaluare gratuită și o ofertă personalizată.</p>
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    <Link href={`/appointment?service=${service.id}`} className="flex-1">
-                      <Button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white w-full py-3 rounded-2xl font-bold shadow-lg">
-                        <Calendar className="w-5 h-5 mr-2" />
+                {/* Enhanced CTA - Compact */}
+                <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-4 lg:p-6 rounded-2xl lg:rounded-3xl border-2 border-orange-200">
+                  <h3 className="text-lg lg:text-xl font-bold text-gray-900 mb-2 lg:mb-3">Gata să Începi?</h3>
+                  <p className="text-gray-700 mb-3 lg:mb-4 text-sm lg:text-base">Contactează-ne pentru o evaluare gratuită și o ofertă personalizată.</p>
+                  <div className="flex flex-col gap-2 lg:gap-3">
+                    <Link href={`/appointment?service=${service.id}`} className="w-full">
+                      <Button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white w-full py-2 lg:py-3 rounded-xl lg:rounded-2xl font-bold shadow-lg text-sm lg:text-base">
+                        <Calendar className="w-4 h-4 lg:w-5 lg:h-5 mr-2" />
                         Programează Acum
                       </Button>
                     </Link>
-                    <a href="tel:+40742650670" className="flex-1">
-                      <Button variant="outline" className="border-2 border-orange-300 text-orange-600 hover:bg-orange-50 w-full py-3 rounded-2xl font-semibold">
-                        <Phone className="w-5 h-5 mr-2" />
+                    <a href="tel:+40742650670" className="w-full">
+                      <Button variant="outline" className="border-2 border-orange-300 text-orange-600 hover:bg-orange-50 w-full py-2 lg:py-3 rounded-xl lg:rounded-2xl font-semibold text-sm lg:text-base">
+                        <Phone className="w-4 h-4 lg:w-5 lg:h-5 mr-2" />
                         Sună Direct
                       </Button>
                     </a>
@@ -378,19 +378,19 @@ export default function ServiceDetail() {
               </div>
             </div>
 
-            {/* What's Included Section - Enhanced with Icons */}
+            {/* What's Included Section - Desktop Optimized */}
             {service.includes && service.includes.length > 0 && (
-              <div className="mb-20">
-                <div className="text-center mb-12">
-                  <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              <div className="mb-12 lg:mb-16">
+                <div className="text-center mb-6 lg:mb-8">
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 lg:mb-3">
                     Ce Include Serviciul
                   </h2>
-                  <p className="text-xl text-gray-600">
+                  <p className="text-base lg:text-lg text-gray-600">
                     Pachet complet pentru rezultate profesionale garantate
                   </p>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 lg:gap-4">
                   {service.includes.map((item: string, index: number) => {
                     // Determine icon based on content keywords
                     let IconComponent = CheckCircle2;
@@ -411,13 +411,13 @@ export default function ServiceDetail() {
                     }
 
                     return (
-                      <div key={index} className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                        <div className="flex items-start space-x-4">
-                          <div className={`w-12 h-12 bg-gradient-to-br ${iconColor} rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg`}>
-                            <IconComponent className="h-6 w-6 text-white" />
+                      <div key={index} className="bg-white p-3 lg:p-4 rounded-xl lg:rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                        <div className="flex items-start space-x-3">
+                          <div className={`w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br ${iconColor} rounded-lg lg:rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg`}>
+                            <IconComponent className="h-5 w-5 lg:h-6 lg:w-6 text-white" />
                           </div>
                           <div className="flex-1">
-                            <p className="text-gray-800 text-lg leading-relaxed font-medium">{item}</p>
+                            <p className="text-gray-800 text-sm lg:text-base leading-relaxed font-medium">{item}</p>
                           </div>
                         </div>
                       </div>
@@ -429,104 +429,104 @@ export default function ServiceDetail() {
 
 
 
-            {/* Social Proof Section */}
-            <div className="mb-20">
-              <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-12 text-white">
-                <div className="text-center mb-12">
-                  <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            {/* Social Proof Section - Desktop Optimized */}
+            <div className="mb-12 lg:mb-16">
+              <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl lg:rounded-3xl p-6 lg:p-8 text-white">
+                <div className="text-center mb-6 lg:mb-8">
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 lg:mb-3">
                     Ce Spun Clienții Noștri
                   </h2>
-                  <p className="text-xl text-gray-300">
+                  <p className="text-base lg:text-lg text-gray-300">
                     Peste 500 de grădini transformate cu succes
                   </p>
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-8 mb-12">
+                <div className="grid md:grid-cols-3 gap-4 lg:gap-6 mb-6 lg:mb-8">
                   <div className="text-center">
-                    <div className="text-4xl font-bold text-green-400 mb-2">500+</div>
-                    <div className="text-gray-300">Proiecte Finalizate</div>
+                    <div className="text-2xl lg:text-3xl font-bold text-green-400 mb-1">500+</div>
+                    <div className="text-gray-300 text-sm lg:text-base">Proiecte Finalizate</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-4xl font-bold text-blue-400 mb-2">98%</div>
-                    <div className="text-gray-300">Clienți Mulțumiți</div>
+                    <div className="text-2xl lg:text-3xl font-bold text-blue-400 mb-1">98%</div>
+                    <div className="text-gray-300 text-sm lg:text-base">Clienți Mulțumiți</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-4xl font-bold text-yellow-400 mb-2">10+</div>
-                    <div className="text-gray-300">Ani Experiență</div>
+                    <div className="text-2xl lg:text-3xl font-bold text-yellow-400 mb-1">10+</div>
+                    <div className="text-gray-300 text-sm lg:text-base">Ani Experiență</div>
                   </div>
                 </div>
 
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
-                  <div className="flex items-center mb-4">
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl lg:rounded-2xl p-4 lg:p-6 border border-white/20">
+                  <div className="flex items-center mb-3 lg:mb-4">
                     <div className="flex text-yellow-400 mr-3">
-                      <Star className="w-5 h-5 fill-current" />
-                      <Star className="w-5 h-5 fill-current" />
-                      <Star className="w-5 h-5 fill-current" />
-                      <Star className="w-5 h-5 fill-current" />
-                      <Star className="w-5 h-5 fill-current" />
+                      <Star className="w-4 h-4 lg:w-5 lg:h-5 fill-current" />
+                      <Star className="w-4 h-4 lg:w-5 lg:h-5 fill-current" />
+                      <Star className="w-4 h-4 lg:w-5 lg:h-5 fill-current" />
+                      <Star className="w-4 h-4 lg:w-5 lg:h-5 fill-current" />
+                      <Star className="w-4 h-4 lg:w-5 lg:h-5 fill-current" />
                     </div>
-                    <span className="font-semibold">5.0/5 Stele</span>
+                    <span className="font-semibold text-sm lg:text-base">5.0/5 Stele</span>
                   </div>
-                  <p className="text-lg italic leading-relaxed">
+                  <p className="text-sm lg:text-base italic leading-relaxed">
                     "Echipa Flori și Frunze a transformat complet grădina noastră. Profesionalismul și atenția la detalii sunt remarcabile. Recomand cu încredere!"
                   </p>
-                  <div className="mt-4 text-sm text-gray-300">
+                  <div className="mt-3 lg:mt-4 text-xs lg:text-sm text-gray-300">
                     - Maria Popescu, București
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Enhanced FAQs Section */}
+            {/* Enhanced FAQs Section - Desktop Optimized */}
             {service.faqs && service.faqs.length > 0 && (
-              <div className="mb-20">
-                <div className="text-center mb-12">
-                  <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              <div className="mb-12 lg:mb-16">
+                <div className="text-center mb-6 lg:mb-8">
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 lg:mb-3">
                     Întrebări Frecvente
                   </h2>
-                  <p className="text-xl text-gray-600">
+                  <p className="text-base lg:text-lg text-gray-600">
                     Răspunsuri clare la întrebările cele mai comune
                   </p>
                 </div>
 
-                <div className="max-w-4xl mx-auto">
-                  <Accordion type="single" collapsible className="w-full space-y-4">
+                <div className="max-w-5xl mx-auto">
+                  <Accordion type="single" collapsible className="w-full space-y-3 lg:space-y-4">
                     {service.faqs.map((faq: any, index: number) => (
-                      <AccordionItem key={index} value={`faq-${index}`} className="bg-white border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300">
-                        <AccordionTrigger className="text-left font-semibold text-lg px-6 py-4 hover:no-underline hover:bg-gray-50 rounded-t-2xl">
+                      <AccordionItem key={index} value={`faq-${index}`} className="bg-white border border-gray-200 rounded-xl lg:rounded-2xl shadow-sm hover:shadow-md transition-all duration-300">
+                        <AccordionTrigger className="text-left font-semibold text-base lg:text-lg px-4 py-3 lg:px-6 lg:py-4 hover:no-underline hover:bg-gray-50 rounded-t-xl lg:rounded-t-2xl">
                           <div className="flex items-center">
-                            <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-                              <span className="text-green-600 font-bold text-sm">{index + 1}</span>
+                            <div className="w-6 h-6 lg:w-8 lg:h-8 bg-green-100 rounded-full flex items-center justify-center mr-3 lg:mr-4 flex-shrink-0">
+                              <span className="text-green-600 font-bold text-xs lg:text-sm">{index + 1}</span>
                             </div>
                             {faq.question}
                           </div>
                         </AccordionTrigger>
-                        <AccordionContent className="px-6 pb-6">
-                          <div className="ml-12">
-                            <p className="text-gray-700 leading-relaxed text-lg">{faq.answer}</p>
+                        <AccordionContent className="px-4 pb-4 lg:px-6 lg:pb-6">
+                          <div className="ml-9 lg:ml-12">
+                            <p className="text-gray-700 leading-relaxed text-sm lg:text-base">{faq.answer}</p>
                           </div>
                         </AccordionContent>
                       </AccordionItem>
                     ))}
                   </Accordion>
 
-                  {/* Additional FAQ CTA */}
-                  <div className="text-center mt-12">
-                    <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-8 rounded-2xl border border-green-200">
-                      <h3 className="text-2xl font-bold text-gray-900 mb-4">Mai Ai Întrebări?</h3>
-                      <p className="text-gray-700 mb-6">
+                  {/* Additional FAQ CTA - Compact */}
+                  <div className="text-center mt-6 lg:mt-8">
+                    <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-4 lg:p-6 rounded-xl lg:rounded-2xl border border-green-200">
+                      <h3 className="text-lg lg:text-xl font-bold text-gray-900 mb-2 lg:mb-3">Mai Ai Întrebări?</h3>
+                      <p className="text-gray-700 mb-3 lg:mb-4 text-sm lg:text-base">
                         Echipa noastră de experți este gata să îți răspundă la orice întrebare specifică despre proiectul tău.
                       </p>
-                      <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                      <div className="flex flex-col sm:flex-row gap-3 lg:gap-4 justify-center">
                         <a href="tel:+40742650670">
-                          <Button className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-2xl font-semibold">
-                            <Phone className="w-5 h-5 mr-2" />
+                          <Button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 lg:px-6 lg:py-3 rounded-xl lg:rounded-2xl font-semibold text-sm lg:text-base">
+                            <Phone className="w-4 h-4 lg:w-5 lg:h-5 mr-2" />
                             Sună pentru Consultanță
                           </Button>
                         </a>
                         <a href="https://wa.me/40742650670" target="_blank" rel="noopener noreferrer">
-                          <Button variant="outline" className="border-2 border-green-300 text-green-600 hover:bg-green-50 px-6 py-3 rounded-2xl font-semibold">
-                            <MessageCircle className="w-5 h-5 mr-2" />
+                          <Button variant="outline" className="border-2 border-green-300 text-green-600 hover:bg-green-50 px-4 py-2 lg:px-6 lg:py-3 rounded-xl lg:rounded-2xl font-semibold text-sm lg:text-base">
+                            <MessageCircle className="w-4 h-4 lg:w-5 lg:h-5 mr-2" />
                             WhatsApp
                           </Button>
                         </a>
@@ -540,58 +540,60 @@ export default function ServiceDetail() {
         </div>
       </section>
 
-      {/* Enhanced Portfolio section */}
+      {/* Enhanced Portfolio section - Desktop Optimized */}
       {!portfolioLoading && portfolioItems.length > 0 && (
-        <section className="py-20 bg-gradient-to-br from-slate-50 to-gray-100">
+        <section className="py-10 lg:py-16 bg-gradient-to-br from-slate-50 to-gray-100">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">
-                Transformări Reale cu {service.name}
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Descoperă proiectele noastre finalizate și inspiră-te pentru următoarea transformare
-              </p>
-            </div>
+            <div className="max-w-7xl mx-auto">
+              <div className="text-center mb-8 lg:mb-12">
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-gray-900 mb-3 lg:mb-4">
+                  Transformări Reale cu {service.name}
+                </h2>
+                <p className="text-base lg:text-lg text-gray-600 max-w-4xl mx-auto">
+                  Descoperă proiectele noastre finalizate și inspiră-te pentru următoarea transformare
+                </p>
+              </div>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-              {portfolioItems.map((item: any) => (
-                <div key={item.id} className="group relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3">
-                  <div className="aspect-square overflow-hidden relative">
-                    <img 
-                      src={item.imageUrl} 
-                      alt={item.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300">
-                      <div className="absolute bottom-4 left-4 right-4 text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm font-medium bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
-                            Proiect Finalizat
-                          </span>
-                          <ZoomIn className="w-8 h-8" />
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6 mb-8 lg:mb-12">
+                {portfolioItems.map((item: any) => (
+                  <div key={item.id} className="group relative bg-white rounded-2xl lg:rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3">
+                    <div className="aspect-square overflow-hidden relative">
+                      <img 
+                        src={item.imageUrl} 
+                        alt={item.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300">
+                        <div className="absolute bottom-2 lg:bottom-4 left-2 lg:left-4 right-2 lg:right-4 text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs lg:text-sm font-medium bg-white/20 backdrop-blur-sm px-2 py-1 lg:px-3 lg:py-1 rounded-full">
+                              Proiect Finalizat
+                            </span>
+                            <ZoomIn className="w-6 h-6 lg:w-8 lg:h-8" />
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="p-6">
-                    <h3 className="font-bold text-gray-900 mb-3 text-xl">{item.title}</h3>
-                    <p className="text-gray-600 leading-relaxed line-clamp-3">{item.description}</p>
-                    <div className="mt-4 flex items-center justify-between">
-                      <span className="text-green-600 font-semibold">Vezi Detalii</span>
-                      <ArrowRight className="w-5 h-5 text-green-600 transform group-hover:translate-x-1 transition-transform" />
+                    <div className="p-3 lg:p-4">
+                      <h3 className="font-bold text-gray-900 mb-2 text-base lg:text-lg">{item.title}</h3>
+                      <p className="text-gray-600 leading-relaxed line-clamp-3 text-sm lg:text-base">{item.description}</p>
+                      <div className="mt-3 lg:mt-4 flex items-center justify-between">
+                        <span className="text-green-600 font-semibold text-sm lg:text-base">Vezi Detalii</span>
+                        <ArrowRight className="w-4 h-4 lg:w-5 lg:h-5 text-green-600 transform group-hover:translate-x-1 transition-transform" />
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
 
-            <div className="text-center">
-              <Link href="/portfolio" state={{ from: 'serviceDetail' }}>
-                <Button className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-10 py-4 text-lg font-bold rounded-2xl shadow-xl hover:shadow-green-500/25 transform hover:scale-105 transition-all duration-300">
-                  <Trophy className="w-6 h-6 mr-3" />
-                  Vezi Toate Proiectele din Portofoliu
-                </Button>
-              </Link>
+              <div className="text-center">
+                <Link href="/portfolio" state={{ from: 'serviceDetail' }}>
+                  <Button className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-6 py-3 lg:px-8 lg:py-4 text-base lg:text-lg font-bold rounded-xl lg:rounded-2xl shadow-xl hover:shadow-green-500/25 transform hover:scale-105 transition-all duration-300">
+                    <Trophy className="w-5 h-5 lg:w-6 lg:h-6 mr-2 lg:mr-3" />
+                    Vezi Toate Proiectele din Portofoliu
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </section>
