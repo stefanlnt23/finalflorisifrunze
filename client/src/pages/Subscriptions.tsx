@@ -151,20 +151,7 @@ export default function Subscriptions() {
                             {subscription.price.split(' ').slice(1).join(' ')}
                           </span>
                         </div>
-                        <p className="text-gray-600 leading-relaxed mb-4">{subscription.description}</p>
-                        
-                        {/* Enhanced Best for section */}
-                        <div className="mt-4 p-4 rounded-lg" style={{ backgroundColor: `${subscription.color}10` }}>
-                          <p className="text-sm font-semibold" style={{ color: subscription.color }}>Perfect pentru:</p>
-                          <p className="text-sm text-gray-700 font-medium">
-                            {subscription.displayOrder === 0 ? 'Proprietari cu grădini mici (până la 100 mp)' :
-                             subscription.displayOrder === 1 ? 'Case cu grădini medii (100-300 mp)' :
-                             subscription.displayOrder === 2 ? 'Proprietăți cu sisteme de irigații existente' :
-                             subscription.displayOrder === 3 ? 'Clienți care doresc redesign complet' :
-                             subscription.displayOrder === 4 ? 'Vile și proprietăți premium (300+ mp)' :
-                             'Clienți care preferă soluții 100% ecologice'}
-                          </p>
-                        </div>
+                        <p className="text-gray-600 leading-relaxed">{subscription.description}</p>
                       </div>
 
                       {/* Standardized Features */}
