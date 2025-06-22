@@ -588,148 +588,154 @@ export default function Contact() {
                 </Card>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
 
-            {/* Enhanced Map Section - Moved up */}
-            <div className="mt-20">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold text-gray-900 mb-4">Locația Noastră</h2>
-                <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                  Ne găsești în inima Iașului, cu acces facil din toate zonele orașului. 
-                  Oferim servicii în tot Iașul și împrejurimile.
-                </p>
+      {/* Enhanced Map Section - Separate section right after contact */}
+      <section className="py-16 bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            
+            {/* Map Header */}
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">Locația Noastră</h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                Ne găsești în inima Iașului, cu acces facil din toate zonele orașului. 
+                Oferim servicii în tot Iașul și împrejurimile.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              
+              {/* Interactive Map */}
+              <div className="lg:col-span-2">
+                <Card className="overflow-hidden shadow-xl">
+                  <div className="relative h-96 lg:h-[500px]">
+                    <iframe 
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2712.8234567!2d27.5879167!3d47.1584593!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40cafb7cf639ddbb%3A0x7ccb80da5426f53c!2sStrada%20Alexandru%20L%C4%83pu%C8%99neanu%2014%2C%20Ia%C8%99i%20700057%2C%20Romania!5e0!3m2!1sen!2sus!4v1695735029358!5m2!1sen!2sus"
+                      width="100%" 
+                      height="100%" 
+                      style={{ border: 0 }} 
+                      allowFullScreen 
+                      loading="lazy" 
+                      referrerPolicy="no-referrer-when-downgrade"
+                      title="Flori și Frunze - Strada Alexandru Lăpușneanu 14, Iași"
+                      className="w-full h-full"
+                    ></iframe>
+                    
+                    {/* Map Overlay with Actions */}
+                    <div className="absolute top-4 right-4 space-y-2">
+                      <a
+                        href="https://maps.google.com/?q=Strada+Alexandru+Lăpușneanu+14,+Iași,+700057,+România"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block bg-white hover:bg-gray-50 text-gray-900 px-4 py-2 rounded-lg shadow-md transition-colors text-sm font-medium"
+                      >
+                        <ExternalLink className="w-4 h-4 inline mr-2" />
+                        Deschide în Google Maps
+                      </a>
+                      <a
+                        href="https://maps.google.com/?q=Strada+Alexandru+Lăpușneanu+14,+Iași,+700057,+România&dirflg=d"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow-md transition-colors text-sm font-medium"
+                      >
+                        <MapPin className="w-4 h-4 inline mr-2" />
+                        Obține Direcții
+                      </a>
+                    </div>
+                  </div>
+                </Card>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Location Details */}
+              <div className="space-y-6">
                 
-                {/* Interactive Map */}
-                <div className="lg:col-span-2">
-                  <Card className="overflow-hidden shadow-xl">
-                    <div className="relative h-96 lg:h-[500px]">
-                      <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2712.8234567!2d27.5879167!3d47.1584593!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40cafb7cf639ddbb%3A0x7ccb80da5426f53c!2sStrada%20Alexandru%20L%C4%83pu%C8%99neanu%2014%2C%20Ia%C8%99i%20700057%2C%20Romania!5e0!3m2!1sen!2sus!4v1695735029358!5m2!1sen!2sus"
-                        width="100%" 
-                        height="100%" 
-                        style={{ border: 0 }} 
-                        allowFullScreen 
-                        loading="lazy" 
-                        referrerPolicy="no-referrer-when-downgrade"
-                        title="Flori și Frunze - Strada Alexandru Lăpușneanu 14, Iași"
-                        className="w-full h-full"
-                      ></iframe>
-                      
-                      {/* Map Overlay with Actions */}
-                      <div className="absolute top-4 right-4 space-y-2">
-                        <a
-                          href="https://maps.google.com/?q=Strada+Alexandru+Lăpușneanu+14,+Iași,+700057,+România"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="block bg-white hover:bg-gray-50 text-gray-900 px-4 py-2 rounded-lg shadow-md transition-colors text-sm font-medium"
-                        >
-                          <ExternalLink className="w-4 h-4 inline mr-2" />
-                          Deschide în Google Maps
-                        </a>
-                        <a
-                          href="https://maps.google.com/?q=Strada+Alexandru+Lăpușneanu+14,+Iași,+700057,+România&dirflg=d"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="block bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow-md transition-colors text-sm font-medium"
-                        >
-                          <MapPin className="w-4 h-4 inline mr-2" />
-                          Obține Direcții
-                        </a>
+                {/* Address Card */}
+                <Card>
+                  <CardContent className="p-6">
+                    <h3 className="text-lg font-bold mb-4 flex items-center">
+                      <MapPin className="w-5 h-5 mr-2 text-green-600" />
+                      Adresa Completă
+                    </h3>
+                    <div className="space-y-2 text-gray-700">
+                      <p className="font-medium">Strada Alexandru Lăpușneanu 14</p>
+                      <p>Iași, 700057</p>
+                      <p>Județul Iași, România</p>
+                    </div>
+                    <div className="mt-4 pt-4 border-t">
+                      <p className="text-sm text-gray-600">
+                        <strong>Puncte de reper:</strong><br />
+                        Aproape de Centrul Vechi al Iașului<br />
+                        La 5 minute de Palas Mall
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Transportation */}
+                <Card>
+                  <CardContent className="p-6">
+                    <h3 className="text-lg font-bold mb-4 text-gray-900">Cum să Ajungi</h3>
+                    <div className="space-y-3 text-sm">
+                      <div className="flex items-start">
+                        <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center mr-3 mt-0.5">
+                          <i className="fas fa-car text-blue-600 text-xs"></i>
+                        </div>
+                        <div>
+                          <p className="font-medium">Cu mașina</p>
+                          <p className="text-gray-600">Parcare disponibilă în zonă</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start">
+                        <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mr-3 mt-0.5">
+                          <i className="fas fa-bus text-green-600 text-xs"></i>
+                        </div>
+                        <div>
+                          <p className="font-medium">Transport public</p>
+                          <p className="text-gray-600">Liniile 28, 34, 42</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start">
+                        <div className="w-6 h-6 rounded-full bg-yellow-100 flex items-center justify-center mr-3 mt-0.5">
+                          <i className="fas fa-walking text-yellow-600 text-xs"></i>
+                        </div>
+                        <div>
+                          <p className="font-medium">Pe jos</p>
+                          <p className="text-gray-600">10 min din centru</p>
+                        </div>
                       </div>
                     </div>
-                  </Card>
-                </div>
+                  </CardContent>
+                </Card>
 
-                {/* Location Details */}
-                <div className="space-y-6">
-                  
-                  {/* Address Card */}
-                  <Card>
-                    <CardContent className="p-6">
-                      <h3 className="text-lg font-bold mb-4 flex items-center">
-                        <MapPin className="w-5 h-5 mr-2 text-green-600" />
-                        Adresa Completă
-                      </h3>
-                      <div className="space-y-2 text-gray-700">
-                        <p className="font-medium">Strada Alexandru Lăpușneanu 14</p>
-                        <p>Iași, 700057</p>
-                        <p>Județul Iași, România</p>
+                {/* Service Radius */}
+                <Card className="bg-green-50 border-green-200">
+                  <CardContent className="p-6">
+                    <h3 className="text-lg font-bold mb-4 text-green-800 flex items-center">
+                      <div className="w-5 h-5 rounded-full bg-green-600 mr-2"></div>
+                      Raza de Acoperire
+                    </h3>
+                    <div className="space-y-2 text-sm text-green-700">
+                      <div className="flex justify-between">
+                        <span>Iași (centrul urbain):</span>
+                        <Badge variant="secondary" className="bg-green-200 text-green-800">0-15 km</Badge>
                       </div>
-                      <div className="mt-4 pt-4 border-t">
-                        <p className="text-sm text-gray-600">
-                          <strong>Puncte de reper:</strong><br />
-                          Aproape de Centrul Vechi al Iașului<br />
-                          La 5 minute de Palas Mall
-                        </p>
+                      <div className="flex justify-between">
+                        <span>Zona metropolitană:</span>
+                        <Badge variant="secondary" className="bg-green-200 text-green-800">15-30 km</Badge>
                       </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Transportation */}
-                  <Card>
-                    <CardContent className="p-6">
-                      <h3 className="text-lg font-bold mb-4 text-gray-900">Cum să Ajungi</h3>
-                      <div className="space-y-3 text-sm">
-                        <div className="flex items-start">
-                          <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center mr-3 mt-0.5">
-                            <i className="fas fa-car text-blue-600 text-xs"></i>
-                          </div>
-                          <div>
-                            <p className="font-medium">Cu mașina</p>
-                            <p className="text-gray-600">Parcare disponibilă în zonă</p>
-                          </div>
-                        </div>
-                        <div className="flex items-start">
-                          <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mr-3 mt-0.5">
-                            <i className="fas fa-bus text-green-600 text-xs"></i>
-                          </div>
-                          <div>
-                            <p className="font-medium">Transport public</p>
-                            <p className="text-gray-600">Liniile 28, 34, 42</p>
-                          </div>
-                        </div>
-                        <div className="flex items-start">
-                          <div className="w-6 h-6 rounded-full bg-yellow-100 flex items-center justify-center mr-3 mt-0.5">
-                            <i className="fas fa-walking text-yellow-600 text-xs"></i>
-                          </div>
-                          <div>
-                            <p className="font-medium">Pe jos</p>
-                            <p className="text-gray-600">10 min din centru</p>
-                          </div>
-                        </div>
+                      <div className="flex justify-between">
+                        <span>Proiecte speciale:</span>
+                        <Badge variant="secondary" className="bg-green-200 text-green-800">30+ km</Badge>
                       </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Service Radius */}
-                  <Card className="bg-green-50 border-green-200">
-                    <CardContent className="p-6">
-                      <h3 className="text-lg font-bold mb-4 text-green-800 flex items-center">
-                        <div className="w-5 h-5 rounded-full bg-green-600 mr-2"></div>
-                        Raza de Acoperire
-                      </h3>
-                      <div className="space-y-2 text-sm text-green-700">
-                        <div className="flex justify-between">
-                          <span>Iași (centrul urbain):</span>
-                          <Badge variant="secondary" className="bg-green-200 text-green-800">0-15 km</Badge>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>Zona metropolitană:</span>
-                          <Badge variant="secondary" className="bg-green-200 text-green-800">15-30 km</Badge>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>Proiecte speciale:</span>
-                          <Badge variant="secondary" className="bg-green-200 text-green-800">30+ km</Badge>
-                        </div>
-                      </div>
-                      <p className="text-xs text-green-600 mt-3">
-                        Costurile de transport sunt incluse în prețul proiectelor din Iași
-                      </p>
-                    </CardContent>
-                  </Card>
-                </div>
+                    </div>
+                    <p className="text-xs text-green-600 mt-3">
+                      Costurile de transport sunt incluse în prețul proiectelor din Iași
+                    </p>
+                  </CardContent>
+                </Card>
               </div>
             </div>
           </div>
