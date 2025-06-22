@@ -671,7 +671,7 @@ export default function ServiceDetail() {
               <div className="flex flex-col items-center p-6 bg-white/10 backdrop-blur-sm rounded-2xl">
                 <Mail className="w-12 h-12 mb-4 text-green-300" />
                 <h3 className="text-lg font-bold mb-2">Email</h3>
-                <p className="text-green-100">contact@florisifrunze.com</p>
+                <p className="text-green-100">info@florisifrunze.com</p>
                 <p className="text-sm text-green-200 mt-2">Răspuns în 2 ore</p>
               </div>
             </div>

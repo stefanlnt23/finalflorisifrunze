@@ -117,6 +117,21 @@ The application is architected to support both MongoDB (currently active) and Po
 
 ## Recent Changes
 
+### June 22, 2025 - Email Address Update
+- **Contact Information Standardization**: Updated email address from contact@florisifrunze.com to info@florisifrunze.com across all website components
+- **Consistent Brand Identity**: Ensured unified contact information across ServiceDetail page, Contact page, and footer
+- **Impact**: Professional consistency in all customer-facing contact information
+
+### June 22, 2025 - About Page Complete Redesign
+- **MainLayout Integration**: Fixed footer display issue by properly wrapping About page in MainLayout component
+- **Reduced Visual Density**: Decreased section padding from py-20/py-32 to py-16/py-24 for less zoomed-in appearance
+- **Team Section Redesign**: Replaced individual team member photos with expertise areas showcasing specialization domains
+- **Floating Garden Animations**: Added animated background elements (leaves, flowers, trees, sun) with different timing delays using custom CSS animations
+- **Professional Team Summary**: Created unified team card highlighting 8 specialists with combined experience statistics
+- **Functional Navigation**: Added working CTA buttons linking to contact and services pages
+- **Enhanced Visual Hierarchy**: Maintained professional design with proper spacing and improved readability
+- **Impact**: Complete About page transformation with engaging animations, professional team presentation, and proper footer integration
+
 ### June 22, 2025 - Contact Page Complete UI/UX Redesign and Enhancement
 - **Enhanced Form Validation**: Upgraded validation schema with Romanian error messages, character limits, and real-time feedback with character counters
 - **Improved Visual Hierarchy**: Redesigned page header with trust signals (24h response, 4.9/5 rating, free consultation) and prominent contact statistics
