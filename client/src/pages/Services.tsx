@@ -13,6 +13,14 @@ import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronRight, Leaf, Clock, CheckCircle2 } from "lucide-react";
 
+interface Service {
+  id: string;
+  name: string;
+  description: string;
+  price: string;
+  imageUrl?: string;
+}
+
 export default function Services() {
   // Add state to track if this is the initial render
   const [isInitialRender, setIsInitialRender] = useState(true);
@@ -27,7 +35,7 @@ export default function Services() {
     retry: 1, // Only retry once on failure
   });
 
-  const services = data?.services || [];
+  const services: Service[] = (data as { services: Service[] })?.services || [];
 
   // Set isInitialRender to false after the first render
   useEffect(() => {
@@ -172,7 +180,7 @@ export default function Services() {
                   </Link>
                 </div>
               ) : (
-                services.map((service, index) => (
+                services.map((service: Service, index: number) => (
                   <Card
                     key={service.id}
                     className={`group overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-500 bg-white rounded-xl ${isInitialRender ? "animate-fadeInUp" : ""}`}
@@ -189,18 +197,27 @@ export default function Services() {
                           alt={service.name}
                           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        {/* Dark overlay for text readability */}
+                        <div className="absolute inset-0 bg-black/40"></div>
+                        {/* Overlaid title */}
+                        <div className="absolute inset-0 flex items-center justify-center text-center p-4">
+                          <h3 className="text-2xl font-bold text-white drop-shadow-lg">
+                            {service.name}
+                          </h3>
+                        </div>
                       </div>
                     ) : (
-                      <div className="w-full h-64 bg-green-100 flex items-center justify-center">
+                      <div className="relative w-full h-64 bg-green-100 flex items-center justify-center">
                         <Leaf className="h-24 w-24 text-green-300" />
+                        {/* Overlaid title for fallback */}
+                        <div className="absolute inset-0 flex items-center justify-center text-center p-4">
+                          <h3 className="text-2xl font-bold text-green-800">
+                            {service.name}
+                          </h3>
+                        </div>
                       </div>
                     )}
                     <CardHeader className="pb-2">
-                      <CardTitle className="text-2xl font-bold relative group-hover:text-green-700 transition-colors duration-300">
-                        {service.name}
-                        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-1/2"></span>
-                      </CardTitle>
                       <CardDescription className="text-green-700 font-semibold text-lg">
                         {service.price}
                       </CardDescription>

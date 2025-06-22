@@ -162,7 +162,7 @@ export function ServicesCarousel() {
           <Card key={service.id} className="service-card-inner h-full overflow-hidden border-green-100 hover:border-green-300 shadow-sm hover:shadow-md">
             <CardContent className="p-6 flex flex-col items-center text-center space-y-4 h-full">
               {service.imageUrl ? (
-                <div className="w-full h-48 overflow-hidden rounded-lg mb-4 service-image-container" style={{ willChange: 'auto' }}>
+                <div className="relative w-full h-48 overflow-hidden rounded-lg mb-4 service-image-container" style={{ willChange: 'auto' }}>
                   <CachedImage 
                     src={service.imageUrl} 
                     alt={service.name} 
@@ -174,15 +174,24 @@ export function ServicesCarousel() {
                       backfaceVisibility: 'hidden'
                     }}
                   />
+                  {/* Dark overlay for text readability */}
+                  <div className="absolute inset-0 bg-black/40 rounded-lg"></div>
+                  {/* Overlaid title */}
+                  <div className="absolute inset-0 flex items-center justify-center text-center p-4">
+                    <h3 className="text-xl font-semibold text-white drop-shadow-lg service-title">{service.name}</h3>
+                  </div>
                 </div>
               ) : (
-                <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mb-2 service-icon">
+                <div className="relative w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mb-2 service-icon">
                   <span className="text-green-600 text-2xl">
                     <i className="fas fa-leaf"></i>
                   </span>
+                  {/* For fallback icons, we'll keep the title separate */}
                 </div>
               )}
-              <h3 className="text-xl font-semibold text-gray-900 service-title">{service.name}</h3>
+              {!service.imageUrl && (
+                <h3 className="text-xl font-semibold text-gray-900 service-title">{service.name}</h3>
+              )}
               <p className="text-gray-600 flex-grow service-description">
                 {service.description.length > 120
                   ? `${service.description.substring(0, 120)}...`
@@ -253,7 +262,7 @@ export function ServicesCarousel() {
               <Card className="service-card-inner h-full overflow-hidden border-green-100 hover:border-green-300 shadow-sm hover:shadow-md">
                 <CardContent className="p-6 flex flex-col items-center text-center space-y-4 h-full">
                   {service.imageUrl ? (
-                    <div className="w-full h-48 overflow-hidden rounded-lg mb-4 service-image-container" style={{ willChange: 'auto' }}>
+                    <div className="relative w-full h-48 overflow-hidden rounded-lg mb-4 service-image-container" style={{ willChange: 'auto' }}>
                       <CachedImage 
                         src={service.imageUrl} 
                         alt={service.name} 
@@ -265,15 +274,23 @@ export function ServicesCarousel() {
                           backfaceVisibility: 'hidden'
                         }}
                       />
+                      {/* Dark overlay for text readability */}
+                      <div className="absolute inset-0 bg-black/40 rounded-lg"></div>
+                      {/* Overlaid title */}
+                      <div className="absolute inset-0 flex items-center justify-center text-center p-4">
+                        <h3 className="text-xl font-semibold text-white drop-shadow-lg service-title">{service.name}</h3>
+                      </div>
                     </div>
                   ) : (
-                    <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mb-2 service-icon">
+                    <div className="relative w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mb-2 service-icon">
                       <span className="text-green-600 text-2xl">
                         <i className="fas fa-leaf"></i>
                       </span>
                     </div>
                   )}
-                  <h3 className="text-xl font-semibold text-gray-900 service-title">{service.name}</h3>
+                  {!service.imageUrl && (
+                    <h3 className="text-xl font-semibold text-gray-900 service-title">{service.name}</h3>
+                  )}
                   <p className="text-gray-600 flex-grow service-description">
                     {service.description.length > 120
                       ? `${service.description.substring(0, 120)}...`
