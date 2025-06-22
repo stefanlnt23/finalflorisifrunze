@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Clock, Leaf } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { CachedImage } from "./cached-image";
 
@@ -159,7 +159,7 @@ export function ServicesCarousel() {
     return (
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {services.map((service: Service) => (
-          <Card key={service.id} className="service-card-inner h-full overflow-hidden border-green-100 hover:border-green-300 shadow-sm hover:shadow-md">
+          <Card key={service.id} className="service-card-inner h-full overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-500 bg-white rounded-2xl hover:scale-[1.02] hover:-translate-y-2">
             <CardContent className="p-6 flex flex-col items-center text-center space-y-4 h-full">
               {service.imageUrl ? (
                 <div className="relative w-full h-48 overflow-hidden rounded-lg mb-4 service-image-container" style={{ willChange: 'auto' }}>
@@ -174,11 +174,17 @@ export function ServicesCarousel() {
                       backfaceVisibility: 'hidden'
                     }}
                   />
-                  {/* Dark overlay for text readability */}
-                  <div className="absolute inset-0 bg-black/40 rounded-lg"></div>
-                  {/* Overlaid title */}
+                  {/* Modern gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-green-900/80 via-green-700/40 to-transparent rounded-lg"></div>
+                  {/* Bright green accent line */}
+                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-400 to-emerald-400"></div>
+                  {/* Overlaid title with animation */}
                   <div className="absolute inset-0 flex items-center justify-center text-center p-4">
-                    <h3 className="text-xl font-semibold text-white drop-shadow-lg service-title">{service.name}</h3>
+                    <h3 className="text-2xl font-black text-white text-shadow-2xl drop-shadow-2xl service-title transform transition-all duration-500 group-hover:scale-105">{service.name}</h3>
+                  </div>
+                  {/* Floating stats indicator */}
+                  <div className="absolute top-4 right-4 bg-white/10 backdrop-blur-sm rounded-full px-2 py-1 border border-white/20">
+                    <span className="text-white text-xs font-semibold">★ Pro</span>
                   </div>
                 </div>
               ) : (
@@ -259,7 +265,7 @@ export function ServicesCarousel() {
                 backfaceVisibility: 'hidden'
               }}
             >
-              <Card className="service-card-inner h-full overflow-hidden border-green-100 hover:border-green-300 shadow-sm hover:shadow-md">
+              <Card className="service-card-inner h-full overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-500 bg-white rounded-2xl hover:scale-[1.02] hover:-translate-y-2" style={{ boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)" }}>
                 <CardContent className="p-6 flex flex-col items-center text-center space-y-4 h-full">
                   {service.imageUrl ? (
                     <div className="relative w-full h-48 overflow-hidden rounded-lg mb-4 service-image-container" style={{ willChange: 'auto' }}>
@@ -296,11 +302,21 @@ export function ServicesCarousel() {
                       ? `${service.description.substring(0, 120)}...`
                       : service.description}
                   </p>
-                  <div className="w-full flex flex-col items-center mt-auto service-price-action">
-                    <span className="text-green-600 font-semibold mb-3 service-price">{service.price}</span>
-                    <Link href={`/services/${service.id}`}>
-                      <Button variant="outline" className="service-button border-green-600 text-green-600 hover:bg-green-50 hover:border-green-700 hover:text-green-700 hover:scale-105 hover:shadow-md w-full transition-all duration-300 transform active:scale-95">
-                        Află Mai Multe
+                  <div className="w-full flex flex-col items-center mt-auto service-price-action space-y-3">
+                    <div className="flex items-center justify-between w-full">
+                      <span className="text-green-700 font-bold text-lg bg-green-50 px-3 py-1 rounded-full">{service.price}</span>
+                      <div className="flex items-center space-x-1 text-green-600">
+                        <Clock className="h-4 w-4" />
+                        <span className="text-sm font-medium">Rapid</span>
+                      </div>
+                    </div>
+                    <Link href={`/services/${service.id}`} className="w-full">
+                      <Button variant="outline" className="service-button w-full border-green-600 text-green-600 hover:bg-green-50 hover:border-green-700 hover:text-green-700 hover:scale-[1.02] hover:shadow-md transition-all duration-300 transform active:scale-95 group relative overflow-hidden">
+                        <span className="relative z-10 flex items-center justify-center">
+                          Află Mai Multe
+                          <ChevronRight className="ml-2 h-4 w-4 transition-all duration-300 group-hover:translate-x-1" />
+                        </span>
+                        <div className="absolute inset-0 bg-gradient-to-r from-green-50 to-emerald-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       </Button>
                     </Link>
                   </div>

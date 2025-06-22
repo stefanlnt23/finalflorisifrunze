@@ -183,66 +183,97 @@ export default function Services() {
                 services.map((service: Service, index: number) => (
                   <Card
                     key={service.id}
-                    className={`group overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-500 bg-white rounded-xl ${isInitialRender ? "animate-fadeInUp" : ""}`}
+                    className={`group overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-500 bg-white rounded-2xl hover:scale-[1.02] hover:-translate-y-2 ${isInitialRender ? "animate-fadeInUp" : ""}`}
                     style={{
                       animationDelay: isInitialRender
                         ? `${index * 150}ms`
                         : "0ms",
+                      boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
                     }}
                   >
                     {service.imageUrl ? (
-                      <div className="relative w-full h-64 overflow-hidden">
+                      <div className="relative w-full h-72 overflow-hidden rounded-t-2xl">
                         <img
                           src={service.imageUrl}
                           alt={service.name}
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                          className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
                         />
-                        {/* Dark overlay for text readability */}
-                        <div className="absolute inset-0 bg-black/40"></div>
-                        {/* Overlaid title */}
-                        <div className="absolute inset-0 flex items-center justify-center text-center p-4">
-                          <h3 className="text-3xl font-black text-white text-shadow-2xl drop-shadow-2xl">
+                        {/* Modern gradient overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-green-900/80 via-green-700/40 to-transparent"></div>
+                        {/* Bright green accent line */}
+                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-400 to-emerald-400"></div>
+                        {/* Overlaid title with animation */}
+                        <div className="absolute inset-0 flex items-center justify-center text-center p-6">
+                          <h3 className="text-3xl font-black text-white text-shadow-2xl drop-shadow-2xl transform transition-all duration-500 group-hover:scale-105">
                             {service.name}
                           </h3>
                         </div>
+                        {/* Floating stats indicator */}
+                        <div className="absolute top-4 right-4 bg-white/10 backdrop-blur-sm rounded-full px-3 py-1 border border-white/20 float-animation">
+                          <span className="text-white text-xs font-semibold">★ 10+ ani</span>
+                        </div>
                       </div>
                     ) : (
-                      <div className="relative w-full h-64 bg-green-100 flex items-center justify-center">
-                        <Leaf className="h-24 w-24 text-green-300" />
-                        {/* Overlaid title for fallback */}
-                        <div className="absolute inset-0 flex items-center justify-center text-center p-4">
-                          <h3 className="text-3xl font-black text-green-800 text-shadow-lg drop-shadow-lg">
+                      <div className="relative w-full h-72 bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center rounded-t-2xl">
+                        <Leaf className="h-24 w-24 text-green-300 animate-pulse" />
+                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-400 to-emerald-400"></div>
+                        <div className="absolute inset-0 flex items-center justify-center text-center p-6">
+                          <h3 className="text-3xl font-black text-green-800 text-shadow-lg drop-shadow-lg transform transition-all duration-500 group-hover:scale-105">
                             {service.name}
                           </h3>
                         </div>
                       </div>
                     )}
-                    <CardHeader className="pb-2">
-                      <CardDescription className="text-green-700 font-semibold text-lg">
-                        {service.price}
-                      </CardDescription>
+                    <CardHeader className="pb-4 pt-6">
+                      <div className="flex items-center justify-between mb-2">
+                        <CardDescription className="text-green-700 font-bold text-xl bg-green-50 px-3 py-1 rounded-full">
+                          {service.price}
+                        </CardDescription>
+                        <div className="flex items-center space-x-1 text-green-600">
+                          <Clock className="h-4 w-4" />
+                          <span className="text-sm font-medium">Rapid</span>
+                        </div>
+                      </div>
                     </CardHeader>
-                    <CardContent className="pt-0">
-                      <p className="text-gray-600 leading-loose text-base">
-                        {service.description.length > 150
-                          ? `${service.description.substring(0, 150)}...`
+                    <CardContent className="pt-0 pb-6 px-6">
+                      <p className="text-gray-700 leading-relaxed text-base mb-6">
+                        {service.description.length > 80
+                          ? `${service.description.substring(0, 80)}...`
                           : service.description}
                       </p>
+                      
+                      {/* Service highlights */}
+                      <div className="grid grid-cols-2 gap-3 mb-6">
+                        <div className="flex items-center space-x-2 text-sm text-gray-600">
+                          <CheckCircle2 className="h-4 w-4 text-green-500" />
+                          <span>Garanție</span>
+                        </div>
+                        <div className="flex items-center space-x-2 text-sm text-gray-600">
+                          <Leaf className="h-4 w-4 text-green-500" />
+                          <span>Eco-friendly</span>
+                        </div>
+                      </div>
                     </CardContent>
-                    <CardFooter className="flex justify-between pt-4 border-t border-gray-100">
-                      <Link href={`/services/${service.id}`}>
+                    <CardFooter className="flex flex-col space-y-3 pt-0 pb-6 px-6">
+                      <Link href={`/services/${service.id}`} className="w-full">
                         <Button
                           variant="outline"
-                          className="border-green-600 text-green-600 hover:bg-green-50 hover:border-green-700 hover:text-green-700 hover:scale-105 hover:shadow-md transition-all duration-300 transform active:scale-95"
+                          className="w-full border-green-600 text-green-600 hover:bg-green-50 hover:border-green-700 hover:text-green-700 hover:scale-[1.02] hover:shadow-md transition-all duration-300 transform active:scale-95 group relative overflow-hidden"
                         >
-                          Află Mai Multe
-                          <ChevronRight className="ml-1 h-4 w-4 transition-all duration-300 group-hover:translate-x-1 hover:translate-x-2" />
+                          <span className="relative z-10 flex items-center justify-center">
+                            Află Mai Multe
+                            <ChevronRight className="ml-2 h-4 w-4 transition-all duration-300 group-hover:translate-x-1" />
+                          </span>
+                          <div className="absolute inset-0 bg-gradient-to-r from-green-50 to-emerald-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </Button>
                       </Link>
-                      <Link href={`/appointment?service=${service.id}`}>
-                        <Button className="bg-green-600 hover:bg-green-700 hover:scale-105 shadow-md hover:shadow-xl transition-all duration-300 transform active:scale-95 relative overflow-hidden group">
-                          <span className="relative z-10">Programează</span>
-                          <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-green-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      <Link href={`/appointment?service=${service.id}`} className="w-full">
+                        <Button className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 hover:scale-[1.02] shadow-lg hover:shadow-xl transition-all duration-300 transform active:scale-95 relative overflow-hidden group button-ripple gradient-glow">
+                          <span className="relative z-10 flex items-center justify-center font-semibold">
+                            <Clock className="mr-2 h-4 w-4 group-hover:animate-spin" />
+                            Programează Acum
+                          </span>
+                          <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </Button>
                       </Link>
                     </CardFooter>
