@@ -117,6 +117,18 @@ The application is architected to support both MongoDB (currently active) and Po
 
 ## Recent Changes
 
+### June 22, 2025 - Subscription Page Complete UI/UX Redesign
+- **Enhanced Value Propositions**: Redesigned top benefits section with prominent cards, icons, and enhanced messaging (Fără Angajament, 500+ Clienți, Răspuns în 24h)
+- **Improved Pricing Cards**: Larger, bolder price typography (5xl font-black) with standardized 4-feature display and enhanced "Perfect pentru" sections with color-coded backgrounds
+- **Prominent Popular Badge**: Redesigned "RECOMANDAT" badge with orange-red gradient, larger size, and animation for maximum visibility
+- **Enhanced CTA Buttons**: Improved button text ("Alege Planul" vs "Începe Acum") with hover scaling effects and better visual feedback
+- **Interactive Comparison Tabs**: Completely redesigned tab system with proper button styling, brand colors (green/blue/orange), hover effects, and 44px minimum touch targets for mobile
+- **Icon-Enhanced Comparison Tables**: Added meaningful icons (Scissors, Leaf, Shield, Users, etc.) to all comparison features instead of simple colored dots
+- **Multiple Testimonials**: Replaced single testimonial with three short testimonials plus social proof statistics (4.9/5 rating, 500+ clients, 98% recommendation rate)
+- **Improved Visual Hierarchy**: Better spacing, information density, and mobile responsiveness throughout all sections
+- **Customer-Friendly Language**: Enhanced feature descriptions and value propositions with specific garden size recommendations
+- **Impact**: Professional, conversion-focused subscription page with clear interactive elements, reduced cognitive load, and crystal-clear value propositions for each plan
+
 ### June 22, 2025 - Service Details Page Desktop Optimization
 - **Desktop Layout Optimization**: Expanded max-width to 7xl (1280px) for better screen space utilization on large displays
 - **Typography Scaling**: Implemented responsive font sizing with smaller desktop typography and proper mobile-first scaling using lg: breakpoints

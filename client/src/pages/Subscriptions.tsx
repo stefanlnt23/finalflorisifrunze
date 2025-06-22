@@ -8,7 +8,7 @@ import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, Star, Check, Users, Leaf, Droplets, Award, Clock } from "lucide-react";
+import { ChevronDown, Star, Check, Users, Leaf, Droplets, Award, Clock, Scissors, Shield, Wrench, Palette } from "lucide-react";
 
 export default function Subscriptions() {
   // Fetch subscriptions
@@ -70,19 +70,28 @@ export default function Subscriptions() {
               Alege planul perfect pentru grădina ta. Servicii profesionale de întreținere cu preturi transparente și fără surprize.
             </p>
             
-            {/* Value propositions */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-              <div className="flex items-center justify-center space-x-3 text-green-700">
-                <Award className="w-5 h-5" />
-                <span className="font-medium">10+ ani experiență</span>
+            {/* Enhanced value propositions */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+              <div className="flex flex-col items-center text-center p-6 bg-white rounded-xl shadow-sm">
+                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-3">
+                  <Award className="w-6 h-6 text-green-600" />
+                </div>
+                <span className="text-lg font-semibold text-gray-900">Fără Angajament</span>
+                <span className="text-sm text-gray-600 mt-1">Poți anula oricând</span>
               </div>
-              <div className="flex items-center justify-center space-x-3 text-green-700">
-                <Users className="w-5 h-5" />
-                <span className="font-medium">500+ clienți mulțumiți</span>
+              <div className="flex flex-col items-center text-center p-6 bg-white rounded-xl shadow-sm">
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-3">
+                  <Users className="w-6 h-6 text-blue-600" />
+                </div>
+                <span className="text-lg font-semibold text-gray-900">500+ Clienți</span>
+                <span className="text-sm text-gray-600 mt-1">Evaluare medie 4.9/5</span>
               </div>
-              <div className="flex items-center justify-center space-x-3 text-green-700">
-                <Clock className="w-5 h-5" />
-                <span className="font-medium">Răspuns în 24h</span>
+              <div className="flex flex-col items-center text-center p-6 bg-white rounded-xl shadow-sm">
+                <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mb-3">
+                  <Clock className="w-6 h-6 text-orange-600" />
+                </div>
+                <span className="text-lg font-semibold text-gray-900">Răspuns în 24h</span>
+                <span className="text-sm text-gray-600 mt-1">Support rapid inclus</span>
               </div>
             </div>
           </div>
@@ -118,89 +127,86 @@ export default function Subscriptions() {
                         minHeight: 'auto'
                       }}
                     >
-                      {/* Popular Badge */}
+                      {/* Enhanced Popular Badge */}
                       {subscription.isPopular && (
-                        <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 z-20">
-                          <Badge className="bg-green-500 text-white px-4 py-1 text-sm font-medium">
-                            <Star className="w-4 h-4 mr-1" />
-                            Cel Mai Popular
+                        <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 z-20">
+                          <Badge className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-2 text-sm font-bold shadow-lg animate-pulse">
+                            <Star className="w-4 h-4 mr-2 fill-current" />
+                            RECOMANDAT
                           </Badge>
                         </div>
                       )}
 
-                      {/* Card Header */}
+                      {/* Enhanced Card Header */}
                       <div className="p-8 text-center border-b border-gray-100">
-                        <h3 className="text-2xl font-bold text-gray-900 mb-3">{subscription.name}</h3>
-                        <div className="mb-4">
+                        <h3 className="text-2xl font-bold text-gray-900 mb-4">{subscription.name}</h3>
+                        <div className="mb-6">
                           <span 
-                            className="text-4xl font-bold"
+                            className="text-5xl font-black"
                             style={{ color: subscription.color }}
                           >
                             {subscription.price.split(' ')[0]}
                           </span>
-                          <span className="text-gray-500 text-lg ml-1">
+                          <span className="text-gray-500 text-xl font-medium ml-2">
                             {subscription.price.split(' ').slice(1).join(' ')}
                           </span>
                         </div>
-                        <p className="text-gray-600 leading-relaxed">{subscription.description}</p>
+                        <p className="text-gray-600 leading-relaxed mb-4">{subscription.description}</p>
                         
-                        {/* Best for section */}
-                        <div className="mt-4 p-3 bg-gray-50 rounded-lg">
-                          <p className="text-sm font-medium text-gray-700">Ideal pentru:</p>
-                          <p className="text-sm text-gray-600">
-                            {subscription.displayOrder === 0 ? 'Grădini mici și apartamente cu balcon' :
-                             subscription.displayOrder === 1 ? 'Case cu grădini medii și familii active' :
-                             subscription.displayOrder === 2 ? 'Proprietăți cu sisteme de irigații' :
-                             subscription.displayOrder === 3 ? 'Clienți care doresc design personalizat' :
-                             subscription.displayOrder === 4 ? 'Vile și proprietăți premium' :
-                             'Clienți care preferă soluții ecologice'}
+                        {/* Enhanced Best for section */}
+                        <div className="mt-4 p-4 rounded-lg" style={{ backgroundColor: `${subscription.color}10` }}>
+                          <p className="text-sm font-semibold" style={{ color: subscription.color }}>Perfect pentru:</p>
+                          <p className="text-sm text-gray-700 font-medium">
+                            {subscription.displayOrder === 0 ? 'Proprietari cu grădini mici (până la 100 mp)' :
+                             subscription.displayOrder === 1 ? 'Case cu grădini medii (100-300 mp)' :
+                             subscription.displayOrder === 2 ? 'Proprietăți cu sisteme de irigații existente' :
+                             subscription.displayOrder === 3 ? 'Clienți care doresc redesign complet' :
+                             subscription.displayOrder === 4 ? 'Vile și proprietăți premium (300+ mp)' :
+                             'Clienți care preferă soluții 100% ecologice'}
                           </p>
                         </div>
                       </div>
 
-                      {/* Features */}
+                      {/* Standardized Features */}
                       <CardContent className="p-8">
-                        <div className="space-y-4">
-                          {Array.isArray(subscription.features) && subscription.features.slice(0, 6).map((feature, index) => (
+                        <div className="space-y-3">
+                          {Array.isArray(subscription.features) && subscription.features.slice(0, 4).map((feature, index) => (
                             <div key={index} className="flex items-start space-x-3">
                               <div 
-                                className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
+                                className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
                                 style={{ backgroundColor: subscription.color }}
                               >
-                                <Check className="w-3 h-3 text-white" />
+                                <Check className="w-4 h-4 text-white" />
                               </div>
                               <div className="flex-1">
-                                <span className="text-gray-700 font-medium">
+                                <span className="text-gray-700 font-medium text-sm">
                                   {typeof feature === 'object' && feature.name ? feature.name : String(feature)}
                                 </span>
-                                {typeof feature === 'object' && feature.value && (
-                                  <span className="text-gray-500 ml-2">({feature.value})</span>
-                                )}
                               </div>
                             </div>
                           ))}
                           
-                          {subscription.features.length > 6 && (
-                            <div className="text-center pt-2">
-                              <span className="text-sm text-gray-500">
-                                +{subscription.features.length - 6} servicii suplimentare
+                          {subscription.features.length > 4 && (
+                            <div className="text-center pt-3">
+                              <span className="text-sm font-medium" style={{ color: subscription.color }}>
+                                +{subscription.features.length - 4} servicii incluse
                               </span>
                             </div>
                           )}
                         </div>
                       </CardContent>
 
-                      {/* CTA Button */}
+                      {/* Enhanced CTA Button */}
                       <CardFooter className="p-8 pt-0">
                         <Link href="/contact" className="w-full">
                           <Button 
-                            className="w-full py-4 text-lg font-semibold rounded-lg transition-all duration-300 hover:shadow-lg"
+                            className="w-full py-4 text-lg font-bold rounded-lg transition-all duration-300 hover:shadow-xl hover:scale-105 transform"
                             style={{ 
                               backgroundColor: subscription.color,
                               color: 'white'
                             }}
                           >
-                            {subscription.isPopular ? 'Alege Planul Popular' : 'Începe Acum'}
+                            {subscription.isPopular ? 'Alege Planul Recomandat' : 'Alege Planul'}
                           </Button>
                         </Link>
                       </CardFooter>
@@ -210,25 +216,66 @@ export default function Subscriptions() {
               </div>
             </div>
 
-            {/* Testimonial Section */}
-            {popularPlan && (
-              <div className="bg-gray-50 py-16 px-4">
-                <div className="max-w-4xl mx-auto text-center">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-8">Ce spun clienții noștri</h3>
-                  <div className="bg-white rounded-xl p-8 shadow-lg">
-                    <div className="flex justify-center mb-4">
+            {/* Enhanced Testimonial Section */}
+            <div className="bg-gray-50 py-16 px-4">
+              <div className="max-w-6xl mx-auto">
+                <div className="text-center mb-12">
+                  <h3 className="text-3xl font-bold text-gray-900 mb-4">Ce spun clienții noștri</h3>
+                  <div className="flex items-center justify-center space-x-8 mb-8">
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-green-600">4.9/5</div>
+                      <div className="text-sm text-gray-600">Evaluare medie</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-blue-600">500+</div>
+                      <div className="text-sm text-gray-600">Clienți mulțumiți</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-orange-600">98%</div>
+                      <div className="text-sm text-gray-600">Recomandă serviciile</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="bg-white rounded-xl p-6 shadow-lg">
+                    <div className="flex justify-center mb-3">
                       {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                        <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
                       ))}
                     </div>
-                    <blockquote className="text-lg text-gray-700 mb-4 italic">
-                      "Planul {popularPlan.name} a transformat complet grădina noastră. Echipa este profesionistă și rezultatele sunt impresionante. Recomand cu încredere!"
+                    <blockquote className="text-gray-700 mb-4 italic text-sm">
+                      "Planul Premium Garden a depășit așteptările. Grădina arată fantastic!"
                     </blockquote>
-                    <cite className="text-gray-600 font-medium">Maria P., București</cite>
+                    <cite className="text-gray-600 font-medium text-sm">Maria P., București</cite>
+                  </div>
+                  
+                  <div className="bg-white rounded-xl p-6 shadow-lg">
+                    <div className="flex justify-center mb-3">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                      ))}
+                    </div>
+                    <blockquote className="text-gray-700 mb-4 italic text-sm">
+                      "Serviciu profesionist, echipă punctuală. Recomand cu încredere!"
+                    </blockquote>
+                    <cite className="text-gray-600 font-medium text-sm">Alexandru M., Cluj</cite>
+                  </div>
+                  
+                  <div className="bg-white rounded-xl p-6 shadow-lg">
+                    <div className="flex justify-center mb-3">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                      ))}
+                    </div>
+                    <blockquote className="text-gray-700 mb-4 italic text-sm">
+                      "Cel mai bun raport calitate-preț. Suntem clienți de 3 ani."
+                    </blockquote>
+                    <cite className="text-gray-600 font-medium text-sm">Elena D., Timișoara</cite>
                   </div>
                 </div>
               </div>
-            )}
+            </div>
 
             {/* Modern Comparison Table */}
             <div className="py-16 px-4 bg-white">
@@ -241,10 +288,25 @@ export default function Subscriptions() {
                 </div>
 
                 <Tabs defaultValue="basic" className="w-full">
-                  <TabsList className="grid w-full grid-cols-3 mb-8">
-                    <TabsTrigger value="basic">Servicii de Bază</TabsTrigger>
-                    <TabsTrigger value="advanced">Servicii Avansate</TabsTrigger>
-                    <TabsTrigger value="premium">Servicii Premium</TabsTrigger>
+                  <TabsList className="grid w-full grid-cols-3 mb-8 bg-gray-100 p-2 rounded-xl h-auto">
+                    <TabsTrigger 
+                      value="basic" 
+                      className="py-3 px-6 text-sm font-semibold rounded-lg transition-all duration-300 hover:bg-green-100 data-[state=active]:bg-green-500 data-[state=active]:text-white data-[state=active]:shadow-lg cursor-pointer min-h-[44px]"
+                    >
+                      Servicii de Bază
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="advanced" 
+                      className="py-3 px-6 text-sm font-semibold rounded-lg transition-all duration-300 hover:bg-blue-100 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-lg cursor-pointer min-h-[44px]"
+                    >
+                      Servicii Avansate
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="premium" 
+                      className="py-3 px-6 text-sm font-semibold rounded-lg transition-all duration-300 hover:bg-orange-100 data-[state=active]:bg-orange-500 data-[state=active]:text-white data-[state=active]:shadow-lg cursor-pointer min-h-[44px]"
+                    >
+                      Servicii Premium
+                    </TabsTrigger>
                   </TabsList>
 
                   <TabsContent value="basic" className="space-y-6">
@@ -263,23 +325,33 @@ export default function Subscriptions() {
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-gray-200">
-                            {['Tundere gazon', 'Curățare spații verzi', 'Tratamente fitosanitare', 'Consultanță'].map((feature, index) => (
-                              <tr key={feature} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                                <td className="px-6 py-4 text-sm font-medium text-gray-900">{feature}</td>
+{[
+                              { name: 'Tundere gazon', icon: Scissors },
+                              { name: 'Curățare spații verzi', icon: Leaf },
+                              { name: 'Tratamente fitosanitare', icon: Shield },
+                              { name: 'Consultanță', icon: Users }
+                            ].map((feature, index) => (
+                              <tr key={feature.name} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                                <td className="px-6 py-4 text-sm font-medium text-gray-900">
+                                  <div className="flex items-center space-x-3">
+                                    <feature.icon className="w-5 h-5 text-green-600" />
+                                    <span>{feature.name}</span>
+                                  </div>
+                                </td>
                                 {subscriptions.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0)).map((sub) => {
                                   const hasFeature = sub.features.some(f => 
-                                    (typeof f === 'object' ? f.name : f).toLowerCase().includes(feature.toLowerCase().split(' ')[0])
+                                    (typeof f === 'object' ? f.name : f).toLowerCase().includes(feature.name.toLowerCase().split(' ')[0])
                                   );
                                   return (
-                                    <td key={`${sub.id}-${feature}`} className="px-6 py-4 text-center">
+                                    <td key={`${sub.id}-${feature.name}`} className="px-6 py-4 text-center">
                                       {hasFeature ? (
                                         <div className="flex justify-center">
-                                          <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: sub.color }}>
-                                            <Check className="w-4 h-4 text-white" />
+                                          <div className="w-8 h-8 rounded-full flex items-center justify-center shadow-sm" style={{ backgroundColor: sub.color }}>
+                                            <Check className="w-5 h-5 text-white font-bold" />
                                           </div>
                                         </div>
                                       ) : (
-                                        <span className="text-gray-400">—</span>
+                                        <span className="text-gray-400 text-lg">—</span>
                                       )}
                                     </td>
                                   );
@@ -308,23 +380,33 @@ export default function Subscriptions() {
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-gray-200">
-                            {['Design peisagistic', 'Sisteme irigații', 'Plantare arbori', 'Amenajări decorative'].map((feature, index) => (
-                              <tr key={feature} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                                <td className="px-6 py-4 text-sm font-medium text-gray-900">{feature}</td>
+{[
+                              { name: 'Design peisagistic', icon: Palette },
+                              { name: 'Sisteme irigații', icon: Droplets },
+                              { name: 'Plantare arbori', icon: Leaf },
+                              { name: 'Amenajări decorative', icon: Award }
+                            ].map((feature, index) => (
+                              <tr key={feature.name} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                                <td className="px-6 py-4 text-sm font-medium text-gray-900">
+                                  <div className="flex items-center space-x-3">
+                                    <feature.icon className="w-5 h-5 text-blue-600" />
+                                    <span>{feature.name}</span>
+                                  </div>
+                                </td>
                                 {subscriptions.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0)).map((sub) => {
                                   const hasFeature = sub.features.some(f => 
-                                    (typeof f === 'object' ? f.name : f).toLowerCase().includes(feature.toLowerCase().split(' ')[0])
+                                    (typeof f === 'object' ? f.name : f).toLowerCase().includes(feature.name.toLowerCase().split(' ')[0])
                                   );
                                   return (
-                                    <td key={`${sub.id}-${feature}`} className="px-6 py-4 text-center">
+                                    <td key={`${sub.id}-${feature.name}`} className="px-6 py-4 text-center">
                                       {hasFeature ? (
                                         <div className="flex justify-center">
-                                          <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: sub.color }}>
-                                            <Check className="w-4 h-4 text-white" />
+                                          <div className="w-8 h-8 rounded-full flex items-center justify-center shadow-sm" style={{ backgroundColor: sub.color }}>
+                                            <Check className="w-5 h-5 text-white font-bold" />
                                           </div>
                                         </div>
                                       ) : (
-                                        <span className="text-gray-400">—</span>
+                                        <span className="text-gray-400 text-lg">—</span>
                                       )}
                                     </td>
                                   );
@@ -353,23 +435,33 @@ export default function Subscriptions() {
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-gray-200">
-                            {['Servicii urgență', 'Design personalizat', 'Elemente decorative', 'Întreținere săptămânală'].map((feature, index) => (
-                              <tr key={feature} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                                <td className="px-6 py-4 text-sm font-medium text-gray-900">{feature}</td>
+{[
+                              { name: 'Servicii urgență', icon: Clock },
+                              { name: 'Design personalizat', icon: Palette },
+                              { name: 'Elemente decorative', icon: Award },
+                              { name: 'Întreținere săptămânală', icon: Wrench }
+                            ].map((feature, index) => (
+                              <tr key={feature.name} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                                <td className="px-6 py-4 text-sm font-medium text-gray-900">
+                                  <div className="flex items-center space-x-3">
+                                    <feature.icon className="w-5 h-5 text-orange-600" />
+                                    <span>{feature.name}</span>
+                                  </div>
+                                </td>
                                 {subscriptions.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0)).map((sub) => {
                                   const hasFeature = sub.features.some(f => 
-                                    (typeof f === 'object' ? f.name : f).toLowerCase().includes(feature.toLowerCase().split(' ')[0])
+                                    (typeof f === 'object' ? f.name : f).toLowerCase().includes(feature.name.toLowerCase().split(' ')[0])
                                   );
                                   return (
-                                    <td key={`${sub.id}-${feature}`} className="px-6 py-4 text-center">
+                                    <td key={`${sub.id}-${feature.name}`} className="px-6 py-4 text-center">
                                       {hasFeature ? (
                                         <div className="flex justify-center">
-                                          <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: sub.color }}>
-                                            <Check className="w-4 h-4 text-white" />
+                                          <div className="w-8 h-8 rounded-full flex items-center justify-center shadow-sm" style={{ backgroundColor: sub.color }}>
+                                            <Check className="w-5 h-5 text-white font-bold" />
                                           </div>
                                         </div>
                                       ) : (
-                                        <span className="text-gray-400">—</span>
+                                        <span className="text-gray-400 text-lg">—</span>
                                       )}
                                     </td>
                                   );

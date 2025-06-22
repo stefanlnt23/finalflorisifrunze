@@ -1,0 +1,24 @@
+"I need you to refine this subscription/pricing page with several key improvements. Please make these specific changes:
+TAB VISIBILITY (Priority Fix):
+
+Make tabs clearly clickable: The comparison table tabs ('Servicii de Bază', 'Servicii Avansate', 'Servicii Premium') are too subtle. Add proper button styling with borders, background colors, and padding (8-12px vertical, 16-20px horizontal)
+Improve interactive states: Add hover effects, cursor pointer, and smooth transitions. Make the active tab state much more obvious with distinct styling
+Increase spacing and touch targets: Ensure tabs are properly spaced and at least 44px tall for mobile usability
+Consider using brand colors: Match the green/orange/blue theme from the pricing cards above
+
+PRICING CARD IMPROVEMENTS:
+5. Emphasize recommended plan: Make the "Premium Garden" plan's "RECOMANDAT" badge more prominent - consider "MOST POPULAR" or "BEST VALUE" styling
+6. Enhance price typography: Make prices slightly larger and bolder for better scannability
+7. Balance card content: Standardize the height and feature list length across all cards - show only top 4-5 key features per card to maintain visual balance
+8. Improve CTA buttons: Make call-to-action text more specific like "Alege Planul" instead of generic "Începe Acum"
+VISUAL HIERARCHY:
+9. Enhance top benefits section: Make the header benefits (Fără angajament, 500+ clienți, Răspuns în 24h) more prominent with icons or larger text
+10. Improve comparison table: Add icons instead of just colored dots, group features into categories (Basic/Advanced/Premium), and show only the most important differentiators
+USER EXPERIENCE:
+11. Add more social proof: Consider showing number of satisfied clients, average ratings, or 2-3 short testimonials instead of one long one
+12. Improve feature descriptions: Use more customer-friendly language in feature lists
+13. Add value propositions: Each plan should clearly state what type of customer it's "best for"
+LAYOUT & SPACING:
+14. Optimize information density: Ensure good use of white space while keeping important information above the fold
+15. Maintain mobile responsiveness: All changes should work well on both desktop and mobile devices
+The main goals are to: make interactive elements obviously clickable, improve visual hierarchy, reduce cognitive load, and make the value proposition of each plan crystal clear to users."
