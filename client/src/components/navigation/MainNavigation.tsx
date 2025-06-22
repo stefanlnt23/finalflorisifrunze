@@ -27,6 +27,7 @@ export default function MainNavigation() {
     { path: "/services", label: "Servicii" },
     { path: "/portfolio", label: "Portofoliu" },
     { path: "/subscriptions", label: "Abonamente" },
+    { path: "/about", label: "Despre Noi" },
     { path: "/blog", label: "Blog" },
     { path: "/contact", label: "Contact" },
   ];

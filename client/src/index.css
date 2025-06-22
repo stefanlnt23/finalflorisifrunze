@@ -82,6 +82,57 @@
   animation: float-fast 3s ease-in-out infinite;
 }
 
+/* About page garden animations */
+@keyframes floatGarden {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes rotateGlow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulseGarden {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.05;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.08;
+  }
+}
+
+.animate-float-garden {
+  animation: floatGarden 3s ease-in-out infinite;
+}
+
+.animate-float-garden-slow {
+  animation: floatGarden 4s ease-in-out infinite;
+}
+
+.animate-float-garden-delayed {
+  animation: floatGarden 3.5s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+.animate-rotate-glow {
+  animation: rotateGlow 20s linear infinite;
+}
+
+.animate-pulse-garden {
+  animation: pulseGarden 4s ease-in-out infinite;
+}
+
 /* Gradient Glow Effect */
 .gradient-glow {
   position: relative;
