@@ -168,424 +168,325 @@ export default function Contact() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-              {/* Enhanced Contact Form - Takes 2 columns */}
-              <div className="lg:col-span-2">
-                <div className="mb-8">
-                  <h2 className="text-3xl font-bold text-gray-900 mb-4">Trimite-ne un Mesaj</h2>
-                  <p className="text-gray-600 mb-2">Completează formularul de mai jos și te vom contacta în maxim 24 de ore.</p>
-                  <div className="flex items-center space-x-4 text-sm text-gray-500">
-                    <span className="flex items-center">
-                      <CheckCircle2 className="w-4 h-4 text-green-500 mr-1" />
-                      Consultație gratuită
-                    </span>
-                    <span className="flex items-center">
-                      <CheckCircle2 className="w-4 h-4 text-green-500 mr-1" />
-                      Fără obligații
-                    </span>
-                    <span className="flex items-center">
-                      <CheckCircle2 className="w-4 h-4 text-green-500 mr-1" />
-                      Răspuns rapid
-                    </span>
-                  </div>
+            {/* Contact Form Section */}
+            <div className="mb-20">
+              <div className="mb-8">
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">Trimite-ne un Mesaj</h2>
+                <p className="text-gray-600 mb-2">Completează formularul de mai jos și te vom contacta în maxim 24 de ore.</p>
+                <div className="flex items-center space-x-4 text-sm text-gray-500">
+                  <span className="flex items-center">
+                    <CheckCircle2 className="w-4 h-4 text-green-500 mr-1" />
+                    Consultație gratuită
+                  </span>
+                  <span className="flex items-center">
+                    <CheckCircle2 className="w-4 h-4 text-green-500 mr-1" />
+                    Fără obligații
+                  </span>
+                  <span className="flex items-center">
+                    <CheckCircle2 className="w-4 h-4 text-green-500 mr-1" />
+                    Răspuns rapid
+                  </span>
                 </div>
-
-                {formSubmitted ? (
-                  <Card className="border-green-200 bg-green-50">
-                    <CardContent className="p-8 text-center">
-                      <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-6" />
-                      <h3 className="text-2xl font-semibold mb-4 text-green-800">Mesaj Trimis cu Succes!</h3>
-                      <p className="text-green-700 mb-6 text-lg">
-                        Mulțumim pentru mesaj! Echipa noastră va răspunde în maxim 24 de ore.
-                      </p>
-                      <div className="space-y-3 mb-6">
-                        <p className="text-sm text-green-600">Pentru răspuns urgent, ne poți contacta direct:</p>
-                        <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                          <a href="tel:+40742650670" className="text-green-600 hover:text-green-800 font-medium">
-                            📞 +40 742 650 670
-                          </a>
-                          <a href="https://wa.me/40742650670" className="text-green-600 hover:text-green-800 font-medium">
-                            💬 WhatsApp
-                          </a>
-                        </div>
-                      </div>
-                      <Button 
-                        onClick={() => setFormSubmitted(false)}
-                        className="bg-green-600 hover:bg-green-700"
-                      >
-                        Trimite alt mesaj
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ) : (
-                  <Card className="shadow-lg">
-                    <CardContent className="p-8">
-                      <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            <FormField
-                              control={form.control}
-                              name="name"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel className="text-base font-medium">Nume Complet *</FormLabel>
-                                  <FormControl>
-                                    <Input 
-                                      placeholder="Introduceți numele dvs." 
-                                      className="h-12 border-2 focus:border-green-500" 
-                                      {...field} 
-                                    />
-                                  </FormControl>
-                                  <FormMessage className="text-red-600" />
-                                </FormItem>
-                              )}
-                            />
-                            <FormField
-                              control={form.control}
-                              name="email"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel className="text-base font-medium">Adresa de Email *</FormLabel>
-                                  <FormControl>
-                                    <Input 
-                                      type="email" 
-                                      placeholder="nume@exemplu.com" 
-                                      className="h-12 border-2 focus:border-green-500" 
-                                      {...field} 
-                                    />
-                                  </FormControl>
-                                  <FormMessage className="text-red-600" />
-                                </FormItem>
-                              )}
-                            />
-                          </div>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            <FormField
-                              control={form.control}
-                              name="phone"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel className="text-base font-medium">Număr de Telefon</FormLabel>
-                                  <FormControl>
-                                    <Input 
-                                      placeholder="+40 7XX XXX XXX" 
-                                      className="h-12 border-2 focus:border-green-500" 
-                                      {...field} 
-                                    />
-                                  </FormControl>
-                                  <FormMessage className="text-red-600" />
-                                </FormItem>
-                              )}
-                            />
-                            <FormField
-                              control={form.control}
-                              name="serviceId"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel className="text-base font-medium">Serviciu de Interes</FormLabel>
-                                  <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isLoadingServices}>
-                                    <FormControl>
-                                      <SelectTrigger className="h-12 border-2 focus:border-green-500">
-                                        <SelectValue placeholder="Alegeți un serviciu" />
-                                      </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                      {isLoadingServices ? (
-                                        <SelectItem value="loading" disabled>Se încarcă serviciile...</SelectItem>
-                                      ) : services.length === 0 ? (
-                                        <SelectItem value="none" disabled>Nu există servicii disponibile</SelectItem>
-                                      ) : (
-                                        services.map((service: Service) => (
-                                          <SelectItem key={service.id} value={String(service.id)}>
-                                            {service.name}
-                                          </SelectItem>
-                                        ))
-                                      )}
-                                    </SelectContent>
-                                  </Select>
-                                  <FormMessage className="text-red-600" />
-                                </FormItem>
-                              )}
-                            />
-                          </div>
-                          <FormField
-                            control={form.control}
-                            name="message"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-base font-medium">Mesajul Dvs. *</FormLabel>
-                                <FormControl>
-                                  <Textarea 
-                                    placeholder="Descrieți proiectul dvs., mărimea grădinii, serviciile de care aveți nevoie și orice alte detalii relevante..." 
-                                    className="min-h-40 border-2 focus:border-green-500 resize-none" 
-                                    {...field} 
-                                  />
-                                </FormControl>
-                                <FormMessage className="text-red-600" />
-                                <p className="text-xs text-gray-500 mt-1">
-                                  Minimum 20 caractere ({field.value?.length || 0}/20)
-                                </p>
-                              </FormItem>
-                            )}
-                          />
-                          
-                          {/* Anti-spam notice */}
-                          <div className="flex items-center space-x-2 text-sm text-gray-500 bg-gray-50 p-3 rounded-lg">
-                            <Shield className="w-4 h-4" />
-                            <span>Formularul este protejat împotriva spam-ului. Datele dvs. sunt în siguranță.</span>
-                          </div>
-                          
-                          <Button 
-                            type="submit" 
-                            className="w-full h-14 bg-green-600 hover:bg-green-700 text-lg font-semibold transition-all duration-300 hover:shadow-lg"
-                            disabled={isSubmitting}
-                          >
-                            {isSubmitting ? (
-                              <>
-                                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
-                                Se trimite mesajul...
-                              </>
-                            ) : (
-                              <>
-                                <Mail className="w-5 h-5 mr-2" />
-                                Trimite Mesajul
-                              </>
-                            )}
-                          </Button>
-                        </form>
-                      </Form>
-                    </CardContent>
-                  </Card>
-                )}
               </div>
 
-              {/* Enhanced Contact Information Sidebar */}
-              <div className="space-y-8">
-                
-                {/* Testimonial Snippet */}
-                <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
-                  <CardContent className="p-6">
-                    <div className="flex items-center mb-4">
-                      <div className="flex text-yellow-400">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="w-5 h-5 fill-current" />
-                        ))}
-                      </div>
-                      <span className="ml-2 text-sm font-medium text-gray-600">5.0/5</span>
-                    </div>
-                    <blockquote className="text-gray-700 italic mb-4">
-                      "Echipa Flori și Frunze a transformat complet grădina noastră. Profesionalism excepțional și rezultate peste așteptări!"
-                    </blockquote>
-                    <cite className="text-sm font-medium text-green-700">— Maria P., Client mulțumit</cite>
-                  </CardContent>
-                </Card>
-
-                {/* Enhanced Contact Cards */}
-                <div className="space-y-4">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Contactează-ne Direct</h2>
-                  
-                  {/* Location Card */}
-                  <Card className="hover:shadow-md transition-shadow">
-                    <CardContent className="p-6">
-                      <div className="flex items-start">
-                        <div className="mr-4 mt-1">
-                          <div className="w-14 h-14 rounded-xl bg-green-100 flex items-center justify-center">
-                            <MapPin className="w-7 h-7 text-green-600" />
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                {/* Contact Form - Takes 2 columns */}
+                <div className="lg:col-span-2">
+                  {formSubmitted ? (
+                    <Card className="border-green-200 bg-green-50">
+                      <CardContent className="p-8 text-center">
+                        <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-6" />
+                        <h3 className="text-2xl font-semibold mb-4 text-green-800">Mesaj Trimis cu Succes!</h3>
+                        <p className="text-green-700 mb-6 text-lg">
+                          Mulțumim pentru mesaj! Echipa noastră va răspunde în maxim 24 de ore.
+                        </p>
+                        <div className="space-y-3 mb-6">
+                          <p className="text-sm text-green-600">Pentru răspuns urgent, ne poți contacta direct:</p>
+                          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                            <a href="tel:+40742650670" className="text-green-600 hover:text-green-800 font-medium">
+                              📞 +40 742 650 670
+                            </a>
+                            <a href="https://wa.me/40742650670" className="text-green-600 hover:text-green-800 font-medium">
+                              💬 WhatsApp
+                            </a>
                           </div>
                         </div>
-                        <div className="flex-1">
-                          <h3 className="text-lg font-bold mb-2 text-gray-900">Locația Noastră</h3>
-                          <p className="text-gray-600 mb-3">
-                            Strada Alexandru Lăpușneanu 14<br />
-                            Iași, 700057, România
-                          </p>
-                          <a 
-                            href="https://maps.google.com/?q=Strada+Alexandru+Lăpușneanu+14,+Iași,+700057,+România"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center text-green-600 hover:text-green-700 font-medium text-sm"
-                          >
-                            <ExternalLink className="w-4 h-4 mr-1" />
-                            Vezi pe hartă
-                          </a>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Phone Card */}
-                  <Card className="hover:shadow-md transition-shadow">
-                    <CardContent className="p-6">
-                      <div className="flex items-start">
-                        <div className="mr-4 mt-1">
-                          <div className="w-14 h-14 rounded-xl bg-green-100 flex items-center justify-center">
-                            <Phone className="w-7 h-7 text-green-600" />
-                          </div>
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="text-lg font-bold mb-3 text-gray-900">Contact Telefonic</h3>
-                          <a 
-                            href="tel:+40742650670" 
-                            className="text-green-600 hover:text-green-700 text-xl font-bold block mb-2"
-                          >
-                            +40 742 650 670
-                          </a>
-                          <Badge variant="secondary" className="bg-green-100 text-green-800 mb-2">
-                            Răspuns imediat
-                          </Badge>
-                          <p className="text-gray-600 text-sm">
-                            Luni - Vineri: 08:00 - 18:00<br />
-                            Sâmbătă: 08:00 - 16:00
-                          </p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Email Card */}
-                  <Card className="hover:shadow-md transition-shadow">
-                    <CardContent className="p-6">
-                      <div className="flex items-start">
-                        <div className="mr-4 mt-1">
-                          <div className="w-14 h-14 rounded-xl bg-green-100 flex items-center justify-center">
-                            <Mail className="w-7 h-7 text-green-600" />
-                          </div>
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="text-lg font-bold mb-3 text-gray-900">Contact Email</h3>
-                          <a 
-                            href="mailto:info@florisifrunze.com" 
-                            className="text-green-600 hover:text-green-700 text-lg font-bold block mb-2"
-                          >
-                            info@florisifrunze.com
-                          </a>
-                          <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                            Răspuns în 24h
-                          </Badge>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* WhatsApp Card */}
-                  <Card className="hover:shadow-md transition-shadow border-green-200 bg-green-50">
-                    <CardContent className="p-6">
-                      <div className="flex items-start">
-                        <div className="mr-4 mt-1">
-                          <div className="w-14 h-14 rounded-xl bg-green-200 flex items-center justify-center">
-                            <MessageCircle className="w-7 h-7 text-green-700" />
-                          </div>
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="text-lg font-bold mb-3 text-gray-900">WhatsApp</h3>
-                          <a 
-                            href="https://wa.me/40742650670" 
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
-                          >
-                            <MessageCircle className="w-4 h-4 mr-2" />
-                            Trimite mesaj
-                          </a>
-                          <p className="text-sm text-green-700 mt-2">Cel mai rapid mod de contact</p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                        <Button 
+                          onClick={() => setFormSubmitted(false)}
+                          className="bg-green-600 hover:bg-green-700"
+                        >
+                          Trimite alt mesaj
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  ) : (
+                    <Card className="shadow-lg">
+                      <CardContent className="p-8">
+                        <Form {...form}>
+                          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                              <FormField
+                                control={form.control}
+                                name="name"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel className="text-base font-medium">Nume Complet *</FormLabel>
+                                    <FormControl>
+                                      <Input 
+                                        placeholder="Introduceți numele dvs." 
+                                        className="h-12 border-2 focus:border-green-500" 
+                                        {...field} 
+                                      />
+                                    </FormControl>
+                                    <FormMessage className="text-red-600" />
+                                  </FormItem>
+                                )}
+                              />
+                              <FormField
+                                control={form.control}
+                                name="email"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel className="text-base font-medium">Adresa de Email *</FormLabel>
+                                    <FormControl>
+                                      <Input 
+                                        type="email" 
+                                        placeholder="nume@exemplu.com" 
+                                        className="h-12 border-2 focus:border-green-500" 
+                                        {...field} 
+                                      />
+                                    </FormControl>
+                                    <FormMessage className="text-red-600" />
+                                  </FormItem>
+                                )}
+                              />
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                              <FormField
+                                control={form.control}
+                                name="phone"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel className="text-base font-medium">Număr de Telefon</FormLabel>
+                                    <FormControl>
+                                      <Input 
+                                        placeholder="+40 7XX XXX XXX" 
+                                        className="h-12 border-2 focus:border-green-500" 
+                                        {...field} 
+                                      />
+                                    </FormControl>
+                                    <FormMessage className="text-red-600" />
+                                  </FormItem>
+                                )}
+                              />
+                              <FormField
+                                control={form.control}
+                                name="serviceId"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel className="text-base font-medium">Serviciu de Interes</FormLabel>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isLoadingServices}>
+                                      <FormControl>
+                                        <SelectTrigger className="h-12 border-2 focus:border-green-500">
+                                          <SelectValue placeholder="Alegeți un serviciu" />
+                                        </SelectTrigger>
+                                      </FormControl>
+                                      <SelectContent>
+                                        {isLoadingServices ? (
+                                          <SelectItem value="loading" disabled>Se încarcă serviciile...</SelectItem>
+                                        ) : services.length === 0 ? (
+                                          <SelectItem value="none" disabled>Nu există servicii disponibile</SelectItem>
+                                        ) : (
+                                          services.map((service: Service) => (
+                                            <SelectItem key={service.id} value={String(service.id)}>
+                                              {service.name}
+                                            </SelectItem>
+                                          ))
+                                        )}
+                                      </SelectContent>
+                                    </Select>
+                                    <FormMessage className="text-red-600" />
+                                  </FormItem>
+                                )}
+                              />
+                            </div>
+                            <FormField
+                              control={form.control}
+                              name="message"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel className="text-base font-medium">Mesajul Dvs. *</FormLabel>
+                                  <FormControl>
+                                    <Textarea 
+                                      placeholder="Descrieți proiectul dvs., mărimea grădinii, serviciile de care aveți nevoie și orice alte detalii relevante..." 
+                                      className="min-h-40 border-2 focus:border-green-500 resize-none" 
+                                      {...field} 
+                                    />
+                                  </FormControl>
+                                  <FormMessage className="text-red-600" />
+                                  <p className="text-xs text-gray-500 mt-1">
+                                    Minimum 20 caractere ({field.value?.length || 0}/20)
+                                  </p>
+                                </FormItem>
+                              )}
+                            />
+                            
+                            {/* Anti-spam notice */}
+                            <div className="flex items-center space-x-2 text-sm text-gray-500 bg-gray-50 p-3 rounded-lg">
+                              <Shield className="w-4 h-4" />
+                              <span>Formularul este protejat împotriva spam-ului. Datele dvs. sunt în siguranță.</span>
+                            </div>
+                            
+                            <Button 
+                              type="submit" 
+                              className="w-full h-14 bg-green-600 hover:bg-green-700 text-lg font-semibold transition-all duration-300 hover:shadow-lg"
+                              disabled={isSubmitting}
+                            >
+                              {isSubmitting ? (
+                                <>
+                                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
+                                  Se trimite mesajul...
+                                </>
+                              ) : (
+                                <>
+                                  <Mail className="w-5 h-5 mr-2" />
+                                  Trimite Mesajul
+                                </>
+                              )}
+                            </Button>
+                          </form>
+                        </Form>
+                      </CardContent>
+                    </Card>
+                  )}
                 </div>
 
-                {/* Service Area Information */}
-                <Card className="bg-blue-50 border-blue-200">
-                  <CardContent className="p-6">
-                    <h3 className="text-lg font-bold mb-4 text-gray-900 flex items-center">
-                      <MapPin className="w-5 h-5 mr-2 text-blue-600" />
-                      Zone de Servicii
-                    </h3>
-                    <div className="space-y-3">
-                      <div className="flex items-center text-sm">
-                        <CheckCircle2 className="w-4 h-4 text-green-500 mr-2" />
-                        <span><strong>Iași și împrejurimi</strong> - Servicii complete</span>
+                {/* Enhanced Contact Information Sidebar */}
+                <div className="space-y-6">
+                  
+                  {/* Testimonial Snippet */}
+                  <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
+                    <CardContent className="p-6">
+                      <div className="flex items-center mb-4">
+                        <div className="flex text-yellow-400">
+                          {[...Array(5)].map((_, i) => (
+                            <Star key={i} className="w-5 h-5 fill-current" />
+                          ))}
+                        </div>
+                        <span className="ml-2 text-sm font-medium text-gray-600">5.0/5</span>
                       </div>
-                      <div className="flex items-center text-sm">
-                        <CheckCircle2 className="w-4 h-4 text-green-500 mr-2" />
-                        <span><strong>Radius 50km</strong> - Proiecte mari</span>
-                      </div>
-                      <div className="flex items-center text-sm">
-                        <CheckCircle2 className="w-4 h-4 text-green-500 mr-2" />
-                        <span><strong>Întreaga țară</strong> - Consultanță online</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                      <blockquote className="text-gray-700 italic mb-4">
+                        "Echipa Flori și Frunze a transformat complet grădina noastră. Profesionalism excepțional și rezultate peste așteptări!"
+                      </blockquote>
+                      <cite className="text-sm font-medium text-green-700">— Maria P., Client mulțumit</cite>
+                    </CardContent>
+                  </Card>
 
-                {/* Business Hours */}
-                <Card>
-                  <CardContent className="p-6">
-                    <h3 className="text-lg font-bold mb-4 text-gray-900 flex items-center">
-                      <Clock className="w-5 h-5 mr-2 text-green-600" />
-                      Program de Lucru
-                    </h3>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between py-1">
-                        <span className="font-medium">Luni - Vineri:</span>
-                        <span className="text-green-600 font-semibold">08:00 - 18:00</span>
-                      </div>
-                      <div className="flex justify-between py-1">
-                        <span className="font-medium">Sâmbătă:</span>
-                        <span className="text-green-600 font-semibold">08:00 - 16:00</span>
-                      </div>
-                      <div className="flex justify-between py-1">
-                        <span className="font-medium">Duminică:</span>
-                        <span className="text-gray-500">Închis</span>
-                      </div>
-                    </div>
-                    <div className="mt-4 p-3 bg-yellow-50 rounded-lg">
-                      <p className="text-xs text-yellow-800">
-                        <strong>Urgențe:</strong> Pentru situații urgente în grădină, sunați oricând - vom răspunde în cel mai scurt timp posibil.
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
+                  {/* Enhanced Contact Cards */}
+                  <div className="space-y-4">
+                    <h3 className="text-xl font-bold text-gray-900">Contactează-ne Direct</h3>
+                    
+                    {/* Phone Card */}
+                    <Card className="hover:shadow-md transition-shadow">
+                      <CardContent className="p-4">
+                        <div className="flex items-center">
+                          <div className="mr-3">
+                            <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center">
+                              <Phone className="w-6 h-6 text-green-600" />
+                            </div>
+                          </div>
+                          <div className="flex-1">
+                            <h4 className="font-bold text-gray-900">Contact Telefonic</h4>
+                            <a 
+                              href="tel:+40742650670" 
+                              className="text-green-600 hover:text-green-700 font-bold"
+                            >
+                              +40 742 650 670
+                            </a>
+                            <p className="text-xs text-gray-600">08:00 - 18:00</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
 
-                {/* Social Media */}
-                <Card>
-                  <CardContent className="p-6">
-                    <h3 className="text-lg font-bold mb-4 text-gray-900">Urmărește-ne</h3>
-                    <div className="flex space-x-3">
-                      <a 
-                        href="#" 
-                        className="w-12 h-12 rounded-xl bg-blue-600 hover:bg-blue-700 flex items-center justify-center text-white transition-colors"
-                        aria-label="Facebook"
-                      >
-                        <i className="fab fa-facebook-f text-lg"></i>
-                      </a>
-                      <a 
-                        href="#" 
-                        className="w-12 h-12 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 flex items-center justify-center text-white transition-colors"
-                        aria-label="Instagram"
-                      >
-                        <i className="fab fa-instagram text-lg"></i>
-                      </a>
-                      <a 
-                        href="#" 
-                        className="w-12 h-12 rounded-xl bg-green-600 hover:bg-green-700 flex items-center justify-center text-white transition-colors"
-                        aria-label="WhatsApp"
-                      >
-                        <i className="fab fa-whatsapp text-lg"></i>
-                      </a>
-                      <a 
-                        href="#" 
-                        className="w-12 h-12 rounded-xl bg-blue-700 hover:bg-blue-800 flex items-center justify-center text-white transition-colors"
-                        aria-label="LinkedIn"
-                      >
-                        <i className="fab fa-linkedin-in text-lg"></i>
-                      </a>
-                    </div>
-                    <p className="text-xs text-gray-600 mt-3">
-                      Vezi proiectele noastre recente și sfaturi pentru grădinărit
-                    </p>
-                  </CardContent>
-                </Card>
+                    {/* Email Card */}
+                    <Card className="hover:shadow-md transition-shadow">
+                      <CardContent className="p-4">
+                        <div className="flex items-center">
+                          <div className="mr-3">
+                            <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center">
+                              <Mail className="w-6 h-6 text-green-600" />
+                            </div>
+                          </div>
+                          <div className="flex-1">
+                            <h4 className="font-bold text-gray-900">Email</h4>
+                            <a 
+                              href="mailto:info@florisifrunze.com" 
+                              className="text-green-600 hover:text-green-700 font-bold text-sm"
+                            >
+                              info@florisifrunze.com
+                            </a>
+                            <p className="text-xs text-gray-600">Răspuns în 24h</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* WhatsApp Card */}
+                    <Card className="hover:shadow-md transition-shadow border-green-200 bg-green-50">
+                      <CardContent className="p-4">
+                        <div className="flex items-center">
+                          <div className="mr-3">
+                            <div className="w-12 h-12 rounded-xl bg-green-200 flex items-center justify-center">
+                              <MessageCircle className="w-6 h-6 text-green-700" />
+                            </div>
+                          </div>
+                          <div className="flex-1">
+                            <h4 className="font-bold text-gray-900">WhatsApp</h4>
+                            <a 
+                              href="https://wa.me/40742650670" 
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded font-medium transition-colors text-sm"
+                            >
+                              <MessageCircle className="w-3 h-3 mr-1" />
+                              Mesaj
+                            </a>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Location Card */}
+                    <Card className="hover:shadow-md transition-shadow">
+                      <CardContent className="p-4">
+                        <div className="flex items-start">
+                          <div className="mr-3 mt-1">
+                            <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center">
+                              <MapPin className="w-6 h-6 text-green-600" />
+                            </div>
+                          </div>
+                          <div className="flex-1">
+                            <h4 className="font-bold text-gray-900 mb-1">Locația Noastră</h4>
+                            <p className="text-gray-600 text-sm mb-2">
+                              Strada Alexandru Lăpușneanu 14<br />
+                              Iași, 700057, România
+                            </p>
+                            <a 
+                              href="https://maps.google.com/?q=Strada+Alexandru+Lăpușneanu+14,+Iași,+700057,+România"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center text-green-600 hover:text-green-700 font-medium text-xs"
+                            >
+                              <ExternalLink className="w-3 h-3 mr-1" />
+                              Vezi pe hartă
+                            </a>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
