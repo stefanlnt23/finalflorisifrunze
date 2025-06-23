@@ -30,6 +30,9 @@ app.get('/sw.js', (req, res) => {
   res.sendFile('sw.js', { root: './client' });
 });
 
+// Serve static files from client/public directory
+app.use(express.static('./client/public'));
+
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
