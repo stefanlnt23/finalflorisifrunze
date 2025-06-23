@@ -177,7 +177,7 @@ export default function Home() {
   return (
     <MainLayout>
       {/* Hero Section */}
-      <section className="py-20 md:py-32 relative overflow-hidden h-screen">
+      <section className="py-16 md:py-20 relative overflow-hidden" style={{ height: '70vh', minHeight: '600px' }}>
         {/* Video Background */}
         <video
           ref={videoRef}
@@ -185,9 +185,14 @@ export default function Home() {
           loop
           muted
           playsInline
-          preload="auto"
+          preload="metadata"
           className="absolute top-0 left-0 w-full h-full object-cover"
-          style={{ zIndex: 0 }}
+          style={{ 
+            zIndex: 0,
+            willChange: 'transform',
+            transform: 'translateZ(0)',
+            filter: 'brightness(0.9)' // Slightly reduce brightness for better text visibility
+          }}
           onError={(e) => {
             console.error('Video failed to load:', e);
             // Hide video and show fallback background
@@ -202,7 +207,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-green-100" style={{ zIndex: -1 }}></div>
 
         {/* Semi-transparent overlay for text readability */}
-        <div className="absolute inset-0 bg-black/30" style={{ zIndex: 2 }}></div>
+        <div className="absolute inset-0 bg-black/20" style={{ zIndex: 2 }}></div>
 
         {/* Decorative Elements - kept but made more subtle */}
         <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none" style={{ zIndex: 3 }}>
@@ -210,13 +215,6 @@ export default function Home() {
           <div className="absolute top-1/3 -right-24 w-96 h-96 rounded-full bg-green-200 animate-blob animation-delay-2000"></div>
           <div className="absolute -bottom-20 left-1/4 w-72 h-72 rounded-full bg-green-400 animate-blob animation-delay-4000"></div>
         </div>
-
-        {/* Debug indicator for video status */}
-        {videoPlaying && (
-          <div className="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded text-sm" style={{ zIndex: 100 }}>
-            VIDEO PLAYING
-          </div>
-        )}
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative" style={{ zIndex: 10 }}>
           <div className="flex flex-col md:flex-row items-center justify-between">
