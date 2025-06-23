@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
@@ -56,6 +56,7 @@ export default function Home() {
   const [isScrolled, setIsScrolled] = useState(false);
   // Add state to track if this is the initial render
   const [isInitialRender, setIsInitialRender] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   // Get services data
   const { data: servicesData, isLoading: isLoadingServices } = useQuery({
@@ -132,6 +133,36 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
+  // Handle video loading and playback
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      const handleCanPlay = () => {
+        video.play().catch((error) => {
+          console.log('Video autoplay failed, this is normal on some browsers:', error);
+        });
+      };
+
+      const handleLoadedData = () => {
+        console.log('Video loaded successfully');
+      };
+
+      const handleError = (error: any) => {
+        console.error('Video loading error:', error);
+      };
+
+      video.addEventListener('canplay', handleCanPlay);
+      video.addEventListener('loadeddata', handleLoadedData);
+      video.addEventListener('error', handleError);
+
+      return () => {
+        video.removeEventListener('canplay', handleCanPlay);
+        video.removeEventListener('loadeddata', handleLoadedData);
+        video.removeEventListener('error', handleError);
+      };
+    }
+  }, []);
+
   return (
     <MainLayout>
       {/* Hero Section */}
@@ -139,15 +170,22 @@ export default function Home() {
         {/* Video Background */}
         <div className="absolute inset-0 w-full h-full">
           <video
+            ref={videoRef}
             autoPlay
             loop
             muted
             playsInline
+            preload="auto"
             className="absolute inset-0 w-full h-full object-cover"
             style={{ zIndex: -2 }}
+            onError={(e) => {
+              console.error('Video failed to load:', e);
+              // Hide video and show fallback background
+              (e.target as HTMLVideoElement).style.display = 'none';
+            }}
           >
             <source src="/gardencut.mp4" type="video/mp4" />
-            {/* Fallback for browsers that don't support video */}
+            Your browser does not support the video tag.
           </video>
           {/* Fallback background for unsupported devices */}
           <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-green-100" style={{ zIndex: -1 }}></div>

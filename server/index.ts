@@ -30,8 +30,16 @@ app.get('/sw.js', (req, res) => {
   res.sendFile('sw.js', { root: './client' });
 });
 
-// Serve static files from client/public directory
-app.use(express.static('./client/public'));
+// Serve static files from client/public directory with proper CORS headers
+app.use(express.static('./client/public', {
+  setHeaders: (res, path) => {
+    if (path.endsWith('.mp4')) {
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Access-Control-Allow-Methods', 'GET');
+      res.setHeader('Access-Control-Allow-Headers', 'Range');
+    }
+  }
+}));
 
 app.use((req, res, next) => {
   const start = Date.now();
