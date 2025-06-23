@@ -137,41 +137,33 @@ export default function Home() {
   // Handle video loading and playback
   useEffect(() => {
     const video = videoRef.current;
-    if (video) {
-      const handleCanPlay = () => {
-        video.play().then(() => {
-          console.log('Video is now playing');
-          setVideoPlaying(true);
-        }).catch((error) => {
-          console.log('Video autoplay failed, this is normal on some browsers:', error);
+    if (!video) return;
+
+    let timeoutId: NodeJS.Timeout;
+
+    const handlePlay = () => {
+      setVideoPlaying(true);
+      // Force hardware acceleration after play starts
+      video.style.transform = 'translate3d(0,0,0)';
+    };
+
+    const handleCanPlay = () => {
+      // Delay autoplay slightly to ensure smooth rendering
+      timeoutId = setTimeout(() => {
+        video.play().catch(() => {
+          // Silent fail for autoplay restrictions
         });
-      };
+      }, 100);
+    };
 
-      const handleLoadedData = () => {
-        console.log('Video loaded successfully');
-      };
+    video.addEventListener('canplay', handleCanPlay, { once: true });
+    video.addEventListener('play', handlePlay, { once: true });
 
-      const handleError = (error: any) => {
-        console.error('Video loading error:', error);
-      };
-
-      const handlePlay = () => {
-        console.log('Video started playing');
-        setVideoPlaying(true);
-      };
-
-      video.addEventListener('canplay', handleCanPlay);
-      video.addEventListener('loadeddata', handleLoadedData);
-      video.addEventListener('error', handleError);
-      video.addEventListener('play', handlePlay);
-
-      return () => {
-        video.removeEventListener('canplay', handleCanPlay);
-        video.removeEventListener('loadeddata', handleLoadedData);
-        video.removeEventListener('error', handleError);
-        video.removeEventListener('play', handlePlay);
-      };
-    }
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+      video.removeEventListener('canplay', handleCanPlay);
+      video.removeEventListener('play', handlePlay);
+    };
   }, []);
 
   return (
@@ -185,22 +177,30 @@ export default function Home() {
           loop
           muted
           playsInline
-          preload="metadata"
+          preload="none"
+          poster=""
           className="absolute top-0 left-0 w-full h-full object-cover"
           style={{ 
             zIndex: 0,
             willChange: 'transform',
-            transform: 'translateZ(0)',
-            filter: 'brightness(0.9)' // Slightly reduce brightness for better text visibility
+            transform: 'translate3d(0,0,0)',
+            filter: 'brightness(0.9)',
+            backfaceVisibility: 'hidden',
+            perspective: '1000px'
           }}
           onError={(e) => {
             console.error('Video failed to load:', e);
-            // Hide video and show fallback background
             (e.target as HTMLVideoElement).style.display = 'none';
+          }}
+          onLoadStart={() => {
+            // Optimize for mobile performance
+            if (videoRef.current) {
+              videoRef.current.setAttribute('playsinline', 'true');
+              videoRef.current.setAttribute('webkit-playsinline', 'true');
+            }
           }}
         >
           <source src="/gardencut.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
         </video>
 
         {/* Fallback background for unsupported devices */}
