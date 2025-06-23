@@ -1,5 +1,5 @@
-// Service Worker with proper cache versioning
-const CACHE_VERSION = Date.now(); // Dynamic versioning
+// Service Worker with proper cache versioning - Force refresh for video fix
+const CACHE_VERSION = Date.now() + Math.random(); // Force new cache version
 const CACHE_NAME = `green-garden-cache-v${CACHE_VERSION}`;
 const IMAGE_CACHE_NAME = `green-garden-images-v${CACHE_VERSION}`;
 const API_CACHE_NAME = `green-garden-api-v${CACHE_VERSION}`;

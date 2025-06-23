@@ -115,7 +115,7 @@ export default function Services() {
             }
           }}
         >
-          <source src="/gardencut.mp4" type="video/mp4" />
+          <source src={`/gardencut.mp4?v=${Date.now()}`} type="video/mp4" />
         </video>
 
         {/* Fallback Background Image */}
