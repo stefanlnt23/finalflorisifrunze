@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronRight, Leaf, Clock, CheckCircle2 } from "lucide-react";
@@ -24,6 +24,8 @@ interface Service {
 export default function Services() {
   // Add state to track if this is the initial render
   const [isInitialRender, setIsInitialRender] = useState(true);
+  const [videoPlaying, setVideoPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["/api/services"],
@@ -47,12 +49,75 @@ export default function Services() {
     return () => clearTimeout(timer);
   }, []);
 
+  // Handle video loading and playback
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      const handleCanPlay = () => {
+        video.play().then(() => {
+          setVideoPlaying(true);
+        }).catch((error) => {
+          console.log('Video autoplay failed, this is normal on some browsers:', error);
+        });
+      };
+
+      const handleLoadedData = () => {
+        console.log('Services video loaded successfully');
+      };
+
+      const handleError = (error: any) => {
+        console.error('Services video loading error:', error);
+      };
+
+      const handlePlay = () => {
+        setVideoPlaying(true);
+      };
+
+      video.addEventListener('canplay', handleCanPlay);
+      video.addEventListener('loadeddata', handleLoadedData);
+      video.addEventListener('error', handleError);
+      video.addEventListener('play', handlePlay);
+
+      return () => {
+        video.removeEventListener('canplay', handleCanPlay);
+        video.removeEventListener('loadeddata', handleLoadedData);
+        video.removeEventListener('error', handleError);
+        video.removeEventListener('play', handlePlay);
+      };
+    }
+  }, []);
+
   return (
     <MainLayout>
-      {/* Hero Section with Lawn Mower Background */}
-      <div className="relative py-24 overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0">
+      {/* Hero Section with Video Background */}
+      <div className="relative py-24 overflow-hidden" style={{ height: '70vh', minHeight: '600px' }}>
+        {/* Video Background */}
+        <video
+          ref={videoRef}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          className="absolute top-0 left-0 w-full h-full object-cover"
+          style={{ 
+            zIndex: 0,
+            willChange: 'transform',
+            transform: 'translateZ(0)',
+            filter: 'brightness(0.9)'
+          }}
+          onError={(e) => {
+            console.error('Services video failed to load:', e);
+            // Hide video and show fallback background
+            (e.target as HTMLVideoElement).style.display = 'none';
+          }}
+        >
+          <source src="/gardencut.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+
+        {/* Fallback Background Image */}
+        <div className="absolute inset-0" style={{ zIndex: -1 }}>
           <img
             src="https://www.theurbangardeners.co.uk/wp-content/uploads/2021/06/Managed-1.jpg"
             alt="Lawn mowing service"
@@ -61,7 +126,10 @@ export default function Services() {
           <div className="absolute inset-0 bg-black opacity-50"></div>
         </div>
 
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Semi-transparent overlay for text readability */}
+        <div className="absolute inset-0 bg-black/20" style={{ zIndex: 2 }}></div>
+
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative" style={{ zIndex: 10 }}>
           <div className="max-w-3xl mx-auto text-center">
             <span className="inline-block px-4 py-1 rounded-full bg-white bg-opacity-20 text-white text-sm font-medium mb-6 animate-fadeIn">
               Experți în Grădinărit
