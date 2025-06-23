@@ -56,6 +56,7 @@ export default function Home() {
   const [isScrolled, setIsScrolled] = useState(false);
   // Add state to track if this is the initial render
   const [isInitialRender, setIsInitialRender] = useState(true);
+  const [videoPlaying, setVideoPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // Get services data
@@ -138,7 +139,10 @@ export default function Home() {
     const video = videoRef.current;
     if (video) {
       const handleCanPlay = () => {
-        video.play().catch((error) => {
+        video.play().then(() => {
+          console.log('Video is now playing');
+          setVideoPlaying(true);
+        }).catch((error) => {
           console.log('Video autoplay failed, this is normal on some browsers:', error);
         });
       };
@@ -151,14 +155,21 @@ export default function Home() {
         console.error('Video loading error:', error);
       };
 
+      const handlePlay = () => {
+        console.log('Video started playing');
+        setVideoPlaying(true);
+      };
+
       video.addEventListener('canplay', handleCanPlay);
       video.addEventListener('loadeddata', handleLoadedData);
       video.addEventListener('error', handleError);
+      video.addEventListener('play', handlePlay);
 
       return () => {
         video.removeEventListener('canplay', handleCanPlay);
         video.removeEventListener('loadeddata', handleLoadedData);
         video.removeEventListener('error', handleError);
+        video.removeEventListener('play', handlePlay);
       };
     }
   }, []);
@@ -166,42 +177,48 @@ export default function Home() {
   return (
     <MainLayout>
       {/* Hero Section */}
-      <section className="py-20 md:py-32 relative overflow-hidden">
+      <section className="py-20 md:py-32 relative overflow-hidden h-screen">
         {/* Video Background */}
-        <div className="absolute inset-0 w-full h-full">
-          <video
-            ref={videoRef}
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="auto"
-            className="absolute inset-0 w-full h-full object-cover"
-            style={{ zIndex: -2 }}
-            onError={(e) => {
-              console.error('Video failed to load:', e);
-              // Hide video and show fallback background
-              (e.target as HTMLVideoElement).style.display = 'none';
-            }}
-          >
-            <source src="/gardencut.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-          {/* Fallback background for unsupported devices */}
-          <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-green-100" style={{ zIndex: -1 }}></div>
-        </div>
+        <video
+          ref={videoRef}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          className="absolute top-0 left-0 w-full h-full object-cover"
+          style={{ zIndex: 0 }}
+          onError={(e) => {
+            console.error('Video failed to load:', e);
+            // Hide video and show fallback background
+            (e.target as HTMLVideoElement).style.display = 'none';
+          }}
+        >
+          <source src="/gardencut.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+
+        {/* Fallback background for unsupported devices */}
+        <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-green-100" style={{ zIndex: -1 }}></div>
 
         {/* Semi-transparent overlay for text readability */}
-        <div className="absolute inset-0 bg-black/20 backdrop-blur-[0.5px]" style={{ zIndex: 1 }}></div>
+        <div className="absolute inset-0 bg-black/30" style={{ zIndex: 2 }}></div>
 
         {/* Decorative Elements - kept but made more subtle */}
-        <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none" style={{ zIndex: 2 }}>
+        <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none" style={{ zIndex: 3 }}>
           <div className="absolute -top-16 -left-16 w-64 h-64 rounded-full bg-green-300 animate-blob"></div>
           <div className="absolute top-1/3 -right-24 w-96 h-96 rounded-full bg-green-200 animate-blob animation-delay-2000"></div>
           <div className="absolute -bottom-20 left-1/4 w-72 h-72 rounded-full bg-green-400 animate-blob animation-delay-4000"></div>
         </div>
 
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Debug indicator for video status */}
+        {videoPlaying && (
+          <div className="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded text-sm" style={{ zIndex: 100 }}>
+            VIDEO PLAYING
+          </div>
+        )}
+
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative" style={{ zIndex: 10 }}>
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="md:w-1/2 mb-10 md:mb-0 md:pr-8">
               <span
