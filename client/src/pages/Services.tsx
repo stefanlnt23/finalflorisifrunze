@@ -118,14 +118,30 @@ export default function Services() {
           <source src="https://res.cloudinary.com/dyrmghrbm/video/upload/gardencut_xiwbj3.mp4" type="video/mp4" />
         </video>
 
-        {/* Fallback Background Image */}
-        <div className="absolute inset-0" style={{ zIndex: -1 }}>
-          <img
-            src="https://www.theurbangardeners.co.uk/wp-content/uploads/2021/06/Managed-1.jpg"
-            alt="Lawn mowing service"
-            className="object-cover object-center w-full h-full"
-          />
-          <div className="absolute inset-0 bg-black opacity-50"></div>
+        {/* Enhanced animated fallback background for unsupported devices */}
+        <div className="absolute inset-0 bg-gradient-to-br from-green-400 via-green-500 to-green-600" style={{ zIndex: -1 }}>
+          {/* Animated floating garden elements */}
+          <div className="absolute inset-0 overflow-hidden">
+            {/* Large decorative circles with gradient */}
+            <div className="absolute top-16 right-10 w-28 h-28 bg-gradient-to-br from-green-200/30 to-green-300/20 rounded-full animate-float"></div>
+            <div className="absolute top-1/2 left-16 w-32 h-32 bg-gradient-to-br from-green-100/40 to-green-200/30 rounded-full animate-float-delay-1"></div>
+            <div className="absolute bottom-24 right-1/4 w-36 h-36 bg-gradient-to-br from-green-300/20 to-green-400/15 rounded-full animate-float-delay-2"></div>
+            
+            {/* Floating garden tools and plants */}
+            <div className="absolute top-24 left-1/4 text-green-200/40 text-3xl animate-float-slow">🌿</div>
+            <div className="absolute top-2/3 right-1/4 text-green-100/50 text-2xl animate-float-delay-1">🍃</div>
+            <div className="absolute bottom-40 left-20 text-green-200/40 text-3xl animate-float-delay-2">🌱</div>
+            <div className="absolute top-1/3 right-16 text-green-100/60 text-2xl animate-float-slow">🌾</div>
+            <div className="absolute bottom-1/4 left-1/3 text-green-200/40 text-xl animate-float">🌸</div>
+            <div className="absolute top-1/5 left-1/2 text-green-100/50 text-2xl animate-float-delay-1">✂️</div>
+            
+            {/* Geometric patterns */}
+            <div className="absolute top-0 left-0 w-full h-full opacity-10">
+              <div className="absolute top-1/3 left-1/4 w-2 h-2 bg-white rounded-full animate-pulse"></div>
+              <div className="absolute top-2/3 left-1/6 w-1 h-1 bg-white rounded-full animate-pulse delay-1000"></div>
+              <div className="absolute top-1/2 left-2/3 w-2 h-2 bg-white rounded-full animate-pulse delay-2000"></div>
+            </div>
+          </div>
         </div>
 
         {/* Semi-transparent overlay for text readability */}
