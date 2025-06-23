@@ -200,7 +200,7 @@ export default function Home() {
             }
           }}
         >
-          <source src={`/gardencut.mp4?v=${Date.now()}`} type="video/mp4" />
+          <source src="https://res.cloudinary.com/dyrmghrbm/video/upload/gardencut_xiwbj3.mp4" type="video/mp4" />
         </video>
 
         {/* Fallback background for unsupported devices */}

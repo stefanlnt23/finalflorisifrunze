@@ -126,11 +126,11 @@ The application is architected to support both MongoDB (currently active) and Po
 - **Responsive Design**: Both hero sections optimized to 70vh with 600px minimum height for consistent visual proportions across devices
 - **Enhanced Text Readability**: Implemented layered approach with video at z-index 0, fallback images at z-index -1, overlay at z-index 2, and content at z-index 10
 - **Robust Fallback System**: Services page maintains original lawn mowing image fallback while Home page uses gradient fallback for unsupported devices
-- **Production Deployment Fix**: Resolved CORS and video serving issues in production by implementing dedicated video endpoint with range request support
+- **Production Deployment Fix**: Resolved CORS and video serving issues in production by migrating from local hosting to Cloudinary CDN
+- **Cloudinary Integration**: Migrated video hosting to Cloudinary CDN (dyrmghrbm cloud) for reliable cross-platform delivery
+- **CDN Video URL**: Updated both pages to use https://res.cloudinary.com/dyrmghrbm/video/upload/gardencut_xiwbj3.mp4 for consistent playback
 - **Enhanced CORS Configuration**: Added comprehensive CORS headers and cache prevention to eliminate external resource conflicts
 - **Cache Busting Implementation**: Added timestamp-based cache busting parameters and service worker updates to prevent cached external URL conflicts
-- **Range Request Support**: Implemented proper HTTP range request handling for video streaming with Accept-Ranges headers
-- **Static File Serving**: Added Express static file serving for client/public directory with proper CORS headers for video files
 - **Event-Driven Loading**: Optimized video loading system with minimal event listeners, silent error handling, and automatic hardware acceleration triggers
 - **Content Preservation**: All existing hero content maintained with proper z-index layering and enhanced typography for video overlay compatibility
 - **Impact**: Professional cinematic background effect across key pages with optimized performance, deployment compatibility, and maintained functionality
