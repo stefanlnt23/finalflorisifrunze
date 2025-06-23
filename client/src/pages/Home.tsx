@@ -135,9 +135,29 @@ export default function Home() {
   return (
     <MainLayout>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-green-50 to-green-100 py-20 md:py-32 relative overflow-hidden">
-        {/* Decorative Elements */}
-        <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+      <section className="py-20 md:py-32 relative overflow-hidden">
+        {/* Video Background */}
+        <div className="absolute inset-0 w-full h-full">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ zIndex: -2 }}
+          >
+            <source src="/gardencut.mp4" type="video/mp4" />
+            {/* Fallback for browsers that don't support video */}
+          </video>
+          {/* Fallback background for unsupported devices */}
+          <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-green-100" style={{ zIndex: -1 }}></div>
+        </div>
+
+        {/* Semi-transparent overlay for text readability */}
+        <div className="absolute inset-0 bg-black/20 backdrop-blur-[0.5px]" style={{ zIndex: 1 }}></div>
+
+        {/* Decorative Elements - kept but made more subtle */}
+        <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none" style={{ zIndex: 2 }}>
           <div className="absolute -top-16 -left-16 w-64 h-64 rounded-full bg-green-300 animate-blob"></div>
           <div className="absolute top-1/3 -right-24 w-96 h-96 rounded-full bg-green-200 animate-blob animation-delay-2000"></div>
           <div className="absolute -bottom-20 left-1/4 w-72 h-72 rounded-full bg-green-400 animate-blob animation-delay-4000"></div>
@@ -147,21 +167,23 @@ export default function Home() {
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="md:w-1/2 mb-10 md:mb-0 md:pr-8">
               <span
-                className={`inline-block px-4 py-1 rounded-full bg-green-100 text-green-600 text-sm font-medium mb-6 ${isInitialRender ? "animate-fadeIn" : ""}`}
+                className={`inline-block px-4 py-1 rounded-full bg-white/90 text-green-600 text-sm font-medium mb-6 shadow-lg ${isInitialRender ? "animate-fadeIn" : ""}`}
               >
                 Servicii Profesionale de Grădinărit
               </span>
               <h1
-                className={`text-4xl md:text-5xl font-bold mb-6 leading-tight text-gray-900 ${isInitialRender ? "animate-slideUp" : ""}`}
+                className={`text-4xl md:text-5xl font-bold mb-6 leading-tight text-white drop-shadow-lg ${isInitialRender ? "animate-slideUp" : ""}`}
+                style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}
               >
                 Gradina ta pasiunea noastra...{" "}
-                <span className="text-green-600 relative">
+                <span className="text-green-400 relative">
                   Paradis
-                  <span className="absolute bottom-0 left-0 w-full h-2 bg-green-200 -z-10"></span>
+                  <span className="absolute bottom-0 left-0 w-full h-2 bg-green-200/50 -z-10"></span>
                 </span>
               </h1>
               <p
-                className={`text-lg mb-8 text-gray-700 max-w-lg ${isInitialRender ? "animate-fadeIn animation-delay-300" : ""}`}
+                className={`text-lg mb-8 text-white/95 max-w-lg drop-shadow-md ${isInitialRender ? "animate-fadeIn animation-delay-300" : ""}`}
+                style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.4)' }}
               >
                 Servicii profesionale de grădinărit pentru a face grădina ta
                 frumoasă, sustenabilă și înfloritoare pe tot parcursul anului.
@@ -186,14 +208,15 @@ export default function Home() {
                 </Link>
               </div>
               <div
-                className={`mt-8 flex items-center text-gray-600 ${isInitialRender ? "animate-fadeIn animation-delay-700" : ""}`}
+                className={`mt-8 flex items-center text-white/90 ${isInitialRender ? "animate-fadeIn animation-delay-700" : ""}`}
+                style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.4)' }}
               >
                 <span className="flex items-center mr-6">
-                  <i className="fas fa-check-circle text-green-500 mr-2"></i>
+                  <i className="fas fa-check-circle text-green-400 mr-2 drop-shadow-md"></i>
                   Echipă cu Experiență
                 </span>
                 <span className="flex items-center">
-                  <i className="fas fa-check-circle text-green-500 mr-2"></i>
+                  <i className="fas fa-check-circle text-green-400 mr-2 drop-shadow-md"></i>
                   Garanție de Calitate
                 </span>
               </div>
