@@ -133,7 +133,9 @@ The application is architected to support both MongoDB (currently active) and Po
 - **Cache Busting Implementation**: Added timestamp-based cache busting parameters and service worker updates to prevent cached external URL conflicts
 - **Event-Driven Loading**: Optimized video loading system with minimal event listeners, silent error handling, and automatic hardware acceleration triggers
 - **Content Preservation**: All existing hero content maintained with proper z-index layering and enhanced typography for video overlay compatibility
-- **Impact**: Professional cinematic background effect across key pages with optimized performance, deployment compatibility, and maintained functionality
+- **Mobile Layout Fix**: Increased bottom margin on Home page text section (mb-16) to prevent carousel overlap with "Transforma Gradina ta" text on mobile
+- **Company Credit Addition**: Added Web-force.info developer credit to footer with proper styling and external link
+- **Impact**: Professional cinematic background effect across key pages with optimized performance, deployment compatibility, maintained functionality, and improved mobile UX
 
 ### June 22, 2025 - Email Address Update
 - **Contact Information Standardization**: Updated email address from contact@florisifrunze.com to info@florisifrunze.com across all website components

@@ -106,9 +106,22 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-800 pt-8">
-          <p className="text-center text-gray-500">
-            &copy; {new Date().getFullYear()} Flori si Frunze. Toate drepturile rezervate.
-          </p>
+          <div className="flex flex-col sm:flex-row justify-between items-center text-gray-500 space-y-2 sm:space-y-0">
+            <p>
+              &copy; {new Date().getFullYear()} Flori si Frunze. Toate drepturile rezervate.
+            </p>
+            <p className="text-sm">
+              Website dezvoltat de{" "}
+              <a 
+                href="https://web-force.info" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-green-400 hover:text-green-300 transition-colors"
+              >
+                Web-force.info
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </footer>

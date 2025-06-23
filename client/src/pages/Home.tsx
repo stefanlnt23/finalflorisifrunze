@@ -218,7 +218,7 @@ export default function Home() {
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative" style={{ zIndex: 10 }}>
           <div className="flex flex-col md:flex-row items-center justify-between">
-            <div className="md:w-1/2 mb-10 md:mb-0 md:pr-8">
+            <div className="md:w-1/2 mb-16 md:mb-0 md:pr-8">
               <span
                 className={`inline-block px-4 py-1 rounded-full bg-white/90 text-green-600 text-sm font-medium mb-6 shadow-lg ${isInitialRender ? "animate-fadeIn" : ""}`}
               >
