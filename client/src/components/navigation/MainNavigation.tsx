@@ -93,7 +93,7 @@ export default function MainNavigation() {
             </h3>
           </div>
           
-          <div className="px-3 py-3 space-y-1">
+          <div className="px-4 py-4 space-y-1">
             {navLinks.map((link, index) => {
               // Add icons for each navigation item
               const getIcon = (path: string) => {
@@ -136,7 +136,7 @@ export default function MainNavigation() {
             {/* Enhanced CTA Button */}
             <Link
               href="/appointment"
-              className="group flex items-center px-4 py-4 rounded-xl text-base font-bold text-white bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
+              className="group flex items-center px-5 py-4 mx-1 rounded-xl text-base font-bold text-white bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
             >
               <i className="fas fa-calendar-plus w-5 mr-3 text-white"></i>
               <span className="flex-1">Programează o Întâlnire</span>
@@ -144,16 +144,16 @@ export default function MainNavigation() {
             </Link>
             
             {/* Quick Contact */}
-            <div className="mt-3 pt-3 border-t border-gray-200">
-              <div className="text-xs font-semibold text-gray-500 mb-2 px-2">Contact Rapid</div>
-              <div className="flex space-x-2">
-                <a href="tel:+40742650670" className="flex-1 flex items-center justify-center px-3 py-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors duration-200">
-                  <i className="fas fa-phone mr-2"></i>
-                  <span className="text-sm font-medium">Sună</span>
+            <div className="mt-4 pt-4 border-t border-gray-200">
+              <div className="text-xs font-semibold text-gray-500 mb-3 px-1 text-center">Contact Rapid</div>
+              <div className="flex space-x-3 px-1">
+                <a href="tel:+40742650670" className="flex-1 flex items-center justify-center px-4 py-3 rounded-xl bg-blue-50 text-blue-600 hover:bg-blue-100 transition-all duration-200 shadow-sm hover:shadow-md transform hover:scale-[1.02]">
+                  <i className="fas fa-phone mr-2 text-sm"></i>
+                  <span className="text-sm font-semibold">Sună</span>
                 </a>
-                <a href="https://wa.me/40742650670" target="_blank" rel="noopener noreferrer" className="flex-1 flex items-center justify-center px-3 py-2 rounded-lg bg-green-50 text-green-600 hover:bg-green-100 transition-colors duration-200">
-                  <i className="fab fa-whatsapp mr-2"></i>
-                  <span className="text-sm font-medium">WhatsApp</span>
+                <a href="https://wa.me/40742650670" target="_blank" rel="noopener noreferrer" className="flex-1 flex items-center justify-center px-4 py-3 rounded-xl bg-green-50 text-green-600 hover:bg-green-100 transition-all duration-200 shadow-sm hover:shadow-md transform hover:scale-[1.02]">
+                  <i className="fab fa-whatsapp mr-2 text-sm"></i>
+                  <span className="text-sm font-semibold">WhatsApp</span>
                 </a>
               </div>
             </div>
