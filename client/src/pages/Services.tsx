@@ -116,7 +116,7 @@ export default function Services() {
             }
           }}
         >
-          <source src="https://res.cloudinary.com/dyrmghrbm/video/upload/gardencut_xiwbj3.mp4" type="video/mp4" />
+          <source src="https://res.cloudinary.com/dyrmghrbm/video/upload/f_mp4,q_auto:low,w_auto,c_scale/gardencut_xiwbj3.mp4" type="video/mp4" />
         </video>
 
         {/* Enhanced animated fallback background for unsupported devices */}

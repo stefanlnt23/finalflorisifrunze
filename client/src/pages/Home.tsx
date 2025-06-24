@@ -177,7 +177,9 @@ export default function Home() {
           loop
           muted
           playsInline
-          preload="none"
+          webkit-playsinline="true"
+          x5-playsinline="true"
+          preload="metadata"
           poster=""
           className="absolute top-0 left-0 w-full h-full object-cover"
           style={{ 
@@ -192,15 +194,33 @@ export default function Home() {
             console.error('Video failed to load:', e);
             (e.target as HTMLVideoElement).style.display = 'none';
           }}
-          onLoadStart={() => {
-            // Optimize for mobile performance
+          onCanPlay={() => {
+            // Force play on mobile after video can play
+            if (videoRef.current) {
+              const playPromise = videoRef.current.play();
+              if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                  console.log('Auto-play prevented:', error);
+                });
+              }
+            }
+          }}
+          onLoadedData={() => {
+            // Additional mobile optimization
             if (videoRef.current) {
               videoRef.current.setAttribute('playsinline', 'true');
               videoRef.current.setAttribute('webkit-playsinline', 'true');
+              videoRef.current.setAttribute('x5-playsinline', 'true');
+              // Force play attempt for mobile
+              setTimeout(() => {
+                if (videoRef.current) {
+                  videoRef.current.play().catch(e => console.log('Play prevented:', e));
+                }
+              }, 100);
             }
           }}
         >
-          <source src="https://res.cloudinary.com/dyrmghrbm/video/upload/gardencut_xiwbj3.mp4" type="video/mp4" />
+          <source src="https://res.cloudinary.com/dyrmghrbm/video/upload/f_mp4,q_auto:low,w_auto,c_scale/gardencut_xiwbj3.mp4" type="video/mp4" />
         </video>
 
         {/* Enhanced animated fallback background for unsupported devices */}
