@@ -133,7 +133,7 @@ The application is architected to support both MongoDB (currently active) and Po
 - **Cache Busting Implementation**: Added timestamp-based cache busting parameters and service worker updates to prevent cached external URL conflicts
 - **Event-Driven Loading**: Optimized video loading system with minimal event listeners, silent error handling, and automatic hardware acceleration triggers
 - **Content Preservation**: All existing hero content maintained with proper z-index layering and enhanced typography for video overlay compatibility
-- **Mobile Layout Fix**: Increased bottom margin on Home page text section (mb-16) to prevent carousel overlap with "Transforma Gradina ta" text on mobile
+- **Mobile Layout Fix**: Fixed carousel overlap with "Transformă Grădina Ta" text on mobile by increasing top padding (pt-32) for mobile devices while maintaining desktop spacing (md:py-20)
 - **Company Credit Addition**: Added Web-force.info developer credit to footer with proper styling and external link
 - **Enhanced Animated Fallback**: Replaced static gradient with rich animated green background featuring floating garden elements, emoji animations, and geometric patterns
 - **Custom Float Animations**: Added CSS keyframe animations for floating elements with different speeds and delays for natural movement

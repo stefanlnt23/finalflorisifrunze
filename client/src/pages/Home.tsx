@@ -308,7 +308,7 @@ export default function Home() {
       </section>
 
       {/* Banner Section - Replacement for first ParallaxSection */}
-      <section className="py-20 bg-gradient-to-r from-green-600 to-green-700 relative overflow-hidden">
+      <section className="pt-32 pb-20 md:py-20 bg-gradient-to-r from-green-600 to-green-700 relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute top-0 right-0 w-full h-full bg-pattern-leaves"></div>
         </div>
