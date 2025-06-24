@@ -1,0 +1,81 @@
+https://
+florisifrunze.com
+Scan Website
+Scan Results for florisifrunze.com
+24/06/2025, 13:14:25
+
+Link
+PDF
+SSL:
+Valid SSL
+Expiration: 2025-09-19 (86 days remaining)
+
+Issuer: Let's Encrypt
+
+Authority: E5
+
+Download Certificate
+TLS Configuration:
+Strength: Strong
+Version: TLSv1.3
+
+Cipher: TLS_AES_256_GCM_SHA384
+
+TLS (Transport Layer Security) encrypts data in transit, protecting against eavesdropping and tampering. Strong TLS configurations use up-to-date protocols and ciphers to ensure the highest level of security.
+
+Content Security Policy (CSP):
+Enabled
+Great! Your site implements Content Security Policy. Ensure it's properly configured to maximize protection against XSS and other injection attacks.
+
+X-Frame-Options:
+Protected against clickjacking
+X-Frame-Options header is present, helping to prevent clickjacking attacks by controlling how your site can be embedded in frames.
+
+HTTP Strict Transport Security (HSTS):
+Enabled
+HSTS forces browsers to use HTTPS, preventing downgrade attacks and cookie hijacking.
+
+Cookie Security:
+All cookies are secure
+Mixed Content:
+No mixed content detected
+Mixed content (HTTP resources on HTTPS pages) poses security risks, enabling potential attacks and content injection. Modern browsers may block it, breaking site functionality.
+
+Web Application Firewall (WAF):
+No WAF detected
+A Web Application Firewall (WAF) helps protect your website from various attacks such as SQL injection, cross-site scripting (XSS), and other common exploits.
+
+HTTP Security Headers:
+Security Headers Score: 75/100
+X-XSS-Protection
+Helps prevent XSS attacks in older browsers.
+
+X-Content-Type-Options
+Prevents MIME type sniffing.
+
+Referrer-Policy
+Controls the Referer header for outgoing requests.
+
+Permissions-Policy
+Controls which browser features and APIs can be used.
+
+Server Version:
+Google Frontend
+In theory you want to hide your software or version but not all announcements are bad.
+
+DNSSEC:
+DNSSEC not enabled
+DNSSEC adds a layer of trust to your domain name. It helps prevent DNS spoofing and cache poisoning attacks. Consider enabling it for enhanced security.
+
+Nameservers:
+ns1057.ui-dns.org (217.160.83.57)
+ns1111.ui-dns.com (217.160.82.111)
+ns1083.ui-dns.biz (217.160.81.83)
+ns1036.ui-dns.de (217.160.80.36)
+DMARC:
+No DMARC record
+DMARC helps prevent email spoofing and protects your domain from unauthorized use in phishing attacks.
+
+DKIM:
+No DKIM record found
+DKIM adds a digital signature to emails, verifying that they were sent by an authorized sender and weren't altered in transit.
