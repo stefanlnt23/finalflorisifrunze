@@ -1,0 +1,35 @@
+Security Report Summary
+D
+Site:	https://florisifrunze.com/
+IP Address:	34.111.179.208
+Report Time:	24 Jun 2025 20:08:45 UTC
+Headers:	
+Strict-Transport-Security Content-Security-Policy X-Frame-Options X-Content-Type-Options Referrer-Policy Permissions-Policy
+Advanced:	
+Your site could be at risk, let’s perform a deeper security analysis of your site and APIs:	
+Missing Headers
+Content-Security-Policy	Content Security Policy is an effective measure to protect your site from XSS attacks. By whitelisting sources of approved content, you can prevent the browser from loading malicious assets.
+X-Frame-Options	X-Frame-Options tells the browser whether you want to allow your site to be framed or not. By preventing a browser from framing your site you can defend against attacks like clickjacking. Recommended value "X-Frame-Options: SAMEORIGIN".
+X-Content-Type-Options	X-Content-Type-Options stops a browser from trying to MIME-sniff the content type and forces it to stick with the declared content-type. The only valid value for this header is "X-Content-Type-Options: nosniff".
+Referrer-Policy	Referrer Policy is a new header that allows a site to control how much information the browser includes with navigations away from a document and should be set by all sites.
+Permissions-Policy	Permissions Policy is a new header that allows a site to control which features and APIs can be used in the browser.
+Raw Headers
+HTTP/2	200
+accept-ranges	bytes
+access-control-allow-headers	Content-Type, Authorization, Range, Content-Range
+access-control-allow-methods	GET, POST, PUT, DELETE, OPTIONS, HEAD
+access-control-allow-origin	*
+cache-control	no-cache, no-store, must-revalidate, max-age=0
+content-length	3141
+content-type	text/html; charset=UTF-8
+date	Tue, 24 Jun 2025 20:08:45 GMT
+etag	"1750795725141-0.4467510090152429"
+expires	0
+last-modified	Tue, 24 Jun 2025 20:08:45 GMT
+pragma	no-cache
+server	Google Frontend
+strict-transport-security	max-age=63072000; includeSubDomains
+x-cloud-trace-context	10fa7fc1cc52fbb02cddeb82d92e6d45;o=1
+x-powered-by	Express
+via	1.1 google
+alt-svc	h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
