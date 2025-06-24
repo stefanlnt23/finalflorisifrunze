@@ -169,7 +169,7 @@ export default function Home() {
   return (
     <MainLayout>
       {/* Hero Section */}
-      <section className="py-16 md:py-20 relative overflow-hidden" style={{ height: '70vh', minHeight: '600px' }}>
+      <section className="py-16 md:py-20 relative overflow-hidden" style={{ height: '75vh', minHeight: '650px' }}>
         {/* Video Background */}
         <video
           ref={videoRef}
@@ -328,7 +328,7 @@ export default function Home() {
       </section>
 
       {/* Banner Section - Replacement for first ParallaxSection */}
-      <section className="pt-32 pb-20 md:py-20 bg-gradient-to-r from-green-600 to-green-700 relative overflow-hidden">
+      <section className="bg-gradient-to-r from-green-600 to-green-700 relative overflow-hidden" style={{ marginTop: '5vh', paddingTop: 'max(8vh, 60px)', paddingBottom: 'max(5vh, 40px)' }}>
         <div className="absolute inset-0 opacity-20">
           <div className="absolute top-0 right-0 w-full h-full bg-pattern-leaves"></div>
         </div>
