@@ -3,6 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams, Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { SafeImage } from "@/components/ui/safe-image";
+import { FileText } from "lucide-react";
 
 // Related Posts Component
 function RelatedPosts({ currentBlogId }: { currentBlogId: string }) {
@@ -36,13 +38,11 @@ function RelatedPosts({ currentBlogId }: { currentBlogId: string }) {
           className="overflow-hidden shadow-md hover:shadow-lg transition-shadow"
         >
           <div className="aspect-video bg-gray-100 relative overflow-hidden">
-            <img
-              src={
-                post.imageUrl ||
-                "https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-              }
+            <SafeImage
+              src={post.imageUrl || "https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"}
               alt={post.title}
               className="w-full h-full object-cover transition-transform hover:scale-105"
+              fallbackIcon={<FileText className="h-12 w-12 text-gray-400 mx-auto mb-2" />}
             />
           </div>
           <CardContent className="p-4">
@@ -179,19 +179,11 @@ export default function BlogDetail() {
               case "image":
                 return (
                   <figure key={index} className="my-8">
-                    <img
+                    <SafeImage
                       src={section.imageUrl}
                       alt={section.caption || ""}
                       className="w-full h-auto rounded-lg shadow-md mb-2"
-                      style={{
-                        maxWidth: "100%",
-                        margin:
-                          section.alignment === "center"
-                            ? "0 auto"
-                            : section.alignment === "right"
-                              ? "0 0 0 auto"
-                              : "0",
-                      }}
+                      fallbackIcon={<FileText className="h-16 w-16 text-gray-400 mx-auto mb-4" />}
                     />
                     {section.caption && (
                       <figcaption className="text-sm text-gray-500 text-center italic">
@@ -289,10 +281,11 @@ export default function BlogDetail() {
               </div>
               {blogPost.imageUrl && (
                 <div className="rounded-lg overflow-hidden shadow-lg mb-8">
-                  <img
+                  <SafeImage
                     src={blogPost.imageUrl}
                     alt={blogPost.title}
                     className="w-full h-auto"
+                    fallbackIcon={<FileText className="h-16 w-16 text-gray-400 mx-auto mb-4" />}
                   />
                 </div>
               )}

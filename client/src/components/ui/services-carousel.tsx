@@ -6,7 +6,7 @@ import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight, Clock, Leaf } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { CachedImage } from "./cached-image";
+import { SafeImage } from "./safe-image";
 
 interface Service {
   id: string;
@@ -163,16 +163,11 @@ export function ServicesCarousel() {
             <CardContent className="p-6 flex flex-col items-center text-center space-y-4 h-full">
               {service.imageUrl ? (
                 <div className="relative w-full h-48 overflow-hidden rounded-lg mb-4 service-image-container" style={{ willChange: 'auto' }}>
-                  <CachedImage 
+                  <SafeImage 
                     src={service.imageUrl} 
                     alt={service.name} 
-                    className="w-full h-full object-cover hover:scale-110"
-                    priority={false}
-                    style={{ 
-                      transition: 'transform 0.3s ease-out',
-                      willChange: 'transform',
-                      backfaceVisibility: 'hidden'
-                    }}
+                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                    fallbackIcon={<Leaf className="h-12 w-12 text-green-500 mx-auto mb-2" />}
                   />
                   {/* Modern gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-green-900/80 via-green-700/40 to-transparent rounded-lg"></div>
@@ -269,16 +264,11 @@ export function ServicesCarousel() {
                 <CardContent className="p-6 flex flex-col items-center text-center space-y-4 h-full">
                   {service.imageUrl ? (
                     <div className="relative w-full h-48 overflow-hidden rounded-lg mb-4 service-image-container" style={{ willChange: 'auto' }}>
-                      <CachedImage 
+                      <SafeImage 
                         src={service.imageUrl} 
                         alt={service.name} 
-                        className="w-full h-full object-cover hover:scale-110"
-                        priority={index < 3}
-                        style={{ 
-                          transition: 'transform 0.3s ease-out',
-                          willChange: 'transform',
-                          backfaceVisibility: 'hidden'
-                        }}
+                        className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                        fallbackIcon={<Leaf className="h-12 w-12 text-green-500 mx-auto mb-2" />}
                       />
                       {/* Dark overlay for text readability */}
                       <div className="absolute inset-0 bg-black/40 rounded-lg"></div>

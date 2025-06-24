@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { ImageLightbox } from "@/components/ui/image-lightbox";
+import { SafeImage } from "@/components/ui/safe-image";
 import {
   ArrowLeft,
   Calendar,
@@ -632,9 +633,11 @@ export default function PortfolioDetail() {
                               onClick={() => toggleBeforeAfter(index)}
                             >
                               <div className="aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-2xl shadow-2xl bg-white/5 relative">
-                                <ImageLightbox
-                                  image={currentImage}
+                                <SafeImage
+                                  src={currentImage}
                                   alt={`${currentState === "before" ? "Before" : "After"} ${image.caption || `Transformation ${index + 1}`}`}
+                                  className="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
+                                  fallbackIcon={<Leaf className="h-20 w-20 text-white/50 mx-auto mb-4" />}
                                 />
                               </div>
 

@@ -12,7 +12,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Calendar } from "@/components/ui/calendar";
-import { CalendarIcon, Trash2, Plus, MoveUp, MoveDown } from "lucide-react";
+import { CalendarIcon, Trash2, Plus, MoveUp, MoveDown, Image as ImageIcon } from "lucide-react";
+import { SafeImage } from "@/components/ui/safe-image";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -649,13 +650,11 @@ export default function AdminPortfolioForm() {
                               </div>
                               {pair.before && (
                                 <div className="mt-2 relative h-40 border rounded-md overflow-hidden">
-                                  <img
+                                  <SafeImage
                                     src={pair.before}
                                     alt="Before"
                                     className="w-full h-full object-cover"
-                                    onError={(e) => {
-                                      (e.target as HTMLImageElement).src = "https://placehold.co/400x300?text=Invalid+Image+URL";
-                                    }}
+                                    fallbackIcon={<ImageIcon className="h-12 w-12 text-gray-400 mx-auto mb-2" />}
                                   />
                                 </div>
                               )}
@@ -672,13 +671,11 @@ export default function AdminPortfolioForm() {
                               </div>
                               {pair.after && (
                                 <div className="mt-2 relative h-40 border rounded-md overflow-hidden">
-                                  <img
+                                  <SafeImage
                                     src={pair.after}
                                     alt="After"
                                     className="w-full h-full object-cover"
-                                    onError={(e) => {
-                                      (e.target as HTMLImageElement).src = "https://placehold.co/400x300?text=Invalid+Image+URL";
-                                    }}
+                                    fallbackIcon={<ImageIcon className="h-12 w-12 text-gray-400 mx-auto mb-2" />}
                                   />
                                 </div>
                               )}

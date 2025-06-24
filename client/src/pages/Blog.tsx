@@ -5,6 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { SafeImage } from "@/components/ui/safe-image";
+import { FileText } from "lucide-react";
 
 export default function Blog() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -128,17 +130,12 @@ return (
                   {filteredPosts.slice(1).map((post) => (
                     <Card key={post.id} className="overflow-hidden h-full flex flex-col">
                       <div className="aspect-video bg-gray-100 flex items-center justify-center">
-                        {post.imageUrl ? (
-                          <img 
-                            src={post.imageUrl} 
-                            alt={post.title}
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <div className="text-green-600 text-4xl">
-                            <i className="fas fa-image"></i>
-                          </div>
-                        )}
+                        <SafeImage 
+                          src={post.imageUrl || "https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"}
+                          alt={post.title}
+                          className="w-full h-full object-cover"
+                          fallbackIcon={<FileText className="h-12 w-12 text-green-500 mx-auto mb-2" />}
+                        />
                       </div>
                       <CardContent className="p-6 flex-grow">
                         <div className="text-green-600 text-sm font-semibold mb-2">

@@ -12,6 +12,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronRight, Leaf, Clock, CheckCircle2 } from "lucide-react";
+import { SafeImage } from "@/components/ui/safe-image";
 
 interface Service {
   id: string;
@@ -279,10 +280,11 @@ export default function Services() {
                   >
                     {service.imageUrl ? (
                       <div className="relative w-full h-72 overflow-hidden rounded-t-2xl">
-                        <img
+                        <SafeImage
                           src={service.imageUrl}
                           alt={service.name}
                           className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
+                          fallbackIcon={<Leaf className="h-16 w-16 text-green-500 mx-auto mb-4" />}
                         />
                         {/* Modern gradient overlay */}
                         <div className="absolute inset-0 bg-gradient-to-t from-green-900/80 via-green-700/40 to-transparent"></div>

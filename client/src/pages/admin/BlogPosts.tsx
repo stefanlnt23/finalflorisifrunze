@@ -11,6 +11,8 @@ import { BlogPost, User } from "@shared/schema";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
+import { SafeImage } from "@/components/ui/safe-image";
+import { FileText } from "lucide-react";
 
 export default function AdminBlogPosts() {
   const [location, setLocation] = useLocation();
@@ -138,10 +140,11 @@ export default function AdminBlogPosts() {
                         <div className="flex items-center space-x-3">
                           {post.imageUrl ? (
                             <div className="h-12 w-12 rounded-md overflow-hidden">
-                              <img 
+                              <SafeImage 
                                 src={post.imageUrl} 
                                 alt={post.title} 
                                 className="h-full w-full object-cover"
+                                fallbackIcon={<FileText className="h-8 w-8 text-gray-400" />}
                               />
                             </div>
                           ) : (
