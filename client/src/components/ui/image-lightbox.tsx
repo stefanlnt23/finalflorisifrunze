@@ -2,7 +2,8 @@
 import React, { useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { X } from "lucide-react";
-import { CachedImage } from "./cached-image";
+import { SafeImage } from "./safe-image";
+import { Image as ImageIcon } from "lucide-react";
 
 interface ImageLightboxProps {
   image: string;
@@ -23,10 +24,11 @@ export function ImageLightbox({ image, alt }: ImageLightboxProps) {
         }}
         style={{ zIndex: 1 }}
       >
-        <CachedImage 
+        <SafeImage 
           src={image} 
           alt={alt} 
           className="w-full h-full object-cover rounded-lg"
+          fallbackIcon={<ImageIcon className="h-16 w-16 text-gray-400 mx-auto mb-4" />}
         />
         <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all flex items-center justify-center opacity-0 group-hover:opacity-100 pointer-events-none">
           <div className="bg-white bg-opacity-90 rounded-full p-3 shadow-lg">
@@ -46,10 +48,11 @@ export function ImageLightbox({ image, alt }: ImageLightboxProps) {
             <X className="h-6 w-6" />
           </button>
           <div className="w-full h-auto">
-            <CachedImage
+            <SafeImage
               src={image}
               alt={alt}
               className="w-full h-auto max-h-[85vh] object-contain"
+              fallbackIcon={<ImageIcon className="h-20 w-20 text-gray-400 mx-auto mb-4" />}
             />
           </div>
         </DialogContent>

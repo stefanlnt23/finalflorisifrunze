@@ -2,7 +2,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useEmblaCarousel from "embla-carousel-react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Image as ImageIcon } from "lucide-react";
+import { SafeImage } from "./safe-image";
 import { CachedImage, preloadCriticalImages } from "./cached-image";
 
 interface CarouselImage {
@@ -133,11 +134,11 @@ export function HomeCarousel() {
           {finalImages.map((image, index) => (
             <div key={image.id} className="flex-[0_0_100%] min-w-0">
               <div className="relative aspect-[16/9] overflow-hidden">
-                <CachedImage
+                <SafeImage
                   src={image.imageUrl}
                   alt={image.alt || "Carousel image"}
                   className="w-full h-full object-cover"
-                  priority={index === 0} // Load first image with priority
+                  fallbackIcon={<ImageIcon className="h-16 w-16 text-gray-400 mx-auto mb-4" />}
                 />
               </div>
             </div>

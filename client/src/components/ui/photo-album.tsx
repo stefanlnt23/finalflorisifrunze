@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, ZoomIn, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ImageLightbox } from "@/components/ui/image-lightbox";
+import { SafeImage } from "@/components/ui/safe-image";
+import { Image as ImageIcon } from "lucide-react";
 
 interface PhotoAlbumProps {
   images: string[];
@@ -174,18 +176,12 @@ export function PhotoAlbum({
                   : "border-white/30 hover:border-white/60"
               }`}
             >
-              <img
+              <SafeImage
                 src={image}
                 alt={`Thumbnail ${index + 1}`}
                 className="w-full h-full object-cover"
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                  e.currentTarget.parentElement?.style.setProperty('display', 'none');
-                }}
-                onLoad={(e) => {
-                  e.currentTarget.style.display = 'block';
-                  e.currentTarget.parentElement?.style.setProperty('display', 'block');
-                }}
+                fallbackIcon={<ImageIcon className="h-6 w-6 text-gray-400" />}
+                showRetry={false}
               />
             </button>
           ))}
