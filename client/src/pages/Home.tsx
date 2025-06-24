@@ -169,7 +169,7 @@ export default function Home() {
   return (
     <MainLayout>
       {/* Hero Section */}
-      <section className="py-16 md:py-20 relative overflow-hidden" style={{ height: '75vh', minHeight: '650px' }}>
+      <section className="py-16 md:py-20 relative overflow-hidden min-h-[650px] md:h-[75vh]">
         {/* Video Background */}
         <video
           ref={videoRef}
@@ -259,8 +259,8 @@ export default function Home() {
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative" style={{ zIndex: 10 }}>
-          <div className="flex flex-col md:flex-row items-center justify-between">
-            <div className="md:w-1/2 mb-16 md:mb-0 md:pr-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
+            <div className="w-full md:w-1/2 mb-8 md:mb-0 md:pr-8">
               <span
                 className={`inline-block px-4 py-1 rounded-full bg-white/90 text-green-600 text-sm font-medium mb-6 shadow-lg ${isInitialRender ? "animate-fadeIn" : ""}`}
               >
@@ -317,7 +317,7 @@ export default function Home() {
               </div>
             </div>
             <div
-              className={`md:w-1/2 ${isInitialRender ? "animate-slideIn" : ""}`}
+              className={`w-full md:w-1/2 ${isInitialRender ? "animate-slideIn" : ""}`}
             >
               <div className="shadow-2xl rounded-lg overflow-hidden border-8 border-white transform transition-all hover:rotate-1 hover:scale-105">
                 <HomeCarousel />
@@ -327,8 +327,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Banner Section - Hidden on mobile to prevent carousel overlap */}
-      <section className="hidden md:block bg-gradient-to-r from-green-600 to-green-700 relative overflow-hidden py-20">
+      {/* Banner Section - Replacement for first ParallaxSection */}
+      <section className="py-20 bg-gradient-to-r from-green-600 to-green-700 relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute top-0 right-0 w-full h-full bg-pattern-leaves"></div>
         </div>

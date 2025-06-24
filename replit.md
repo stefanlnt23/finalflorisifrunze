@@ -133,7 +133,7 @@ The application is architected to support both MongoDB (currently active) and Po
 - **Cache Busting Implementation**: Added timestamp-based cache busting parameters and service worker updates to prevent cached external URL conflicts
 - **Event-Driven Loading**: Optimized video loading system with minimal event listeners, silent error handling, and automatic hardware acceleration triggers
 - **Content Preservation**: All existing hero content maintained with proper z-index layering and enhanced typography for video overlay compatibility
-- **Mobile Layout Fix**: Resolved carousel overlap by hiding "Transformă Grădina Ta" section on mobile (hidden md:block) while keeping it visible on desktop - eliminates spacing conflicts on iPhone 16 Pro Max
+- **Mobile Layout Fix**: Fixed root cause of carousel overlap by removing fixed height constraints on mobile (min-h-[650px] md:h-[75vh]) and adding proper gap spacing (gap-8 md:gap-12) - allows hero section to grow naturally with content on iPhone 16 Pro Max
 - **Company Credit Addition**: Added Web-force.info developer credit to footer with proper styling and external link
 - **Enhanced Animated Fallback**: Replaced static gradient with rich animated green background featuring floating garden elements, emoji animations, and geometric patterns
 - **Custom Float Animations**: Added CSS keyframe animations for floating elements with different speeds and delays for natural movement
