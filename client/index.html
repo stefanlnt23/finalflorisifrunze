@@ -11,11 +11,14 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://greengarden.com" />
     
-    <!-- Resource Hints for Better Performance -->
+    <!-- Performance optimizations -->
+    <link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
     <link rel="preconnect" href="https://images.unsplash.com">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://res.cloudinary.com">
     <link rel="dns-prefetch" href="https://images.unsplash.com">
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="preload" href="https://res.cloudinary.com/dyrmghrbm/video/upload/f_mp4,q_auto:low,w_auto,c_scale/gardencut_xiwbj3.mp4" as="video" type="video/mp4">
     
     <!-- Preload critical API endpoints -->
     <link rel="prefetch" href="/api/carousel-images">
@@ -23,9 +26,30 @@
     <link rel="prefetch" href="/api/feature-cards">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Critical CSS inlining -->
+    <style>
+      body { margin: 0; background: #fff; }
+      .loading-fallback { 
+        height: 100vh; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        background: linear-gradient(135deg, #16a34a, #15803d);
+        color: white;
+        font-family: system-ui, -apple-system, sans-serif;
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div class="loading-fallback">
+        <div>
+          <h1>Flori si Frunze</h1>
+          <p>Se încarcă...</p>
+        </div>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
     <!-- This is a replit script which adds a banner on the top of the page when opened in development mode outside the replit environment -->
     <script type="text/javascript" src="https://replit.com/public/js/replit-dev-banner.js"></script>

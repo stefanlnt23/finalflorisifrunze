@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import MainLayout from "@/components/layouts/MainLayout";
 import { HomeCarousel } from "@/components/ui/home-carousel";
 import { ServicesCarousel } from "@/components/ui/services-carousel";
+import { LazySection } from "@/components/ui/lazy-section";
 
 // Default feature cards as fallback
 const defaultFeatureCards = [
@@ -59,25 +60,26 @@ export default function Home() {
   const [videoPlaying, setVideoPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Get services data
+  // Get services data with optimized caching
   const { data: servicesData, isLoading: isLoadingServices } = useQuery({
     queryKey: ["/api/services"],
     refetchOnWindowFocus: false,
-    staleTime: 300000, // Keep data fresh for 5 minutes
-    gcTime: 600000, // Cache data for 10 minutes
-    refetchOnMount: false, // Don't refetch when component mounts if data exists
+    staleTime: Infinity,
+    gcTime: Infinity,
+    refetchOnMount: false,
+    retry: 1,
   });
 
-  // Get testimonials data
-  const { data: testimonialsData, isLoading: isLoadingTestimonials } = useQuery(
-    {
-      queryKey: ["/api/testimonials"],
-      refetchOnWindowFocus: false,
-      staleTime: 300000, // Keep data fresh for 5 minutes
-      gcTime: 600000, // Cache data for 10 minutes
-      refetchOnMount: false, // Don't refetch when component mounts if data exists
-    },
-  );
+  // Get testimonials with lazy loading
+  const { data: testimonialsData, isLoading: isLoadingTestimonials } = useQuery({
+    queryKey: ["/api/testimonials"],
+    refetchOnWindowFocus: false,
+    staleTime: Infinity,
+    gcTime: Infinity,
+    refetchOnMount: false,
+    retry: 1,
+    enabled: isScrolled,
+  });
 
   // Feature services (limit to 3)
   const featuredServices =
@@ -87,13 +89,15 @@ export default function Home() {
   // Testimonials
   const testimonials = testimonialsData?.testimonials || [];
 
-  // Get feature cards
+  // Get feature cards with lazy loading
   const { data: featureCardsData } = useQuery({
     queryKey: ["/api/feature-cards"],
     refetchOnWindowFocus: false,
-    staleTime: 300000, // Keep data fresh for 5 minutes
-    gcTime: 600000, // Cache data for 10 minutes
-    refetchOnMount: false, // Don't refetch when component mounts if data exists
+    staleTime: Infinity,
+    gcTime: Infinity,
+    refetchOnMount: false,
+    retry: 1,
+    enabled: isScrolled, // Only load when user scrolls
   });
 
   // Feature cards with fallback to defaults if none exist
@@ -420,8 +424,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Why Choose Us Section */}
-      <section className="py-24 bg-white">
+      {/* Why Choose Us Section - Lazy Loaded */}
+      <LazySection className="py-24 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-3xl font-bold mb-4 text-gray-900 fade-in-view">
@@ -468,7 +472,7 @@ export default function Home() {
             </Link>
           </div>
         </div>
-      </section>
+      </LazySection>
 
       {/* Testimonials */}
       <section className="py-20 bg-gray-50">
