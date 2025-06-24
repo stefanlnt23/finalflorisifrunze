@@ -650,30 +650,34 @@ export default function ServiceDetail() {
               </a>
             </div>
 
-            {/* Contact Methods */}
+            {/* Contact Methods - Functional Buttons */}
             <div className="grid md:grid-cols-3 gap-8 text-white">
-              <div className="flex flex-col items-center p-6 bg-white/10 backdrop-blur-sm rounded-2xl">
-                <Phone className="w-12 h-12 mb-4 text-green-300" />
-                <h3 className="text-lg font-bold mb-2">Sună Direct</h3>
-                <p className="text-green-100">+40 742 650 670</p>
-                <p className="text-sm text-green-200 mt-2">Program: 8:00 - 18:00</p>
-              </div>
+              <a href="tel:+40742650670" className="block">
+                <div className="flex flex-col items-center p-6 bg-white/10 backdrop-blur-sm rounded-2xl hover:bg-white/20 transition-all duration-300 transform hover:scale-105 cursor-pointer group">
+                  <Phone className="w-12 h-12 mb-4 text-green-300 group-hover:text-green-200 transition-colors" />
+                  <h3 className="text-lg font-bold mb-2">Sună Direct</h3>
+                  <p className="text-green-100 group-hover:text-white font-semibold">+40 742 650 670</p>
+                  <p className="text-sm text-green-200 mt-2">Program: 8:00 - 18:00</p>
+                </div>
+              </a>
               
-              <div className="flex flex-col items-center p-6 bg-white/10 backdrop-blur-sm rounded-2xl">
-                <MessageCircle className="w-12 h-12 mb-4 text-green-300" />
-                <h3 className="text-lg font-bold mb-2">WhatsApp</h3>
-                <a href="https://wa.me/40742650670" className="text-green-100 hover:text-white">
-                  Mesaj Direct
-                </a>
-                <p className="text-sm text-green-200 mt-2">Răspuns în 5 min</p>
-              </div>
+              <a href="https://wa.me/40742650670" target="_blank" rel="noopener noreferrer" className="block">
+                <div className="flex flex-col items-center p-6 bg-white/10 backdrop-blur-sm rounded-2xl hover:bg-white/20 transition-all duration-300 transform hover:scale-105 cursor-pointer group">
+                  <MessageCircle className="w-12 h-12 mb-4 text-green-300 group-hover:text-green-200 transition-colors" />
+                  <h3 className="text-lg font-bold mb-2">WhatsApp</h3>
+                  <p className="text-green-100 group-hover:text-white font-semibold">Mesaj Direct</p>
+                  <p className="text-sm text-green-200 mt-2">Răspuns în 5 min</p>
+                </div>
+              </a>
               
-              <div className="flex flex-col items-center p-6 bg-white/10 backdrop-blur-sm rounded-2xl">
-                <Mail className="w-12 h-12 mb-4 text-green-300" />
-                <h3 className="text-lg font-bold mb-2">Email</h3>
-                <p className="text-green-100">info@florisifrunze.com</p>
-                <p className="text-sm text-green-200 mt-2">Răspuns în 2 ore</p>
-              </div>
+              <a href="mailto:info@florisifrunze.com" className="block">
+                <div className="flex flex-col items-center p-6 bg-white/10 backdrop-blur-sm rounded-2xl hover:bg-white/20 transition-all duration-300 transform hover:scale-105 cursor-pointer group">
+                  <Mail className="w-12 h-12 mb-4 text-green-300 group-hover:text-green-200 transition-colors" />
+                  <h3 className="text-lg font-bold mb-2">Email</h3>
+                  <p className="text-green-100 group-hover:text-white font-semibold">info@florisifrunze.com</p>
+                  <p className="text-sm text-green-200 mt-2">Răspuns în 2 ore</p>
+                </div>
+              </a>
             </div>
 
             {/* Final Trust Indicators */}
