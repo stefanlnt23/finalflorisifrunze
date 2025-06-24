@@ -190,7 +190,7 @@ export default function ServiceDetail() {
               </Link>
               
               <a href="tel:+40742650670" className="inline-block">
-                <Button variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-green-700 px-6 py-3 lg:px-8 lg:py-4 text-base lg:text-lg font-semibold rounded-2xl backdrop-blur-sm">
+                <Button variant="outline" className="border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white bg-white/90 backdrop-blur-sm px-6 py-3 lg:px-8 lg:py-4 text-base lg:text-lg font-semibold rounded-2xl shadow-lg">
                   <Phone className="w-4 h-4 lg:w-5 lg:h-5 mr-2 lg:mr-3" />
                   Sună Acum: +40 742 650 670
                 </Button>
