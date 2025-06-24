@@ -327,8 +327,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Banner Section - Replacement for first ParallaxSection */}
-      <section className="bg-gradient-to-r from-green-600 to-green-700 relative overflow-hidden" style={{ marginTop: '5vh', paddingTop: 'max(8vh, 60px)', paddingBottom: 'max(5vh, 40px)' }}>
+      {/* Banner Section - Hidden on mobile to prevent carousel overlap */}
+      <section className="hidden md:block bg-gradient-to-r from-green-600 to-green-700 relative overflow-hidden py-20">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute top-0 right-0 w-full h-full bg-pattern-leaves"></div>
         </div>
