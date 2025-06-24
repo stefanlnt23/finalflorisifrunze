@@ -265,35 +265,6 @@ export default function ServiceDetail() {
         </div>
       )}
 
-      {/* Benefits Section - Desktop Optimized */}
-      {service.benefits && service.benefits.length > 0 && (
-        <section className="py-10 lg:py-16 bg-gradient-to-br from-green-50 to-emerald-50">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-7xl mx-auto">
-              <div className="text-center mb-8 lg:mb-12">
-                <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-gray-900 mb-3 lg:mb-4">
-                  De Ce Să Alegi Serviciul Nostru?
-                </h2>
-                <p className="text-base lg:text-lg text-gray-600 max-w-4xl mx-auto">
-                  Beneficiază de experiența noastră de peste 10 ani și transformă-ți grădina cu cea mai bună echipă din domeniu.
-                </p>
-              </div>
-
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
-                {service.benefits.map((benefit: string, index: number) => (
-                  <div key={index} className="bg-white p-4 lg:p-6 rounded-2xl lg:rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-green-100">
-                    <div className="w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-xl lg:rounded-2xl flex items-center justify-center mb-3 lg:mb-4 shadow-lg">
-                      <CheckCircle2 className="h-6 w-6 lg:h-7 lg:w-7 text-white" />
-                    </div>
-                    <p className="text-gray-800 text-sm lg:text-base leading-relaxed font-medium">{benefit}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
       {/* Main content section - Desktop Optimized */}
       <section className="py-10 lg:py-16 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -377,6 +348,35 @@ export default function ServiceDetail() {
                 </div>
               </div>
             </div>
+
+      {/* Benefits Section - Desktop Optimized */}
+      {service.benefits && service.benefits.length > 0 && (
+        <section className="py-10 lg:py-16 bg-gradient-to-br from-green-50 to-emerald-50">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto">
+              <div className="text-center mb-8 lg:mb-12">
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-gray-900 mb-3 lg:mb-4">
+                  De Ce Să Alegi Serviciul Nostru?
+                </h2>
+                <p className="text-base lg:text-lg text-gray-600 max-w-4xl mx-auto">
+                  Beneficiază de experiența noastră de peste 10 ani și transformă-ți grădina cu cea mai bună echipă din domeniu.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
+                {service.benefits.map((benefit: string, index: number) => (
+                  <div key={index} className="bg-white p-4 lg:p-6 rounded-2xl lg:rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-green-100">
+                    <div className="w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-xl lg:rounded-2xl flex items-center justify-center mb-3 lg:mb-4 shadow-lg">
+                      <CheckCircle2 className="h-6 w-6 lg:h-7 lg:w-7 text-white" />
+                    </div>
+                    <p className="text-gray-800 text-sm lg:text-base leading-relaxed font-medium">{benefit}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
             {/* What's Included Section - Desktop Optimized */}
             {service.includes && service.includes.length > 0 && (
