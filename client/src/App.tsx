@@ -1,3 +1,4 @@
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Analytics } from '@vercel/analytics/react';
 import React, { Suspense } from "react";
 import { Route, Switch, useLocation } from "wouter";
@@ -141,6 +142,7 @@ function Router() {
       </Suspense>
       <Toaster />
       <Analytics />
+      <SpeedInsights />
     </AuthProvider>
   );
 }
