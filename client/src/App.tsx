@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react';
 import React, { Suspense } from "react";
 import { Route, Switch, useLocation } from "wouter";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -139,6 +140,7 @@ function Router() {
         </Switch>
       </Suspense>
       <Toaster />
+      <Analytics />
     </AuthProvider>
   );
 }
